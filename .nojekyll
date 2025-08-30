@@ -1,0 +1,5 @@
+# In your project folder
+touch .nojekyll
+git add .nojekyll
+git commit -m "build: Disable Jekyll processing"
+git push
