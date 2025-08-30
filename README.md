@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Gryddd/Walid-Gourideche-Portfolio/main/images/favicon.png" alt="Walid Gourideche Logo" width="100">
+  <img src="https://raw.githubusercontent.com/Gryddd/Portfolio/main/images/favicon.png" alt="Walid Gourideche Logo" width="100">
+
 </p>
 
 <h1 align="center">Portfolio von Walid Gourideche</h1>
