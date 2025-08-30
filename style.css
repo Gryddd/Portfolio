@@ -1804,9 +1804,8 @@ button:hover,
 .submit-btn.submit-btn-secondary:hover {
     background: rgba(59, 130, 246, 0.1);
     color: var(--primary-blue);
-;
-    padding: 0;
-    margin: 0;
+    transform: translateY(-2px); /* Add this line */
+    box-shadow: 0 4px 20px rgb(0 0 0 / 0.3); /* And this line */
 }
 
 .faq-answer .source-list li {
