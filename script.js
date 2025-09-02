@@ -93,12 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             ],
         },
-        // NEW BOREALIS PROJECT DATA STARTS HERE
         "project-modal-2": {
             currentSlide: 0,
             slides: [
                 {
-                    img: "borealis_architecture.png", // You will need to create this screenshot
+                    img: "borealis_architecture.png",
                     title: { de: "Full-Stack MERN Architektur", en: "Full-Stack MERN Architecture", fr: "Architecture Full-Stack MERN" },
                     text: {
                         de: "Borealis ist eine vollständige E-Commerce-Anwendung, die auf dem MERN-Stack basiert. Die Kernarchitektur umfasst eine Node.js/Express REST-API für Backend-Logik, eine MongoDB-Datenbank für die Datenpersistenz und eine reine Vanilla-JS-Frontend-Anwendung, die für eine optimale Leistung ohne Framework-Overhead sorgt.",
@@ -107,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 },
                 {
-                    img: "borealis_auth.png", // You will need to create this screenshot
+                    img: "borealis_auth.png",
                     title: { de: "Sichere Authentifizierung & Sitzungsverwaltung", en: "Secure Authentication & Session Management", fr: "Authentification et Gestion de Session Sécurisées" },
                     text: {
                         de: "Die Benutzerauthentifizierung wird durch JSON Web Tokens (JWT) gesichert. Passwörter werden vor der Speicherung mit bcrypt gehasht, um die Einhaltung von Sicherheitsstandards zu gewährleisten. Token-basierte Sitzungen ermöglichen eine zustandslose und skalierbare Backend-Architektur.",
@@ -116,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 },
                 {
-                    img: "borealis_admin_dashboard.png", // You will need to create this screenshot
+                    img: "borealis_admin_dashboard.png",
                     title: { de: "Systemadministration & Rollenbasierte Zugriffskontrolle", en: "System Administration & Role-Based Access Control", fr: "Administration Système & Contrôle d'Accès Basé sur les Rôles" },
                     text: {
                         de: "Ein Admin-Dashboard bietet rollenbasierte Zugriffskontrolle (RBAC), die es autorisierten Benutzern ermöglicht, das System zu verwalten. Administratoren können CRUD-Operationen (Erstellen, Lesen, Aktualisieren, Löschen) an Produkten durchführen und alle Benutzer- und Bestelldaten einsehen, was wichtige Systemverwaltungsaufgaben demonstriert.",
@@ -125,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 },
                 {
-                    img: "borealis_api_integration.png", // You will need to create this screenshot
+                    img: "borealis_api_integration.png",
                     title: { de: "Integration von Drittanbieter-APIs", en: "Third-Party API Integration", fr: "Intégration d'API Tierces" },
                     text: {
                         de: "Das Projekt integriert externe Dienste über APIs für wichtige Funktionalitäten. Stripe wird für eine sichere Zahlungsabwicklung genutzt, wodurch sensible Finanzdaten von den eigenen Servern ferngehalten werden. SendGrid wird für transaktionale E-Mails, wie z.B. das Zurücksetzen von Passwörtern, verwendet.",
@@ -134,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 },
                 {
-                    img: "borealis_state_management.png", // You will need to create this screenshot
+                    img: "borealis_state_management.png",
                     title: { de: "Zustandsverwaltung: Gast vs. Benutzer", en: "State Management: Guest vs. User", fr: "Gestion d'État : Invité vs. Utilisateur" },
                     text: {
                         de: "Eine duale Zustandsverwaltungsstrategie wurde implementiert. Gast-Sitzungen verwenden LocalStorage für die clientseitige Persistenz des Warenkorbs. Beim Einloggen wird der LocalStorage-Zustand nahtlos mit dem in MongoDB gespeicherten Benutzerzustand zusammengeführt, was die Datenintegrität über verschiedene Sitzungstypen hinweg gewährleistet.",
@@ -143,8 +142,42 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             ]
+        },
+        "project-modal-3": {
+            currentSlide: 0,
+            slides: [
+                {
+                    img: "portguardian_slide1.png",
+                    title: { de: "Stufe 1: Vorbereitung der Bedrohungssimulation", en: "Stage 1: Threat Simulation Preparation", fr: "Étape 1 : Préparation de la Simulation de Menace" },
+                    text: { de: "Um die Engine zu validieren, wurde ein Test-USB-Laufwerk mit verschiedenen Bedrohungsvektoren vorbereitet, darunter bösartiges 'autorun.inf', .lnk-Dateien, die PowerShell aufrufen, und bekannte Malware-Samples wie die EICAR-Testdatei.", en: "To validate the engine, a test USB was prepared with diverse threat vectors, including malicious 'autorun.inf', PowerShell-invoking .lnk files, and known malware samples like the EICAR test file.", fr: "Pour valider le moteur, une clé USB de test a été préparée avec divers vecteurs de menace, incluant un 'autorun.inf' malveillant, des fichiers .lnk invoquant PowerShell, et des échantillons de malware connus comme le fichier de test EICAR." }
+                },
+                {
+                    img: "portguardian_slide2.png",
+                    title: { de: "Stufe 2: Aktivierung und Überwachung", en: "Stage 2: Activation and Monitoring", fr: "Étape 2 : Activation et Surveillance" },
+                    text: { de: "Die Anwendung wird gestartet und die Echtzeit-Überwachung wird aktiviert. Die Benutzeroberfläche bestätigt, dass das System geschützt ist und auf das Einstecken von Geräten wartet.", en: "The application is launched and real-time monitoring is enabled. The user interface confirms the system is protected and awaiting device insertion.", fr: "L'application est lancée et la surveillance en temps réel est activée. L'interface utilisateur confirme que le système est protégé et en attente de l'insertion d'un périphérique." }
+                },
+                {
+                    img: "portguardian_slide3.png",
+                    title: { de: "Stufe 3: Echtzeit-Scan und Analyse", en: "Stage 3: Real-Time Scan & Analysis", fr: "Étape 3 : Analyse en Temps Réel" },
+                    text: { de: "Beim Einstecken des USB-Sticks fängt PortGuardian das Ereignis sofort ab. Der Aktivitätsprotokoll zeigt den Analyseprozess, einschließlich der sofortigen Neutralisierung von 'autorun.inf' und der Hash-Überprüfung gegen Live-Bedrohungs-APIs.", en: "Upon USB insertion, PortGuardian instantly intercepts the event. The activity log displays the analysis process, including the immediate neutralization of 'autorun.inf' and hash verification against live threat intelligence APIs.", fr: "Dès l'insertion de la clé USB, PortGuardian intercepte immédiatement l'événement. Le journal d'activité affiche le processus d'analyse, y compris la neutralisation immédiate de 'autorun.inf' et la vérification des hachages par rapport aux API de renseignement sur les menaces en direct." }
+                },
+                {
+                    img: "portguardian_slide4.png",
+                    title: { de: "Stufe 4: Bedrohungserkennung und Bericht", en: "Stage 4: Threat Detection & Reporting", fr: "Étape 4 : Détection et Rapport des Menaces" },
+                    text: { de: "Nach dem Scan werden die 7 potenziellen Risiken in einem klaren, interaktiven Dialog angezeigt. Die Bedrohungen sind nach Schweregrad kategorisiert, was dem Benutzer die vollständige Kontrolle über die Quarantänemaßnahmen gibt.", en: "After the scan, the 7 potential risks are presented in a clear, interactive dialog. Threats are categorized by severity, giving the user full control over quarantine actions.", fr: "Après l'analyse, les 7 risques potentiels sont présentés dans une boîte de dialogue claire et interactive. Les menaces sont classées par gravité, donnant à l'utilisateur un contrôle total sur les actions de mise en quarantaine." }
+                },
+                {
+                    img: "portguardian_slide5.png",
+                    title: { de: "Stufe 5: Erfolgreiche Quarantäne", en: "Stage 5: Successful Quarantine", fr: "Étape 5 : Mise en Quarantaine Réussie" },
+                    text: { de: "Der Aktivitätsprotokoll bestätigt, dass alle ausgewählten Bedrohungen erfolgreich in den sicheren Quarantäne-Ordner verschoben wurden, wodurch der Endpunkt effektiv geschützt ist.", en: "The activity log confirms that all selected threats were successfully moved to the secure quarantine folder, effectively protecting the endpoint.", fr: "Le journal d'activité confirme que toutes les menaces sélectionnées ont été déplacées avec succès vers le dossier de quarantaine sécurisé, protégeant ainsi efficacement le point de terminaison." }
+                },
+                {
+                    img: "portguardian_slide6.png",
+                    title: { de: "Stufe 6: Verifizierung der Quarantäne", en: "Stage 6: Quarantine Verification", fr: "Étape 6 : Vérification de la Quarantaine" },
+                    text: { de: "Eine Überprüfung des Ordners C:\\PortGuardianQuarantine zeigt, dass alle bösartigen und verdächtigen Dateien sicher isoliert wurden, was den Erfolg des Schutzzyklus bestätigt.", en: "An inspection of the C:\\PortGuardianQuarantine folder shows all malicious and suspicious files have been safely isolated, confirming the success of the protection cycle.", fr: "Une inspection du dossier C:\\PortGuardianQuarantaine montre que tous les fichiers malveillants et suspects ont été isolés en toute sécurité, confirmant le succès du cycle de protection." }
+                }
+            ]
         }
-        // NEW BOREALIS PROJECT DATA ENDS HERE
     };
     function updateModalLangSwitchers(selectedLang) {
         document.querySelectorAll(".modal-lang-switcher button").forEach((button) => {
@@ -176,9 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLanguageSelectorUI(currentLang);
         updateModalLangSwitchers(currentLang);
         updateAllProjectModalsText();
-        // Updated logic to populate both mobile showcases
-        populateMobileShowcase("project-modal-1", "mobile-project-showcase");
-        populateMobileShowcase("project-modal-2", "mobile-project-showcase-borealis");
     }
     function updateLanguageSelectorUI(selectedLang) {
         document.querySelectorAll(".language-item").forEach((item) => {
@@ -204,38 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     descContainer.style.height = activeDesc.scrollHeight + "px";
                 }
             }
-        });
-    }
-    function populateMobileShowcase(modalId, showcaseId) {
-        const project = projectsData[modalId];
-        const container = document.getElementById(showcaseId);
-        if (!container) return;
-        container.innerHTML = "";
-        project.slides.forEach((slideData) => {
-            const item = document.createElement("div");
-            item.className = "mobile-project-item";
-            item.setAttribute("data-aos", "fade-up");
-            const img = document.createElement("img");
-            img.src = "images/" + slideData.img;
-            img.alt = slideData.title[currentLang] || slideData.title.en;
-            img.loading = "lazy";
-            img.addEventListener("click", function () {
-                const imageModalImg = imageModal.querySelector("img");
-                imageModalImg.src = this.src;
-                imageModalImg.alt = `Enlarged view of ${slideData.title[currentLang] || slideData.title.en}`;
-                openModal(imageModal, this);
-            });
-            const textDiv = document.createElement("div");
-            textDiv.className = "mobile-project-text";
-            const title = document.createElement("h4");
-            title.textContent = slideData.title[currentLang];
-            const text = document.createElement("p");
-            text.innerHTML = slideData.text[currentLang];
-            textDiv.appendChild(title);
-            textDiv.appendChild(text);
-            item.appendChild(img);
-            item.appendChild(textDiv);
-            container.appendChild(item);
         });
     }
     function openModal(modal, triggerElement) {
@@ -339,25 +337,44 @@ document.addEventListener("DOMContentLoaded", function () {
         const modalNextBtn = modal.querySelector(".project-modal-arrow.next");
         modalNextBtn?.addEventListener("click", () => showProjectSlide(modalId, (project.currentSlide + 1) % project.slides.length));
         modalPrevBtn?.addEventListener("click", () => showProjectSlide(modalId, (project.currentSlide - 1 + project.slides.length) % project.slides.length));
-        
-        // This logic is now handled in switchLanguage to ensure it runs on load and on lang change
-        // populateMobileShowcase(modalId, `mobile-project-showcase${modalId.includes('2') ? '-borealis' : ''}`);
     });
-    document.querySelectorAll(".open-project-modal-btn").forEach((button) => {
-        button.addEventListener("click", function () {
-            const modalId = this.dataset.modalId;
+    
+    document.querySelectorAll('.project-card').forEach(card => {
+        const modalId = card.dataset.modalId;
+        if (!modalId) return;
+
+        const openTheModal = (triggerElement) => {
             const project = projectsData[modalId];
             const modal = document.getElementById(modalId);
             if (!project || !modal) return;
+            
             updateAllProjectModalsText();
             project.currentSlide = 0;
+            
             modal.querySelectorAll(".project-modal-slide").forEach((s, i) => s.classList.toggle("active", i === 0));
             modal.querySelectorAll(".project-modal-description-item").forEach((d, i) => d.classList.toggle("active", i === 0));
+            
             showProjectSlide(modalId, 0);
-            openModal(modal, this);
+            openModal(modal, triggerElement);
+        };
+        
+        const modalBtn = card.querySelector('.open-project-modal-btn');
+        if (modalBtn) {
+            modalBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                openTheModal(this);
+            });
+        }
+        
+        card.addEventListener('click', function(e) {
+            if (window.innerWidth <= 691 && !e.target.closest('a, button')) {
+                 openTheModal(this);
+            }
         });
     });
+
     switchLanguage(currentLang);
+    
     const navCtaDropdown = document.getElementById("nav-cta-dropdown");
     const heroCtaDropdown = document.querySelector(".hero-cta-dropdown");
     if (navCtaDropdown && heroCtaDropdown) {
@@ -376,20 +393,12 @@ document.addEventListener("DOMContentLoaded", function () {
             { passive: !0 }
         );
     }
-    document.querySelectorAll(".project-intro-image").forEach((introImage) => {
-        introImage.addEventListener("click", function () {
-            const img = this.querySelector("img");
-            if (img) {
-                diagramModal.querySelector("img").src = img.src;
-                diagramModal.querySelector("img").alt = img.alt;
-                openModal(diagramModal, this);
-            }
-        });
-    });
+    
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
         openModal(videoModal, this);
         createPlayer();
     });
+
     allModals.forEach((modal) => {
         const closeBtn = modal.querySelector(".close-button");
         if (closeBtn) {
@@ -399,6 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+
     if (contactForm) {
         const submitBtn = contactForm.querySelector(".submit-btn");
         const formStatus = document.getElementById("form-status");
@@ -432,6 +442,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     }
+
     window.addEventListener("click", (event) => {
         if (event.target.classList.contains("modal")) closeModal(event.target);
         if (!event.target.closest(".nav-dropdown, .hero-cta-dropdown, #nav-cta-dropdown")) {
@@ -444,6 +455,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (!event.target.closest(".flip-card")) document.querySelectorAll(".flip-card-inner.is-flipped").forEach((inner) => inner.classList.remove("is-flipped"));
     });
+
     window.addEventListener("keydown", (event) => {
         if (event.key !== "Escape") return;
         const activeImageModal = document.getElementById("image-modal");
@@ -460,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
     window.addEventListener("keydown", (event) => {
         const activeModal = document.querySelector(".project-modal.active");
         if (!activeModal) return;
@@ -492,10 +505,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-    document.querySelectorAll(".language-item").forEach((item) => {
+
+    document.querySelectorAll(".language-item, .modal-language-item").forEach((item) => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
-            switchLanguage(item.getAttribute("data-lang"));
+            const newLang = item.getAttribute("data-lang");
+            if (newLang !== currentLang) {
+                switchLanguage(newLang);
+            }
             const activeDropdown = item.closest(".nav-dropdown.active");
             if (activeDropdown) {
                 activeDropdown.classList.remove("active");
@@ -506,15 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-    document.querySelectorAll(".modal-lang-switcher button").forEach((button) => {
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-            const newLang = this.dataset.lang;
-            if (newLang !== currentLang) {
-                switchLanguage(newLang);
-            }
-        });
-    });
+
     document.querySelectorAll(".faq-question").forEach((button) =>
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
@@ -523,6 +532,7 @@ document.addEventListener("DOMContentLoaded", function () {
             panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
         })
     );
+
     const mobileMenuIcon = document.querySelector(".mobile-menu-icon");
     const mobileNavOverlay = document.getElementById("mobile-nav");
     const toggleNav = () => {
@@ -536,6 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
             link.addEventListener("click", () => setTimeout(toggleNav, 150));
         }
     });
+
     document.querySelectorAll(".nav-dropdown-toggle").forEach((toggle) =>
         toggle.addEventListener("click", (e) => {
             e.stopPropagation();

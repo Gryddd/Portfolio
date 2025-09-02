@@ -350,7 +350,7 @@ main {
 }
 .container {
     width: 90%;
-    max-width: 56rem;
+    max-width: 72rem;
     margin: 0 auto;
     padding-top: 80px;
     padding-bottom: 100px;
@@ -545,43 +545,6 @@ h2::after {
     padding: 0;
     z-index: 20;
 }
-.modal-lang-switcher {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: flex;
-    gap: 6px;
-    z-index: 15;
-}
-.modal-lang-switcher button {
-    background: rgb(255 255 255 / 0.1);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 4px 8px;
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    opacity: 0.7;
-}
-.modal-lang-switcher button:hover {
-    background: rgb(255 255 255 / 0.2);
-    border-color: var(--primary-blue);
-    opacity: 1;
-}
-.modal-lang-switcher button.active {
-    background: var(--primary-blue);
-    color: var(--background);
-    border-color: var(--primary-blue);
-    opacity: 1;
-}
-#video-modal .modal-lang-switcher,
-#diagram-modal .modal-lang-switcher,
-#image-modal .modal-lang-switcher {
-    display: none;
-}
 #diagram-modal .modal-content,
 #image-modal .modal-content {
     max-width: 70rem;
@@ -710,195 +673,6 @@ h2::after {
 .skill-card p {
     margin-bottom: 0;
 }
-.project-intro {
-    background: var(--card-bg);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
-    border-radius: 12px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.15);
-}
-.project-title {
-    font-weight: 700;
-    text-align: center;
-}
-.project-intro-text h3 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    text-align: center;
-    font-weight: 700;
-}
-.project-intro-text p {
-    opacity: 0.9;
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-.project-intro-text p .project-details {
-    display: block;
-    margin-top: 1.5rem;
-    font-weight: 400;
-    font-size: 1em;
-}
-.project-intro-text p .highlight-keyword {
-    font-weight: 700;
-    font-size: 1.05em;
-}
-.project-intro-text .submit-btn-wrapper {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-.project-intro .submit-btn {
-    font-weight: 700;
-}
-.project-modal .modal-content {
-    max-width: 50rem;
-    background: var(--background);
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
-}
-.project-modal .close-button {
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    position: absolute;
-}
-.project-modal-body {
-    padding: 1.5rem;
-}
-.project-modal-image-wrapper {
-    background: #111;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 45vh;
-}
-.project-modal-slide {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-in;
-}
-.project-modal-slide.active {
-    opacity: 1;
-    visibility: visible;
-}
-.project-modal-slide img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-}
-.project-modal-description {
-    position: relative;
-    text-align: left;
-    transition: height 0.3s ease-in-out;
-}
-.project-modal-description-item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(15px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.project-modal-description-item.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    position: relative;
-}
-.project-modal-description h4 {
-    font-size: 1.3rem;
-    margin: 0 0 0.5rem 0;
-}
-.project-modal-description p {
-    opacity: 0.9;
-    margin: 0;
-}
-.project-modal-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-.project-modal-arrow {
-    background: rgb(255 255 255 / 0.1);
-    border: 2px solid #fff0;
-    border-radius: 50%;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.project-modal-arrow:hover {
-    background: rgb(255 255 255 / 0.2);
-    border-color: var(--primary-blue);
-    transform: scale(1.1);
-}
-.project-modal-arrow svg {
-    width: 24px;
-    height: 24px;
-    pointer-events: none;
-}
-.project-modal-arrow path {
-    fill: var(--primary-blue);
-}
-.project-modal-counter {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    background: rgb(255 255 255 / 0.05);
-    padding: 0.25rem 0.75rem;
-    border-radius: 15px;
-    border: 1px solid var(--border-color);
-}
-#mobile-project-showcase {
-    display: none;
-    margin-top: 3rem;
-}
-.mobile-project-item {
-    background: var(--card-bg);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.15);
-}
-.mobile-project-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-    cursor: zoom-in;
-}
-.mobile-project-text {
-    padding: 1.5rem;
-}
-.mobile-project-text h4 {
-    margin-top: 0;
-    font-size: 1.3rem;
-}
-.mobile-project-text p {
-    margin-bottom: 0;
-    opacity: 0.9;
-}
 .faq-accordion {
     max-width: 47rem;
     margin: 0 auto;
@@ -918,8 +692,8 @@ h2::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--text-color); /* Add this line */
-    transition: transform var(--transition-speed) ease; /* Add this line */
+    color: var(--text-color);
+    transition: transform var(--transition-speed) ease;
 }
 .faq-question:hover {
     transform: translateY(-2px);
@@ -1083,19 +857,19 @@ h2::after {
     background: var(--accent-gradient);
     border: none;
     color: #fff;
-    padding: 0.65rem 1rem; /* Reduced padding */
+    padding: 0.65rem 1rem;
     border-radius: 8px;
     cursor: pointer;
     font-family: var(--font-heading);
-    font-size: 0.95rem; /* Slightly smaller font */
+    font-size: 0.95rem;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
     align-self: center;
     display: inline-flex;
     align-items: center;
-    justify-content: center; /* Center content */
+    justify-content: center;
     gap: 0.5rem;
-    min-width: 180px; /* <-- This enforces a consistent width */
-    text-align: center; /* Fallback for centering */
+    min-width: 180px;
+    text-align: center;
 }
 button:hover,
 .submit-btn:hover {
@@ -1571,67 +1345,152 @@ button:hover,
         font-size: 1.6rem;
     }
 }
-@media (max-width: 691px) {
-    .open-project-modal-btn {
-        display: none;
-    }
-    #mobile-project-showcase {
-        display: block;
-    }
-}
-@media (min-width: 692px) {
-    #mobile-project-showcase {
-        display: none;
-    }
-    #mobile-project-showcase-borealis { display: none; }
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
 }
 
-/* ============================================= */
-/* ====== STYLES FOR VISA GUIDE IN FAQ ========= */
-/* ============================================= */
+@media (min-width: 768px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.project-card {
+    background: var(--card-bg);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    min-height: 480px;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.project-card-image {
+    width: 100%;
+    height: 220px; 
+    overflow: hidden;
+}
+
+.project-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-card-image img {
+    transform: scale(1.05);
+}
+
+.project-card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.project-card-content h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+.project-card-content p {
+    opacity: 0.9;
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem; 
+    line-height: 1.6;
+}
+
+.project-card-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+.project-card .submit-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    min-width: 0;
+}
+
+.submit-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.submit-btn.submit-btn-secondary {
+    background: transparent;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    text-decoration: none;
+    padding: calc(0.65rem - 2px) calc(1rem - 2px);
+}
+
+.submit-btn.submit-btn-secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
 
 .faq-answer .visa-guide-container {
     padding: 15px 5px;
     text-align: left;
 }
-
 .faq-answer .guide-intro {
     margin-bottom: 2.5rem;
 }
-
 .faq-answer .guide-title {
     font-size: 1.3em;
     margin-top: 0;
     margin-bottom: 0.5rem;
 }
-
 .faq-answer .guide-intro p {
     padding: 0;
     font-size: 1.05em;
     opacity: 0.9;
 }
-
 .faq-answer .visa-options-wrapper {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
-
 .faq-answer .visa-option-card {
-    background: linear-gradient(var(--background), var(--background)) padding-box,
-                var(--accent-gradient) border-box;
+    background: linear-gradient(var(--background), var(--background)) padding-box, var(--accent-gradient) border-box;
     border: 2px solid transparent;
     border-radius: 12px;
     padding: 1.5rem;
     flex: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .faq-answer .visa-option-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgb(0 0 0 / 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
-
 .faq-answer .visa-option-card h5 {
     margin-top: 0;
     margin-bottom: 1.5rem;
@@ -1642,14 +1501,12 @@ button:hover,
     background-clip: text;
     color: #fff0;
 }
-
 .faq-answer .card-step {
     margin-bottom: 1.5rem;
 }
 .faq-answer .card-step:last-child {
     margin-bottom: 0;
 }
-
 .faq-answer .card-step strong {
     display: block;
     margin-bottom: 0.35rem;
@@ -1658,20 +1515,17 @@ button:hover,
     color: var(--text-color);
     opacity: 0.95;
 }
-
 .faq-answer .card-step p {
     margin: 0;
     padding: 0;
     opacity: 0.8;
     font-size: 0.95em;
 }
-
 .faq-answer .timeline-info {
     font-style: italic;
     opacity: 0.7 !important;
     font-size: 0.9em !important;
 }
-
 .faq-answer .timeline-emphasis {
     display: block;
     font-family: var(--font-heading);
@@ -1683,19 +1537,16 @@ button:hover,
     color: var(--text-color);
     opacity: 1;
 }
-
 .faq-answer .guide-section {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
 }
-
 .faq-answer .guide-section-title {
     font-size: 1.2em;
     margin-top: 0;
     margin-bottom: 1rem;
 }
-
 .faq-answer .zero-risk-box {
     background-color: rgba(59, 130, 246, 0.05);
     border-left: 3px solid var(--primary-blue);
@@ -1703,19 +1554,16 @@ button:hover,
     margin: 0;
     border-radius: 0 4px 4px 0;
 }
-
 .faq-answer .zero-risk-box p {
     margin: 0;
     padding: 0;
     font-style: italic;
 }
-
 .faq-answer .responsibility-text {
     padding: 0;
     margin-top: 1rem;
     opacity: 0.9;
 }
-
 .faq-answer .guide-download-box {
     text-align: center;
     margin-top: 2.5rem;
@@ -1723,88 +1571,224 @@ button:hover,
     background-color: rgba(59, 130, 246, 0.08);
     border-radius: 8px;
 }
-
 .faq-answer .source-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .faq-answer .source-list li {
     margin-bottom: 0.5rem;
 }
-
 .faq-answer .source-list a {
     color: var(--primary-blue);
     text-decoration: underline;
     opacity: 0.9;
     font-size: 0.9em;
 }
-
 .faq-answer .source-list a:hover {
     opacity: 1;
 }
-
-/* Responsive adjustments for the guide */
 @media (min-width: 768px) {
     .faq-answer .visa-options-wrapper {
         flex-direction: row;
     }
 }
-#projekte-borealis {
-    margin-top: 5rem;
-}
-/* Styling for the new two-column project intro */
-.project-intro-content {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
+
+.modal-content h3,
+.modal-content h4 {
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--text-color);
 }
 
-.project-intro-image {
-    flex-basis: 40%; /* Image takes up 40% of the width */
+.modal-content p {
+    font-size: 1rem;
+    opacity: 0.9;
+    line-height: 1.7;
+}
+
+.project-modal .modal-content {
+    max-width: 50rem;
+    background: var(--background);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.project-modal .close-button {
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    position: absolute;
+}
+
+.project-modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.project-modal-image-wrapper {
+    background: #111;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 40vh;
+}
+
+.project-modal-slide {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-in;
+}
+
+.project-modal-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-modal-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+}
+
+.project-modal-description {
+    position: relative;
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-modal-description-item {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.project-modal-description-item.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-modal-description h4 {
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.project-modal-description p {
+    opacity: 0.9;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.project-modal-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
     flex-shrink: 0;
 }
 
-.project-intro-image img {
-    width: 100%;
-    border-radius: 8px;
+.project-modal-arrow {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-modal-arrow:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-blue);
+    transform: scale(1.1);
+}
+
+.project-modal-arrow svg {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+.project-modal-arrow path {
+    fill: var(--primary-blue);
+}
+
+.project-modal-counter {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
     border: 1px solid var(--border-color);
 }
 
-.project-intro-text {
-    flex-basis: 60%; /* Text takes up the remaining 60% */
-}
-
-/* Responsive stacking for mobile */
-@media (max-width: 768px) {
-    .project-intro-content {
-        flex-direction: column; /* Stack image on top of text */
-    }
-}
-.submit-btn-wrapper {
+.modal-lang-switcher {
+    position: absolute;
+    top: 12px;
+    left: 12px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 6px;
+    z-index: 15;
 }
 
-/* Style for the secondary/outline button (Visit Live Site) */
-.submit-btn.submit-btn-secondary {
-    background: transparent;
-    border: 2px solid var(--primary-blue);
-    color: var(--primary-blue);
-    text-decoration: none; /* Removes underline from link */
-
-    /* Adjust padding to account for the border and new base padding */
-    padding: calc(0.65rem - 2px) calc(1rem - 2px);
+.modal-lang-switcher button.modal-language-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 4px 8px;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.7;
 }
 
-.submit-btn.submit-btn-secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    color: var(--primary-blue);
-    transform: translateY(-2px); /* Add this line */
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.3); /* And this line */
+.modal-lang-switcher button.modal-language-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-blue);
+    opacity: 1;
 }
 
+.modal-lang-switcher button.modal-language-item.active {
+    background: var(--primary-blue);
+    color: var(--background);
+    border-color: var(--primary-blue);
+    opacity: 1;
+}
