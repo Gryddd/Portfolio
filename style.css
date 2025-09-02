@@ -6,9 +6,26 @@
     --font-heading: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: "Inter", sans-serif;
     --accent-gradient: linear-gradient(135deg, #6fa3ef, #a6b8f7);
-    --card-bg: rgba(111, 163, 239, 0.08);
+    --card-bg-performant: rgba(41, 46, 58, 0.5); /* OPTIMIZED: Replaces expensive blur */
+    --card-bg: rgba(111, 163, 239, 0.08); /* Original for non-blurred elements */
     --blur: blur(1px);
     --transition-speed: 0.3s;
+}
+
+/* 
+  OPTIMIZATION: Promote animating elements to their own layer for GPU acceleration.
+*/
+.timeline-content,
+.skill-card,
+.project-card,
+.faq-question,
+.submit-btn,
+.tech-item,
+.main-nav,
+.project-card-image img,
+.project-modal-arrow,
+.flip-card { /* Added flip-card for hover effect */
+    will-change: transform, box-shadow, opacity;
 }
 
 *,
@@ -80,8 +97,6 @@ h4 {
     height: 100%;
     z-index: -1;
     background-color: rgb(13 13 13 / 0.5);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
 }
 main {
     position: relative;
@@ -89,17 +104,18 @@ main {
     overflow: hidden;
 }
 .main-nav {
-    position: fixed;
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
-    background: rgb(13 13 13 / 0.3);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+    background: rgba(30, 32, 39, 0.8); 
     box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);
     z-index: 1001;
     padding: 0.5rem 2rem;
     transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
 .main-nav.nav-hidden {
     transform: translateY(-100%);
@@ -594,9 +610,7 @@ h2::after {
     z-index: 1;
 }
 .timeline-content {
-    background: var(--card-bg);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
+    background: var(--card-bg-performant);
     border-radius: 12px;
     padding: 2rem;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
@@ -652,9 +666,7 @@ h2::after {
 .skill-card {
     width: 26rem;
     max-width: 100%;
-    background: var(--card-bg);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
+    background: var(--card-bg-performant);
     border-radius: 12px;
     padding: 2rem;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
@@ -747,74 +759,78 @@ h2::after {
     max-width: 1040px;
     margin: 0 auto;
 }
+
+/* --- FLIP CARD SECTION (REVISED) --- */
+/* This section implements the static, stacked card layout for all screen sizes. */
+
 .flip-card {
-    background-color: #fff0;
-    height: 10.5rem;
-    perspective: 1000px;
-    overflow: hidden;
+    background-color: transparent;
+    border-radius: 12px; /* Add radius to the container */
+    overflow: hidden; /* Ensures children conform to the radius */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
-.flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+
+.flip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
-.flip-card:hover .flip-card-inner,
-.flip-card-inner.is-flipped {
-    transform: rotateY(180deg);
-}
+
 .flip-card-front,
 .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    background: var(--card-bg-performant);
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--card-bg);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.15);
-    padding: 1rem;
+    text-align: center;
 }
+
+.flip-card-front {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px dashed rgba(97, 143, 211, 0.3); /* Use primary blue with alpha */
+}
+
 .flip-card-back {
-    transform: rotateY(180deg);
-    font-size: 0.9rem;
+    min-height: 4.5rem; /* Ensure consistent height */
+    font-size: 1rem;
     line-height: 1.6;
-    overflow-wrap: break-word;
 }
+
 .flip-card-back a {
     text-decoration: none;
-    text-align: center;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: #fff0;
+    color: var(--primary-blue);
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     white-space: nowrap;
+    transition: transform 0.2s ease;
 }
+
+.flip-card-back a:hover {
+    transform: scale(1.05);
+}
+
 .flip-card-front svg {
     width: 40px;
     height: 40px;
     fill: var(--primary-blue);
     margin-bottom: 1rem;
 }
+
 .flip-card-front .linkedin-logo {
     width: 45px;
     height: 45px;
 }
+
 .flip-card-front h4 {
     font-family: var(--font-heading);
     font-size: 1.1rem;
     margin: 0;
 }
+/* --- END OF REVISED FLIP CARD SECTION --- */
+
+
 .contact-form-section {
     padding-top: 80px;
 }
@@ -1178,8 +1194,7 @@ button:hover,
     .hero-text {
         text-align: left;
     }
-}
-@media screen and (max-width: 921px) {
+
     .mobile-nav-overlay-content {
         top: 0;
         padding: 60px 0 60px 0;
@@ -1280,39 +1295,6 @@ button:hover,
             grid-template-columns: repeat(2, 1fr);
         }
     }
-    .flip-card {
-        height: auto;
-        min-height: 10rem;
-        perspective: none;
-    }
-    .flip-card-inner {
-        position: static;
-        transform-style: flat;
-        transform: none !important;
-        transition: none;
-    }
-    .flip-card-front,
-    .flip-card-back {
-        position: static;
-        transform: none;
-        backface-visibility: visible;
-        width: 100%;
-        height: auto;
-        display: flex;
-    }
-    .flip-card-front {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-bottom: 1px dashed rgb(0 191 255 / 0.2);
-        padding: 1.5rem 1rem;
-    }
-    .flip-card-back {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        min-height: 4rem;
-        padding: 1rem;
-        font-size: 1rem;
-    }
 }
 @media screen and (max-width: 768px) {
     .tech-icons {
@@ -1366,9 +1348,7 @@ button:hover,
 }
 
 .project-card {
-    background: var(--card-bg);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
+    background: var(--card-bg-performant);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     overflow: hidden;

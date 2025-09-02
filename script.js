@@ -375,23 +375,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switchLanguage(currentLang);
     
+    // OPTIMIZATION: Replaced expensive scroll listener with efficient IntersectionObserver
     const navCtaDropdown = document.getElementById("nav-cta-dropdown");
     const heroCtaDropdown = document.querySelector(".hero-cta-dropdown");
     if (navCtaDropdown && heroCtaDropdown) {
         const mainNavHeight = mainNav.offsetHeight;
-        window.addEventListener(
-            "scroll",
-            () => {
-                const heroCtaPos = heroCtaDropdown.getBoundingClientRect();
-                if (heroCtaPos.bottom < mainNavHeight) {
-                    navCtaDropdown.classList.add("is-visible");
-                } else {
-                    navCtaDropdown.classList.remove("is-visible");
-                    navCtaDropdown.classList.remove("active");
-                }
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    const isVisible = entry.isIntersecting;
+                    navCtaDropdown.classList.toggle("is-visible", !isVisible);
+                    if (isVisible) {
+                        navCtaDropdown.classList.remove("active");
+                    }
+                });
             },
-            { passive: !0 }
+            {
+                rootMargin: `-${mainNavHeight}px 0px 0px 0px`,
+                threshold: 1.0
+            }
         );
+        observer.observe(heroCtaDropdown);
     }
     
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
@@ -562,10 +566,4 @@ document.addEventListener("DOMContentLoaded", function () {
             toggle.setAttribute("aria-expanded", !isActive);
         })
     );
-    document.querySelectorAll(".flip-card").forEach((card) => {
-        card.addEventListener("click", function () {
-            this.querySelector(".flip-card-inner").classList.toggle("is-flipped");
-        });
-        card.querySelectorAll("a").forEach((a) => a.addEventListener("click", (e) => e.stopPropagation()));
-    });
 });
