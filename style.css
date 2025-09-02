@@ -103,51 +103,62 @@ main {
     z-index: 2;
     overflow: hidden;
 }
+
+/* =================================================================== */
+/* START: Corrected Navigation Bar Section                             */
+/* =================================================================== */
+
 .main-nav {
     position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
-    /* The background is now handled by the ::after element */
-    background: transparent; 
-    box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);
     z-index: 1001;
     padding: 0.5rem 2rem;
     transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-    /* NO overflow:hidden here, which allows the dropdown to show */
+    /* The container itself has NO background or blur. */
 }
 
-/* This new pseudo-element creates the performant blur effect */
-.main-nav::after {
+/* This pseudo-element creates the performant background and blur layer. */
+.main-nav::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    /* This is the background that will be blurred */
+    /* The shadow is applied to the background layer. */
+    box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);
+    /* The background color and blur are applied here. */
     background: rgba(30, 32, 39, 0.8); 
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    /* Place the effect behind the nav links */
-    z-index: -1; 
+    /* This layer is at the bottom of the nav bar stack. */
+    z-index: 1;
 }
+
 .main-nav.nav-hidden {
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
 }
+
+/* The actual content (links, dropdowns) is explicitly placed on top. */
 .nav-content {
+    position: relative; /* Establishes a positioning context */
+    z-index: 2; /* Sits ON TOP of the ::before background layer */
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
+
 .nav-links {
     display: flex;
     gap: 1.2rem;
     align-items: center;
 }
+
 .nav-links a {
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -159,6 +170,7 @@ main {
     padding: 0.5rem;
     position: relative;
 }
+
 .nav-links a::after {
     content: "";
     position: absolute;
@@ -169,12 +181,15 @@ main {
     background: var(--accent-gradient);
     transition: width var(--transition-speed) ease-in-out;
 }
+
 .nav-links a:hover::after {
     width: 100%;
 }
+
 .nav-dropdown {
     position: relative;
 }
+
 .nav-dropdown-toggle {
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -190,15 +205,19 @@ main {
     font-size: 0.95rem;
     padding: 0.5rem;
 }
+
 .nav-dropdown-toggle .arrow-icon {
     width: 12px;
     height: 12px;
     fill: var(--text-color);
     transition: transform 0.3s ease;
 }
+
 .nav-dropdown.active .nav-dropdown-toggle .arrow-icon {
     transform: rotate(180deg);
 }
+
+/* The dropdown menu can now properly display outside the nav bar's bounds. */
 .nav-dropdown-menu {
     background: rgb(20 20 20 / 0.7);
     -webkit-backdrop-filter: blur(20px);
@@ -220,17 +239,21 @@ main {
     z-index: 2000;
     text-align: center;
 }
+
 .nav-dropdown-menu li:hover {
     background-color: rgb(255 137 6 / 0.15);
 }
+
 .nav-dropdown.active .nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
 }
+
 .nav-dropdown-menu li {
     padding: 0;
     margin: 0;
 }
+
 .nav-dropdown-menu a {
     font-family: var(--font-heading);
     color: var(--text-color);
@@ -244,16 +267,22 @@ main {
     text-align: center;
     white-space: nowrap;
 }
+
 .nav-dropdown-menu a:hover {
     background: var(--accent-gradient);
     color: #fff;
     opacity: 1;
 }
+
 .nav-dropdown-menu a.active {
     opacity: 1;
     color: var(--primary-blue);
     font-weight: 700;
 }
+/* =================================================================== */
+/* END: Of the replacement section                                     */
+/* =================================================================== */
+
 .mobile-language-selector {
     margin-top: -8px;
     text-align: center;
@@ -1191,8 +1220,11 @@ button:hover,
 }
 @media screen and (max-width: 921px) {
     .main-nav {
-        background-color: #fff0;
-        border-bottom: none;
+        background: transparent;
+        box-shadow: none;
+    }
+    .main-nav::before {
+        content: none; /* Disable the blur effect on mobile where the bar is not fixed */
     }
     .nav-content {
         display: none;
@@ -1787,6 +1819,4 @@ button:hover,
     color: var(--background);
     border-color: var(--primary-blue);
     opacity: 1;
-
 }
-
