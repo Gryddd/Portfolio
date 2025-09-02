@@ -1,20 +1,17 @@
 :root {
-    --background: #1e2027;
-    --primary-blue: #618fd3;
-    --text-color: #dce3f0;
-    --border-color: #2c313c;
+    --background: #1F242D;
+    --primary-blue: #6E8CA0; 
+    --text-color: #ffffff;
+    --border-color: #3B4252;
     --font-heading: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: "Inter", sans-serif;
-    --accent-gradient: linear-gradient(135deg, #6fa3ef, #a6b8f7);
-    --card-bg-performant: rgba(41, 46, 58, 0.5); /* OPTIMIZED: Replaces expensive blur */
-    --card-bg: rgba(111, 163, 239, 0.08); /* Original for non-blurred elements */
+    --accent-gradient: linear-gradient(135deg, #6E8CA0, #A0B4C3);
+    --card-bg-performant: rgba(59, 66, 82, 0.6);
+    --card-bg: rgba(110, 140, 160, 0.09);
     --blur: blur(1px);
     --transition-speed: 0.3s;
 }
 
-/* 
-  OPTIMIZATION: Promote animating elements to their own layer for GPU acceleration.
-*/
 .timeline-content,
 .skill-card,
 .project-card,
@@ -96,7 +93,7 @@ h4 {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-color: rgb(13 13 13 / 0.5);
+    background-color: rgb(13 13 13 / 0.6);
 }
 main {
     position: relative;
@@ -414,17 +411,16 @@ main {
     width: 17rem;
     height: 17rem;
     flex-shrink: 0;
+    border-radius: 24px;
+    box-shadow: 0 0 15px 4px rgba(111, 163, 239, 0.3), /* Outer glow */
+                0 0 5px 2px rgba(111, 163, 239, 0.2);  /* Inner, subtle glow */
 }
 .hero-image picture,
 .hero-image img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-.hero-image img {
-    border: 3px solid var(--primary-blue);
-    box-shadow: 0 0 25px rgb(0 191 255 / 0.4);
+    border-radius: 19px; /* Rounds the image corners inside the frame */
+    object-fit: cover; /* Ensures the image fills the frame */
 }
 .hero-text {
     width: 100%;
