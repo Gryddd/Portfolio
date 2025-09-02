@@ -108,13 +108,29 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(30, 32, 39, 0.8); 
+    /* The background is now handled by the ::after element */
+    background: transparent; 
     box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);
     z-index: 1001;
     padding: 0.5rem 2rem;
     transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    /* NO overflow:hidden here, which allows the dropdown to show */
+}
+
+/* This new pseudo-element creates the performant blur effect */
+.main-nav::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* This is the background that will be blurred */
+    background: rgba(30, 32, 39, 0.8); 
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
+    /* Place the effect behind the nav links */
+    z-index: -1; 
 }
 .main-nav.nav-hidden {
     transform: translateY(-100%);
@@ -1773,3 +1789,4 @@ button:hover,
     opacity: 1;
 
 }
+
