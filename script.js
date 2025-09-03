@@ -186,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let player;
     let lastActiveElement;
 
+    // --- DOM ELEMENT SELECTORS ---
     const mainNav = document.querySelector(".main-nav");
     const mobileMenuIcon = document.querySelector(".mobile-menu-icon");
     const mobileNavOverlay = document.getElementById("mobile-nav");
@@ -195,6 +196,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const allModals = document.querySelectorAll(".modal");
     const videoModal = document.getElementById("video-modal");
     const imageModal = document.getElementById("image-modal");
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileList = document.querySelector('.mobile-list');
+    
+    // --- CORE FUNCTIONS ---
 
     const toggleMobileNav = () => {
         if (!mobileMenuIcon || !mobileNavOverlay) return;
@@ -202,6 +207,15 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
         document.body.classList.toggle("modal-open", isOpen);
     };
+
+    /**
+     * Updates the active state on all modal language switchers to match the current language.
+     */
+    function updateModalLanguageSwitchers() {
+        document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {
+            item.classList.toggle('active', item.getAttribute('data-lang') === currentLang);
+        });
+    }
 
     function switchLanguage(newLang) {
         currentLang = newLang;
@@ -222,6 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
             item.classList.toggle("active", item.getAttribute("data-lang") === newLang);
         });
         updateAllProjectModalsText();
+        // Update modal switchers whenever the language changes.
+        updateModalLanguageSwitchers();
     }
 
     function updateAllProjectModalsText() {
@@ -336,21 +352,83 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // --- EVENT LISTENERS & INITIALIZATION ---
+
     AOS.init({ duration: 1000, once: true });
     const copyrightYearEl = document.getElementById("copyright-year");
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
     initializeProjectModals();
     switchLanguage(currentLang);
 
+    // --- LANGUAGE AND DROPDOWN LOGIC (INTEGRATED) ---
+
+    // Global language items (nav, mobile nav buttons)
     document.querySelectorAll(".language-item").forEach(item => {
         item.addEventListener("click", e => {
             e.preventDefault();
             const newLang = item.getAttribute("data-lang");
             if (newLang !== currentLang) switchLanguage(newLang);
+            
             item.closest(".nav-dropdown")?.classList.remove("active");
+            if (item.closest(".mobile-list")) {
+                mobileToggle?.classList.remove("active");
+                if (mobileList) mobileList.style.maxHeight = '0';
+            }
             if (item.closest(".mobile-language-buttons")) setTimeout(toggleMobileNav, 150);
         });
     });
+
+    // Language items inside modals
+    document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const newLang = this.getAttribute('data-lang');
+            if (newLang && newLang !== currentLang) {
+                switchLanguage(newLang);
+            }
+        });
+    });
+
+    // All dropdown toggles
+    const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown');
+            if (!parentDropdown) return;
+            const isActive = parentDropdown.classList.contains('active');
+            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown').forEach(dd => {
+                if (dd !== parentDropdown) {
+                    dd.classList.remove('active');
+                    if (dd.matches('.mobile-language-selector')) {
+                        dd.querySelector('.mobile-list').style.maxHeight = '0';
+                    }
+                }
+            });
+            parentDropdown.classList.toggle('active', !isActive);
+            if (parentDropdown.matches('.mobile-language-selector')) {
+                const list = parentDropdown.querySelector('.mobile-list');
+                if (list) {
+                    list.style.maxHeight = !isActive ? list.scrollHeight + 'px' : '0';
+                }
+            }
+        });
+    });
+
+    // Global click listener to close dropdowns
+    document.addEventListener('click', function(e) {
+        const activeDropdown = document.querySelector('.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, #nav-cta-dropdown.active');
+        if (activeDropdown && !activeDropdown.contains(e.target)) {
+            activeDropdown.classList.remove('active');
+            if (activeDropdown.matches('.mobile-language-selector')) {
+                activeDropdown.querySelector('.mobile-list').style.maxHeight = '0';
+            }
+        }
+    });
+    
+    // --- END OF LANGUAGE/DROPDOWN LOGIC ---
 
     mobileMenuIcon?.addEventListener("click", toggleMobileNav);
     mobileNavOverlay?.querySelectorAll("a:not(.language-item)").forEach(link => {
@@ -368,23 +446,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // --- Floating CTA Button Visibility (FIXED FOR MOBILE) ---
     if (navCtaDropdown && heroCtaDropdown) {
         const observer = new IntersectionObserver(
             (entries) => {
                 const entry = entries[0];
-                // This condition is the key:
-                // We show the button ONLY if the element is NOT intersecting AND its position is ABOVE the viewport.
                 if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
                     navCtaDropdown.classList.add("is-visible");
                 } else {
                     navCtaDropdown.classList.remove("is-visible");
                 }
             },
-            {
-                // We set a threshold of 0, so the callback fires as soon as the element enters or leaves the screen.
-                threshold: 0
-            }
+            { threshold: 0 }
         );
         observer.observe(heroCtaDropdown);
     }
