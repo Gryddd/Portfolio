@@ -390,15 +390,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // --- CORRECTED CODE BLOCK STARTS HERE ---
     // All dropdown toggles
     const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
+            // FIX: If the element is a link intended to open in a new tab,
+            // do not prevent its default behavior. This allows the CV links to work.
+            if (this.tagName === 'A' && this.target === '_blank') {
+                return;
+            }
+
             e.preventDefault();
             e.stopPropagation();
             const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown');
             if (!parentDropdown) return;
+            
             const isActive = parentDropdown.classList.contains('active');
+            
+            // Close all other dropdowns
             document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown').forEach(dd => {
                 if (dd !== parentDropdown) {
                     dd.classList.remove('active');
@@ -407,6 +417,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             });
+
+            // Toggle the current dropdown
             parentDropdown.classList.toggle('active', !isActive);
             if (parentDropdown.matches('.mobile-language-selector')) {
                 const list = parentDropdown.querySelector('.mobile-list');
@@ -416,6 +428,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+    // --- CORRECTED CODE BLOCK ENDS HERE ---
 
     // Global click listener to close dropdowns
     document.addEventListener('click', function(e) {
