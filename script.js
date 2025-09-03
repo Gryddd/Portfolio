@@ -390,13 +390,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // --- CORRECTED CODE BLOCK STARTS HERE ---
     // All dropdown toggles
     const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
-            // FIX: If the element is a link intended to open in a new tab,
-            // do not prevent its default behavior. This allows the CV links to work.
+            // FIX 1: If the element is a link intended to open in a new tab,
+            // do not prevent its default behavior. This allows the DESKTOP CV links to work.
             if (this.tagName === 'A' && this.target === '_blank') {
                 return;
             }
@@ -428,7 +427,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-    // --- CORRECTED CODE BLOCK ENDS HERE ---
 
     // Global click listener to close dropdowns
     document.addEventListener('click', function(e) {
@@ -444,11 +442,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- END OF LANGUAGE/DROPDOWN LOGIC ---
 
     mobileMenuIcon?.addEventListener("click", toggleMobileNav);
+    
+    // --- CORRECTED MOBILE NAVIGATION LINK HANDLER ---
+    // This new block correctly handles ALL links in the mobile menu.
     mobileNavOverlay?.querySelectorAll("a:not(.language-item)").forEach(link => {
-        if (link.getAttribute("href")?.startsWith("#")) {
-            link.addEventListener("click", () => setTimeout(toggleMobileNav, 150));
-        }
+        link.addEventListener("click", function () {
+            // For ANY link clicked in the mobile menu (internal or external),
+            // close the navigation overlay after a short delay.
+            // This ensures both smooth scrolling for internal links and that
+            // external links (like the CV) have time to open.
+            setTimeout(toggleMobileNav, 150);
+        });
     });
+    // --- END OF CORRECTION ---
 
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
