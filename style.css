@@ -826,7 +826,7 @@ h2::after {
     text-decoration: none;
     color: var(--primary-blue);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     transition: transform 0.2s ease;
 }
