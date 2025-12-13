@@ -178,6 +178,50 @@ document.addEventListener("DOMContentLoaded", function () {
                         text: { de: "Eine Überprüfung des Ordners C:\\PortGuardianQuarantine zeigt, dass alle bösartigen und verdächtigen Dateien sicher isoliert wurden, was den Erfolg des Schutzzyklus bestätigt.", en: "An inspection of the C:\\PortGuardianQuarantine folder shows all malicious and suspicious files have been safely isolated, confirming the success of the protection cycle.", fr: "Une inspection du dossier C:\\PortGuardianQuarantaine montre que tous les fichiers malveillants et suspects ont été isolés en toute sécurité, confirmant le succès du cycle de protection." }
                     }
                 ]
+            },
+            "project-modal-4": {
+                currentSlide: 0,
+                slides: [
+                    {
+                        img: "leagueskins_thumb.png", 
+                        title: { 
+                            de: "Open Source Maintainer Rolle", 
+                            en: "Open Source Maintainer Role", 
+                            fr: "Rôle de Mainteneur Open Source" 
+                        },
+                        text: {
+                            de: "Ich verwalte die Asset-Datenbank für 'Rose', eine Anwendung mit über 2000 aktiven Nutzern. Meine Rolle ist entscheidend für die Systemstabilität, da ich sicherstelle, dass proprietäre Spieldaten korrekt validiert, strukturiert und bereitgestellt werden. Ich fungiere als Schnittstelle zwischen den Kernentwicklern und der Community.",
+                            en: "I manage the asset database for 'Rose', an application with over 2K active users. My role is critical for system stability, ensuring proprietary game data is correctly validated, structured, and deployed. I act as the technical bridge between core developers and the community.",
+                            fr: "Je gère la base de données d'actifs pour 'Rose', une application avec plus de 2K utilisateurs actifs. Mon rôle est crucial pour la stabilité du système, assurant que les données propriétaires du jeu sont correctement validées, structurées et déployées."
+                        }
+                    },
+                    {
+                        img: "leagueskins_code.png", 
+                        title: { 
+                            de: "Reverse Engineering & Debugging", 
+                            en: "Reverse Engineering & Debugging", 
+                            fr: "Rétro-ingénierie & Débogage" 
+                        },
+                        text: {
+                            de: "Um komplexe Rendering-Fehler zu beheben (wie im Code gezeigt), führe ich Reverse Engineering an binären Konfigurationsdateien (.bin) durch. Ich analysiere Parameter wie <code>InitialSubmeshToHide</code> und patche die Logik manuell, um fehlende Assets wiederherzustellen, die von automatisierten Tools übersehen wurden.",
+                            en: "To resolve complex rendering bugs (as shown in the code), I perform reverse engineering on binary configuration files (.bin). I analyze parameters like <code>InitialSubmeshToHide</code> and manually patch the logic to restore missing assets that automated tools fail to detect.",
+                            fr: "Pour résoudre des bugs de rendu complexes, j'effectue une rétro-ingénierie sur des fichiers de configuration binaires (.bin). J'analyse des paramètres comme <code>InitialSubmeshToHide</code> et corrige manuellement la logique pour restaurer les actifs manquants."
+                        }
+                    },
+                    {
+                        img: "leagueskins_files.png", 
+                        title: { 
+                            de: "Datenstruktur & QA-Workflow", 
+                            en: "Data Structure & QA Workflow", 
+                            fr: "Structure des Données & Workflow QA" 
+                        },
+                        text: {
+                            de: "Ich leite ein Sub-Team von Testern, um Regressionstests für neue Patches durchzuführen. Mein Workflow umfasst die Nutzung von CLI-Tools (RitoBIN) zur Datenextraktion, Git zur Versionskontrolle und strikte JSON-Validierung, bevor Updates in die Live-Umgebung gepusht werden.",
+                            en: "I lead a sub-team of testers to perform regression testing for new patches. My workflow involves using CLI tools (RitoBIN) for data extraction, Git for version control, and strict JSON validation before updates are pushed to the live production environment.",
+                            fr: "Je dirige une sous-équipe de testeurs pour effectuer des tests de régression. Mon flux de travail implique l'utilisation d'outils CLI (RitoBIN) pour l'extraction de données, Git pour le contrôle de version et une validation JSON stricte avant la mise en production."
+                        }
+                    }
+                ]
             }
         }
     };

@@ -21,7 +21,7 @@
 .main-nav,
 .project-card-image img,
 .project-modal-arrow,
-.flip-card { /* Added flip-card for hover effect */
+.flip-card { 
     will-change: transform, box-shadow, opacity;
 }
 
@@ -102,7 +102,7 @@ main {
 }
 
 /* =================================================================== */
-/* START: Corrected Navigation Bar Section                             */
+/* Navigation Bar Section                                              */
 /* =================================================================== */
 
 .main-nav {
@@ -125,10 +125,9 @@ main {
     pointer-events: none;
 }
 
-/* THE FIX: Give nav-content a position to ensure it stacks correctly */
 .nav-content {
-    position: relative; /* This is the key to fixing the dropdown */
-    z-index: 2;         /* Ensures it's "on top" of the blur's rendering context */
+    position: relative;
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -260,9 +259,6 @@ main {
     color: var(--primary-blue);
     font-weight: 700;
 }
-/* =================================================================== */
-/* END: Of the replacement section                                     */
-/* =================================================================== */
 
 .mobile-language-selector {
     margin-top: -8px;
@@ -419,8 +415,8 @@ main {
 .hero-image img {
     width: 100%;
     height: 100%;
-    border-radius: 19px; /* Rounds the image corners inside the frame */
-    object-fit: cover; /* Ensures the image fills the frame */
+    border-radius: 19px;
+    object-fit: cover;
 }
 .hero-text {
     width: 100%;
@@ -784,13 +780,10 @@ h2::after {
     margin: 0 auto;
 }
 
-/* --- FLIP CARD SECTION (REVISED) --- */
-/* This section implements the static, stacked card layout for all screen sizes. */
-
 .flip-card {
     background-color: transparent;
-    border-radius: 12px; /* Add radius to the container */
-    overflow: hidden; /* Ensures children conform to the radius */
+    border-radius: 12px;
+    overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
@@ -813,11 +806,11 @@ h2::after {
 
 .flip-card-front {
     padding: 1.5rem 1rem;
-    border-bottom: 1px dashed rgba(97, 143, 211, 0.3); /* Use primary blue with alpha */
+    border-bottom: 1px dashed rgba(97, 143, 211, 0.3);
 }
 
 .flip-card-back {
-    min-height: 4.5rem; /* Ensure consistent height */
+    min-height: 4.5rem;
     font-size: 1rem;
     line-height: 1.6;
 }
@@ -852,8 +845,6 @@ h2::after {
     font-size: 1.1rem;
     margin: 0;
 }
-/* --- END OF REVISED FLIP CARD SECTION --- */
-
 
 .contact-form-section {
     padding-top: 80px;
@@ -1204,7 +1195,7 @@ button:hover,
         box-shadow: none;
     }
     .main-nav::before {
-        content: none; /* Disable the blur effect on mobile where the bar is not fixed */
+        content: none;
     }
     .nav-content {
         display: none;
@@ -1799,4 +1790,18 @@ button:hover,
     color: var(--background);
     border-color: var(--primary-blue);
     opacity: 1;
+}
+
+/* ========================================= */
+/* FIX: Center the 4th Project on Desktop    */
+/* ========================================= */
+
+@media (min-width: 1200px) {
+    /* 
+       On large screens (3 columns), the 4th item usually sits on the left.
+       This forces it into the 2nd column (the center).
+    */
+    .projects-grid .project-card:nth-child(4) {
+        grid-column: 2;
+    }
 }
