@@ -1805,3 +1805,77 @@ button:hover,
         grid-column: 2;
     }
 }
+
+/* --- Documentation Drop-Up Menu --- */
+.project-report-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.project-report-dropdown .cta-dropdown-menu {
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    position: absolute;
+    
+    /* Position ABOVE the button */
+    bottom: 100%; 
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* Start slightly lower for animation */
+    margin-bottom: 10px; /* Space between button and menu */
+    
+    width: max-content;
+    min-width: 160px;
+    background: linear-gradient(145deg, rgb(30 30 30 / 0.98), rgb(45 45 45 / 0.98));
+    border: 1px solid rgb(255 255 255 / 0.15);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.5);
+    border-radius: 8px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+/* Active State (Visible) */
+.project-report-dropdown.active .cta-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Links inside the menu */
+.project-report-dropdown .cta-dropdown-menu a {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.project-report-dropdown .cta-dropdown-menu a:hover {
+    background-color: rgba(110, 140, 160, 0.2); /* Your primary blue with opacity */
+    color: #fff;
+    opacity: 1;
+}
+
+/* Tiny arrow pointing down from the menu to the button */
+.project-report-dropdown.active .cta-dropdown-menu::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(45 45 45 / 0.98) transparent transparent transparent;
+}
+
+/* Rotate arrow icon when active */
+.project-report-dropdown.active .arrow-icon {
+    transform: rotate(180deg) !important;
+}

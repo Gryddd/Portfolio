@@ -148,34 +148,82 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentSlide: 0,
                 slides: [
                     {
-                        img: "portguardian_slide1.png",
-                        title: { de: "Stufe 1: Vorbereitung der Bedrohungssimulation", en: "Stage 1: Threat Simulation Preparation", fr: "Étape 1 : Préparation de la Simulation de Menace" },
-                        text: { de: "Um die Engine zu validieren, wurde ein Test-USB-Laufwerk mit verschiedenen Bedrohungsvektoren vorbereitet, darunter bösartiges 'autorun.inf', .lnk-Dateien, die PowerShell aufrufen, und bekannte Malware-Samples wie die EICAR-Testdatei.", en: "To validate the engine, a test USB was prepared with diverse threat vectors, including malicious 'autorun.inf', PowerShell-invoking .lnk files, and known malware samples like the EICAR test file.", fr: "Pour valider le moteur, une clé USB de test a été préparée avec divers vecteurs de menace, incluant un 'autorun.inf' malveillant, des fichiers .lnk invoquant PowerShell, et des échantillons de malware connus comme le fichier de test EICAR." }
+                        img: "portguardian_main_v2.png",
+                        title: { 
+                            de: "Enterprise UI & WMI-Überwachung", 
+                            en: "Enterprise UI & WMI Monitoring", 
+                            fr: "Interface Enterprise & Surveillance WMI" 
+                        },
+                        text: { 
+                            de: "Das System wurde komplett auf <b>PyQt6</b> und OOP umgestellt. Es nutzt die Windows Management Instrumentation (WMI) API für die Echtzeit-Hardwareüberwachung ohne Polling-Overhead. Die Benutzeroberfläche ist thread-sicher (QThread) und reagiert sofort auf USB-Ereignisse.", 
+                            en: "The system was overhauled using <b>PyQt6</b> and OOP standards. It utilizes the Windows Management Instrumentation (WMI) API for real-time hardware monitoring without polling overhead. The UI is thread-safe (QThread) and reacts instantly to USB events.", 
+                            fr: "Le système a été refondu avec <b>PyQt6</b> et la POO. Il utilise l'API WMI pour la surveillance matérielle en temps réel. L'interface est thread-safe et réagit instantanément aux événements USB." 
+                        }
                     },
                     {
-                        img: "portguardian_slide2.png",
-                        title: { de: "Stufe 2: Aktivierung und Überwachung", en: "Stage 2: Activation and Monitoring", fr: "Étape 2 : Activation et Surveillance" },
-                        text: { de: "Die Anwendung wird gestartet und die Echtzeit-Überwachung wird aktiviert. Die Benutzeroberfläche bestätigt, dass das System geschützt ist und auf das Einstecken von Geräten wartet.", en: "The application is launched and real-time monitoring is enabled. The user interface confirms the system is protected and awaiting device insertion.", fr: "L'application est lancée et la surveillance en temps réel est activée. L'interface utilisateur confirme que le système est protégé et en attente de l'insertion d'un périphérique." }
+                        img: "portguardian_infra.png",
+                        title: { 
+                            de: "Systemintegration: Dual-VM Setup", 
+                            en: "System Integration: Dual-VM Setup", 
+                            fr: "Intégration Système : Configuration Double VM" 
+                        },
+                        text: { 
+                            de: "Entwicklung und Tests erfolgten in einer realistischen Client-Server-Umgebung. <b>Links:</b> Windows 10 Client, der den Agenten ausführt. <b>Rechts:</b> Windows Server 2019, der Splunk Enterprise hostet. Dies simuliert eine echte Unternehmensdomäne.", 
+                            en: "Development and testing were conducted in a realistic Client-Server environment. <b>Left:</b> Windows 10 Client running the agent. <b>Right:</b> Windows Server 2019 hosting Splunk Enterprise. This simulates a real corporate domain.", 
+                            fr: "Développement et tests effectués dans un environnement Client-Serveur réaliste. <b>Gauche :</b> Client Windows 10 exécutant l'agent. <b>Droite :</b> Windows Server 2019 hébergeant Splunk. Cela simule un véritable domaine d'entreprise." 
+                        }
                     },
                     {
-                        img: "portguardian_slide3.png",
-                        title: { de: "Stufe 3: Echtzeit-Scan und Analyse", en: "Stage 3: Real-Time Scan & Analysis", fr: "Étape 3 : Analyse en Temps Réel" },
-                        text: { de: "Beim Einstecken des USB-Sticks fängt PortGuardian das Ereignis sofort ab. Der Aktivitätsprotokoll zeigt den Analyseprozess, einschließlich der sofortigen Neutralisierung von 'autorun.inf' und der Hash-Überprüfung gegen Live-Bedrohungs-APIs.", en: "Upon USB insertion, PortGuardian instantly intercepts the event. The activity log displays the analysis process, including the immediate neutralization of 'autorun.inf' and hash verification against live threat intelligence APIs.", fr: "Dès l'insertion de la clé USB, PortGuardian intercepte immédiatement l'événement. Le journal d'activité affiche le processus d'analyse, y compris la neutralisation immédiate de 'autorun.inf' et la vérification des hachages par rapport aux API de renseignement sur les menaces en direct." }
+                        img: "portguardian_splunk.png",
+                        title: { 
+                            de: "SIEM-Integration (Splunk)", 
+                            en: "SIEM Integration (Splunk)", 
+                            fr: "Intégration SIEM (Splunk)" 
+                        },
+                        text: { 
+                            de: "PortGuardian sendet strukturierte JSON-Logs über <b>UDP Port 514 (Syslog)</b> an den zentralen Server. Das Dashboard zeigt Ereignis-Korrelationen in Echtzeit, Hash-Werte und Bedrohungs-Scores, was SOC-Analysten sofortige Reaktionen ermöglicht.", 
+                            en: "PortGuardian transmits structured JSON logs via <b>UDP Port 514 (Syslog)</b> to the central server. The dashboard displays real-time event correlation, file hashes, and threat scores, enabling immediate response capabilities for SOC analysts.", 
+                            fr: "PortGuardian transmet des journaux JSON structurés via <b>UDP Port 514 (Syslog)</b> au serveur central. Le tableau de bord affiche la corrélation des événements en temps réel, permettant une réponse immédiate des analystes SOC." 
+                        }
                     },
                     {
-                        img: "portguardian_slide4.png",
-                        title: { de: "Stufe 4: Bedrohungserkennung und Bericht", en: "Stage 4: Threat Detection & Reporting", fr: "Étape 4 : Détection et Rapport des Menaces" },
-                        text: { de: "Nach dem Scan werden die 7 potenziellen Risiken in einem klaren, interaktiven Dialog angezeigt. Die Bedrohungen sind nach Schweregrad kategorisiert, was dem Benutzer die vollständige Kontrolle über die Quarantänemaßnahmen gibt.", en: "After the scan, the 7 potential risks are presented in a clear, interactive dialog. Threats are categorized by severity, giving the user full control over quarantine actions.", fr: "Après l'analyse, les 7 risques potentiels sont présentés dans une boîte de dialogue claire et interactive. Les menaces sont classées par gravité, donnant à l'utilisateur un contrôle total sur les actions de mise en quarantaine." }
+                        img: "portguardian_alert.png",
+                        title: { 
+                            de: "Automatisierte Eindämmung (Containment)", 
+                            en: "Automated Threat Containment", 
+                            fr: "Confinement Automatisé des Menaces" 
+                        },
+                        text: { 
+                            de: "Bei Erkennung einer kritischen Bedrohung (Score > 85) reagiert das System autonom: 1. Physikalischer Auswurf des USB-Laufwerks via <code>mountvol</code>. 2. <b>Netzwerk-Isolation</b> durch Blockieren aller Ports via Windows Firewall API und Deaktivierung der Netzwerkadapter.", 
+                            en: "Upon detecting a critical threat (Score > 85), the system reacts autonomously: 1. Physical ejection of the USB drive via <code>mountvol</code>. 2. <b>Network Isolation</b> by creating blocking Firewall rules and disabling network adapters via OS APIs.", 
+                            fr: "Lors de la détection d'une menace critique, le système réagit de manière autonome : 1. Éjection physique du lecteur USB via <code>mountvol</code>. 2. <b>Isolation réseau</b> en créant des règles de pare-feu bloquantes et en désactivant les adaptateurs réseau." 
+                        }
                     },
                     {
-                        img: "portguardian_slide5.png",
-                        title: { de: "Stufe 5: Erfolgreiche Quarantäne", en: "Stage 5: Successful Quarantine", fr: "Étape 5 : Mise en Quarantaine Réussie" },
-                        text: { de: "Der Aktivitätsprotokoll bestätigt, dass alle ausgewählten Bedrohungen erfolgreich in den sicheren Quarantäne-Ordner verschoben wurden, wodurch der Endpunkt effektiv geschützt ist.", en: "The activity log confirms that all selected threats were successfully moved to the secure quarantine folder, effectively protecting the endpoint.", fr: "Le journal d'activité confirme que toutes les menaces sélectionnées ont été déplacées avec succès vers le dossier de quarantaine sécurisé, protégeant ainsi efficacement le point de terminaison." }
+                        img: "portguardian_auth.png",
+                        title: { 
+                            de: "Rollenbasierte Sicherheit (RBAC)", 
+                            en: "Role-Based Security (RBAC)", 
+                            fr: "Sécurité Basée sur les Rôles" 
+                        },
+                        text: { 
+                            de: "Um unbefugte Manipulationen zu verhindern, ist die Wiederherstellung der Netzwerkverbindung durch ein SOC-Admin-Passwort geschützt. Dies verhindert, dass Malware oder ungeschulte Benutzer die Isolation umgehen (Anti-Tamper).", 
+                            en: "To prevent unauthorized tampering, network restoration is protected by a SOC Admin password protocol. This ensures that neither malware nor untrained users can bypass the isolation state (Anti-Tamper).", 
+                            fr: "Pour empêcher toute manipulation non autorisée, la restauration du réseau est protégée par un mot de passe Admin SOC. Cela garantit que ni les logiciels malveillants ni les utilisateurs ne peuvent contourner l'isolation." 
+                        }
                     },
                     {
-                        img: "portguardian_slide6.png",
-                        title: { de: "Stufe 6: Verifizierung der Quarantäne", en: "Stage 6: Quarantine Verification", fr: "Étape 6 : Vérification de la Quarantaine" },
-                        text: { de: "Eine Überprüfung des Ordners C:\\PortGuardianQuarantine zeigt, dass alle bösartigen und verdächtigen Dateien sicher isoliert wurden, was den Erfolg des Schutzzyklus bestätigt.", en: "An inspection of the C:\\PortGuardianQuarantine folder shows all malicious and suspicious files have been safely isolated, confirming the success of the protection cycle.", fr: "Une inspection du dossier C:\\PortGuardianQuarantaine montre que tous les fichiers malveillants et suspects ont été isolés en toute sécurité, confirmant le succès du cycle de protection." }
+                        img: "portguardian_hash.png",
+                        title: { 
+                            de: "Offline-Datenbank & Heuristik", 
+                            en: "Offline Database & Heuristics", 
+                            fr: "Base de Données Hors Ligne & Heuristique" 
+                        },
+                        text: { 
+                            de: "Anstatt sich auf langsame Cloud-APIs zu verlassen, nutzt das System eine lokale SHA-256 Hash-Datenbank (>1 Million Signaturen) und eine Heuristik-Engine (Entropie-Analyse, PE-Header-Prüfung) für millisekundenschnelle Entscheidungen ohne Internet.", 
+                            en: "Instead of relying on slow Cloud APIs, the system uses a local SHA-256 hash database (>1M signatures) and a heuristics engine (Entropy analysis, PE Header checks) for millisecond-fast decisions without internet access.", 
+                            fr: "Au lieu de s'appuyer sur des API Cloud lentes, le système utilise une base de données locale de hachage SHA-256 et un moteur heuristique pour des décisions ultra-rapides sans accès Internet." 
+                        }
                     }
                 ]
             },
@@ -434,7 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // All dropdown toggles
+    // All dropdown toggles (Updated to include .project-report-dropdown)
     const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
@@ -446,13 +494,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             e.preventDefault();
             e.stopPropagation();
-            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown');
+            // Added .project-report-dropdown to the closest selector
+            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown, .project-report-dropdown');
             if (!parentDropdown) return;
             
             const isActive = parentDropdown.classList.contains('active');
             
             // Close all other dropdowns
-            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown').forEach(dd => {
+            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, #nav-cta-dropdown, .project-report-dropdown').forEach(dd => {
                 if (dd !== parentDropdown) {
                     dd.classList.remove('active');
                     if (dd.matches('.mobile-language-selector')) {
@@ -472,9 +521,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Global click listener to close dropdowns
+    // Global click listener to close dropdowns (Updated)
     document.addEventListener('click', function(e) {
-        const activeDropdown = document.querySelector('.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, #nav-cta-dropdown.active');
+        // Added .project-report-dropdown.active to the selector
+        const activeDropdown = document.querySelector('.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, #nav-cta-dropdown.active, .project-report-dropdown.active');
         if (activeDropdown && !activeDropdown.contains(e.target)) {
             activeDropdown.classList.remove('active');
             if (activeDropdown.matches('.mobile-language-selector')) {
