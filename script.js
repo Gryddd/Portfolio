@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
             minFlakeSize: 0.8,
             pixelResolution: 2000,
             speed: 0.4,
-            density: 0.3,
+            density: 0.25,
             direction: 125,
             brightness: 1,
             depthFade: 8,
-            farPlane: 20,
+            farPlane: 14,
             gamma: 0.4545,
             variant: 'round'
         });

@@ -97,7 +97,7 @@ void main() {
   vec3 timeAnim = timeSpeed * 0.1 * vec3(7.0, 8.0, 5.0);
 
   float t = 0.0;
-  for (int i = 0; i < 128; i++) {
+  for (int i = 0; i < 80; i++) {
     if (t >= uFarPlane) break;
     
     vec3 fpos = floor(pos);
@@ -184,7 +184,7 @@ void main() {
       depth: false
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
@@ -242,7 +242,7 @@ void main() {
     var customTime = 0;
     var lastFrameTime = performance.now();
     var scrollDelta = 0; // accumulated between frames, consumed each frame
-    var idleRate = 0.25;
+    var idleRate = 0.06;
     var currentRate = idleRate;
 
     window.addEventListener('scroll', function () {
@@ -276,7 +276,7 @@ void main() {
         }
 
         // Fast lerp so direction change is felt immediately
-        currentRate += (targetRate - currentRate) * 0.15;
+        currentRate += (targetRate - currentRate) * 0.2;
 
         customTime += frameDt * currentRate;
         material.uniforms.uTime.value = customTime;
