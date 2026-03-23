@@ -28,6 +28,7 @@ uniform float uGamma;
 uniform float uDensity;
 uniform float uVariant;
 uniform float uDirection;
+uniform float uScrollOffset;
 
 #define PI 3.14159265
 #define PI_OVER_6 0.5235988
@@ -80,6 +81,7 @@ void main() {
   float windX = cos(uDirection) * 0.4;
   float windY = sin(uDirection) * 0.4;
   vec3 camPos = (windX * camI + windY * camJ + 0.1 * camK) * timeSpeed;
+  camPos += camJ * uScrollOffset * 0.5 + camK * uScrollOffset * 0.3;
   vec3 pos = camPos;
 
   vec3 absRay = max(abs(ray), vec3(0.001));
@@ -174,7 +176,7 @@ void main() {
     var scene = new THREE.Scene();
     var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     var renderer = new THREE.WebGLRenderer({
-      antialias: false,
+      antialias: true,
       alpha: true,
       premultipliedAlpha: false,
       powerPreference: 'high-performance',
@@ -196,7 +198,7 @@ void main() {
         uFlakeSize: { value: opts.flakeSize },
         uMinFlakeSize: { value: opts.minFlakeSize },
         uPixelResolution: { value: opts.pixelResolution },
-        uSpeed: { value: opts.speed },
+        uSpeed: { value: 1.0 },
         uDepthFade: { value: opts.depthFade },
         uFarPlane: { value: opts.farPlane },
         uColor: { value: new THREE.Vector3(threeColor.r, threeColor.g, threeColor.b) },
@@ -204,7 +206,8 @@ void main() {
         uGamma: { value: opts.gamma },
         uDensity: { value: opts.density },
         uVariant: { value: variantValue },
-        uDirection: { value: (opts.direction * Math.PI) / 180 }
+        uDirection: { value: (opts.direction * Math.PI) / 180 },
+        uScrollOffset: { value: 0 }
       },
       transparent: true
     });
@@ -235,11 +238,53 @@ void main() {
     }
     window.addEventListener('resize', handleResize);
 
+    // Direction-aware clock: down = forward, up = reverse
+    var customTime = 0;
+    var lastFrameTime = performance.now();
+    var scrollDelta = 0; // accumulated between frames, consumed each frame
+    var idleRate = 0.25;
+    var currentRate = idleRate;
+
+    window.addEventListener('scroll', function () {
+      scrollDelta += window.scrollY - (window._lastSnowY || window.scrollY);
+      window._lastSnowY = window.scrollY;
+    }, { passive: true });
+    window._lastSnowY = window.scrollY;
+
     // Animation loop
     function animate() {
       animationId = requestAnimationFrame(animate);
       if (isVisible) {
-        material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
+        var now = performance.now();
+        var frameDt = (now - lastFrameTime) * 0.001;
+        lastFrameTime = now;
+
+        // Convert scroll delta to a rate: positive = down = forward, negative = up = reverse
+        var scrollRate = scrollDelta * 0.003;
+        scrollRate = Math.max(-0.6, Math.min(0.6, scrollRate));
+
+        var targetRate;
+        if (scrollDelta > 0.5) {
+          // Scrolling down: forward
+          targetRate = idleRate + scrollRate;
+        } else if (scrollDelta < -0.5) {
+          // Scrolling up: reverse (symmetric speed)
+          targetRate = -idleRate + scrollRate;
+        } else {
+          // Idle
+          targetRate = idleRate;
+        }
+
+        // Fast lerp so direction change is felt immediately
+        currentRate += (targetRate - currentRate) * 0.15;
+
+        customTime += frameDt * currentRate;
+        material.uniforms.uTime.value = customTime;
+        material.uniforms.uScrollOffset.value = 0;
+
+        // Reset delta for next frame
+        scrollDelta = 0;
+
         renderer.render(scene, camera);
       }
     }

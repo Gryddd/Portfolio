@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (snowContainer && typeof window.initPixelSnow === 'function') {
         window.initPixelSnow(snowContainer, {
             color: '#ffffff',
-            flakeSize: 0.01,
-            minFlakeSize: 1.25,
-            pixelResolution: 500,
+            flakeSize: 0.006,
+            minFlakeSize: 0.8,
+            pixelResolution: 2000,
             speed: 0.4,
             density: 0.3,
             direction: 125,
@@ -546,35 +546,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showProjectSlide(modalId, (project.currentSlide - 1 + project.slides.length) % project.slides.length);
         });
     });
-    if (contactForm) {
-        contactForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const submitBtn = contactForm.querySelector(".submit-btn");
-            const statusEl = document.getElementById("form-status");
-            const btnSpan = submitBtn.querySelector('span');
-            const originalText = btnSpan.textContent;
-            submitBtn.disabled = true;
-            btnSpan.textContent = submitBtn.dataset[`sending-${currentLang}`] || 'Sending...';
-            fetch(contactForm.action, {
-                method: "POST",
-                body: new FormData(contactForm),
-                headers: { Accept: "application/json" }
-            }).then(response => {
-                if (response.ok) {
-                    statusEl.innerHTML = `<p class="success">Thank you! Your message has been sent.</p>`;
-                    contactForm.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            }).catch(() => {
-                statusEl.innerHTML = `<p class="error">Oops! There was a problem. Please try again.</p>`;
-            }).finally(() => {
-                submitBtn.disabled = false;
-                btnSpan.textContent = originalText;
-                setTimeout(() => statusEl.innerHTML = '', 5000);
-            });
-        });
-    }
     window.addEventListener("keydown", event => {
         const activeModal = document.querySelector(".modal.active");
         if (!activeModal) {
@@ -605,26 +576,38 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ========== SCROLL PROGRESS BAR ==========
+    // ========== MERGED SCROLL HANDLER (rAF throttled) ==========
     const scrollProgressBar = document.getElementById('scroll-progress');
-    if (scrollProgressBar) {
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            scrollProgressBar.style.width = scrollPercent + '%';
-        }, { passive: true });
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                const scrollTop = window.scrollY;
+                // Progress bar
+                if (scrollProgressBar) {
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    scrollProgressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+                }
+                // Scroll-to-top button
+                if (scrollToTopBtn) {
+                    scrollToTopBtn.classList.toggle('visible', scrollTop > 400);
+                }
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }, { passive: true });
+    if (scrollToTopBtn) {
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
 
     // ========== ACTIVE NAV SECTION HIGHLIGHTING ==========
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     const sections = document.querySelectorAll('section[id]');
     if (sections.length > 0 && navLinks.length > 0) {
-        const observerOptions = {
-            root: null,
-            rootMargin: '-20% 0px -60% 0px',
-            threshold: 0
-        };
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -634,22 +617,29 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             });
-        }, observerOptions);
+        }, { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 });
         sections.forEach(section => sectionObserver.observe(section));
     }
 
-    // ========== SCROLL TO TOP BUTTON ==========
-    const scrollToTopBtn = document.getElementById('scroll-to-top');
-    if (scrollToTopBtn) {
-        window.addEventListener('scroll', () => {
-            scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
-        }, { passive: true });
-        scrollToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+    // ========== TOAST NOTIFICATION SYSTEM ==========
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container';
+        document.body.appendChild(toastContainer);
+    }
+    function showToast(message, type = 'success', duration = 4000) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('toast-out');
+            toast.addEventListener('animationend', () => toast.remove());
+        }, duration);
     }
 
-    // ========== LOCALIZED FORM MESSAGES ==========
+    // ========== LOCALIZED FORM MESSAGES WITH TOASTS ==========
     const formMessages = {
         success: {
             de: 'Vielen Dank! Ihre Nachricht wurde gesendet.',
@@ -662,37 +652,61 @@ document.addEventListener("DOMContentLoaded", function () {
             fr: 'Oups ! Un problème est survenu. Veuillez réessayer.'
         }
     };
-    // Override form submission to use localized messages
     if (contactForm) {
-        // Remove existing listener by cloning the form
         const newForm = contactForm.cloneNode(true);
         contactForm.parentNode.replaceChild(newForm, contactForm);
         newForm.addEventListener("submit", function (e) {
             e.preventDefault();
             const submitBtn = newForm.querySelector(".submit-btn");
-            const statusEl = document.getElementById("form-status");
             const btnSpan = submitBtn.querySelector('span');
             const originalText = btnSpan.textContent;
             submitBtn.disabled = true;
-            btnSpan.textContent = submitBtn.dataset[`sending${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || submitBtn.dataset[`sending-${currentLang}`] || 'Sending...';
+            btnSpan.textContent = submitBtn.dataset[`sending${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || 'Sending...';
             fetch(newForm.action, {
                 method: "POST",
                 body: new FormData(newForm),
                 headers: { Accept: "application/json" }
             }).then(response => {
                 if (response.ok) {
-                    statusEl.innerHTML = `<p class="success">${formMessages.success[currentLang] || formMessages.success.en}</p>`;
+                    showToast(formMessages.success[currentLang] || formMessages.success.en, 'success');
                     newForm.reset();
                 } else {
                     throw new Error('Form submission failed');
                 }
             }).catch(() => {
-                statusEl.innerHTML = `<p class="error">${formMessages.error[currentLang] || formMessages.error.en}</p>`;
+                showToast(formMessages.error[currentLang] || formMessages.error.en, 'error');
             }).finally(() => {
                 submitBtn.disabled = false;
                 btnSpan.textContent = originalText;
-                setTimeout(() => statusEl.innerHTML = '', 5000);
             });
         });
     }
+
+    // ========== PRELOADER ==========
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        window.addEventListener('load', () => {
+            setTimeout(() => preloader.classList.add('hidden'), 300);
+        });
+        // Fallback — hide after 4s no matter what
+        setTimeout(() => preloader.classList.add('hidden'), 4000);
+    }
+
+
+    // ========== MAGNETIC 3D TILT ON HERO CARD ==========
+    const heroCard = document.querySelector('.hero-card');
+    if (heroCard && window.matchMedia('(hover: hover)').matches) {
+        heroCard.addEventListener('mousemove', (e) => {
+            const rect = heroCard.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 to 0.5
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            const tiltX = y * -6;  // degrees
+            const tiltY = x * 6;
+            heroCard.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
+        });
+        heroCard.addEventListener('mouseleave', () => {
+            heroCard.style.transform = '';
+        });
+    }
+
 });
