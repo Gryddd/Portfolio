@@ -1,0 +1,698 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialize PixelSnow background
+    const snowContainer = document.getElementById('pixel-snow-bg');
+    if (snowContainer && typeof window.initPixelSnow === 'function') {
+        window.initPixelSnow(snowContainer, {
+            color: '#ffffff',
+            flakeSize: 0.01,
+            minFlakeSize: 1.25,
+            pixelResolution: 500,
+            speed: 0.4,
+            density: 0.3,
+            direction: 125,
+            brightness: 1,
+            depthFade: 8,
+            farPlane: 20,
+            gamma: 0.4545,
+            variant: 'round'
+        });
+    }
+
+    const config = {
+        defaultLang: "en",
+        youtubeVideoId: "R_rKRfh7ceU",
+        altTexts: {
+            de: "Ein professionelles Portraitfoto von Walid Gourideche",
+            en: "A professional portrait of Walid Gourideche",
+            fr: "Un portrait professionnel de Walid Gourideche",
+        },
+        projects: {
+            "project-modal-1": {
+                currentSlide: 0,
+                slides: [
+                    {
+                        img: "diagram.png",
+                        title: { de: "Architekturübersicht", en: "Architecture Overview", fr: "Vue d'ensemble de l'architecture" },
+                        text: {
+                            de:
+                                "Das Projekt begann mit dem Aufbau einer kompletten End-to-End-Unternehmensinfrastruktur. Dies umfasste die Konfiguration eines pfSense-Firewalls, eines Windows Servers als Domänencontroller und die Netzwerksegmentierung, um eine realistische Umgebung zu schaffen.",
+                            en:
+                                "The project began with the construction of a complete end-to-end enterprise infrastructure. This included configuring a pfSense firewall, a Windows Server as a Domain Controller, and segmenting the network to create a realistic environment.",
+                            fr:
+                                "Le projet a débuté par la mise en place d'une infrastructure d'entreprise complète. Cela incluait la configuration d'un pare-feu pfSense, d'un serveur Windows en tant que contrôleur de domaine, et la segmentation du réseau pour simuler un environnement professionnel.",
+                        },
+                    },
+                    {
+                        img: "windows_server_roles.png",
+                        title: { de: "Kerndienste: Domain Controller", en: "Core Services: Domain Controller", fr: "Services Clés : Contrôleur de Domaine" },
+                        text: {
+                            de:
+                                "Ein Windows Server 2022 wurde als Herzstück des Netzwerks bereitgestellt. Er wurde zur Rolle eines Domänencontrollers für die Domäne „homelab.local“ heraufgestuft und verwaltet die zentralen Active Directory- und DNS-Dienste.",
+                            en: 'A Windows Server 2022 was deployed as the heart of the network. It was promoted to the role of a Domain Controller for the "homelab.local" domain, managing centralized Active Directory and DNS services.',
+                            fr: "Un serveur Windows 2022 a été déployé comme cœur du réseau. Promu au rôle de contrôleur de domaine pour 'homelab.local', il gère de manière centralisée les services Active Directory et DNS.",
+                        },
+                    },
+                    {
+                        img: "netdata_snmp_devices.png",
+                        title: { de: "Netzwerk-Monitoring: Leistung", en: "Network Monitoring: Performance", fr: "Surveillance Réseau : Performance" },
+                        text: {
+                            de:
+                                "Ein anfängliches Monitoring wurde mit Netdata implementiert, um Echtzeit-Leistungs- und Zustandsmetriken für die gesamte Kerninfrastruktur zu liefern. Dies gewährleistete die Stabilität des Netzwerks, bevor weitere Sicherheitsmaßnahmen implementiert wurden.",
+                            en:
+                                "Initial monitoring was implemented using Netdata to provide real-time performance and health metrics for all core infrastructure. This ensured network stability and performance before layering on security measures.",
+                            fr:
+                                "Une surveillance initiale des performances a été mise en place avec Netdata, offrant des métriques en temps réel sur l'état de l'infrastructure. Cette étape a garanti la stabilité du réseau avant l'intégration des dispositifs de sécurité.",
+                        },
+                    },
+                    {
+                        img: "5.png",
+                        title: { de: "Sicherheitshärtung: IPS-Bereitstellung", en: "Security Hardening: IPS Deployment", fr: "Durcissement de la Sécurité : Déploiement de l'IPS" },
+                        text: {
+                            de:
+                                "Nachdem die Netzwerkstabilität sichergestellt war, verlagerte sich der Fokus auf die Sicherheit. Ein fortschrittliches Intrusion Prevention System (Suricata) wurde auf der pfSense-Firewall bereitgestellt und mit den branchenüblichen ETOpen-Regelsätzen zur Bedrohungserkennung ausgestattet.",
+                            en:
+                                "With the network operational, the focus shifted to security. An advanced Intrusion Prevention System (Suricata) was deployed on the pfSense firewall. The ETOpen rule sets were enabled to arm the system with industry-standard threat intelligence.",
+                            fr:
+                                "Une fois le réseau opérationnel, l'accent a été mis sur la sécurité. Un système de prévention d'intrusion (IPS) avancé, Suricata, a été déployé sur le pare-feu pfSense, puis armé avec les règles de menaces standard de l'industrie (ETOpen).",
+                        },
+                    },
+                    {
+                        img: "6.png",
+                        title: { de: "Simulation einer Insider-Bedrohung", en: "Insider Threat Simulation", fr: "Simulation d'une Menace Interne" },
+                        text: {
+                            de:
+                                "Um das IPS zu validieren, wurde eine Insider-Bedrohung simuliert, indem ein Aufklärungsscan von einer internen Workstation (192.168.10.101) gegen den Domänencontroller (192.168.10.10) mit Nmap gestartet wurde. Dies ahmt einen Angreifer nach, der das interne Netzwerk nach Schwachstellen absucht.",
+                            en:
+                                "To validate the IPS, an insider threat was simulated by launching a reconnaissance scan from an internal workstation (192.168.10.101) against the Domain Controller (192.168.10.10) using Nmap. This mimics an attacker mapping the internal network for vulnerabilities.",
+                            fr:
+                                "Pour valider l'IPS, une menace interne a été simulée en lançant un scan de reconnaissance depuis un poste de travail interne vers le contrôleur de domaine avec Nmap. Cette action imite un attaquant qui cartographie le réseau à la recherche de vulnérabilités.",
+                        },
+                    },
+                    {
+                        img: "7.png",
+                        title: { de: "Erfolgreiche Bedrohungserkennung", en: "Successful Threat Detection", fr: "Détection de Menace Réussie" },
+                        text: {
+                            de:
+                                "Das IPS hat den feindlichen Scan sofort in Echtzeit erkannt und mehrere hochpriore Alarme ausgelöst, darunter „ET SCAN Possible Nmap User-Agent“. Dies beweist die Fähigkeit des Systems, Bedrohungen innerhalb des vertrauenswürdigen Netzwerks zuverlässig zu identifizieren.",
+                            en:
+                                'The IPS successfully detected the hostile scan in real-time. Multiple high-priority alerts, including "ET SCAN Possible Nmap User-Agent", were triggered. This proves the system’s ability to reliably identify and alert on threats within the trusted network, confirming the project’s success.',
+                            fr:
+                                "L'IPS a détecté avec succès le scan hostile en temps réel. De multiples alertes de haute priorité, incluant « ET SCAN Possible Nmap User-Agent », ont été déclenchées. Cela prouve la capacité du système à identifier et à signaler de manière fiable les menaces au sein du réseau de confiance, confirmant ainsi le succès du projet.",
+                        },
+                    },
+                ],
+            },
+            "project-modal-2": {
+                currentSlide: 0,
+                slides: [
+                    {
+                        img: "borealis_architecture.png",
+                        title: { de: "Full-Stack MERN Architektur", en: "Full-Stack MERN Architecture", fr: "Architecture Full-Stack MERN" },
+                        text: {
+                            de: "Borealis ist eine vollständige E-Commerce-Anwendung, die auf dem MERN-Stack basiert. Die Kernarchitektur umfasst eine Node.js/Express REST-API für Backend-Logik, eine MongoDB-Datenbank für die Datenpersistenz und eine reine Vanilla-JS-Frontend-Anwendung, die für eine optimale Leistung ohne Framework-Overhead sorgt.",
+                            en: "Borealis is a complete e-commerce application built on the MERN stack. The core architecture features a Node.js/Express REST API for backend logic, a MongoDB database for data persistence, and a pure Vanilla JS frontend for optimal performance without framework overhead.",
+                            fr: "Borealis est une application e-commerce complète basée sur la stack MERN. L'architecture de base comprend une API REST Node.js/Express pour la logique backend, une base de données MongoDB pour la persistance des données, et une application frontend en JavaScript pur pour des performances optimales sans la surcharge d'un framework."
+                        }
+                    },
+                    {
+                        img: "borealis_auth.png",
+                        title: { de: "Sichere Authentifizierung & Sitzungsverwaltung", en: "Secure Authentication & Session Management", fr: "Authentification et Gestion de Session Sécurisées" },
+                        text: {
+                            de: "Die Benutzerauthentifizierung wird durch JSON Web Tokens (JWT) gesichert. Passwörter werden vor der Speicherung mit bcrypt gehasht, um die Einhaltung von Sicherheitsstandards zu gewährleisten. Token-basierte Sitzungen ermöglichen eine zustandslose und skalierbare Backend-Architektur.",
+                            en: "User authentication is secured using JSON Web Tokens (JWT). Passwords are hashed with bcrypt before storage, ensuring security compliance. Token-based sessions allow for a stateless and scalable backend architecture.",
+                            fr: "L'authentification des utilisateurs est sécurisée à l'aide de JSON Web Tokens (JWT). Les mots de passe sont hachés avec bcrypt avant d'être stockés, garantissant la conformité en matière de sécurité. Les sessions basées sur des jetons permettent une architecture backend sans état et évolutive."
+                        }
+                    },
+                    {
+                        img: "borealis_admin_dashboard.png",
+                        title: { de: "Systemadministration & Rollenbasierte Zugriffskontrolle", en: "System Administration & Role-Based Access Control", fr: "Administration Système & Contrôle d'Accès Basé sur les Rôles" },
+                        text: {
+                            de: "Ein Admin-Dashboard bietet rollenbasierte Zugriffskontrolle (RBAC), die es autorisierten Benutzern ermöglicht, das System zu verwalten. Administratoren können CRUD-Operationen (Erstellen, Lesen, Aktualisieren, Löschen) an Produkten durchführen und alle Benutzer- und Bestelldaten einsehen, was wichtige Systemverwaltungsaufgaben demonstriert.",
+                            en: "An admin dashboard provides Role-Based Access Control (RBAC), allowing authorized users to manage the system. Admins can perform CRUD (Create, Read, Update, Delete) operations on products and view all user and order data, demonstrating key system administration tasks.",
+                            fr: "Un tableau de bord d'administration fournit un contrôle d'accès basé sur les rôles (RBAC), permettant aux utilisateurs autorisés de gérer le système. Les administrateurs peuvent effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) sur les produits et consulter toutes les données des utilisateurs et des commandes, illustrant ainsi des tâches essentielles d'administration système."
+                        }
+                    },
+                    {
+                        img: "borealis_api_integration.png",
+                        title: { de: "Integration von Drittanbieter-APIs", en: "Third-Party API Integration", fr: "Intégration d'API Tierces" },
+                        text: {
+                            de: "Das Projekt integriert externe Dienste über APIs für wichtige Funktionalitäten. Stripe wird für eine sichere Zahlungsabwicklung genutzt, wodurch sensible Finanzdaten von den eigenen Servern ferngehalten werden. SendGrid wird für transaktionale E-Mails, wie z.B. das Zurücksetzen von Passwörtern, verwendet.",
+                            en: "The project integrates external services via APIs for critical functionality. Stripe is utilized for secure payment processing, keeping sensitive financial data off the local servers. SendGrid is used for transactional emails, such as password resets.",
+                            fr: "Le projet intègre des services externes via des API pour des fonctionnalités critiques. Stripe est utilisé pour le traitement sécurisé des paiements, gardant les données financières sensibles hors des serveurs locaux. SendGrid est utilisé pour les e-mails transactionnels, tels que la réinitialisation des mots de passe."
+                        }
+                    },
+                    {
+                        img: "borealis_state_management.png",
+                        title: { de: "Zustandsverwaltung: Gast vs. Benutzer", en: "State Management: Guest vs. User", fr: "Gestion d'État : Invité vs. Utilisateur" },
+                        text: {
+                            de: "Eine duale Zustandsverwaltungsstrategie wurde implementiert. Gast-Sitzungen verwenden LocalStorage für die clientseitige Persistenz des Warenkorbs. Beim Einloggen wird der LocalStorage-Zustand nahtlos mit dem in MongoDB gespeicherten Benutzerzustand zusammengeführt, was die Datenintegrität über verschiedene Sitzungstypen hinweg gewährleistet.",
+                            en: "A dual state management strategy is implemented. Guest sessions utilize LocalStorage for client-side cart persistence. Upon login, the LocalStorage state is seamlessly merged with the user's database state stored in MongoDB, ensuring data integrity across session types.",
+                            fr: "Une double stratégie de gestion d'état est mise en œuvre. Les sessions invitées utilisent LocalStorage pour la persistance du panier côté client. Lors de la connexion, l'état de LocalStorage est fusionné de manière transparente avec l'état de l'utilisateur stocké dans MongoDB, garantissant l'intégrité des données entre les types de session."
+                        }
+                    }
+                ]
+            },
+            "project-modal-3": {
+                currentSlide: 0,
+                slides: [
+                    {
+                        img: "portguardian_main_v2.png",
+                        title: { 
+                            de: "Enterprise UI & WMI-Überwachung", 
+                            en: "Enterprise UI & WMI Monitoring", 
+                            fr: "Interface Enterprise & Surveillance WMI" 
+                        },
+                        text: { 
+                            de: "Das System wurde komplett auf <b>PyQt6</b> und OOP umgestellt. Es nutzt die Windows Management Instrumentation (WMI) API für die Echtzeit-Hardwareüberwachung ohne Polling-Overhead. Die Benutzeroberfläche ist thread-sicher (QThread) und reagiert sofort auf USB-Ereignisse.", 
+                            en: "The system was overhauled using <b>PyQt6</b> and OOP standards. It utilizes the Windows Management Instrumentation (WMI) API for real-time hardware monitoring without polling overhead. The UI is thread-safe (QThread) and reacts instantly to USB events.", 
+                            fr: "Le système a été refondu avec <b>PyQt6</b> et la POO. Il utilise l'API WMI pour la surveillance matérielle en temps réel. L'interface est thread-safe et réagit instantanément aux événements USB." 
+                        }
+                    },
+                    {
+                        img: "portguardian_infra.png",
+                        title: { 
+                            de: "Systemintegration: Dual-VM Setup", 
+                            en: "System Integration: Dual-VM Setup", 
+                            fr: "Intégration Système : Configuration Double VM" 
+                        },
+                        text: { 
+                            de: "Entwicklung und Tests erfolgten in einer realistischen Client-Server-Umgebung. <b>Links:</b> Windows 10 Client, der den Agenten ausführt. <b>Rechts:</b> Windows Server 2019, der Splunk Enterprise hostet. Dies simuliert eine echte Unternehmensdomäne.", 
+                            en: "Development and testing were conducted in a realistic Client-Server environment. <b>Left:</b> Windows 10 Client running the agent. <b>Right:</b> Windows Server 2019 hosting Splunk Enterprise. This simulates a real corporate domain.", 
+                            fr: "Développement et tests effectués dans un environnement Client-Serveur réaliste. <b>Gauche :</b> Client Windows 10 exécutant l'agent. <b>Droite :</b> Windows Server 2019 hébergeant Splunk. Cela simule un véritable domaine d'entreprise." 
+                        }
+                    },
+                    {
+                        img: "portguardian_splunk.png",
+                        title: { 
+                            de: "SIEM-Integration (Splunk)", 
+                            en: "SIEM Integration (Splunk)", 
+                            fr: "Intégration SIEM (Splunk)" 
+                        },
+                        text: { 
+                            de: "PortGuardian sendet strukturierte JSON-Logs über <b>UDP Port 514 (Syslog)</b> an den zentralen Server. Das Dashboard zeigt Ereignis-Korrelationen in Echtzeit, Hash-Werte und Bedrohungs-Scores, was SOC-Analysten sofortige Reaktionen ermöglicht.", 
+                            en: "PortGuardian transmits structured JSON logs via <b>UDP Port 514 (Syslog)</b> to the central server. The dashboard displays real-time event correlation, file hashes, and threat scores, enabling immediate response capabilities for SOC analysts.", 
+                            fr: "PortGuardian transmet des journaux JSON structurés via <b>UDP Port 514 (Syslog)</b> au serveur central. Le tableau de bord affiche la corrélation des événements en temps réel, permettant une réponse immédiate des analystes SOC." 
+                        }
+                    },
+                    {
+                        img: "portguardian_alert.png",
+                        title: { 
+                            de: "Automatisierte Eindämmung (Containment)", 
+                            en: "Automated Threat Containment", 
+                            fr: "Confinement Automatisé des Menaces" 
+                        },
+                        text: { 
+                            de: "Bei Erkennung einer kritischen Bedrohung (Score > 85) reagiert das System autonom: 1. Physikalischer Auswurf des USB-Laufwerks via <code>mountvol</code>. 2. <b>Netzwerk-Isolation</b> durch Blockieren aller Ports via Windows Firewall API und Deaktivierung der Netzwerkadapter.", 
+                            en: "Upon detecting a critical threat (Score > 85), the system reacts autonomously: 1. Physical ejection of the USB drive via <code>mountvol</code>. 2. <b>Network Isolation</b> by creating blocking Firewall rules and disabling network adapters via OS APIs.", 
+                            fr: "Lors de la détection d'une menace critique, le système réagit de manière autonome : 1. Éjection physique du lecteur USB via <code>mountvol</code>. 2. <b>Isolation réseau</b> en créant des règles de pare-feu bloquantes et en désactivant les adaptateurs réseau." 
+                        }
+                    },
+                    {
+                        img: "portguardian_auth.png",
+                        title: { 
+                            de: "Rollenbasierte Sicherheit (RBAC)", 
+                            en: "Role-Based Security (RBAC)", 
+                            fr: "Sécurité Basée sur les Rôles" 
+                        },
+                        text: { 
+                            de: "Um unbefugte Manipulationen zu verhindern, ist die Wiederherstellung der Netzwerkverbindung durch ein SOC-Admin-Passwort geschützt. Dies verhindert, dass Malware oder ungeschulte Benutzer die Isolation umgehen (Anti-Tamper).", 
+                            en: "To prevent unauthorized tampering, network restoration is protected by a SOC Admin password protocol. This ensures that neither malware nor untrained users can bypass the isolation state (Anti-Tamper).", 
+                            fr: "Pour empêcher toute manipulation non autorisée, la restauration du réseau est protégée par un mot de passe Admin SOC. Cela garantit que ni les logiciels malveillants ni les utilisateurs ne peuvent contourner l'isolation." 
+                        }
+                    },
+                    {
+                        img: "portguardian_hash.png",
+                        title: { 
+                            de: "Offline-Datenbank & Heuristik", 
+                            en: "Offline Database & Heuristics", 
+                            fr: "Base de Données Hors Ligne & Heuristique" 
+                        },
+                        text: { 
+                            de: "Anstatt sich auf langsame Cloud-APIs zu verlassen, nutzt das System eine lokale SHA-256 Hash-Datenbank (>1 Million Signaturen) und eine Heuristik-Engine (Entropie-Analyse, PE-Header-Prüfung) für millisekundenschnelle Entscheidungen ohne Internet.", 
+                            en: "Instead of relying on slow Cloud APIs, the system uses a local SHA-256 hash database (>1M signatures) and a heuristics engine (Entropy analysis, PE Header checks) for millisecond-fast decisions without internet access.", 
+                            fr: "Au lieu de s'appuyer sur des API Cloud lentes, le système utilise une base de données locale de hachage SHA-256 et un moteur heuristique pour des décisions ultra-rapides sans accès Internet." 
+                        }
+                    }
+                ]
+            },
+            "project-modal-4": {
+                currentSlide: 0,
+                slides: [
+                    {
+                        img: "leagueskins_thumb.png", 
+                        title: { 
+                            de: "Open Source Maintainer Rolle", 
+                            en: "Open Source Maintainer Role", 
+                            fr: "Rôle de Mainteneur Open Source" 
+                        },
+                        text: {
+                            de: "Ich verwalte die Asset-Datenbank für 'Rose', eine Anwendung mit über 10K täglichen Nutzern weltweit. Meine Rolle ist entscheidend für die Systemstabilität, da ich sicherstelle, dass proprietäre Spieldaten korrekt validiert, strukturiert und bereitgestellt werden. Ich fungiere als Schnittstelle zwischen den Kernentwicklern und der Community.",
+                            en: "I manage the asset database for 'Rose', an application with over 10K daily users worldwide. My role is critical for system stability, ensuring proprietary game data is correctly validated, structured, and deployed. I act as the technical bridge between core developers and the community.",
+                            fr: "Je gère la base de données d'actifs pour 'Rose', une application avec plus de 10K utilisateurs quotidiens dans le monde. Mon rôle est crucial pour la stabilité du système, assurant que les données propriétaires du jeu sont correctement validées, structurées et déployées."
+                        }
+                    },
+                    {
+                        img: "leagueskins_code.png", 
+                        title: { 
+                            de: "Reverse Engineering & Debugging", 
+                            en: "Reverse Engineering & Debugging", 
+                            fr: "Rétro-ingénierie & Débogage" 
+                        },
+                        text: {
+                            de: "Um komplexe Rendering-Fehler zu beheben (wie im Code gezeigt), führe ich Reverse Engineering an binären Konfigurationsdateien (.bin) durch. Ich analysiere Parameter wie <code>InitialSubmeshToHide</code> und patche die Logik manuell, um fehlende Assets wiederherzustellen, die von automatisierten Tools übersehen wurden.",
+                            en: "To resolve complex rendering bugs (as shown in the code), I perform reverse engineering on binary configuration files (.bin). I analyze parameters like <code>InitialSubmeshToHide</code> and manually patch the logic to restore missing assets that automated tools fail to detect.",
+                            fr: "Pour résoudre des bugs de rendu complexes, j'effectue une rétro-ingénierie sur des fichiers de configuration binaires (.bin). J'analyse des paramètres comme <code>InitialSubmeshToHide</code> et corrige manuellement la logique pour restaurer les actifs manquants."
+                        }
+                    },
+                    {
+                        img: "leagueskins_files.png", 
+                        title: { 
+                            de: "Datenstruktur & QA-Workflow", 
+                            en: "Data Structure & QA Workflow", 
+                            fr: "Structure des Données & Workflow QA" 
+                        },
+                        text: {
+                            de: "Ich leite ein Sub-Team von Testern, um Regressionstests für neue Patches durchzuführen. Mein Workflow umfasst die Nutzung von CLI-Tools (RitoBIN) zur Datenextraktion, Git zur Versionskontrolle und strikte JSON-Validierung, bevor Updates in die Live-Umgebung gepusht werden.",
+                            en: "I lead a sub-team of testers to perform regression testing for new patches. My workflow involves using CLI tools (RitoBIN) for data extraction, Git for version control, and strict JSON validation before updates are pushed to the live production environment.",
+                            fr: "Je dirige une sous-équipe de testeurs pour effectuer des tests de régression. Mon flux de travail implique l'utilisation d'outils CLI (RitoBIN) pour l'extraction de données, Git pour le contrôle de version et une validation JSON stricte avant la mise en production."
+                        }
+                    }
+                ]
+            }
+        }
+    };
+    let currentLang = localStorage.getItem("preferredLang") || config.defaultLang;
+    let player;
+    let lastActiveElement;
+    const mainNav = document.querySelector(".main-nav");
+    const mobileMenuIcon = document.querySelector(".mobile-menu-icon");
+    const mobileNavOverlay = document.getElementById("mobile-nav");
+    const heroCtaDropdown = document.querySelector(".hero-cta-dropdown");
+    const contactForm = document.getElementById("contact-form");
+    const allModals = document.querySelectorAll(".modal");
+    const videoModal = document.getElementById("video-modal");
+    const imageModal = document.getElementById("image-modal");
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileList = document.querySelector('.mobile-list');
+    const toggleMobileNav = () => {
+        if (!mobileMenuIcon || !mobileNavOverlay) return;
+        const isOpen = mobileMenuIcon.classList.toggle("change");
+        mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
+        document.body.classList.toggle("modal-open", isOpen);
+    };
+    function updateModalLanguageSwitchers() {
+        document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {
+            item.classList.toggle('active', item.getAttribute('data-lang') === currentLang);
+        });
+    }
+    function switchLanguage(newLang) {
+        currentLang = newLang;
+        localStorage.setItem("preferredLang", newLang);
+        document.documentElement.lang = currentLang;
+        document.querySelectorAll(".lang").forEach(el => {
+            if (el.dataset[currentLang]) el.innerHTML = el.dataset[currentLang];
+        });
+        document.querySelectorAll(".lang-placeholder").forEach(el => {
+            if (el.dataset[currentLang]) el.placeholder = el.dataset[currentLang];
+        });
+        document.querySelectorAll(".lang-aria").forEach(el => {
+            if (el.dataset[currentLang]) el.setAttribute("aria-label", el.dataset[currentLang]);
+        });
+        const profilePicture = document.getElementById("profile-picture");
+        if (profilePicture) profilePicture.alt = config.altTexts[currentLang];
+        document.querySelectorAll(".language-item").forEach(item => {
+            item.classList.toggle("active", item.getAttribute("data-lang") === newLang);
+        });
+        updateAllProjectModalsText();
+        updateModalLanguageSwitchers();
+    }
+    function updateAllProjectModalsText() {
+        Object.keys(config.projects).forEach(modalId => {
+            const project = config.projects[modalId];
+            const modal = document.getElementById(modalId);
+            if (!project || !modal) return;
+            const descriptionItems = modal.querySelectorAll(".project-modal-description-item");
+            project.slides.forEach((slideData, index) => {
+                if (descriptionItems[index]) {
+                    descriptionItems[index].querySelector("h4").textContent = slideData.title[currentLang];
+                    descriptionItems[index].querySelector("p").innerHTML = slideData.text[currentLang];
+                }
+            });
+        });
+    }
+    function openModal(modal, triggerElement) {
+        if (!modal) return;
+        mainNav.classList.add("nav-hidden");
+        lastActiveElement = triggerElement || document.activeElement;
+        modal.classList.add("active");
+        document.body.classList.add("modal-open");
+        setTimeout(() => {
+            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            firstFocusable?.focus();
+        }, 100);
+    }
+    function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove("active");
+        const parentModal = document.querySelector('.project-modal.is-covered');
+        if (parentModal) parentModal.classList.remove('is-covered');
+        const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains("active"));
+        if (!isAnyModalOpen) {
+            document.body.classList.remove("modal-open");
+            mainNav.classList.remove("nav-hidden");
+        }
+        lastActiveElement?.focus();
+        lastActiveElement = null;
+    }
+    function createOrPlayPlayer() {
+        if (typeof YT === "undefined" || typeof YT.Player === "undefined") {
+            const tag = document.createElement("script");
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.head.appendChild(tag);
+        } else {
+            if (!player || typeof player.playVideo !== 'function') {
+                player = new YT.Player("youtube-player-container", {
+                    height: "100%",
+                    width: "100%",
+                    videoId: config.youtubeVideoId,
+                    playerVars: { autoplay: 1, controls: 1, rel: 0 }
+                });
+            } else {
+                player.playVideo();
+            }
+        }
+    }
+    window.onYouTubeIframeAPIReady = () => {
+        if (videoModal && videoModal.classList.contains('active')) {
+            createOrPlayPlayer();
+        }
+    };
+    function showProjectSlide(modalId, nextIndex) {
+        const project = config.projects[modalId];
+        const modal = document.getElementById(modalId);
+        if (!project || !modal) return;
+        const slides = modal.querySelectorAll(".project-modal-slide");
+        const descriptions = modal.querySelectorAll(".project-modal-description-item");
+        const counter = modal.querySelector(".project-modal-counter");
+        slides[project.currentSlide].classList.remove("active");
+        descriptions[project.currentSlide].classList.remove("active");
+        slides[nextIndex].classList.add("active");
+        descriptions[nextIndex].classList.add("active");
+        const newActiveImg = slides[nextIndex].querySelector("img");
+        if (newActiveImg) newActiveImg.alt = project.slides[nextIndex].title[currentLang] || project.slides[nextIndex].title.en;
+        project.currentSlide = nextIndex;
+        if (counter) counter.textContent = `${nextIndex + 1} / ${project.slides.length}`;
+    }
+    function initializeProjectModals() {
+        Object.keys(config.projects).forEach(modalId => {
+            const project = config.projects[modalId];
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            const imageContainer = modal.querySelector(".project-modal-image-wrapper");
+            const descriptionContainer = modal.querySelector(".project-modal-description");
+            if (!imageContainer || !descriptionContainer) return;
+            imageContainer.innerHTML = "";
+            descriptionContainer.innerHTML = "";
+            project.slides.forEach(slideData => {
+                const slideEl = document.createElement("div");
+                slideEl.className = "project-modal-slide";
+                slideEl.innerHTML = `<img src="images/${slideData.img}" alt="${slideData.title.en}" loading="lazy">`;
+                slideEl.addEventListener("click", function () {
+                    const imageModalImg = imageModal.querySelector("img");
+                    imageModalImg.src = this.querySelector('img').src;
+                    imageModalImg.alt = `Enlarged view of ${slideData.title[currentLang] || slideData.title.en}`;
+                    modal.classList.add("is-covered");
+                    openModal(imageModal, this);
+                });
+                imageContainer.appendChild(slideEl);
+                const descEl = document.createElement("div");
+                descEl.className = "project-modal-description-item";
+                descEl.innerHTML = `<h4></h4><p></p>`;
+                descriptionContainer.appendChild(descEl);
+            });
+        });
+    }
+    AOS.init({ duration: 1000, once: true });
+    const copyrightYearEl = document.getElementById("copyright-year");
+    if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
+    initializeProjectModals();
+    switchLanguage(currentLang);
+    document.querySelectorAll(".language-item").forEach(item => {
+        item.addEventListener("click", e => {
+            e.preventDefault();
+            const newLang = item.getAttribute("data-lang");
+            if (newLang !== currentLang) switchLanguage(newLang);
+            
+            item.closest(".nav-dropdown")?.classList.remove("active");
+            if (item.closest(".mobile-list")) {
+                mobileToggle?.classList.remove("active");
+                if (mobileList) mobileList.style.maxHeight = '0';
+            }
+            if (item.closest(".mobile-language-buttons")) setTimeout(toggleMobileNav, 150);
+        });
+    });
+    document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const newLang = this.getAttribute('data-lang');
+            if (newLang && newLang !== currentLang) {
+                switchLanguage(newLang);
+            }
+        });
+    });
+    const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            if (this.tagName === 'A' && this.target === '_blank') {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown');
+            if (!parentDropdown) return;
+            const isActive = parentDropdown.classList.contains('active');
+            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown').forEach(dd => {
+                if (dd !== parentDropdown) {
+                    dd.classList.remove('active');
+                    if (dd.matches('.mobile-language-selector')) {
+                        dd.querySelector('.mobile-list').style.maxHeight = '0';
+                    }
+                }
+            });
+            parentDropdown.classList.toggle('active', !isActive);
+            if (parentDropdown.matches('.mobile-language-selector')) {
+                const list = parentDropdown.querySelector('.mobile-list');
+                if (list) {
+                    list.style.maxHeight = !isActive ? list.scrollHeight + 'px' : '0';
+                }
+            }
+        });
+    });
+    document.addEventListener('click', function(e) {
+        const activeDropdown = document.querySelector('.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active');
+        if (activeDropdown && !activeDropdown.contains(e.target)) {
+            activeDropdown.classList.remove('active');
+            if (activeDropdown.matches('.mobile-language-selector')) {
+                activeDropdown.querySelector('.mobile-list').style.maxHeight = '0';
+            }
+        }
+    });
+    mobileMenuIcon?.addEventListener("click", toggleMobileNav);
+    mobileNavOverlay?.querySelectorAll("a:not(.language-item)").forEach(link => {
+        link.addEventListener("click", function () {
+            setTimeout(toggleMobileNav, 150);
+        });
+    });
+    document.querySelectorAll(".faq-question").forEach(button => {
+        button.addEventListener("click", () => {
+            const panel = button.nextElementSibling;
+            const isActive = button.classList.toggle("active");
+            button.setAttribute("aria-expanded", isActive);
+            panel.style.maxHeight = isActive ? panel.scrollHeight + "px" : null;
+        });
+    });
+    document.getElementById("open-video-modal")?.addEventListener("click", function () {
+        openModal(videoModal, this);
+        createOrPlayPlayer();
+    });
+    document.querySelectorAll('.project-card .open-project-modal-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const modalId = this.closest('.project-card').dataset.modalId;
+            const modal = document.getElementById(modalId);
+            config.projects[modalId].currentSlide = 0;
+            showProjectSlide(modalId, 0); 
+            openModal(modal, this);
+        });
+    });
+    allModals.forEach(modal => {
+        modal.querySelector(".close-button")?.addEventListener("click", () => {
+            if (modal.id === 'video-modal' && player && typeof player.stopVideo === 'function') player.stopVideo();
+            closeModal(modal);
+        });
+        modal.addEventListener("click", e => {
+            if (e.target === modal) closeModal(modal);
+        });
+    });
+    document.querySelectorAll('.project-modal').forEach(modal => {
+        const modalId = modal.id;
+        modal.querySelector('.project-modal-arrow.next')?.addEventListener('click', () => {
+            const project = config.projects[modalId];
+            showProjectSlide(modalId, (project.currentSlide + 1) % project.slides.length);
+        });
+        modal.querySelector('.project-modal-arrow.prev')?.addEventListener('click', () => {
+            const project = config.projects[modalId];
+            showProjectSlide(modalId, (project.currentSlide - 1 + project.slides.length) % project.slides.length);
+        });
+    });
+    if (contactForm) {
+        contactForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const submitBtn = contactForm.querySelector(".submit-btn");
+            const statusEl = document.getElementById("form-status");
+            const btnSpan = submitBtn.querySelector('span');
+            const originalText = btnSpan.textContent;
+            submitBtn.disabled = true;
+            btnSpan.textContent = submitBtn.dataset[`sending-${currentLang}`] || 'Sending...';
+            fetch(contactForm.action, {
+                method: "POST",
+                body: new FormData(contactForm),
+                headers: { Accept: "application/json" }
+            }).then(response => {
+                if (response.ok) {
+                    statusEl.innerHTML = `<p class="success">Thank you! Your message has been sent.</p>`;
+                    contactForm.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            }).catch(() => {
+                statusEl.innerHTML = `<p class="error">Oops! There was a problem. Please try again.</p>`;
+            }).finally(() => {
+                submitBtn.disabled = false;
+                btnSpan.textContent = originalText;
+                setTimeout(() => statusEl.innerHTML = '', 5000);
+            });
+        });
+    }
+    window.addEventListener("keydown", event => {
+        const activeModal = document.querySelector(".modal.active");
+        if (!activeModal) {
+            // Close dropdowns on Escape when no modal is open
+            if (event.key === "Escape") {
+                const activeDropdown = document.querySelector('.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active');
+                if (activeDropdown) {
+                    activeDropdown.classList.remove('active');
+                    if (activeDropdown.matches('.mobile-language-selector')) {
+                        activeDropdown.querySelector('.mobile-list').style.maxHeight = '0';
+                    }
+                }
+            }
+            return;
+        }
+        if (event.key === "Escape") {
+            if (activeModal.id === 'video-modal' && player?.stopVideo) player.stopVideo();
+            closeModal(activeModal);
+        }
+        if (activeModal.classList.contains('project-modal') && (event.key === "ArrowRight" || event.key === "ArrowLeft")) {
+            const project = config.projects[activeModal.id];
+            if (!project) return;
+            const numSlides = project.slides.length;
+            let nextIndex = project.currentSlide;
+            if (event.key === "ArrowRight") nextIndex = (project.currentSlide + 1) % numSlides;
+            else if (event.key === "ArrowLeft") nextIndex = (project.currentSlide - 1 + numSlides) % numSlides;
+            showProjectSlide(activeModal.id, nextIndex);
+        }
+    });
+
+    // ========== SCROLL PROGRESS BAR ==========
+    const scrollProgressBar = document.getElementById('scroll-progress');
+    if (scrollProgressBar) {
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressBar.style.width = scrollPercent + '%';
+        }, { passive: true });
+    }
+
+    // ========== ACTIVE NAV SECTION HIGHLIGHTING ==========
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sections = document.querySelectorAll('section[id]');
+    if (sections.length > 0 && navLinks.length > 0) {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, observerOptions);
+        sections.forEach(section => sectionObserver.observe(section));
+    }
+
+    // ========== SCROLL TO TOP BUTTON ==========
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    if (scrollToTopBtn) {
+        window.addEventListener('scroll', () => {
+            scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
+        }, { passive: true });
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // ========== LOCALIZED FORM MESSAGES ==========
+    const formMessages = {
+        success: {
+            de: 'Vielen Dank! Ihre Nachricht wurde gesendet.',
+            en: 'Thank you! Your message has been sent.',
+            fr: 'Merci ! Votre message a été envoyé.'
+        },
+        error: {
+            de: 'Hoppla! Es gab ein Problem. Bitte versuchen Sie es erneut.',
+            en: 'Oops! There was a problem. Please try again.',
+            fr: 'Oups ! Un problème est survenu. Veuillez réessayer.'
+        }
+    };
+    // Override form submission to use localized messages
+    if (contactForm) {
+        // Remove existing listener by cloning the form
+        const newForm = contactForm.cloneNode(true);
+        contactForm.parentNode.replaceChild(newForm, contactForm);
+        newForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const submitBtn = newForm.querySelector(".submit-btn");
+            const statusEl = document.getElementById("form-status");
+            const btnSpan = submitBtn.querySelector('span');
+            const originalText = btnSpan.textContent;
+            submitBtn.disabled = true;
+            btnSpan.textContent = submitBtn.dataset[`sending${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || submitBtn.dataset[`sending-${currentLang}`] || 'Sending...';
+            fetch(newForm.action, {
+                method: "POST",
+                body: new FormData(newForm),
+                headers: { Accept: "application/json" }
+            }).then(response => {
+                if (response.ok) {
+                    statusEl.innerHTML = `<p class="success">${formMessages.success[currentLang] || formMessages.success.en}</p>`;
+                    newForm.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            }).catch(() => {
+                statusEl.innerHTML = `<p class="error">${formMessages.error[currentLang] || formMessages.error.en}</p>`;
+            }).finally(() => {
+                submitBtn.disabled = false;
+                btnSpan.textContent = originalText;
+                setTimeout(() => statusEl.innerHTML = '', 5000);
+            });
+        });
+    }
+});
