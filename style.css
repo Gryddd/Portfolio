@@ -188,6 +188,7 @@ h4 {
     will-change: opacity;
     contain: strict;
     isolation: isolate;
+    content-visibility: auto;
 }
 html[data-theme="light"] .pixel-snow-bg {
     opacity: 0.35;
@@ -202,10 +203,21 @@ html[data-theme="light"] .pixel-snow-bg {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     image-rendering: auto;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
 @media (prefers-reduced-motion: reduce) {
     .pixel-snow-bg {
-        opacity: 0.3;
+        opacity: 0.2;
+        animation: none !important;
+    }
+}
+@media (max-width: 768px) {
+    .pixel-snow-bg {
+        opacity: 0.4;
+    }
+    html[data-theme="light"] .pixel-snow-bg {
+        opacity: 0.25;
     }
 }
 .video-overlay {
