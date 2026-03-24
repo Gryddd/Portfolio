@@ -92,6 +92,16 @@
 [data-theme="light"] .theme-toggle .moon-icon { display: none; }
 [data-theme="light"] .theme-toggle .sun-icon { display: block; }
 
+/* Apply blur exclusively to transparent cards */
+.timeline-content,
+.skill-card,
+.project-card,
+.tech-stack-card,
+.flip-card {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+}
+
 .timeline-content,
 .skill-card,
 .project-card,
@@ -170,11 +180,17 @@ h4 {
     z-index: -2;
     overflow: hidden;
     pointer-events: none;
-    opacity: 0.92;
+    opacity: 0.65;
     transition: opacity 0.35s ease;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: opacity;
+    contain: strict;
+    isolation: isolate;
 }
 html[data-theme="light"] .pixel-snow-bg {
-    opacity: 0.55;
+    opacity: 0.35;
 }
 .pixel-snow-bg canvas {
     display: block;
@@ -182,6 +198,15 @@ html[data-theme="light"] .pixel-snow-bg {
     height: 100% !important;
     position: absolute;
     inset: 0;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+    .pixel-snow-bg {
+        opacity: 0.3;
+    }
 }
 .video-overlay {
     position: fixed;
@@ -1139,7 +1164,7 @@ h2::after {
     margin: 0 auto;
 }
 .flip-card {
-    background-color: transparent;
+    background: var(--card-bg-performant);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -1153,7 +1178,7 @@ h2::after {
 }
 .flip-card-front,
 .flip-card-back {
-    background: var(--card-bg-performant);
+    background: transparent;
     padding: 1rem;
     display: flex;
     flex-direction: column;

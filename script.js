@@ -20,10 +20,65 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!container || typeof window.ogl === 'undefined') return null;
 
         const { Renderer, Program, Mesh, Geometry } = window.ogl;
-        // Optimized: Reduced dpr (density pixel ratio) to save rendering power on retina/high-res displays
-        const renderer = new Renderer({ antialias: false, alpha: true, dpr: Math.min(window.devicePixelRatio || 1, 1.25) });
+        
+        // Performance: Use low DPR (0.4x) for smooth rendering across all devices
+        const baseDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const effectiveDpr = baseDpr * 0.4;
+        
+        const renderer = new Renderer({ 
+            antialias: false, 
+            alpha: true, 
+            dpr: effectiveDpr,
+            powerPreference: 'low-power',
+            preserveDrawingBuffer: false
+        });
         const gl = renderer.gl;
         gl.clearColor(0, 0, 0, 0);
+
+        // Use mediump precision for better mobile/cross-browser perf
+        const fragmentShader = `
+            precision mediump float;
+            uniform float uTime;
+            uniform vec3 uResolution;
+            uniform vec3 uBaseColor;
+            uniform float uAmplitude;
+            uniform float uFrequencyX;
+            uniform float uFrequencyY;
+            uniform vec2 uMouse;
+            uniform vec2 uMouseSmooth;
+            varying vec2 vUv;
+
+            void main() {
+                vec2 fragCoord = vUv * uResolution.xy;
+                vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
+                
+                // Unrolled loop (3 iterations) - avoids loop overhead, better GPU parallelism
+                float t = uTime;
+                vec2 m = uMouseSmooth * 3.14159;
+                
+                uv.x += uAmplitude * cos(uFrequencyX * uv.y + t + m.x);
+                uv.y += uAmplitude * cos(uFrequencyY * uv.x + t + m.y);
+                
+                uv.x += uAmplitude * 0.5 * cos(2.0 * uFrequencyX * uv.y + t + m.x);
+                uv.y += uAmplitude * 0.5 * cos(2.0 * uFrequencyY * uv.x + t + m.y);
+                
+                uv.x += uAmplitude * 0.333 * cos(3.0 * uFrequencyX * uv.y + t + m.x);
+                uv.y += uAmplitude * 0.333 * cos(3.0 * uFrequencyY * uv.x + t + m.y);
+
+                // Subtle mouse ripple (reduced complexity)
+                vec2 diff = vUv - uMouseSmooth;
+                float dist = length(diff);
+                float ripple = sin(8.0 * dist - t * 1.5) * 0.02 * exp(-dist * 8.0);
+                uv += normalize(diff + 0.001) * ripple;
+
+                // Smoother color calculation using mix instead of division
+                float wave = sin(t * 0.5 - uv.y - uv.x);
+                float intensity = 1.0 / (abs(wave) + 0.15);
+                vec3 color = uBaseColor * clamp(intensity, 0.0, 3.0);
+                
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
 
         const vertexShader = `
             attribute vec2 position;
@@ -35,47 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         `;
 
-        const fragmentShader = `
-            precision highp float;
-            uniform float uTime;
-            uniform vec3 uResolution;
-            uniform vec3 uBaseColor;
-            uniform float uAmplitude;
-            uniform float uFrequencyX;
-            uniform float uFrequencyY;
-            uniform vec2 uMouse;
-            varying vec2 vUv;
-
-            vec4 renderImage(vec2 uvCoord) {
-                vec2 fragCoord = uvCoord * uResolution.xy;
-                vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
-
-                // Optimized: Reduced loop iterations from 10 to 6 to vastly improve rendering speed
-                for (float i = 1.0; i < 6.0; i++) {
-                    uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
-                    uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
-                }
-
-                vec2 diff = (uvCoord - uMouse);
-                float dist = length(diff);
-                float falloff = exp(-dist * 20.0);
-                float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03;
-                uv += (diff / (dist + 0.0001)) * ripple * falloff;
-
-                vec3 color = uBaseColor / abs(sin(uTime - uv.y - uv.x));
-                return vec4(color, 1.0);
-            }
-
-            void main() {
-                // Optimized: Removed 9x multi-sampling loop for better performance on low-end PCs
-                gl_FragColor = renderImage(vUv);
-            }
-        `;
-
         const geometry = new Geometry(gl, {
             position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
             uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
         });
+        
         const program = new Program(gl, {
             vertex: vertexShader,
             fragment: fragmentShader,
@@ -88,49 +107,99 @@ document.addEventListener("DOMContentLoaded", function () {
                 uAmplitude: { value: amplitude },
                 uFrequencyX: { value: frequencyX },
                 uFrequencyY: { value: frequencyY },
-                uMouse: { value: new Float32Array([0.5, 0.5]) }
+                uMouse: { value: new Float32Array([0.5, 0.5]) },
+                uMouseSmooth: { value: new Float32Array([0.5, 0.5]) }
             }
         });
 
         const mesh = new Mesh(gl, { geometry, program });
 
+        // Debounced resize for smoother experience
+        let resizeTimeout = null;
         function resize() {
-            renderer.setSize(container.offsetWidth, container.offsetHeight);
-            const resUniform = program.uniforms.uResolution.value;
-            resUniform[0] = gl.canvas.width;
-            resUniform[1] = gl.canvas.height;
-            resUniform[2] = gl.canvas.width / Math.max(gl.canvas.height, 1);
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                const resUniform = program.uniforms.uResolution.value;
+                resUniform[0] = gl.canvas.width;
+                resUniform[1] = gl.canvas.height;
+                resUniform[2] = gl.canvas.width / Math.max(gl.canvas.height, 1);
+            }, 100);
         }
+
+        // Mouse state with smoothing
+        let targetMouse = { x: 0.5, y: 0.5 };
+        let currentMouse = { x: 0.5, y: 0.5 };
+        const mouseSmoothFactor = 0.08;
 
         function handleMouseMove(event) {
             const rect = container.getBoundingClientRect();
-            const x = (event.clientX - rect.left) / rect.width;
-            const y = 1 - (event.clientY - rect.top) / rect.height;
-            const mouseUniform = program.uniforms.uMouse.value;
-            mouseUniform[0] = x;
-            mouseUniform[1] = y;
+            targetMouse.x = (event.clientX - rect.left) / rect.width;
+            targetMouse.y = 1 - (event.clientY - rect.top) / rect.height;
         }
 
         function handleTouchMove(event) {
             if (event.touches.length < 1) return;
             const touch = event.touches[0];
             const rect = container.getBoundingClientRect();
-            const x = (touch.clientX - rect.left) / rect.width;
-            const y = 1 - (touch.clientY - rect.top) / rect.height;
-            const mouseUniform = program.uniforms.uMouse.value;
-            mouseUniform[0] = x;
-            mouseUniform[1] = y;
+            targetMouse.x = (touch.clientX - rect.left) / rect.width;
+            targetMouse.y = 1 - (touch.clientY - rect.top) / rect.height;
         }
 
+        // Visibility-based rendering pause
+        let isVisible = true;
+        let isPaused = false;
+        const observer = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        }, { threshold: 0 });
+        observer.observe(container);
+
+        // Page visibility API
+        function handleVisibilityChange() {
+            isPaused = document.hidden;
+        }
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
         let animationId = null;
+        let lastTime = 0;
+        const targetFPS = 60;
+        const frameInterval = 1000 / targetFPS;
+        
         function update(timeMs) {
             animationId = requestAnimationFrame(update);
+            
+            // Skip rendering if not visible or paused
+            if (!isVisible || isPaused) return;
+            
+            // Frame rate limiting for consistent performance
+            const delta = timeMs - lastTime;
+            if (delta < frameInterval * 0.9) return;
+            lastTime = timeMs - (delta % frameInterval);
+            
+            // Smooth mouse interpolation
+            currentMouse.x += (targetMouse.x - currentMouse.x) * mouseSmoothFactor;
+            currentMouse.y += (targetMouse.y - currentMouse.y) * mouseSmoothFactor;
+            
+            const mouseSmooth = program.uniforms.uMouseSmooth.value;
+            mouseSmooth[0] = currentMouse.x;
+            mouseSmooth[1] = currentMouse.y;
+            
+            const mouseUniform = program.uniforms.uMouse.value;
+            mouseUniform[0] = targetMouse.x;
+            mouseUniform[1] = targetMouse.y;
+            
             program.uniforms.uTime.value = timeMs * 0.001 * speed;
             renderer.render({ scene: mesh });
         }
 
-        resize();
-        window.addEventListener('resize', resize);
+        // Initial setup
+        renderer.setSize(container.offsetWidth, container.offsetHeight);
+        const resUniform = program.uniforms.uResolution.value;
+        resUniform[0] = gl.canvas.width;
+        resUniform[1] = gl.canvas.height;
+        resUniform[2] = gl.canvas.width / Math.max(gl.canvas.height, 1);
+        
+        window.addEventListener('resize', resize, { passive: true });
         if (interactive) {
             container.addEventListener('mousemove', handleMouseMove, { passive: true });
             container.addEventListener('touchmove', handleTouchMove, { passive: true });
@@ -149,6 +218,9 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             destroy() {
                 if (animationId) cancelAnimationFrame(animationId);
+                if (resizeTimeout) clearTimeout(resizeTimeout);
+                observer.disconnect();
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
                 window.removeEventListener('resize', resize);
                 if (interactive) {
                     container.removeEventListener('mousemove', handleMouseMove);
