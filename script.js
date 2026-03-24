@@ -3,6 +3,170 @@ document.addEventListener("DOMContentLoaded", function () {
     const themeToggleBtns = document.querySelectorAll('.theme-toggle');
     const rootElement = document.documentElement;
     const savedTheme = localStorage.getItem('portfolio-theme');
+    let liquidChromeApi = null;
+
+    function getLiquidBaseColor(isLightMode) {
+        return isLightMode ? [0.72, 0.72, 0.78] : [0.1, 0.1, 0.1];
+    }
+
+    function initLiquidChromeBackground(container, {
+        baseColor = [0.1, 0.1, 0.1],
+        speed = 1,
+        amplitude = 0.6,
+        frequencyX = 3,
+        frequencyY = 3,
+        interactive = true
+    } = {}) {
+        if (!container || typeof window.ogl === 'undefined') return null;
+
+        const { Renderer, Program, Mesh, Geometry } = window.ogl;
+        const renderer = new Renderer({ antialias: true, alpha: true });
+        const gl = renderer.gl;
+        gl.clearColor(0, 0, 0, 0);
+
+        const vertexShader = `
+            attribute vec2 position;
+            attribute vec2 uv;
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            precision highp float;
+            uniform float uTime;
+            uniform vec3 uResolution;
+            uniform vec3 uBaseColor;
+            uniform float uAmplitude;
+            uniform float uFrequencyX;
+            uniform float uFrequencyY;
+            uniform vec2 uMouse;
+            varying vec2 vUv;
+
+            vec4 renderImage(vec2 uvCoord) {
+                vec2 fragCoord = uvCoord * uResolution.xy;
+                vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
+
+                for (float i = 1.0; i < 10.0; i++) {
+                    uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
+                    uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
+                }
+
+                vec2 diff = (uvCoord - uMouse);
+                float dist = length(diff);
+                float falloff = exp(-dist * 20.0);
+                float ripple = sin(10.0 * dist - uTime * 2.0) * 0.03;
+                uv += (diff / (dist + 0.0001)) * ripple * falloff;
+
+                vec3 color = uBaseColor / abs(sin(uTime - uv.y - uv.x));
+                return vec4(color, 1.0);
+            }
+
+            void main() {
+                vec4 col = vec4(0.0);
+                int samples = 0;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        vec2 offset = vec2(float(i), float(j)) * (1.0 / min(uResolution.x, uResolution.y));
+                        col += renderImage(vUv + offset);
+                        samples++;
+                    }
+                }
+                gl_FragColor = col / float(samples);
+            }
+        `;
+
+        const geometry = new Geometry(gl, {
+            position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
+            uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
+        });
+        const program = new Program(gl, {
+            vertex: vertexShader,
+            fragment: fragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uResolution: {
+                    value: new Float32Array([gl.canvas.width, gl.canvas.height, gl.canvas.width / Math.max(gl.canvas.height, 1)])
+                },
+                uBaseColor: { value: new Float32Array(baseColor) },
+                uAmplitude: { value: amplitude },
+                uFrequencyX: { value: frequencyX },
+                uFrequencyY: { value: frequencyY },
+                uMouse: { value: new Float32Array([0.5, 0.5]) }
+            }
+        });
+
+        const mesh = new Mesh(gl, { geometry, program });
+
+        function resize() {
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            const resUniform = program.uniforms.uResolution.value;
+            resUniform[0] = gl.canvas.width;
+            resUniform[1] = gl.canvas.height;
+            resUniform[2] = gl.canvas.width / Math.max(gl.canvas.height, 1);
+        }
+
+        function handleMouseMove(event) {
+            const rect = container.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = 1 - (event.clientY - rect.top) / rect.height;
+            const mouseUniform = program.uniforms.uMouse.value;
+            mouseUniform[0] = x;
+            mouseUniform[1] = y;
+        }
+
+        function handleTouchMove(event) {
+            if (event.touches.length < 1) return;
+            const touch = event.touches[0];
+            const rect = container.getBoundingClientRect();
+            const x = (touch.clientX - rect.left) / rect.width;
+            const y = 1 - (touch.clientY - rect.top) / rect.height;
+            const mouseUniform = program.uniforms.uMouse.value;
+            mouseUniform[0] = x;
+            mouseUniform[1] = y;
+        }
+
+        let animationId = null;
+        function update(timeMs) {
+            animationId = requestAnimationFrame(update);
+            program.uniforms.uTime.value = timeMs * 0.001 * speed;
+            renderer.render({ scene: mesh });
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+        if (interactive) {
+            container.addEventListener('mousemove', handleMouseMove, { passive: true });
+            container.addEventListener('touchmove', handleTouchMove, { passive: true });
+        }
+
+        container.textContent = '';
+        container.appendChild(gl.canvas);
+        animationId = requestAnimationFrame(update);
+
+        return {
+            setBaseColor(nextColor) {
+                const base = program.uniforms.uBaseColor.value;
+                base[0] = nextColor[0];
+                base[1] = nextColor[1];
+                base[2] = nextColor[2];
+            },
+            destroy() {
+                if (animationId) cancelAnimationFrame(animationId);
+                window.removeEventListener('resize', resize);
+                if (interactive) {
+                    container.removeEventListener('mousemove', handleMouseMove);
+                    container.removeEventListener('touchmove', handleTouchMove);
+                }
+                if (gl.canvas.parentElement === container) {
+                    container.removeChild(gl.canvas);
+                }
+                gl.getExtension('WEBGL_lose_context')?.loseContext();
+            }
+        };
+    }
     
     if (savedTheme === 'light') {
         rootElement.setAttribute('data-theme', 'light');
@@ -15,10 +179,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 rootElement.removeAttribute('data-theme');
                 localStorage.setItem('portfolio-theme', 'dark');
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#000000');
+                liquidChromeApi?.setBaseColor(getLiquidBaseColor(false));
             } else {
                 rootElement.setAttribute('data-theme', 'light');
                 localStorage.setItem('portfolio-theme', 'light');
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#f5f5f7');
+                liquidChromeApi?.setBaseColor(getLiquidBaseColor(true));
             }
         });
     });
@@ -28,17 +194,22 @@ document.addEventListener("DOMContentLoaded", function () {
         themeColorMeta.setAttribute('content', '#f5f5f7');
     }
 
-    // Initialize PixelSnow background
-    const snowContainer = document.getElementById('pixel-snow-bg');
-    if (snowContainer && typeof window.initPixelSnow === 'function') {
-        window.initPixelSnow(snowContainer, {
-            waveColor:     [0.5, 0.5, 0.5],
-            colorNum:      4,
-            pixelSize:     2,
-            waveAmplitude: 0.3,
-            waveFrequency: 3.0,
-            waveSpeed:     0.05
-        });
+    // Initialize LiquidChrome background (vanilla JS port)
+    const liquidContainer = document.getElementById('pixel-snow-bg');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (liquidContainer) {
+        try {
+            liquidChromeApi = initLiquidChromeBackground(liquidContainer, {
+                baseColor: getLiquidBaseColor(savedTheme === 'light'),
+                speed: reduceMotion ? 0.22 : 1,
+                amplitude: reduceMotion ? 0.35 : 0.6,
+                frequencyX: 3,
+                frequencyY: 3,
+                interactive: !reduceMotion
+            });
+        } catch (e) {
+            console.error("Failed to initialize background:", e);
+        }
     }
 
     const config = {
