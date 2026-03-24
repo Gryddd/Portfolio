@@ -1,311 +1,238 @@
 /**
- * PixelSnow — Vanilla JS (converted from React/Three.js)
- * A WebGL snow particle effect using custom shaders.
+ * Dither background — vanilla Three.js port of @react-bits/Dither
+ * Uses WebGL 1.0 (GLSL ES 1.00) for universal compatibility.
+ * Avoids WebGL2 array literal bugs by using a DataTexture for the Bayer matrix.
+ * Two-pass: FBM wave → RenderTarget → Bayer dither → screen
  */
 (function () {
   'use strict';
 
-  const vertexShader = `
+  // ── Pass 1: Wave shader (WebGL 1.0) ───────────────────────────────────────
+  var waveVert = `
+varying vec2 vUv;
 void main() {
-  gl_Position = vec4(position, 1.0);
-}
-`;
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`;
 
-  const fragmentShader = `
-precision mediump float;
+  var waveFrag = `
+precision highp float;
+varying vec2 vUv;
 
-uniform float uTime;
-uniform vec2 uResolution;
-uniform float uFlakeSize;
-uniform float uMinFlakeSize;
-uniform float uPixelResolution;
-uniform float uSpeed;
-uniform float uDepthFade;
-uniform float uFarPlane;
-uniform vec3 uColor;
-uniform float uBrightness;
-uniform float uGamma;
-uniform float uDensity;
-uniform float uVariant;
-uniform float uDirection;
-uniform float uScrollOffset;
+uniform vec2  resolution;
+uniform float time;
+uniform float waveSpeed;
+uniform float waveFrequency;
+uniform float waveAmplitude;
+uniform vec3  waveColor;
 
-#define PI 3.14159265
-#define PI_OVER_6 0.5235988
-#define PI_OVER_3 1.0471976
-#define INV_SQRT3 0.57735027
-#define M1 1597334677U
-#define M2 3812015801U
-#define M3 3299493293U
-#define F0 2.3283064e-10
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+vec2 fade(vec2 t){return t*t*t*(t*(t*6.0-15.0)+10.0);}
 
-#define hash(n) (n * (n ^ (n >> 15)))
-#define coord3(p) (uvec3(p).x * M1 ^ uvec3(p).y * M2 ^ uvec3(p).z * M3)
-
-const vec3 camK = vec3(0.57735027, 0.57735027, 0.57735027);
-const vec3 camI = vec3(0.70710678, 0.0, -0.70710678);
-const vec3 camJ = vec3(-0.40824829, 0.81649658, -0.40824829);
-const vec2 b1d = vec2(0.574, 0.819);
-
-vec3 hash3(uint n) {
-  uvec3 hashed = hash(n) * uvec3(1U, 511U, 262143U);
-  return vec3(hashed) * F0;
+float cnoise(vec2 P){
+  vec4 Pi=floor(P.xyxy)+vec4(0.0,0.0,1.0,1.0);
+  vec4 Pf=fract(P.xyxy)-vec4(0.0,0.0,1.0,1.0);
+  Pi=mod289(Pi);
+  vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;
+  vec4 i=permute(permute(ix)+iy);
+  vec4 gx=fract(i*(1.0/41.0))*2.0-1.0;
+  vec4 gy=abs(gx)-0.5;
+  vec4 tx=floor(gx+0.5); gx=gx-tx;
+  vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));
+  g00*=norm.x;g01*=norm.y;g10*=norm.z;g11*=norm.w;
+  float n00=dot(g00,vec2(fx.x,fy.x)),n10=dot(g10,vec2(fx.y,fy.y));
+  float n01=dot(g01,vec2(fx.z,fy.z)),n11=dot(g11,vec2(fx.w,fy.w));
+  vec2 fd=fade(Pf.xy);
+  vec2 nx=mix(vec2(n00,n01),vec2(n10,n11),fd.x);
+  return 2.3*mix(nx.x,nx.y,fd.y);
 }
 
-float snowflakeDist(vec2 p) {
-  float r = length(p);
-  float a = atan(p.y, p.x);
-  a = abs(mod(a + PI_OVER_6, PI_OVER_3) - PI_OVER_6);
-  vec2 q = r * vec2(cos(a), sin(a));
-  float dMain = max(abs(q.y), max(-q.x, q.x - 1.0));
-  float b1t = clamp(dot(q - vec2(0.4, 0.0), b1d), 0.0, 0.4);
-  float dB1 = length(q - vec2(0.4, 0.0) - b1t * b1d);
-  float b2t = clamp(dot(q - vec2(0.7, 0.0), b1d), 0.0, 0.25);
-  float dB2 = length(q - vec2(0.7, 0.0) - b2t * b1d);
-  return min(dMain, min(dB1, dB2)) * 10.0;
+float fbm(vec2 p){
+  float v=0.0,amp=1.0,freq=waveFrequency;
+  for(int i=0;i<4;i++){v+=amp*abs(cnoise(p));p*=freq;amp*=waveAmplitude;}
+  return v;
 }
+float pattern(vec2 p){vec2 p2=p-time*waveSpeed; return fbm(p+fbm(p2));}
 
-void main() {
-  float invPixelRes = 1.0 / uPixelResolution;
-  float pixelSize = max(1.0, floor(0.5 + uResolution.x * invPixelRes));
-  float invPixelSize = 1.0 / pixelSize;
+void main(){
+  vec2 uv = gl_FragCoord.xy / resolution;
+  uv -= 0.5;
+  uv.x *= resolution.x / resolution.y;
+  float f = pattern(uv);
+  gl_FragColor = vec4(mix(vec3(0.0), waveColor, f), 1.0);
+}`;
+
+  // ── Pass 2: Dither shader (WebGL 1.0) ─────────────────────────────────────
+  var ditherVert = `
+varying vec2 vUv;
+void main(){
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`;
+
+  var ditherFrag = `
+precision highp float;
+varying vec2 vUv;
+
+uniform sampler2D inputBuffer;
+uniform sampler2D bayerTexture;
+uniform vec2  resolution;
+uniform float colorNum;
+uniform float pixelSize;
+
+vec3 dither(vec2 uv, vec3 color){
+  vec2 sc = floor(uv * resolution / pixelSize);
   
-  vec2 fragCoord = floor(gl_FragCoord.xy * invPixelSize);
-  vec2 res = uResolution * invPixelSize;
-  float invResX = 1.0 / res.x;
-
-  vec3 ray = normalize(vec3((fragCoord - res * 0.5) * invResX, 1.0));
-  ray = ray.x * camI + ray.y * camJ + ray.z * camK;
-
-  float timeSpeed = uTime * uSpeed;
-  float windX = cos(uDirection) * 0.4;
-  float windY = sin(uDirection) * 0.4;
-  vec3 camPos = (windX * camI + windY * camJ + 0.1 * camK) * timeSpeed;
-  camPos += camJ * uScrollOffset * 0.5 + camK * uScrollOffset * 0.3;
-  vec3 pos = camPos;
-
-  vec3 absRay = max(abs(ray), vec3(0.001));
-  vec3 strides = 1.0 / absRay;
-  vec3 raySign = step(ray, vec3(0.0));
-  vec3 phase = fract(pos) * strides;
-  phase = mix(strides - phase, phase, raySign);
-
-  float rayDotCamK = dot(ray, camK);
-  float invRayDotCamK = 1.0 / rayDotCamK;
-  float invDepthFade = 1.0 / uDepthFade;
-  float halfInvResX = 0.5 * invResX;
-  vec3 timeAnim = timeSpeed * 0.1 * vec3(7.0, 8.0, 5.0);
-
-  float t = 0.0;
-  for (int i = 0; i < 80; i++) {
-    if (t >= uFarPlane) break;
-    
-    vec3 fpos = floor(pos);
-    uint cellCoord = coord3(fpos);
-    float cellHash = hash3(cellCoord).x;
-
-    if (cellHash < uDensity) {
-      vec3 h = hash3(cellCoord);
-      
-      vec3 sinArg1 = fpos.yzx * 0.073;
-      vec3 sinArg2 = fpos.zxy * 0.27;
-      vec3 flakePos = 0.5 - 0.5 * cos(4.0 * sin(sinArg1) + 4.0 * sin(sinArg2) + 2.0 * h + timeAnim);
-      flakePos = flakePos * 0.8 + 0.1 + fpos;
-
-      float toIntersection = dot(flakePos - pos, camK) * invRayDotCamK;
-      
-      if (toIntersection > 0.0) {
-        vec3 testPos = pos + ray * toIntersection - flakePos;
-        float testX = dot(testPos, camI);
-        float testY = dot(testPos, camJ);
-        vec2 testUV = abs(vec2(testX, testY));
-        
-        float depth = dot(flakePos - camPos, camK);
-        float flakeSize = max(uFlakeSize, uMinFlakeSize * depth * halfInvResX);
-        
-        float dist;
-        if (uVariant < 0.5) {
-          dist = max(testUV.x, testUV.y);
-        } else if (uVariant < 1.5) {
-          dist = length(testUV);
-        } else {
-          float invFlakeSize = 1.0 / flakeSize;
-          dist = snowflakeDist(vec2(testX, testY) * invFlakeSize) * flakeSize;
-        }
-
-        if (dist < flakeSize) {
-          float flakeSizeRatio = uFlakeSize / flakeSize;
-          float intensity = exp2(-(t + toIntersection) * invDepthFade) *
-                           min(1.0, flakeSizeRatio * flakeSizeRatio) * uBrightness;
-          gl_FragColor = vec4(uColor * pow(vec3(intensity), vec3(uGamma)), 1.0);
-          return;
-        }
-      }
-    }
-
-    float nextStep = min(min(phase.x, phase.y), phase.z);
-    vec3 sel = step(phase, vec3(nextStep));
-    phase = phase - nextStep + strides * sel;
-    t += nextStep;
-    pos = mix(pos + ray * nextStep, floor(pos + ray * nextStep + 0.5), sel);
-  }
-
-  gl_FragColor = vec4(0.0);
+  // Sample the 8x8 bayer texture. Add 0.5 to sample center of texel.
+  vec2 bayerUv = (mod(sc, 8.0) + 0.5) / 8.0; 
+  float threshold = texture2D(bayerTexture, bayerUv).r - 0.25;
+  
+  float stepsize = 1.0 / (colorNum - 1.0);
+  color += threshold * stepsize;
+  color = clamp(color - 0.2, 0.0, 1.0);
+  return floor(color * (colorNum - 1.0) + 0.5) / (colorNum - 1.0);
 }
-`;
 
-  function initPixelSnow(container, options) {
-    const opts = Object.assign({
-      color: '#ffffff',
-      flakeSize: 0.01,
-      minFlakeSize: 1.25,
-      pixelResolution: 500,
-      speed: 0.4,
-      density: 0.3,
-      direction: 125,
-      brightness: 1,
-      depthFade: 8,
-      farPlane: 20,
-      gamma: 0.4545,
-      variant: 'round'
-    }, options);
+void main(){
+  vec2 nps = pixelSize / resolution;
+  vec2 uvPixel = nps * floor(vUv / nps);
+  vec4 color = texture2D(inputBuffer, uvPixel);
+  color.rgb = dither(vUv, color.rgb);
+  gl_FragColor = color;
+}`;
 
-    var variantValue = opts.variant === 'round' ? 1.0 : opts.variant === 'snowflake' ? 2.0 : 0.0;
-    var threeColor = new THREE.Color(opts.color);
+  // ── Init ────────────────────────────────────────────────────────────────────
+  function initDither(container, opts) {
+    opts = Object.assign({
+      waveColor:     [0.5, 0.5, 0.5],
+      colorNum:      4,
+      pixelSize:     2,
+      waveAmplitude: 0.3,
+      waveFrequency: 3.0,
+      waveSpeed:     0.05
+    }, opts);
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    if (typeof THREE === 'undefined') { console.error('Three.js not loaded'); return; }
+
     var renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      premultipliedAlpha: false,
+      antialias: false,
+      alpha: false,
       powerPreference: 'high-performance',
       stencil: false,
       depth: false
     });
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(1);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
-    renderer.setClearColor(0x000000, 0);
+    renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%!important;height:100%!important;display:block;';
     container.appendChild(renderer.domElement);
 
-    var material = new THREE.ShaderMaterial({
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader,
-      uniforms: {
-        uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(container.offsetWidth, container.offsetHeight) },
-        uFlakeSize: { value: opts.flakeSize },
-        uMinFlakeSize: { value: opts.minFlakeSize },
-        uPixelResolution: { value: opts.pixelResolution },
-        uSpeed: { value: 1.0 },
-        uDepthFade: { value: opts.depthFade },
-        uFarPlane: { value: opts.farPlane },
-        uColor: { value: new THREE.Vector3(threeColor.r, threeColor.g, threeColor.b) },
-        uBrightness: { value: opts.brightness },
-        uGamma: { value: opts.gamma },
-        uDensity: { value: opts.density },
-        uVariant: { value: variantValue },
-        uDirection: { value: (opts.direction * Math.PI) / 180 },
-        uScrollOffset: { value: 0 }
-      },
-      transparent: true
+    var W = container.offsetWidth, H = container.offsetHeight;
+
+    // Full-screen quad
+    var quad = new THREE.PlaneGeometry(2, 2);
+
+    // ── Generate Bayer 8x8 DataTexture ────────────────────────────────────────
+    var bayerData = new Uint8Array([
+       0,192, 48,240, 12,204, 60,252,
+     128, 64,176,112,140, 76,188,124,
+      32,224, 16,208, 44,236, 28,220,
+     160, 96,144, 80,172,108,156, 92,
+       8,200, 56,248,  4,196, 52,244,
+     136, 72,184,120,132, 68,180,116,
+      40,232, 24,216, 36,228, 20,212,
+     168,104,152, 88,164,100,148, 84
+    ]);
+    var bayerTex = new THREE.DataTexture(bayerData, 8, 8, THREE.LuminanceFormat, THREE.UnsignedByteType);
+    bayerTex.minFilter = THREE.NearestFilter;
+    bayerTex.magFilter = THREE.NearestFilter;
+    bayerTex.wrapS = THREE.RepeatWrapping;
+    bayerTex.wrapT = THREE.RepeatWrapping;
+    bayerTex.needsUpdate = true;
+
+    // Render target for Pass 1
+    var rt = new THREE.WebGLRenderTarget(W, H, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.NearestFilter,
+      format: THREE.RGBAFormat
     });
 
-    var geometry = new THREE.PlaneGeometry(2, 2);
-    scene.add(new THREE.Mesh(geometry, material));
+    // Wave material (Pass 1)
+    var waveUniforms = {
+      resolution:    { value: new THREE.Vector2(W, H) },
+      time:          { value: 0.0 },
+      waveSpeed:     { value: opts.waveSpeed },
+      waveFrequency: { value: opts.waveFrequency },
+      waveAmplitude: { value: opts.waveAmplitude },
+      waveColor:     { value: new THREE.Vector3(opts.waveColor[0], opts.waveColor[1], opts.waveColor[2]) }
+    };
+    var waveScene = new THREE.Scene();
+    waveScene.add(new THREE.Mesh(quad, new THREE.ShaderMaterial({
+      vertexShader: waveVert, fragmentShader: waveFrag, uniforms: waveUniforms 
+    })));
 
-    var startTime = performance.now();
-    var animationId;
+    // Dither material (Pass 2)
+    var ditherUniforms = {
+      inputBuffer:  { value: rt.texture },
+      bayerTexture: { value: bayerTex },
+      resolution:   { value: new THREE.Vector2(W, H) },
+      colorNum:     { value: parseFloat(opts.colorNum) },
+      pixelSize:    { value: parseFloat(opts.pixelSize) }
+    };
+    var ditherScene = new THREE.Scene();
+    ditherScene.add(new THREE.Mesh(quad, new THREE.ShaderMaterial({
+      vertexShader: ditherVert, fragmentShader: ditherFrag, uniforms: ditherUniforms
+    })));
+
+    var cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    cam.position.z = 1;
+
+    // Resize
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        W = container.offsetWidth; H = container.offsetHeight;
+        renderer.setSize(W, H);
+        rt.setSize(W, H);
+        waveUniforms.resolution.value.set(W, H);
+        ditherUniforms.resolution.value.set(W, H);
+      }, 120);
+    });
+
+    // Visibility observer
     var isVisible = true;
+    var obs = new IntersectionObserver(function (e) { isVisible = e[0].isIntersecting; }, { threshold: 0 });
+    obs.observe(container);
 
-    // Visibility observer — only render when on screen
-    var observer = new IntersectionObserver(function (entries) {
-      isVisible = entries[0].isIntersecting;
-    }, { threshold: 0 });
-    observer.observe(container);
-
-    // Resize handler
-    var resizeTimeout;
-    function handleResize() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(function () {
-        var w = container.offsetWidth;
-        var h = container.offsetHeight;
-        renderer.setSize(w, h);
-        material.uniforms.uResolution.value.set(w, h);
-      }, 100);
-    }
-    window.addEventListener('resize', handleResize);
-
-    // Direction-aware clock: down = forward, up = reverse
-    var customTime = 0;
-    var lastFrameTime = performance.now();
-    var scrollDelta = 0; // accumulated between frames, consumed each frame
-    var idleRate = 0.06;
-    var currentRate = idleRate;
-
-    window.addEventListener('scroll', function () {
-      scrollDelta += window.scrollY - (window._lastSnowY || window.scrollY);
-      window._lastSnowY = window.scrollY;
-    }, { passive: true });
-    window._lastSnowY = window.scrollY;
-
-    // Animation loop
+    // Animate
+    var animId, t0 = performance.now();
     function animate() {
-      animationId = requestAnimationFrame(animate);
-      if (isVisible) {
-        var now = performance.now();
-        var frameDt = (now - lastFrameTime) * 0.001;
-        lastFrameTime = now;
-
-        // Convert scroll delta to a rate: positive = down = forward, negative = up = reverse
-        var scrollRate = scrollDelta * 0.003;
-        scrollRate = Math.max(-0.6, Math.min(0.6, scrollRate));
-
-        var targetRate;
-        if (scrollDelta > 0.5) {
-          // Scrolling down: forward
-          targetRate = idleRate + scrollRate;
-        } else if (scrollDelta < -0.5) {
-          // Scrolling up: reverse (symmetric speed)
-          targetRate = -idleRate + scrollRate;
-        } else {
-          // Idle
-          targetRate = idleRate;
-        }
-
-        // Fast lerp so direction change is felt immediately
-        currentRate += (targetRate - currentRate) * 0.2;
-
-        customTime += frameDt * currentRate;
-        material.uniforms.uTime.value = customTime;
-        material.uniforms.uScrollOffset.value = 0;
-
-        // Reset delta for next frame
-        scrollDelta = 0;
-
-        renderer.render(scene, camera);
-      }
+      animId = requestAnimationFrame(animate);
+      if (!isVisible) return;
+      waveUniforms.time.value = (performance.now() - t0) * 0.001;
+      
+      // Pass 1: render wave to internal target
+      renderer.setRenderTarget(rt);
+      renderer.render(waveScene, cam);
+      
+      // Pass 2: render dithered output to screen
+      renderer.setRenderTarget(null);
+      renderer.render(ditherScene, cam);
     }
     animate();
 
-    // Cleanup function
-    return function destroy() {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(resizeTimeout);
-      observer.disconnect();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
+    return function () {
+      cancelAnimationFrame(animId);
+      obs.disconnect();
+      rt.dispose();
+      bayerTex.dispose();
       renderer.dispose();
-      renderer.forceContextLoss();
-      geometry.dispose();
-      material.dispose();
+      if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
     };
   }
 
-  // Expose globally
-  window.initPixelSnow = initPixelSnow;
+  window.initPixelSnow = initDither;
 })();

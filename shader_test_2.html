@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<body>
+<pre id="log"></pre>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+function logError(msg) {
+  document.getElementById('log').textContent += msg + '\n------------------\n';
+}
+var oldError = console.error;
+console.error = function() {
+  logError(Array.from(arguments).join(' '));
+  oldError.apply(console, arguments);
+};
+
+var canvas = document.createElement('canvas');
+var gl2 = canvas.getContext('webgl2');
+if (!gl2) { logError("No WebGL2"); }
+
+var renderer = new THREE.WebGLRenderer({ canvas: canvas, context: gl2 });
+var scene = new THREE.Scene();
+var cam = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+var waveVert = `
+in vec3 position;
+out vec2 vUv;
+void main() {
+  vUv = (position.xy + 1.0) * 0.5;
+  gl_Position = vec4(position.xy, 0.0, 1.0);
+}`;
+
+var waveFrag = `
+precision highp float;
+in  vec2  vUv;
+out vec4  fragColor;
+
+uniform vec2  resolution;
+uniform float time;
+uniform float waveSpeed;
+uniform float waveFrequency;
+uniform float waveAmplitude;
+uniform vec3  waveColor;
+
+vec4 mod289v(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute4(vec4 x){return mod289v(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt4(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+vec2 fade2(vec2 t){return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+float cnoise(vec2 P){
+  vec4 Pi=floor(P.xyxy)+vec4(0,0,1,1);
+  vec4 Pf=fract(P.xyxy)-vec4(0,0,1,1);
+  Pi=mod289v(Pi);
+  vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;
+  vec4 i=permute4(permute4(ix)+iy);
+  vec4 gx=fract(i*(1.0/41.0))*2.0-1.0;
+  vec4 gy=abs(gx)-0.5;
+  vec4 tx=floor(gx+0.5); gx=gx-tx;
+  vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);
+  vec4 norm=taylorInvSqrt4(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));
+  g00*=norm.x;g01*=norm.y;g10*=norm.z;g11*=norm.w;
+  float n00=dot(g00,vec2(fx.x,fy.x)),n10=dot(g10,vec2(fx.y,fy.y));
+  float n01=dot(g01,vec2(fx.z,fy.z)),n11=dot(g11,vec2(fx.w,fy.w));
+  vec2 fd=fade2(Pf.xy);
+  vec2 nx=mix(vec2(n00,n01),vec2(n10,n11),fd.x);
+  return 2.3*mix(nx.x,nx.y,fd.y);
+}
+
+float fbm(vec2 p){
+  float v=0.0,amp=1.0,freq=waveFrequency;
+  for(int i=0;i<4;i++){v+=amp*abs(cnoise(p));p*=freq;amp*=waveAmplitude;}
+  return v;
+}
+float pattern(vec2 p){vec2 p2=p-time*waveSpeed; return fbm(p+fbm(p2));}
+
+void main(){
+  vec2 uv=gl_FragCoord.xy/resolution;
+  uv-=0.5;
+  uv.x*=resolution.x/resolution.y;
+  float f=pattern(uv);
+  fragColor=vec4(mix(vec3(0.0),waveColor,f),1.0);
+}`;
+
+var ditherFrag = `
+precision highp float;
+in  vec2 vUv;
+out vec4 fragColor;
+
+uniform sampler2D inputBuffer;
+uniform vec2  resolution;
+uniform float colorNum;
+uniform float pixelSize;
+
+const float bayer[64]=float[64](
+   0.0/64.0,48.0/64.0,12.0/64.0,60.0/64.0, 3.0/64.0,51.0/64.0,15.0/64.0,63.0/64.0,
+  32.0/64.0,16.0/64.0,44.0/64.0,28.0/64.0,35.0/64.0,19.0/64.0,47.0/64.0,31.0/64.0,
+   8.0/64.0,56.0/64.0, 4.0/64.0,52.0/64.0,11.0/64.0,59.0/64.0, 7.0/64.0,55.0/64.0,
+  40.0/64.0,24.0/64.0,36.0/64.0,20.0/64.0,43.0/64.0,27.0/64.0,39.0/64.0,23.0/64.0,
+   2.0/64.0,50.0/64.0,14.0/64.0,62.0/64.0, 1.0/64.0,49.0/64.0,13.0/64.0,61.0/64.0,
+  34.0/64.0,18.0/64.0,46.0/64.0,30.0/64.0,33.0/64.0,17.0/64.0,45.0/64.0,29.0/64.0,
+  10.0/64.0,58.0/64.0, 6.0/64.0,54.0/64.0, 9.0/64.0,57.0/64.0, 5.0/64.0,53.0/64.0,
+  42.0/64.0,26.0/64.0,38.0/64.0,22.0/64.0,41.0/64.0,25.0/64.0,37.0/64.0,21.0/64.0
+);
+
+vec3 dither(vec2 uv, vec3 color){
+  vec2 sc=floor(uv*resolution/pixelSize);
+  int x=int(mod(sc.x,8.0));
+  int y=int(mod(sc.y,8.0));
+  float threshold=bayer[y*8+x]-0.25;
+  float step=1.0/(colorNum-1.0);
+  color+=threshold*step;
+  color=clamp(color-0.2,0.0,1.0);
+  return floor(color*(colorNum-1.0)+0.5)/(colorNum-1.0);
+}
+
+void main(){
+  vec2 nps=pixelSize/resolution;
+  vec2 uvPixel=nps*floor(vUv/nps);
+  vec4 color=texture(inputBuffer,uvPixel);
+  color.rgb=dither(vUv,color.rgb);
+  fragColor=color;
+}`;
+
+var m1 = new THREE.RawShaderMaterial({
+  vertexShader: waveVert, fragmentShader: waveFrag, glslVersion: THREE.GLSL3,
+  uniforms: {
+    resolution: { value: new THREE.Vector2(800,600) }, time: { value: 0 },
+    waveSpeed: { value: 0.05 }, waveFrequency: { value: 3.0 }, waveAmplitude: { value: 0.3 },
+    waveColor: { value: new THREE.Vector3(0.5,0.5,0.5) }
+  }
+});
+
+var m2 = new THREE.RawShaderMaterial({
+  vertexShader: waveVert, fragmentShader: ditherFrag, glslVersion: THREE.GLSL3,
+  uniforms: {
+    inputBuffer: { value: null }, resolution: { value: new THREE.Vector2(800,600) },
+    colorNum: { value: 4.0 }, pixelSize: { value: 2.0 }
+  }
+});
+
+var quad = new THREE.BufferGeometry();
+quad.setAttribute('position', new THREE.BufferAttribute(new Float32Array([-1,-1,0, 1,-1,0, -1,1,0, 1,1,0]), 3));
+
+try {
+  scene.add(new THREE.Mesh(quad, m1));
+  renderer.render(scene, cam);
+  logError("M1 Log:\n" + renderer.getContext().getProgramInfoLog(m1.program.program));
+} catch(e) { logError("M1 Exception: " + e.message); }
+
+try {
+  scene.clear();
+  scene.add(new THREE.Mesh(quad, m2));
+  renderer.render(scene, cam);
+  logError("M2 Log:\n" + renderer.getContext().getProgramInfoLog(m2.program.program));
+} catch(e) { logError("M2 Exception: " + e.message); }
+
+logError("DONE");
+</script>
+</body>
+</html>

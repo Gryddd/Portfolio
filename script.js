@@ -3,18 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const snowContainer = document.getElementById('pixel-snow-bg');
     if (snowContainer && typeof window.initPixelSnow === 'function') {
         window.initPixelSnow(snowContainer, {
-            color: '#ffffff',
-            flakeSize: 0.006,
-            minFlakeSize: 0.8,
-            pixelResolution: 2000,
-            speed: 0.4,
-            density: 0.25,
-            direction: 125,
-            brightness: 1,
-            depthFade: 8,
-            farPlane: 14,
-            gamma: 0.4545,
-            variant: 'round'
+            waveColor:     [0.5, 0.5, 0.5],
+            colorNum:      4,
+            pixelSize:     2,
+            waveAmplitude: 0.3,
+            waveFrequency: 3.0,
+            waveSpeed:     0.05
         });
     }
 
