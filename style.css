@@ -1227,22 +1227,51 @@ button:hover,
     margin-bottom: 2rem;
     padding-top: 2.5rem;
     padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
 }
-.tech-stack-section h3 {
+.tech-stack-card {
+    max-width: 600px;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    background: var(--card-bg-performant);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);
+    border: 1px solid var(--card-border);
+    overflow: hidden;
+}
+.tech-stack-card:hover {
+    box-shadow: var(--card-hover-glow);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.tech-stack-card h3 {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
     color: var(--text-color);
 }
-.tech-icons {
+.tech-scroll-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    /* Fade out the edges of the scrolling area */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+.tech-scroll-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    width: max-content;
+    animation: scroll-horizontal 8s linear infinite;
+}
+.tech-scroll-track {
+    display: flex;
+    gap: 4rem;
+    padding-right: 4rem; /* Match the gap exactly to make loop seamless */
+    flex-shrink: 0;
+}
+@keyframes scroll-horizontal {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Wrapper contains exactly 2 tracks, translate by half */
 }
 .tech-item {
     display: flex;
@@ -1252,16 +1281,18 @@ button:hover,
     transition: transform var(--transition-speed);
     min-width: 80px;
 }
-.tech-item:hover {
-    transform: translateY(-3px);
-}
 .tech-item svg {
     width: 36px;
     height: 36px;
-    transition: transform var(--transition-speed);
+    transition: filter var(--transition-speed);
+    /* High contrast, pure white using brightness and grayscale */
+    filter: grayscale(100%) brightness(200%) contrast(100%);
+}
+.tech-item:hover {
+    transform: translateY(-3px);
 }
 .tech-item:hover svg {
-    transform: scale(1.15);
+    filter: grayscale(100%) brightness(250%) contrast(120%);
 }
 .tech-item span {
     font-family: var(--font-heading);
