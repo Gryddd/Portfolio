@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!container || typeof window.ogl === 'undefined') return null;
 
         const { Renderer, Program, Mesh, Geometry } = window.ogl;
-        const renderer = new Renderer({ antialias: true, alpha: true });
+        // Optimized: Reduced dpr (density pixel ratio) to save rendering power on retina/high-res displays
+        const renderer = new Renderer({ antialias: false, alpha: true, dpr: Math.min(window.devicePixelRatio || 1, 1.25) });
         const gl = renderer.gl;
         gl.clearColor(0, 0, 0, 0);
 
@@ -49,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 vec2 fragCoord = uvCoord * uResolution.xy;
                 vec2 uv = (2.0 * fragCoord - uResolution.xy) / min(uResolution.x, uResolution.y);
 
-                for (float i = 1.0; i < 10.0; i++) {
+                // Optimized: Reduced loop iterations from 10 to 6 to vastly improve rendering speed
+                for (float i = 1.0; i < 6.0; i++) {
                     uv.x += uAmplitude / i * cos(i * uFrequencyX * uv.y + uTime + uMouse.x * 3.14159);
                     uv.y += uAmplitude / i * cos(i * uFrequencyY * uv.x + uTime + uMouse.y * 3.14159);
                 }
@@ -65,16 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             void main() {
-                vec4 col = vec4(0.0);
-                int samples = 0;
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        vec2 offset = vec2(float(i), float(j)) * (1.0 / min(uResolution.x, uResolution.y));
-                        col += renderImage(vUv + offset);
-                        samples++;
-                    }
-                }
-                gl_FragColor = col / float(samples);
+                // Optimized: Removed 9x multi-sampling loop for better performance on low-end PCs
+                gl_FragColor = renderImage(vUv);
             }
         `;
 
@@ -201,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             liquidChromeApi = initLiquidChromeBackground(liquidContainer, {
                 baseColor: getLiquidBaseColor(savedTheme === 'light'),
-                speed: reduceMotion ? 0.22 : 1,
+                speed: reduceMotion ? 0.05 : 0.25, // Significantly slowed down as requested
                 amplitude: reduceMotion ? 0.35 : 0.6,
                 frequencyX: 3,
                 frequencyY: 3,
