@@ -221,6 +221,12 @@ main {
     width: 100%;
 }
 
+.nav-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
 .nav-links {
     display: flex;
     gap: 1.2rem;
@@ -354,6 +360,20 @@ main {
     position: relative;
     width: 100%;
 }
+.mobile-language-selector-offset {
+    margin-top: 15px;
+}
+.mobile-theme-floating {
+    display: none;
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0) + 0.75rem);
+    left: calc(env(safe-area-inset-left, 0) + 0.75rem);
+    z-index: 1004;
+    background: color-mix(in srgb, var(--nav-bg) 85%, transparent);
+    border: 1px solid var(--card-border);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
 .mobile-toggle {
     background: rgb(255 255 255 / 0.05);
     -webkit-backdrop-filter: blur(10px);
@@ -361,14 +381,14 @@ main {
     border: 1px solid rgb(255 255 255 / 0.1);
     color: var(--text-color);
     font-family: var(--font-heading);
-    font-size: 1.3rem;
-    padding: 12px;
+    font-size: 1.05rem;
+    padding: 12px 14px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    width: auto;
-    justify-content: center;
+    width: 100%;
+    justify-content: space-between;
     border-radius: 8px;
     position: relative;
     z-index: 10;
@@ -388,7 +408,7 @@ main {
 .mobile-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 8px 0 0 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
@@ -398,19 +418,17 @@ main {
     border: 1px solid rgb(255 255 255 / 0.1);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgb(0 0 0 / 0.3);
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
+    position: static;
+    width: 100%;
     z-index: 10;
 }
 .mobile-list li a {
     font-size: 0.9rem !important;
-    padding: 8px 15px !important;
+    padding: 10px 14px !important;
     animation: none !important;
     opacity: 1 !important;
     white-space: nowrap;
+    text-align: left;
 }
 .mobile-menu-icon {
     display: none;
@@ -447,32 +465,41 @@ main {
     position: relative;
     top: 0;
     width: 100%;
-    text-align: center;
+    max-width: 38rem;
     margin-top: 0;
-    padding: 60px 20px 20px 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 84px 16px 28px 16px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
     min-height: 100vh;
     overflow-y: auto;
-    gap: 6px;
+    gap: 10px;
     box-sizing: border-box;
 }
 .mobile-nav-overlay a {
-    padding: 10px;
+    width: 100%;
+    padding: 14px 16px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.2;
     color: var(--text-color);
     display: block;
     transition: 0.3s;
     font-family: var(--font-heading);
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    background: color-mix(in srgb, var(--card-bg-performant) 84%, transparent);
     opacity: 0;
     animation: fadeInLink 0.5s ease-out forwards;
 }
 .mobile-nav-overlay a:hover,
 .mobile-nav-overlay a:focus {
     color: var(--primary-blue);
+    border-color: color-mix(in srgb, var(--primary-blue) 24%, var(--card-border));
+    background: color-mix(in srgb, var(--card-bg-performant) 92%, transparent);
 }
 .container {
     width: 90%;
@@ -900,6 +927,12 @@ h2::after {
     margin-top: 0;
     margin-bottom: 15px;
 }
+.timeline-note {
+    font-style: italic;
+    color: #aaa;
+    font-size: 0.9em;
+    margin: 4px 0 8px;
+}
 .timeline-content .date {
     font-weight: 700;
     color: var(--text-color);
@@ -1017,6 +1050,13 @@ h2::after {
     color: var(--text-color);
     transition: transform var(--transition-speed) ease, background-color 0.2s ease;
     border-radius: 8px;
+    gap: 1rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.faq-question > .lang {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 .faq-question:hover {
     transform: translateY(-2px);
@@ -1054,10 +1094,24 @@ h2::after {
     line-height: 1.7;
     color: var(--text-color);
 }
+.faq-card-shell {
+    width: 100%;
+    max-width: 65rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+}
+.faq-accordion-wide {
+    max-width: 100%;
+}
 .faq-video-link {
     color: var(--primary-blue);
     font-weight: 700;
     text-decoration: underline;
+}
+.contact-form-card {
+    margin: 0 auto;
+    max-width: 32rem;
+    padding: 2.5rem 2rem;
 }
 .contact-section {
     text-align: center;
@@ -1433,6 +1487,9 @@ button:hover,
     .mobile-menu-icon {
         display: block;
     }
+    .mobile-theme-floating {
+        display: flex;
+    }
     h1 {
         font-size: 2rem;
     }
@@ -1445,17 +1502,17 @@ button:hover,
 
     .mobile-nav-overlay-content {
         top: 0;
-        padding: 60px 0 60px 0;
+        padding: 84px 16px 28px 16px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-start;
+        align-items: stretch;
         height: auto;
-        min-height: auto;
+        min-height: 100vh;
     }
     .mobile-nav-overlay a {
-        font-size: 1.3rem;
-        padding: 12px;
+        font-size: 1rem;
+        padding: 14px 16px;
         opacity: 0;
         animation: fadeInLink 0.5s ease-out forwards;
     }
@@ -1492,7 +1549,8 @@ button:hover,
     }
     .mobile-language-buttons {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        width: 100%;
         gap: 1rem;
         margin-top: 1.5rem;
         opacity: 0;
@@ -1505,7 +1563,8 @@ button:hover,
         color: var(--text-color);
         font-family: var(--font-heading);
         font-size: 1rem;
-        padding: 8px 18px;
+        padding: 10px 18px;
+        flex: 1 1 0;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -1607,6 +1666,7 @@ button:hover,
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    position: relative;
     display: flex;
     flex-direction: column;
     transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
@@ -1627,10 +1687,11 @@ button:hover,
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1), filter 0.5s ease;
 }
 .project-card:hover .project-card-image img {
-    transform: scale(1.05);
+    transform: scale(1.03);
+    filter: brightness(1.05);
 }
 .project-card-content {
     padding: 1.5rem;
@@ -2052,6 +2113,13 @@ button:hover,
 .project-report-dropdown.active .arrow-icon {
     transform: rotate(180deg) !important;
 }
+.dropdown-inline-arrow {
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+    fill: currentColor;
+    transition: transform 0.3s;
+}
 
 /* SRM Experience Dropdown Specifics */
 .experience-dropdown-container {
@@ -2264,18 +2332,6 @@ a:focus-visible {
 }
 @keyframes toast-out {
     to { transform: translateX(120%); opacity: 0; }
-}
-
-/* ========== PROJECT CARD HOVER PREVIEW ========== */
-.project-card {
-    position: relative;
-}
-.project-card-image img {
-    transition: transform 0.5s cubic-bezier(.4,0,.2,1), filter 0.5s ease;
-}
-.project-card:hover .project-card-image img {
-    transform: scale(1.03);
-    filter: brightness(1.05);
 }
 
 /* ========== PREFERS REDUCED MOTION ========== */
