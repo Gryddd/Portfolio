@@ -318,6 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileList = document.querySelector('.mobile-list');
     const activeDropdownSelector = '.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active';
+    let mobileMenuScrollY = 0;
 
     function collapseMobileLanguageList(dropdown) {
         if (!dropdown || !dropdown.matches('.mobile-language-selector')) return;
@@ -332,11 +333,27 @@ document.addEventListener("DOMContentLoaded", function () {
         collapseMobileLanguageList(activeDropdown);
     }
 
+    function lockMobileMenuScroll() {
+        mobileMenuScrollY = window.scrollY || window.pageYOffset;
+        document.body.style.top = `-${mobileMenuScrollY}px`;
+        document.body.classList.add('mobile-nav-open');
+    }
+
+    function unlockMobileMenuScroll() {
+        document.body.classList.remove('mobile-nav-open');
+        document.body.style.top = '';
+        window.scrollTo(0, mobileMenuScrollY);
+    }
+
     const toggleMobileNav = () => {
         if (!mobileMenuIcon || !mobileNavOverlay) return;
         const isOpen = mobileMenuIcon.classList.toggle("change");
         mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
-        document.body.classList.toggle("modal-open", isOpen);
+        if (isOpen) {
+            lockMobileMenuScroll();
+        } else {
+            unlockMobileMenuScroll();
+        }
     };
     function updateModalLanguageSwitchers() {
         document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {

@@ -129,6 +129,12 @@ body {
 body.modal-open {
     overflow: hidden;
 }
+body.mobile-nav-open {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    overflow: hidden;
+}
 h1,
 h2,
 h3,
@@ -363,12 +369,12 @@ main {
 .mobile-language-selector-offset {
     margin-top: 15px;
 }
-.mobile-theme-floating {
+.mobile-theme-in-menu {
     display: none;
-    position: fixed;
+    position: absolute;
     top: calc(env(safe-area-inset-top, 0) + 0.75rem);
     left: calc(env(safe-area-inset-left, 0) + 0.75rem);
-    z-index: 1004;
+    z-index: 2;
     background: color-mix(in srgb, var(--nav-bg) 85%, transparent);
     border: 1px solid var(--card-border);
     -webkit-backdrop-filter: blur(12px);
@@ -459,6 +465,9 @@ main {
     -webkit-backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
     overflow: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
     transition: 0.5s;
 }
 .mobile-nav-overlay-content {
@@ -476,6 +485,7 @@ main {
     align-items: stretch;
     min-height: 100vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
     gap: 10px;
     box-sizing: border-box;
 }
@@ -1487,7 +1497,7 @@ button:hover,
     .mobile-menu-icon {
         display: block;
     }
-    .mobile-theme-floating {
+    .mobile-theme-in-menu {
         display: flex;
     }
     h1 {
