@@ -170,11 +170,11 @@ h4 {
     z-index: -2;
     overflow: hidden;
     pointer-events: none;
-    transition: filter 0.5s ease;
+    opacity: 0.92;
+    transition: opacity 0.35s ease;
 }
 html[data-theme="light"] .pixel-snow-bg {
-    filter: invert(1) hue-rotate(180deg);
-    opacity: 0.8;
+    opacity: 0.55;
 }
 .pixel-snow-bg canvas {
     display: block;
@@ -540,11 +540,11 @@ main {
     animation: rotate-border 6s linear infinite;
     transition: transform 0.5s cubic-bezier(.4,0,.2,1), box-shadow 0.5s ease;
     /* Glow is OUTSIDE only — no filter, no internal bleed */
-    box-shadow: 0 0 20px -4px rgba(255,255,255,0.07);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 20px -4px var(--hero-glow-color);
 }
 .hero-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 0 35px -4px rgba(255,255,255,0.12), 0 24px 48px -12px rgba(0,0,0,0.5);
+    box-shadow: 0 24px 56px -10px rgba(0, 0, 0, 0.8), 0 0 35px -4px var(--hero-accent-color);
 }
 @property --card-angle {
     syntax: "<angle>";
