@@ -1,4 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Theme Toggle Logic
+    const themeToggleBtns = document.querySelectorAll('.theme-toggle');
+    const rootElement = document.documentElement;
+    const savedTheme = localStorage.getItem('portfolio-theme');
+    
+    if (savedTheme === 'light') {
+        rootElement.setAttribute('data-theme', 'light');
+    }
+
+    themeToggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (rootElement.getAttribute('data-theme') === 'light') {
+                rootElement.removeAttribute('data-theme');
+                localStorage.setItem('portfolio-theme', 'dark');
+            } else {
+                rootElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('portfolio-theme', 'light');
+            }
+        });
+    });
+
     // Initialize PixelSnow background
     const snowContainer = document.getElementById('pixel-snow-bg');
     if (snowContainer && typeof window.initPixelSnow === 'function') {

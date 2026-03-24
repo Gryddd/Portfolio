@@ -15,7 +15,82 @@
     --card-hover-glow: 0 0 25px rgba(255, 255, 255, 0.1), 0 8px 30px rgba(0, 0, 0, 0.4);
     --blur: blur(1px);
     --transition-speed: 0.3s;
+    
+    /* New Theme Variables */
+    --nav-bg: rgba(0, 0, 0, 0.85);
+    --card-inner-bg: #080808;
+    --dropdown-bg: rgba(20, 20, 20, 0.7);
+    --overlay-bg: rgba(0, 0, 0, 0.92);
+    --modal-overlay: rgba(0, 0, 0, 0.7);
+    --btn-text: #000000;
+    --modal-content-bg: #000000;
+    --input-bg: rgba(10, 10, 10, 0.8);
+    --hero-accent-color: rgba(255, 255, 255, 0.4);
+    --hero-glow-color: rgba(255, 255, 255, 0.3);
 }
+
+[data-theme="light"] {
+    --background: #f5f5f7;
+    --primary-blue: #000000;
+    --text-color: #1d1d1f;
+    --text-muted: #86868b;
+    --border-color: #d2d2d7;
+    --gradient-start: #000000;
+    --gradient-end: #444444;
+    --accent-gradient: linear-gradient(135deg, #000000, #444444);
+    --card-bg-performant: linear-gradient(145deg, #ffffff, #eef0f3);
+    --card-bg: rgba(0, 0, 0, 0.03);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --card-hover-glow: 0 0 25px rgba(0, 0, 0, 0.05), 0 8px 30px rgba(0, 0, 0, 0.1);
+    
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --card-inner-bg: linear-gradient(145deg, #ffffff, #eef0f3);
+    --dropdown-bg: rgba(245, 245, 247, 0.9);
+    --overlay-bg: rgba(255, 255, 255, 0.95);
+    --modal-overlay: rgba(255, 255, 255, 0.7);
+    --btn-text: #ffffff;
+    --modal-content-bg: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --hero-accent-color: rgba(0, 0, 0, 0.2);
+    --hero-glow-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .tech-item svg {
+    filter: grayscale(100%) brightness(15%) contrast(120%);
+}
+[data-theme="light"] .tech-item:hover svg {
+    filter: grayscale(0%) brightness(100%) contrast(100%);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    transition: transform 0.3s ease;
+    border-radius: 50%;
+    background: var(--card-bg);
+}
+
+.theme-toggle:hover {
+    transform: rotate(15deg) scale(1.1);
+    background: var(--card-border);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.theme-toggle .sun-icon { display: none; }
+[data-theme="light"] .theme-toggle .moon-icon { display: none; }
+[data-theme="light"] .theme-toggle .sun-icon { display: block; }
 
 .timeline-content,
 .skill-card,
@@ -89,6 +164,11 @@ h4 {
     z-index: -2;
     overflow: hidden;
     pointer-events: none;
+    transition: filter 0.5s ease;
+}
+html[data-theme="light"] .pixel-snow-bg {
+    filter: invert(1) hue-rotate(180deg);
+    opacity: 0.8;
 }
 .pixel-snow-bg canvas {
     display: block;
@@ -118,8 +198,8 @@ main {
     width: 100%;
     z-index: 1001;
     padding: 0.5rem 2rem;
-    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-    background: rgba(0, 0, 0, 0.85);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, background 0.3s ease;
+    background: var(--nav-bg);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 20px rgb(0 0 0 / 0.3);
@@ -357,7 +437,7 @@ main {
     z-index: 1001;
     top: 0;
     left: 0;
-    background: rgb(0 0 0 / 0.92);
+    background: var(--overlay-bg);
     -webkit-backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
     overflow: auto;
@@ -419,7 +499,7 @@ main {
     width: 100%;
     border-radius: 24px;
     padding: 2px;
-    background: conic-gradient(from var(--card-angle, 0deg), transparent 25%, rgba(255,255,255,0.3) 50%, transparent 75%);
+    background: conic-gradient(from var(--card-angle, 0deg), transparent 25%, var(--hero-glow-color) 50%, transparent 75%);
     animation: rotate-border 6s linear infinite;
     transition: transform 0.5s cubic-bezier(.4,0,.2,1), box-shadow 0.5s ease;
     /* Glow is OUTSIDE only — no filter, no internal bleed */
@@ -447,7 +527,7 @@ main {
     position: absolute;
     inset: 2px;
     border-radius: 22px;
-    background: #080808;
+    background: var(--card-inner-bg);
     z-index: 0;
 }
 
@@ -459,7 +539,7 @@ main {
     transform: translateX(-50%);
     width: 50%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background: linear-gradient(90deg, transparent, var(--hero-accent-color), transparent);
     border-radius: 2px;
     z-index: 2;
 }
@@ -1073,7 +1153,7 @@ h2::after {
 }
 .form-group input,
 .form-group textarea {
-    background-color: rgba(10, 10, 10, 0.8);
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     color: var(--text-color);
     padding: 1rem;
@@ -1095,7 +1175,7 @@ h2::after {
 .submit-btn {
     background: var(--accent-gradient);
     border: none;
-    color: #000;
+    color: var(--btn-text);
     padding: 0.65rem 1rem;
     border-radius: 8px;
     cursor: pointer;
@@ -1118,13 +1198,13 @@ button:hover,
 .submit-btn:disabled {
     background: var(--accent-gradient);
     border-color: #666;
-    color: #000;
+    color: var(--btn-text);
     cursor: not-allowed;
 }
 .submit-btn svg {
     width: 20px;
     height: 20px;
-    fill: #000;
+    fill: var(--btn-text);
 }
 #form-status {
     text-align: center;
@@ -2028,6 +2108,9 @@ button:hover,
     width: 22px;
     height: 22px;
     fill: #000;
+}
+[data-theme="light"] .scroll-to-top svg {
+    fill: #ffffff;
 }
 
 /* ========== SECTION DIVIDERS ========== */
