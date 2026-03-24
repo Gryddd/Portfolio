@@ -30,7 +30,8 @@ herzlich willkommen auf meinem Portfolio. Mein Name ist Walid Gourideche, und ic
 | ------------- | ------------------------------------------ |
 | **Struktur**  | `HTML5`, `Semantisches Markup`             |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
-| **Logik**     | `Vanilla JavaScript (ES6+)`                |
+| **Logik**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
+| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`      |
 | **Deployment**| `Cloudflare Pages`                         |
 
 ---
@@ -101,7 +102,8 @@ Welcome to my portfolio. My name is Walid Gourideche, and I am a motivated, 23-y
 |---------------|--------------------------------------------|
 | **Structure** | `HTML5`, `Semantic Markup`                 |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
-| **Logic**     | `Vanilla JavaScript (ES6+)`                |
+| **Logic**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
+| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`      |
 | **Deployment**| `Cloudflare Pages`                         |
 
 ---
