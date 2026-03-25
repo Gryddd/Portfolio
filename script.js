@@ -715,6 +715,238 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     AOS.init({ duration: 1000, once: true });
+
+    // ============================================
+    // DYNAMIC GITHUB STATS FETCHER
+    // ============================================
+    // Fetches real-time GitHub data with 1-hour caching
+    // Works on static hosting (GitHub Pages / Cloudflare)
+    
+    async function fetchGitHubStats() {
+        const username = 'Gryddd';
+        const CACHE_KEY = 'github_stats_cache';
+        const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            try {
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp < CACHE_DURATION && data && data.contributions) {
+                    console.log('Using cached GitHub stats');
+                    return data;
+                }
+            } catch (e) {
+                localStorage.removeItem(CACHE_KEY);
+            }
+        }
+
+        try {
+            // Fetch data directly from APIs (works on static hosting)
+            const [userResponse, reposResponse, contributionsResponse] = await Promise.all([
+                fetch(`https://api.github.com/users/${username}`),
+                fetch(`https://api.github.com/users/${username}/repos?per_page=100`),
+                fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
+            ]);
+
+            // Check if GitHub API is rate limited
+            if (!userResponse.ok) {
+                console.warn('GitHub API rate limited or error:', userResponse.status);
+                throw new Error('GitHub API error');
+            }
+
+            const userData = await userResponse.json();
+            const repos = await reposResponse.json();
+            const contributionsData = await contributionsResponse.json();
+
+            // Calculate stats
+            const totalStars = Array.isArray(repos) 
+                ? repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0)
+                : 0;
+            const publicRepos = userData.public_repos || 0;
+            const yearlyContributions = contributionsData?.total?.lastYear || 542;
+
+            // Calculate language percentages from repos
+            const languageBytes = {};
+            if (Array.isArray(repos)) {
+                repos.forEach(repo => {
+                    if (repo.language) {
+                        languageBytes[repo.language] = (languageBytes[repo.language] || 0) + (repo.size || 0);
+                    }
+                });
+            }
+
+            const totalBytes = Object.values(languageBytes).reduce((a, b) => a + b, 0);
+            const languages = totalBytes > 0 
+                ? Object.entries(languageBytes)
+                    .map(([lang, bytes]) => ({
+                        name: lang,
+                        percentage: Math.round((bytes / totalBytes) * 100)
+                    }))
+                    .sort((a, b) => b.percentage - a.percentage)
+                    .slice(0, 4)
+                : [
+                    { name: 'HTML', percentage: 55 },
+                    { name: 'Python', percentage: 25 },
+                    { name: 'JavaScript', percentage: 15 },
+                    { name: 'CSS', percentage: 5 }
+                ];
+
+            const stats = {
+                contributions: yearlyContributions,
+                repos: publicRepos,
+                stars: totalStars,
+                languages: languages
+            };
+
+            console.log('Fetched fresh GitHub stats:', stats);
+
+            // Cache the results
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                data: stats,
+                timestamp: Date.now()
+            }));
+
+            return stats;
+        } catch (error) {
+            console.error('GitHub API fetch failed:', error);
+            // Return fallback static data
+            return {
+                contributions: 542,
+                repos: 4,
+                stars: 2,
+                languages: [
+                    { name: 'HTML', percentage: 55 },
+                    { name: 'Python', percentage: 25 },
+                    { name: 'JavaScript', percentage: 15 },
+                    { name: 'CSS', percentage: 5 }
+                ]
+            };
+        }
+    }
+
+    // Update GitHub Stats in DOM
+    async function updateGitHubStats() {
+        const githubSection = document.getElementById('github-activity');
+        if (!githubSection) {
+            console.error('GitHub section not found');
+            return;
+        }
+
+        try {
+            const stats = await fetchGitHubStats();
+            
+            if (!stats) {
+                console.warn('API failed, using HTML fallback values');
+                return false;
+            }
+            
+            console.log('✅ API SUCCESS - Stats:', stats);
+            
+            // Get all stat number elements
+            const statNumbers = githubSection.querySelectorAll('.stat-number');
+            
+            // Update contributions (first stat)
+            if (statNumbers[0]) {
+                statNumbers[0].setAttribute('data-count', stats.contributions);
+                statNumbers[0].textContent = '0';
+            }
+            
+            // Update repos (second stat)
+            if (statNumbers[1]) {
+                statNumbers[1].setAttribute('data-count', stats.repos);
+                statNumbers[1].textContent = '0';
+            }
+            
+            // Update stars (third stat)
+            if (statNumbers[2]) {
+                statNumbers[2].setAttribute('data-count', stats.stars);
+                statNumbers[2].textContent = '0';
+            }
+
+            // Update language bar
+            const languageBar = githubSection.querySelector('.language-bar');
+            const languageLabels = githubSection.querySelector('.language-labels');
+            
+            if (languageBar && languageLabels && stats.languages && stats.languages.length > 0) {
+                const languageColors = {
+                    'HTML': '#e34c26',
+                    'Python': '#3572A5',
+                    'JavaScript': '#f1e05a',
+                    'CSS': '#563d7c',
+                    'TypeScript': '#2b7489',
+                    'Java': '#b07219',
+                    'C++': '#f34b7d',
+                    'C': '#555555',
+                    'Go': '#00ADD8',
+                    'Rust': '#dea584',
+                    'Shell': '#89e051',
+                    'PHP': '#4F5D95'
+                };
+
+                languageBar.innerHTML = stats.languages.map(lang => 
+                    `<div class="language-segment" style="width: ${lang.percentage}%; background: ${languageColors[lang.name] || '#666'};" title="${lang.name}"></div>`
+                ).join('');
+
+                languageLabels.innerHTML = stats.languages.map(lang => 
+                    `<span><span class="lang-dot" style="background: ${languageColors[lang.name] || '#666'};"></span> ${lang.name} ${lang.percentage}%</span>`
+                ).join('');
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('Error updating GitHub stats:', error);
+            return false;
+        }
+    }
+
+    // Animated Counter for GitHub Stats
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count'));
+        
+        // Safety check for NaN
+        if (isNaN(target) || target === null || target === undefined) {
+            console.warn('Invalid data-count for element:', element);
+            element.textContent = '0';
+            return;
+        }
+        
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16); // 60 FPS
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 16);
+    }
+
+    // Initialize GitHub Stats
+    const githubSection = document.getElementById('github-activity');
+    if (githubSection) {
+        // Fetch and update stats first
+        updateGitHubStats().then(() => {
+            // Then setup animation observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counters = githubSection.querySelectorAll('.stat-number[data-count]');
+                        counters.forEach(counter => animateCounter(counter));
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(githubSection);
+        });
+    }
+
+
     const copyrightYearEl = document.getElementById("copyright-year");
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
     initializeProjectModals();
