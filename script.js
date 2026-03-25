@@ -21,55 +21,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const { Renderer, Program, Mesh, Geometry } = window.ogl;
         
-        // MAXIMUM PERFORMANCE: Ultra-low resolution (0.25x DPR)
-        const effectiveDpr = 0.25;
-        
+        // ULTRA-OPTIMIZED: Very low DPR (0.35x) for maximum performance
         const renderer = new Renderer({ 
             antialias: false, 
             alpha: true, 
-            dpr: effectiveDpr,
+            dpr: 0.35,
             powerPreference: 'low-power',
             preserveDrawingBuffer: false,
-            premultipliedAlpha: false
+            premultipliedAlpha: false,
+            depth: false,
+            stencil: false
         });
         const gl = renderer.gl;
         gl.clearColor(0, 0, 0, 0);
-        
-        // Disable depth/stencil for 2D - saves memory bandwidth
-        gl.disable(gl.DEPTH_TEST);
-        gl.disable(gl.STENCIL_TEST);
 
-        // MAXIMUM PERFORMANCE: lowp precision, simplified shader
+        // PERFORMANCE: lowp precision, 2-iteration wave (33% faster than 3)
         const fragmentShader = `
             precision lowp float;
             uniform float uTime;
             uniform vec2 uResolution;
             uniform vec3 uBaseColor;
             uniform float uAmp;
+            uniform float uFreq;
             uniform vec2 uMouse;
             varying vec2 vUv;
 
             void main() {
                 vec2 uv = (2.0 * vUv * uResolution - uResolution) / min(uResolution.x, uResolution.y);
                 
-                // Simplified 2-iteration wave (was 3) - 33% less computation
+                // 2-iteration wave (reduced from 3 for performance)
                 float t = uTime;
-                float mx = uMouse.x * 3.14159;
-                float my = uMouse.y * 3.14159;
+                vec2 m = uMouse * 3.14159;
                 
-                uv.x += uAmp * cos(3.0 * uv.y + t + mx);
-                uv.y += uAmp * cos(3.0 * uv.x + t + my);
+                uv.x += uAmp * cos(uFreq * uv.y + t + m.x);
+                uv.y += uAmp * cos(uFreq * uv.x + t + m.y);
                 
-                uv.x += uAmp * 0.5 * cos(6.0 * uv.y + t + mx);
-                uv.y += uAmp * 0.5 * cos(6.0 * uv.x + t + my);
+                uv.x += uAmp * 0.5 * cos(2.0 * uFreq * uv.y + t + m.x);
+                uv.y += uAmp * 0.5 * cos(2.0 * uFreq * uv.x + t + m.y);
 
-                // Simplified ripple (removed exp and normalize for performance)
+                // Simplified ripple (no exp for performance)
                 vec2 diff = vUv - uMouse;
                 float dist = length(diff);
                 float ripple = sin(8.0 * dist - t * 1.5) * 0.015 / (dist + 0.3);
                 uv += diff * ripple;
 
-                // Ultra-fast color calculation
+                // Fast color calculation
                 float wave = sin(t * 0.5 - uv.y - uv.x);
                 vec3 color = uBaseColor / (abs(wave) + 0.15);
                 
@@ -100,13 +96,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 uResolution: { value: new Float32Array([gl.canvas.width, gl.canvas.height]) },
                 uBaseColor: { value: new Float32Array(baseColor) },
                 uAmp: { value: amplitude },
+                uFreq: { value: frequencyX },
                 uMouse: { value: new Float32Array([0.5, 0.5]) }
             }
         });
 
         const mesh = new Mesh(gl, { geometry, program });
 
-        // Debounced resize
         let resizeTimeout = null;
         function resize() {
             if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -118,10 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 150);
         }
 
-        // Simplified mouse tracking - direct update, no smoothing in update loop
-        const mouseUniform = program.uniforms.uMouse.value;
         let targetMouse = { x: 0.5, y: 0.5 };
         let currentMouse = { x: 0.5, y: 0.5 };
+        const mouseUniform = program.uniforms.uMouse.value;
 
         function handleMouseMove(event) {
             const rect = container.getBoundingClientRect();
@@ -137,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
             targetMouse.y = 1 - (touch.clientY - rect.top) / rect.height;
         }
 
-        // Visibility observers
         let isVisible = true;
         let isPaused = false;
         const observer = new IntersectionObserver((entries) => {
@@ -150,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        // MAXIMUM PERFORMANCE: 30 FPS cap (50% fewer frames than 60 FPS)
+        // PERFORMANCE: 30 FPS cap (50% fewer frames)
         let animationId = null;
         let lastTime = 0;
         const frameInterval = 1000 / 30;
@@ -164,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (delta < frameInterval * 0.95) return;
             lastTime = timeMs - (delta % frameInterval);
             
-            // Smooth mouse with fewer calculations
+            // Smooth mouse
             currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
             currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
             mouseUniform[0] = currentMouse.x;
@@ -174,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function () {
             renderer.render({ scene: mesh });
         }
 
-        // Initial setup
         renderer.setSize(container.offsetWidth, container.offsetHeight);
         program.uniforms.uResolution.value[0] = gl.canvas.width;
         program.uniforms.uResolution.value[1] = gl.canvas.height;

@@ -202,9 +202,10 @@ html[data-theme="light"] .pixel-snow-bg {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    /* Let browser smoothly upscale low-res canvas - free antialiasing */
     image-rendering: auto;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+    -ms-interpolation-mode: bicubic;
+}
 }
 @media (prefers-reduced-motion: reduce) {
     .pixel-snow-bg {
