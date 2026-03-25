@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        });
+    }
+
     // Theme Toggle Logic
     const themeToggleBtns = document.querySelectorAll('.theme-toggle');
     const rootElement = document.documentElement;
@@ -18,6 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
         interactive = true
     } = {}) {
         if (!container || typeof window.ogl === 'undefined') return null;
+
+        // Only disable WebGL if user explicitly requests reduced motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+            container.style.background = 'radial-gradient(circle at 50% 50%, rgba(16, 16, 16, 0.95), rgba(0, 0, 0, 1))';
+            return null;
+        }
 
         const { Renderer, Program, Mesh, Geometry } = window.ogl;
         
@@ -782,7 +799,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const modalId = this.closest('.project-card').dataset.modalId;
             const modal = document.getElementById(modalId);
             config.projects[modalId].currentSlide = 0;
-            showProjectSlide(modalId, 0); 
+            showProjectSlide(modalId, 0);
             openModal(modal, this);
         });
     });

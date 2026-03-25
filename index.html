@@ -22,7 +22,10 @@
     <meta content="Walid Gourideche | IT Specialist for System Integration" name="twitter:title"/>
     <meta content="Portfolio of Walid Gourideche, an IT Specialist for System Integration." name="twitter:description"/>
     <meta content="https://grydsh.dev/images/aura.jpg" name="twitter:image"/>
-    <link href="images/favicon.png" rel="icon" type="image/png"/>
+    <meta name="robots" content="index, follow, max-image-preview:large"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon.png"/>
+    <link rel="manifest" href="manifest.json"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -34,8 +37,8 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Walid Gourideche",
-    "url": "https://grydsh.dev",
-    "image": "https://grydsh.dev/images/aura.jpg",
+      "url": "https://grydsh.dev",
+      "image": "https://grydsh.dev/images/aura.jpg",
       "sameAs": [
         "https://www.linkedin.com/in/walidgourideche/"
       ],
@@ -48,13 +51,32 @@
         "addressLocality": "Taza",
         "postalCode": "35000",
         "addressCountry": "MA"
-      }
+      },
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "Apprenticeship",
+          "name": "IT Specialist for System Integration"
+        }
+      ],
+      "knowsAbout": [
+        "Network Administration",
+        "System Integration",
+        "Cybersecurity",
+        "Windows Server",
+        "Linux",
+        "Cisco",
+        "pfSense",
+        "Python"
+      ]
     }
     </script>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 <link rel="preconnect" href="https://unpkg.com" />
 </head>
 <body>
+<!-- Skip to main content link for accessibility -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <!-- Preloader -->
 <div class="preloader" id="preloader">
     <div class="preloader-ring"></div>
@@ -136,7 +158,7 @@
 </div>
 </div>
 </div>
-<main>
+<main id="main-content">
 <section class="hero" id="hero">
 <div class="hero-card" data-aos="fade-up">
 <div class="hero-card-accent"></div>

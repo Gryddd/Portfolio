@@ -1,0 +1,21 @@
+# Cache control headers for Cloudflare Pages
+/
+  Cache-Control: public, max-age=3600
+
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/style.css
+  Cache-Control: public, max-age=604800
+
+/script.js
+  Cache-Control: public, max-age=604800
+
+/pixelsnow.js
+  Cache-Control: public, max-age=604800
+
+/*.pdf
+  Cache-Control: public, max-age=2592000
+
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate

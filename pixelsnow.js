@@ -88,18 +88,17 @@ vec3 dither(vec2 uv, vec3 color){
   
   // Sample the 8x8 bayer texture. Add 0.5 to sample center of texel.
   vec2 bayerUv = (mod(sc, 8.0) + 0.5) / 8.0; 
-  float threshold = texture2D(bayerTexture, bayerUv).r - 0.25;
+  float threshold = texture2D(bayerTexture, bayerUv).r * 0.004;
   
   float stepsize = 1.0 / (colorNum - 1.0);
   color += threshold * stepsize;
-  color = clamp(color - 0.2, 0.0, 1.0);
+  color = clamp(color, 0.0, 1.0);
   return floor(color * (colorNum - 1.0) + 0.5) / (colorNum - 1.0);
 }
 
 void main(){
-  vec2 nps = pixelSize / resolution;
-  vec2 uvPixel = nps * floor(vUv / nps);
-  vec4 color = texture2D(inputBuffer, uvPixel);
+  // Use bilinear sampling instead of pixelated sampling for smooth gradients
+  vec4 color = texture2D(inputBuffer, vUv);
   color.rgb = dither(vUv, color.rgb);
   gl_FragColor = color;
 }`;
@@ -108,8 +107,8 @@ void main(){
   function initDither(container, opts) {
     opts = Object.assign({
       waveColor:     [0.5, 0.5, 0.5],
-      colorNum:      4,
-      pixelSize:     2,
+      colorNum:      64,
+      pixelSize:     1,
       waveAmplitude: 0.3,
       waveFrequency: 3.0,
       waveSpeed:     0.05
@@ -118,13 +117,13 @@ void main(){
     if (typeof THREE === 'undefined') { console.error('Three.js not loaded'); return; }
 
     var renderer = new THREE.WebGLRenderer({
-      antialias: false,
+      antialias: true,
       alpha: false,
       powerPreference: 'high-performance',
       stencil: false,
       depth: false
     });
-    renderer.setPixelRatio(1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%!important;height:100%!important;display:block;';
     container.appendChild(renderer.domElement);
@@ -155,7 +154,7 @@ void main(){
     // Render target for Pass 1
     var rt = new THREE.WebGLRenderTarget(W, H, {
       minFilter: THREE.LinearFilter,
-      magFilter: THREE.NearestFilter,
+      magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat
     });
 
