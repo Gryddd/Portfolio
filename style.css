@@ -242,6 +242,10 @@ html[data-theme="light"] .pixel-snow-bg {
     .pixel-snow-bg {
         opacity: 0.4;
     }
+    .pixel-snow-bg canvas {
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+    }
     html[data-theme="light"] .pixel-snow-bg {
         opacity: 0.25;
     }
