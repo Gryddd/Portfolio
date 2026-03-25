@@ -823,6 +823,9 @@ h2::after {
     border-color: #fff0 #fff0 #fff0 var(--primary-blue);
     margin-left: 5px;
 }
+html[data-theme="light"] .play-button::after {
+    border-color: #fff0 #fff0 #fff0 #ffffff;
+}
 .video-thumbnail:hover .play-button {
     transform: translate(-50%, -50%) scale(1.1);
 }
