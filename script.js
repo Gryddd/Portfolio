@@ -527,7 +527,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageModal = document.getElementById("image-modal");
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileList = document.querySelector('.mobile-list');
-    const activeDropdownSelector = '.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active';
+    const activeDropdownSelector = '.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active, .experience-dropdown-container.active';
     let mobileMenuScrollY = 0;
 
     function collapseMobileLanguageList(dropdown) {
@@ -734,10 +734,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             e.preventDefault();
             e.stopPropagation();
-            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown');
+            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container');
             if (!parentDropdown) return;
             const isActive = parentDropdown.classList.contains('active');
-            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown').forEach(dd => {
+            document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container').forEach(dd => {
                 if (dd !== parentDropdown) {
                     dd.classList.remove('active');
                     collapseMobileLanguageList(dd);
