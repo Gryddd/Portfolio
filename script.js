@@ -161,10 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        // PERFORMANCE: 30 FPS cap (50% fewer frames)
+        // 60 FPS for smooth animations
         let animationId = null;
         let lastTime = 0;
-        const frameInterval = 1000 / 30;
+        const frameInterval = 1000 / 60;
         
         function update(timeMs) {
             animationId = requestAnimationFrame(update);
@@ -714,7 +714,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-    AOS.init({ duration: 1000, once: true });
+    // AOS removed - all content loads at once during preloader for smoother experience
 
     // ============================================
     // DYNAMIC GITHUB STATS FETCHER

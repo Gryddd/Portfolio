@@ -110,27 +110,31 @@
 [data-theme="light"] .theme-toggle .moon-icon { display: none; }
 [data-theme="light"] .theme-toggle .sun-icon { display: block; }
 
-/* Apply blur exclusively to transparent cards */
+/* Apply blur exclusively to transparent cards - reduced for performance */
 .timeline-content,
 .skill-card,
 .project-card,
 .tech-stack-card,
 .flip-card {
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
 }
 
-.timeline-content,
-.skill-card,
-.project-card,
-.faq-question,
-.submit-btn,
-.tech-item,
-.main-nav,
-.project-card-image img,
-.project-modal-arrow,
-.flip-card { 
-    will-change: transform, box-shadow, opacity;
+/* will-change only on hover for GPU layer optimization */
+.timeline-content:hover,
+.skill-card:hover,
+.project-card:hover,
+.faq-question:hover,
+.submit-btn:hover,
+.tech-item:hover,
+.project-card-image img:hover,
+.flip-card:hover { 
+    will-change: transform;
+}
+
+/* Nav needs permanent will-change for smooth hide/show */
+.main-nav {
+    will-change: transform;
 }
 
 *,
@@ -209,14 +213,7 @@ h4 {
     content-visibility: auto;
 }
 
-.pixel-snow-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    pointer-events: none;
-}
+/* Removed redundant blur on WebGL canvas - already smooth */
 
 html[data-theme="light"] .pixel-snow-bg {
     opacity: 0.35;
@@ -247,6 +244,15 @@ html[data-theme="light"] .pixel-snow-bg {
     }
     html[data-theme="light"] .pixel-snow-bg {
         opacity: 0.25;
+    }
+    /* Reduce blur on mobile for better performance */
+    .timeline-content,
+    .skill-card,
+    .project-card,
+    .tech-stack-card,
+    .flip-card {
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
     }
 }
 .video-overlay {
