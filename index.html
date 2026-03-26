@@ -30,6 +30,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link as="image" href="images/aura.webp" rel="preload"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <script type="application/ld+json">
     {
@@ -81,7 +82,10 @@
     <div class="preloader-ring"></div>
 </div>
 <div class="scroll-progress" id="scroll-progress"></div>
-<div id="pixel-snow-bg" class="pixel-snow-bg"></div>
+<video id="background-video" autoplay loop muted playsinline>
+    <source src="videos/Background.webm" type="video/webm">
+</video>
+<div class="video-overlay"></div>
 <nav class="main-nav">
 <div class="nav-content">
 <div class="nav-links">
@@ -159,16 +163,16 @@
 </div>
 <main id="main-content">
 <section class="hero" id="hero">
-<div class="hero-card">
+<div class="hero-card" data-aos="fade-up" data-aos-duration="800" data-aos-easing="ease-out-cubic">
 <div class="hero-card-accent"></div>
 <div class="hero-card-inner">
-<div class="hero-image">
+<div class="hero-image" data-aos="fade-right" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
 <picture>
 <source srcset="images/aura.webp" type="image/webp"/>
 <img alt="A professional portrait of Walid Gourideche" id="profile-picture" src="images/aura.jpg" width="272" height="272"/>
 </picture>
 </div>
-<div class="hero-text">
+<div class="hero-text" data-aos="fade-left" data-aos-duration="600" data-aos-delay="300" data-aos-easing="ease-out-cubic">
 <h1>Walid Gourideche</h1>
 <p class="hero-job-title lang" data-de="IT-Fachkraft für Systemintegration und Netzwerke" data-en="IT Specialist for System Integration and Networks" data-fr="Spécialiste IT en Intégration de Systèmes et Réseaux">IT Specialist for System Integration and Networks</p>
 <p class="hero-description lang" data-de="Ein 23-jähriger angehender IT-Spezialist mit vielfältiger Erfahrung in Netzwerktechnik und Systemadministration. Bringt internationale Perspektive, praxisnahe Kenntnisse und den Antrieb mit, effiziente IT-Lösungen von Marokko bis Deutschland voranzubringen." data-en="A 23-year-old aspiring IT specialist with diverse experience in network technology and system administration. Bringing an international perspective, practical knowledge, and the drive to advance efficient IT solutions from Morocco to Germany." data-fr="Un futur spécialiste en informatique de 23 ans avec une expérience diversifiée en technologie réseau et administration système. Apportant une perspective internationale, des connaissances pratiques et la volonté de faire progresser des solutions informatiques efficaces du Maroc à l'Allemagne.">
@@ -197,8 +201,8 @@
 </section>
 <div class="section-divider"></div>
 <section class="container" id="intro-video">
-<h2 class="lang" data-de="Video-Vorstellung" data-en="Video Introduction" data-fr="Présentation Vidéo">Video Introduction</h2>
-<div class="video-thumbnail" id="open-video-modal">
+<h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Video-Vorstellung" data-en="Video Introduction" data-fr="Présentation Vidéo">Video Introduction</h2>
+<div class="video-thumbnail" id="open-video-modal" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
 <picture>
 <source srcset="images/video-thumbnail.webp" type="image/webp"/>
 <img alt="Video Introduction Thumbnail" loading="lazy" src="images/video-thumbnail.webp" width="1280" height="720"/>
@@ -216,10 +220,10 @@
 </div>
 <div class="section-divider"></div>
 <section class="container" id="bildung">
-<h2 class="lang" data-de="Bildungsweg" data-en="Education" data-fr="Parcours Éducatif">Education</h2>
+<h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Bildungsweg" data-en="Education" data-fr="Parcours Éducatif">Education</h2>
 <div class="timeline-wrapper">
 <div class="timeline-item">
-  <article class="timeline-content">
+  <article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
     <time class="date">09/2024 - 07/2026</time>
     <h3 class="lang" 
         data-de="Fachinstitut für Angewandte Technologie (ISTA)" 
@@ -262,7 +266,7 @@
   </article>
 </div>
 <div class="timeline-item">
-    <article class="timeline-content">
+    <article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
         <time class="date">2023 - 2024</time>
         <h3 class="lang" data-de="Klinikum Hann. Münden" data-en="Hann. Münden Clinic" data-fr="Clinique de Hann. Münden">Hann. Münden Clinic</h3>
         <p class="timeline-location lang" data-de="Hann. Münden, Deutschland" data-en="Hann. Münden, Germany" data-fr="Hann. Münden, Allemagne">Hann. Münden, Germany</p>
@@ -289,7 +293,7 @@
     </article>
 </div>
 <div class="timeline-item">
-    <article class="timeline-content">
+    <article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
         <time class="date">2021 - 2022</time>
         <h3 class="lang" data-de="Interdisziplinäre Fakultät Taza" data-en="Polydisciplinary Faculty of Taza" data-fr="Faculté Polydisciplinaire de Taza">Polydisciplinary Faculty of Taza</h3>
         <p class="degree-description lang timeline-note" 
@@ -306,14 +310,14 @@
         </ul>
     </article>
 </div>
-<div class="timeline-item"><article class="timeline-content"><time class="date">2020 - 2021</time><h3 class="lang" data-de="Weiterführende Schule Al Falah 2" data-en="High School AL Falah 2" data-fr="Lycée AL Falah 2">High School AL Falah 2</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="degree lang" data-de="Internationales Abitur, Schwerpunkt Physik" data-en="International Baccalaureate, major in Physics" data-fr="Baccalauréat International, spécialité Physique">International Baccalaureate, major in Physics</p><ul><li class="lang" data-de="Grundlagen in Mathematik und Physik, wichtige Kompetenzen für IT- und Netzwerktechnik." data-en="Foundations in mathematics and physics, crucial skills for IT and network technology." data-fr="Fondamentaux en mathématiques et physique, compétences essentielles pour l'informatique et la technologie des réseaux.">Foundations in mathematics and physics, crucial skills for IT and network technology.</li><li class="lang" data-de="Entwicklung von technischem Verständnis und systematischem Denken." data-en="Development of technical understanding and systematic thinking." data-fr="Développement de la compréhension technique et de la pensée systématique.">Development of technical understanding and systematic thinking.</li></ul></article></div>
+<div class="timeline-item"><article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">2020 - 2021</time><h3 class="lang" data-de="Weiterführende Schule Al Falah 2" data-en="High School AL Falah 2" data-fr="Lycée AL Falah 2">High School AL Falah 2</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="degree lang" data-de="Internationales Abitur, Schwerpunkt Physik" data-en="International Baccalaureate, major in Physics" data-fr="Baccalauréat International, spécialité Physique">International Baccalaureate, major in Physics</p><ul><li class="lang" data-de="Grundlagen in Mathematik und Physik, wichtige Kompetenzen für IT- und Netzwerktechnik." data-en="Foundations in mathematics and physics, crucial skills for IT and network technology." data-fr="Fondamentaux en mathématiques et physique, compétences essentielles pour l'informatique et la technologie des réseaux.">Foundations in mathematics and physics, crucial skills for IT and network technology.</li><li class="lang" data-de="Entwicklung von technischem Verständnis und systematischem Denken." data-en="Development of technical understanding and systematic thinking." data-fr="Développement de la compréhension technique et de la pensée systématique.">Development of technical understanding and systematic thinking.</li></ul></article></div>
 </div>
 </section>
 <div class="section-divider"></div>
 <section class="container" id="erfahrung">
-<h2 class="lang" data-de="Berufserfahrung" data-en="Professional Experience" data-fr="Expérience Professionnelle">Professional Experience</h2>
+<h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Berufserfahrung" data-en="Professional Experience" data-fr="Expérience Professionnelle">Professional Experience</h2>
 <div class="timeline-wrapper">
-<div class="timeline-item"><article class="timeline-content timeline-content-with-doc"><time class="date">April 2026 - May 2026</time>                                <h3 class="lang" 
+<div class="timeline-item"><article class="timeline-content timeline-content-with-doc" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">April 2026 - May 2026</time>                                <h3 class="lang" 
                                     data-de="Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)" 
                                     data-en="Regional Multiservices Company Fès-Meknès (SRM)" 
                                     data-fr="Société Régionale Multiservices Fès-Meknès (SRM)">
@@ -345,35 +349,35 @@
                                 </div>
                             </article>
                         </div>
-<div class="timeline-item"><article class="timeline-content"><time class="date">01/2026 - 02/2026</time><h3 class="lang" data-de="IQRA Société" data-en="IQRA Company" data-fr="IQRA Société">IQRA Company</h3><p class="timeline-location lang" data-de="Casablanca, Marokko" data-en="Casablanca, Morocco" data-fr="Casablanca, Maroc">Casablanca, Morocco</p><p class="position lang" data-de="Praktikant IT-Netzwerk" data-en="IT Network Intern" data-fr="Stagiaire en réseau informatique">IT Network Intern</p><ul><li class="lang" data-de="Fernüberwachung und Administration von Netzwerksystemen und -diensten über SSH und RDP in einer Unternehmensumgebung." data-en="Monitored and administered network systems and services remotely via SSH and RDP in an enterprise environment." data-fr="Supervision et administration à distance des systèmes et services réseau via SSH et RDP dans un environnement d’entreprise.">Monitored and administered network systems and services remotely via SSH and RDP in an enterprise environment.</li><li class="lang" data-de="Technischer Remote-Support, Diagnose und Lösung von Vorfällen bei gleichzeitiger Sicherstellung der Verfügbarkeit und Stabilität der Infrastruktur." data-en="Delivered remote technical support, diagnosing and resolving incidents while ensuring infrastructure availability and stability." data-fr="Support technique distant, diagnostic et résolution d’incidents tout en assurant la disponibilité et la stabilité de l’infrastructure.">Delivered remote technical support, diagnosing and resolving incidents while ensuring infrastructure availability and stability.</li></ul></article></div>
-<div class="timeline-item"><article class="timeline-content"><time class="date">June 2025 - Sep. 2025</time><h3 class="lang" data-de="Click Service" data-en="Click Service" data-fr="Click Service">Click Service</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="IT-Spezialist" data-en="IT Specialist" data-fr="Spécialiste Informatique">IT Specialist</p><ul><li class="lang" data-de="Installation und Konfiguration von Software und Betriebssystemen für Kunden mit einer Erfolgsquote von 98% bei der Ersterledigung." data-en="Installed, configured, and updated software and operating systems for clients with a 98% first-time resolution success rate." data-fr="Installation, configuration et mise à jour de logiciels et systèmes d'exploitation pour les clients avec un taux de réussite de 98% à la première résolution.">Installed, configured, and updated software and operating systems for clients with a 98% first-time resolution success rate.</li><li class="lang" data-de="Verwaltung des IT-Inventars, was zu einer Verbesserung der Bestandsgenauigkeit um 20% führte." data-en="Managed inventory of IT equipment, leading to a 20% improvement in stock accuracy." data-fr="Gestion de l'inventaire du matériel informatique, entraînant une amélioration de 20% de la précision des stocks.">Managed inventory of IT equipment, leading to a 20% improvement in stock accuracy.</li><li class="lang" data-de="Einrichtung und Wartung von über 10 lokalen Netzwerken, was die Supportanfragen nach der Installation um 25% reduzierte." data-en="Set up and maintained over 10 local networks, reducing post-installation support requests by 25%." data-fr="Mise en place et maintenance de plus de 10 réseaux locaux, réduisant les demandes de support post-installation de 25%.">Set up and maintained over 10 local networks, reducing post-installation support requests by 25%.</li></ul></article></div>
-<div class="timeline-item"><article class="timeline-content"><time class="date">Oct. 2022 - Dec. 2022</time><h3 class="lang" data-de="Gesundheitsministerium" data-en="Ministry of Health" data-fr="Ministère de la Santé">Ministry of Health</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="Praktikant Systemadministration" data-en="System Administration Assistant Intern" data-fr="Stagiaire en Administration Système">System Administration Assistant Intern</p><ul><li class="lang" data-de="Unterstützung bei der Bereitstellung von VMs mit Hyper-V, wodurch die Setup-Zeit für Testumgebungen für das Team um 30% reduziert wurde." data-en="Assisted in deploying virtual machines using Hyper-V, reducing setup time for test environments for the team by 30%." data-fr="Aide au déploiement de machines virtuelles avec Hyper-V, réduisant de 30% le temps de configuration des environnements de test pour l'équipe.">Assisted in deploying virtual machines using Hyper-V, reducing setup time for test environments for the team by 30%.</li><li class="lang" data-de="Bearbeitung von Active-Directory-Aufgaben und erfolgreiche Lösung von über 50 Benutzeranfragen (Konten, Passwörter) während des Praktikums." data-en="Supported Active Directory tasks, successfully resolving over 50 user requests (accounts, passwords) during the internship." data-fr="Soutien aux tâches d'Active Directory, résolution réussie de plus de 50 demandes d'utilisateurs (comptes, mots de passe) pendant le stage.">Supported Active Directory tasks, successfully resolving over 50 user requests (accounts, passwords) during the internship.</li><li class="lang" data-de="Unterstützung bei der Konfiguration der LAN-Infrastruktur (DNS/DHCP), was zur schnelleren Identifizierung von Konnektivitätsproblemen beitrug." data-en="Helped configure local network infrastructure (DNS/DHCP), contributing to faster identification of connectivity issues." data-fr="Aide à la configuration de l'infrastructure réseau locale (DNS/DHCP), contribuant à une identification plus rapide des problèmes de connectivité.">Helped configure local network infrastructure (DNS/DHCP), contributing to faster identification of connectivity issues.</li></ul></article></div>
-<div class="timeline-item"><article class="timeline-content"><time class="date">May 2022 - July 2022</time><h3 class="lang" data-de="Seniorenresidenz Inc." data-en="Elder Care Residential Inc." data-fr="Maison de Retraite Inc.">Elder Care Residential Inc.</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="Praktikant IT-Beratung" data-en="IT Consultant Intern" data-fr="Stagiaire Consultant en Informatique">IT Consultant Intern</p><ul><li class="lang" data-de="Entwurf und Bereitstellung von IT-Systemen zur Verbesserung der internen Kommunikation." data-en="Designed and deployed IT systems to enhance staff communication and operational efficiency." data-fr="Conception et déploiement de systèmes informatiques pour améliorer la communication du personnel et l'efficacité opérationnelle.">Designed and deployed IT systems to enhance staff communication and operational efficiency.</li><li class="lang" data-de="Installation und Konfiguration von Hardware und Netzwerkgeräten." data-en="Installed and configured hardware and network devices, ensuring stable and secure connectivity." data-fr="Installation et configuration de matériel et de périphériques réseau, garantissant une connectivité stable et sécurisée.">Installed and configured hardware and network devices, ensuring stable and secure connectivity.</li><li class="lang" data-de="Durchführung von Anwenderschulungen und technischem Support." data-en="Delivered user training and ongoing technical support, empowering staff to utilize new technology confidently." data-fr="Fourniture de formations aux utilisateurs et d'un support technique continu, permettant au personnel d'utiliser les nouvelles technologies en toute confiance.">Delivered user training and ongoing technical support, empowering staff to utilize new technology confidently.</li></ul></article></div>
+<div class="timeline-item"><article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">01/2026 - 02/2026</time><h3 class="lang" data-de="IQRA Société" data-en="IQRA Company" data-fr="IQRA Société">IQRA Company</h3><p class="timeline-location lang" data-de="Casablanca, Marokko" data-en="Casablanca, Morocco" data-fr="Casablanca, Maroc">Casablanca, Morocco</p><p class="position lang" data-de="Praktikant IT-Netzwerk" data-en="IT Network Intern" data-fr="Stagiaire en réseau informatique">IT Network Intern</p><ul><li class="lang" data-de="Fernüberwachung und Administration von Netzwerksystemen und -diensten über SSH und RDP in einer Unternehmensumgebung." data-en="Monitored and administered network systems and services remotely via SSH and RDP in an enterprise environment." data-fr="Supervision et administration à distance des systèmes et services réseau via SSH et RDP dans un environnement d’entreprise.">Monitored and administered network systems and services remotely via SSH and RDP in an enterprise environment.</li><li class="lang" data-de="Technischer Remote-Support, Diagnose und Lösung von Vorfällen bei gleichzeitiger Sicherstellung der Verfügbarkeit und Stabilität der Infrastruktur." data-en="Delivered remote technical support, diagnosing and resolving incidents while ensuring infrastructure availability and stability." data-fr="Support technique distant, diagnostic et résolution d’incidents tout en assurant la disponibilité et la stabilité de l’infrastructure.">Delivered remote technical support, diagnosing and resolving incidents while ensuring infrastructure availability and stability.</li></ul></article></div>
+<div class="timeline-item"><article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">June 2025 - Sep. 2025</time><h3 class="lang" data-de="Click Service" data-en="Click Service" data-fr="Click Service">Click Service</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="IT-Spezialist" data-en="IT Specialist" data-fr="Spécialiste Informatique">IT Specialist</p><ul><li class="lang" data-de="Installation und Konfiguration von Software und Betriebssystemen für Kunden mit einer Erfolgsquote von 98% bei der Ersterledigung." data-en="Installed, configured, and updated software and operating systems for clients with a 98% first-time resolution success rate." data-fr="Installation, configuration et mise à jour de logiciels et systèmes d'exploitation pour les clients avec un taux de réussite de 98% à la première résolution.">Installed, configured, and updated software and operating systems for clients with a 98% first-time resolution success rate.</li><li class="lang" data-de="Verwaltung des IT-Inventars, was zu einer Verbesserung der Bestandsgenauigkeit um 20% führte." data-en="Managed inventory of IT equipment, leading to a 20% improvement in stock accuracy." data-fr="Gestion de l'inventaire du matériel informatique, entraînant une amélioration de 20% de la précision des stocks.">Managed inventory of IT equipment, leading to a 20% improvement in stock accuracy.</li><li class="lang" data-de="Einrichtung und Wartung von über 10 lokalen Netzwerken, was die Supportanfragen nach der Installation um 25% reduzierte." data-en="Set up and maintained over 10 local networks, reducing post-installation support requests by 25%." data-fr="Mise en place et maintenance de plus de 10 réseaux locaux, réduisant les demandes de support post-installation de 25%.">Set up and maintained over 10 local networks, reducing post-installation support requests by 25%.</li></ul></article></div>
+<div class="timeline-item"><article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">Oct. 2022 - Dec. 2022</time><h3 class="lang" data-de="Gesundheitsministerium" data-en="Ministry of Health" data-fr="Ministère de la Santé">Ministry of Health</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="Praktikant Systemadministration" data-en="System Administration Assistant Intern" data-fr="Stagiaire en Administration Système">System Administration Assistant Intern</p><ul><li class="lang" data-de="Unterstützung bei der Bereitstellung von VMs mit Hyper-V, wodurch die Setup-Zeit für Testumgebungen für das Team um 30% reduziert wurde." data-en="Assisted in deploying virtual machines using Hyper-V, reducing setup time for test environments for the team by 30%." data-fr="Aide au déploiement de machines virtuelles avec Hyper-V, réduisant de 30% le temps de configuration des environnements de test pour l'équipe.">Assisted in deploying virtual machines using Hyper-V, reducing setup time for test environments for the team by 30%.</li><li class="lang" data-de="Bearbeitung von Active-Directory-Aufgaben und erfolgreiche Lösung von über 50 Benutzeranfragen (Konten, Passwörter) während des Praktikums." data-en="Supported Active Directory tasks, successfully resolving over 50 user requests (accounts, passwords) during the internship." data-fr="Soutien aux tâches d'Active Directory, résolution réussie de plus de 50 demandes d'utilisateurs (comptes, mots de passe) pendant le stage.">Supported Active Directory tasks, successfully resolving over 50 user requests (accounts, passwords) during the internship.</li><li class="lang" data-de="Unterstützung bei der Konfiguration der LAN-Infrastruktur (DNS/DHCP), was zur schnelleren Identifizierung von Konnektivitätsproblemen beitrug." data-en="Helped configure local network infrastructure (DNS/DHCP), contributing to faster identification of connectivity issues." data-fr="Aide à la configuration de l'infrastructure réseau locale (DNS/DHCP), contribuant à une identification plus rapide des problèmes de connectivité.">Helped configure local network infrastructure (DNS/DHCP), contributing to faster identification of connectivity issues.</li></ul></article></div>
+<div class="timeline-item"><article class="timeline-content" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><time class="date">May 2022 - July 2022</time><h3 class="lang" data-de="Seniorenresidenz Inc." data-en="Elder Care Residential Inc." data-fr="Maison de Retraite Inc.">Elder Care Residential Inc.</h3><p class="timeline-location lang" data-de="Taza, Marokko" data-en="Taza, Morocco" data-fr="Taza, Maroc">Taza, Morocco</p><p class="position lang" data-de="Praktikant IT-Beratung" data-en="IT Consultant Intern" data-fr="Stagiaire Consultant en Informatique">IT Consultant Intern</p><ul><li class="lang" data-de="Entwurf und Bereitstellung von IT-Systemen zur Verbesserung der internen Kommunikation." data-en="Designed and deployed IT systems to enhance staff communication and operational efficiency." data-fr="Conception et déploiement de systèmes informatiques pour améliorer la communication du personnel et l'efficacité opérationnelle.">Designed and deployed IT systems to enhance staff communication and operational efficiency.</li><li class="lang" data-de="Installation und Konfiguration von Hardware und Netzwerkgeräten." data-en="Installed and configured hardware and network devices, ensuring stable and secure connectivity." data-fr="Installation et configuration de matériel et de périphériques réseau, garantissant une connectivité stable et sécurisée.">Installed and configured hardware and network devices, ensuring stable and secure connectivity.</li><li class="lang" data-de="Durchführung von Anwenderschulungen und technischem Support." data-en="Delivered user training and ongoing technical support, empowering staff to utilize new technology confidently." data-fr="Fourniture de formations aux utilisateurs et d'un support technique continu, permettant au personnel d'utiliser les nouvelles technologies en toute confiance.">Delivered user training and ongoing technical support, empowering staff to utilize new technology confidently.</li></ul></article></div>
 </div>
 </section>
 <div class="section-divider"></div>
 <section class="container" id="kompetenzen">
-<h2 class="lang" data-de="Kernkompetenzen" data-en="Core Competencies" data-fr="Compétences Clés">Core Competencies</h2>
-<div class="skills-grid">
-<div class="skill-card">
+<h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Kernkompetenzen" data-en="Core Competencies" data-fr="Compétences Clés">Core Competencies</h2>
+<div class="skills-grid" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+<div class="skill-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
 <h3 class="lang" data-de="Netzwerk&shy;administration" data-en="Network Administration" data-fr="Administration Réseau">Network Administration</h3>
 <p class="lang" data-de="Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routing &amp; Switching" data-en="Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routing &amp; Switching" data-fr="Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routage &amp; Commutation">
                        Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routing &amp; Switching
                     </p>
 </div>
-<div class="skill-card">
+<div class="skill-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
 <h3 class="lang" data-de="System&shy;administration" data-en="System Administration" data-fr="Administration Système">System Administration</h3>
 <p class="lang" data-de="Windows Server, Linux (Ubuntu/Debian), Active Directory, Hyper-V, VMware, Benutzerverwaltung" data-en="Windows Server Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, User Management" data-fr="Windows Server Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, Gestion des utilisateurs">
                        Windows Server Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, User Management
                     </p>
 </div>
-<div class="skill-card">
+<div class="skill-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
 <h3 class="lang" data-de="IT-Sicherheit" data-en="IT Security" data-fr="Sécurité Informatique">IT Security</h3>
 <p class="lang" data-de="pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Schwachstellenanalyse, Regel-Tuning" data-en="pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Vulnerability Analysis, Rule Tuning" data-fr="pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Analyse de vulnérabilités, Optimisation des règles">
                        pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Vulnerability Analysis, Rule Tuning
                     </p>
 </div>
-<div class="skill-card">
+<div class="skill-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300" data-aos-easing="ease-out-cubic">
     <h3 class="lang" data-de="Sprachen" data-en="Languages" data-fr="Langues">Languages</h3>
     <p class="lang" 
        data-de="<b>Deutsch:</b> Goethe-Zertifikat B2<br><b>Englisch:</b> Nahezu muttersprachlich <br><b>Französisch:</b> Fließend<br><b>Arabisch:</b> Muttersprache" 
@@ -389,9 +393,9 @@
 </section>
 <div class="section-divider"></div>
 <section class="container" id="projekte">
-    <h2 class="lang" data-de="Meine Projekte" data-en="My Projects" data-fr="Mes Projets">My Projects</h2>
-    <div class="projects-grid">
-        <div class="project-card" data-modal-id="project-modal-1">
+    <h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Meine Projekte" data-en="My Projects" data-fr="Mes Projets">My Projects</h2>
+    <div class="projects-grid" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+        <div class="project-card" data-modal-id="project-modal-1" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
             <div class="project-card-image">
                 <img src="images/diagram.png" alt="Enterprise IT Infrastructure Diagram" loading="lazy">
             </div>
@@ -408,7 +412,7 @@
                 </div>
             </div>
         </div>
-        <div class="project-card" data-modal-id="project-modal-2">
+        <div class="project-card" data-modal-id="project-modal-2" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
             <div class="project-card-image">
                 <img src="images/borealis_main_menu.png" alt="Borealis e-commerce project screenshot" loading="lazy">
             </div>
@@ -427,7 +431,7 @@
                 </div>
             </div>
         </div>
-        <div class="project-card" data-modal-id="project-modal-3">
+        <div class="project-card" data-modal-id="project-modal-3" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
             <div class="project-card-image">
                 <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise Interface" loading="lazy">
             </div>
@@ -462,7 +466,7 @@
                 </div>
             </div>
         </div>
-        <div class="project-card" data-modal-id="project-modal-4">
+        <div class="project-card" data-modal-id="project-modal-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300" data-aos-easing="ease-out-cubic">
             <div class="project-card-image">
                 <img src="images/leagueskins_thumb.png" alt="LeagueSkins Infrastructure" loading="lazy">
             </div>
@@ -588,9 +592,9 @@
 </div>
 <div class="section-divider"></div>
 <section class="container" id="github-activity">
-    <h2 class="lang" data-de="GitHub Aktivität & Open-Source" data-en="GitHub Activity & Open Source" data-fr="Activité GitHub & Open Source">GitHub Activity & Open Source</h2>
-    <div class="github-stats-grid">
-        <div class="skill-card github-card">
+    <h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="GitHub Aktivität & Open-Source" data-en="GitHub Activity & Open Source" data-fr="Activité GitHub & Open Source">GitHub Activity & Open Source</h2>
+    <div class="github-stats-grid" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+        <div class="skill-card github-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
             <div class="github-header">
                 <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
                     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
@@ -642,10 +646,10 @@
 </section>
 <div class="section-divider"></div>
 <section class="container" id="faq">
-<h2 class="lang" data-de="Häufig Gestellte Fragen" data-en="Frequently Asked Questions" data-fr="Questions Fréquemment Posées">Frequently Asked Questions</h2>
-<div class="faq-card skill-card faq-card-shell">
+<h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Häufig Gestellte Fragen" data-en="Frequently Asked Questions" data-fr="Questions Fréquemment Posées">Frequently Asked Questions</h2>
+<div class="faq-card skill-card faq-card-shell" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
     <div class="faq-accordion faq-accordion-wide">
-        <div class="faq-item">
+        <div class="faq-item" data-aos="fade-up" data-aos-duration="600">
         <button aria-controls="faq1-answer" aria-expanded="false" class="faq-question">
             <span class="lang" 
                   data-de="&lt;i&gt;Sie leben nicht in der EU. Wie kompliziert ist der Einstellungsprozess von Marokko bis Deutschland?&lt;/i&gt;" 
@@ -713,28 +717,28 @@
             </div>
         </div>
     </div>
-    <div class="faq-item"><button aria-controls="faq2-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Wo werden Sie wohnen? Wir bieten keine Unterkunft an. Wie organisieren Sie das?&lt;/i&gt;" data-en="&lt;i&gt;Where would you live? We don't offer accommodation. How would you organize that?&lt;/i&gt;" data-fr="&lt;i&gt;Où vivriez-vous ? Nous ne proposons pas de logement. Comment organiseriez-vous cela ?&lt;/i&gt;"><i>Where would you live? We don't offer accommodation. How would you organize that?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq2-answer"><p class="lang" data-de="Da ich bereits in Deutschland war, verfüge ich über ein gutes Netzwerk für Unterkunft und soziale Kontakte, die mir eine schnelle und zuverlässige Wohnungssuche ermöglichen. Somit ist die Wohnungsfrage für mich gesichert." data-en="Since I have already been to Germany, I have a good network for accommodation and social contacts that enable me to find housing quickly and reliably. Therefore, a roof over my head is assured." data-fr="Comme j'ai déjà été en Allemagne, je dispose d'un bon réseau pour le logement et les contacts sociaux, ce qui me permet de trouver un logement rapidement et de manière fiable. La question du logement est donc assurée pour moi.">Since I have already been to Germany, I have a good network for accommodation and social contacts that enable me to find housing quickly and reliably. Therefore, a roof over my head is assured.</p></div></div>
-    <div class="faq-item"><button aria-controls="faq3-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Sie haben Erfahrung in der Pflege, sind aber IT-orientiert. Wie passt das zusammen?&lt;/i&gt;" data-en="&lt;i&gt;You have experience in nursing but are focused on IT. How does that fit together?&lt;/i&gt;" data-fr="&lt;i&gt;Vous avez de l'expérience en soins infirmiers mais êtes orienté vers l'informatique. Comment cela s'accorde-t-il ?&lt;/i&gt;"><i>You have experience in nursing but are focused on IT. How does that fit together?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq3-answer"><p class="lang" data-de="Ich bin eigentlich im IT-Bereich orientiert, aber ich finde, dass ein grundlegendes Verständnis für Pflege und Gesundheit in vielen Lebenslagen wichtig ist. Als ich das Ausbildungsangebot im Pflegebereich bekam, habe ich es als Chance gesehen – erstens, um das deutsche Arbeitsumfeld besser kennenzulernen, und zweitens, um soziale und menschliche Fähigkeiten zu entwickeln, die mir auch in der IT weiterhelfen können. Diese Erfahrung hat mir definitiv geholfen, und ich bin dankbar dafür." data-en="I am fundamentally oriented towards IT, but I believe that a basic understanding of nursing and health is important in many aspects of life. When I received the training offer in the nursing field, I saw it as an opportunity. firstly, to get to know the German work environment better, and secondly, to develop social and interpersonal skills that can also help me in IT. This experience has definitely helped me, and I am grateful for it." data-fr="Je suis fondamentalement orienté vers l'informatique, mais je crois qu'une compréhension de base des soins et de la santé est importante dans de nombreux aspects de la vie. Quand j'ai reçu l'offre de formation dans le domaine des soins, je l'ai vue comme une opportunité - d'abord, pour mieux connaître l'environnement de travail allemand, et ensuite, pour développer des compétences sociales et interpersonnelles qui peuvent également m'aider en informatique. Cette expérience m'a certainement aidé, et j'en suis reconnaissant.">I am fundamentally oriented towards IT, but I believe that a basic understanding of nursing and health is important in many aspects of life. When I received the training offer in the nursing field, I saw it as an opportunity. firstly, to get to know the German work environment better, and secondly, to develop social and interpersonal skills that can also help me in IT. This experience has definitely helped me, and I am grateful for it.</p></div></div>
-    <div class="faq-item"><button aria-controls="faq4-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Warum Deutschland?&lt;/i&gt;" data-en="&lt;i&gt;Why Germany?&lt;/i&gt;" data-fr="&lt;i&gt;Pourquoi l'Allemagne ?&lt;/i&gt;"><i>Why Germany?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq4-answer"><p class="lang" data-de="Deutschland bietet sehr gute Ausbildungsmöglichkeiten und berufliche Perspektiven, besonders im IT-Bereich. Außerdem schätze ich die hohe Arbeitsqualität und die internationale Atmosphäre hier." data-en="Germany offers excellent training opportunities and career prospects, especially in the IT sector. Furthermore, I appreciate the high quality of work and the international atmosphere here." data-fr="L'Allemagne offre d'excellentes opportunités de formation et des perspectives de carrière, en particulier dans le secteur informatique. De plus, j'apprécie la haute qualité du travail et l'atmosphère internationale qui y règne.">Germany offers excellent training opportunities and career prospects, especially in the IT sector. Furthermore, I appreciate the high quality of work and the international atmosphere here.</p></div></div>
-    <div class="faq-item"><button aria-controls="faq5-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Wie gut sind Ihre Deutsch- und Englischkenntnisse?&lt;/i&gt;" data-en="&lt;i&gt;How proficient are your German and English skills?&lt;/i&gt;" data-fr="&lt;i&gt;Quel est votre niveau de compétence en allemand et en anglais ?&lt;/i&gt;"><i>How proficient are your German and English skills?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq5-answer"><p class="lang" data-de="Mein Deutsch hat sich während meines Aufenthalts in Deutschland stark verbessert, sodass ich mich gut an verschiedene Situationen anpassen kann. Mein Englisch habe ich auf ein Niveau der muttersprachlichen Kompetenz gebracht." data-en="My German improved significantly during my stay in Germany, allowing me to adapt well to various situations. I have brought my English to a level of native-like proficiency." data-fr="Mon allemand s'est considérablement amélioré pendant mon séjour en Allemagne, me permettant de bien m'adapter à diverses situations. J'ai amené mon anglais à un niveau de compétence quasi natif.">My German improved significantly during my stay in Germany, allowing me to adapt well to various situations. I have brought my English to a level of native-like proficiency.</p></div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100"><button aria-controls="faq2-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Wo werden Sie wohnen? Wir bieten keine Unterkunft an. Wie organisieren Sie das?&lt;/i&gt;" data-en="&lt;i&gt;Where would you live? We don't offer accommodation. How would you organize that?&lt;/i&gt;" data-fr="&lt;i&gt;Où vivriez-vous ? Nous ne proposons pas de logement. Comment organiseriez-vous cela ?&lt;/i&gt;"><i>Where would you live? We don't offer accommodation. How would you organize that?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq2-answer"><p class="lang" data-de="Da ich bereits in Deutschland war, verfüge ich über ein gutes Netzwerk für Unterkunft und soziale Kontakte, die mir eine schnelle und zuverlässige Wohnungssuche ermöglichen. Somit ist die Wohnungsfrage für mich gesichert." data-en="Since I have already been to Germany, I have a good network for accommodation and social contacts that enable me to find housing quickly and reliably. Therefore, a roof over my head is assured." data-fr="Comme j'ai déjà été en Allemagne, je dispose d'un bon réseau pour le logement et les contacts sociaux, ce qui me permet de trouver un logement rapidement et de manière fiable. La question du logement est donc assurée pour moi.">Since I have already been to Germany, I have a good network for accommodation and social contacts that enable me to find housing quickly and reliably. Therefore, a roof over my head is assured.</p></div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200"><button aria-controls="faq3-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Sie haben Erfahrung in der Pflege, sind aber IT-orientiert. Wie passt das zusammen?&lt;/i&gt;" data-en="&lt;i&gt;You have experience in nursing but are focused on IT. How does that fit together?&lt;/i&gt;" data-fr="&lt;i&gt;Vous avez de l'expérience en soins infirmiers mais êtes orienté vers l'informatique. Comment cela s'accorde-t-il ?&lt;/i&gt;"><i>You have experience in nursing but are focused on IT. How does that fit together?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq3-answer"><p class="lang" data-de="Ich bin eigentlich im IT-Bereich orientiert, aber ich finde, dass ein grundlegendes Verständnis für Pflege und Gesundheit in vielen Lebenslagen wichtig ist. Als ich das Ausbildungsangebot im Pflegebereich bekam, habe ich es als Chance gesehen – erstens, um das deutsche Arbeitsumfeld besser kennenzulernen, und zweitens, um soziale und menschliche Fähigkeiten zu entwickeln, die mir auch in der IT weiterhelfen können. Diese Erfahrung hat mir definitiv geholfen, und ich bin dankbar dafür." data-en="I am fundamentally oriented towards IT, but I believe that a basic understanding of nursing and health is important in many aspects of life. When I received the training offer in the nursing field, I saw it as an opportunity. firstly, to get to know the German work environment better, and secondly, to develop social and interpersonal skills that can also help me in IT. This experience has definitely helped me, and I am grateful for it." data-fr="Je suis fondamentalement orienté vers l'informatique, mais je crois qu'une compréhension de base des soins et de la santé est importante dans de nombreux aspects de la vie. Quand j'ai reçu l'offre de formation dans le domaine des soins, je l'ai vue comme une opportunité - d'abord, pour mieux connaître l'environnement de travail allemand, et ensuite, pour développer des compétences sociales et interpersonnelles qui peuvent également m'aider en informatique. Cette expérience m'a certainement aidé, et j'en suis reconnaissant.">I am fundamentally oriented towards IT, but I believe that a basic understanding of nursing and health is important in many aspects of life. When I received the training offer in the nursing field, I saw it as an opportunity. firstly, to get to know the German work environment better, and secondly, to develop social and interpersonal skills that can also help me in IT. This experience has definitely helped me, and I am grateful for it.</p></div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300"><button aria-controls="faq4-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Warum Deutschland?&lt;/i&gt;" data-en="&lt;i&gt;Why Germany?&lt;/i&gt;" data-fr="&lt;i&gt;Pourquoi l'Allemagne ?&lt;/i&gt;"><i>Why Germany?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq4-answer"><p class="lang" data-de="Deutschland bietet sehr gute Ausbildungsmöglichkeiten und berufliche Perspektiven, besonders im IT-Bereich. Außerdem schätze ich die hohe Arbeitsqualität und die internationale Atmosphäre hier." data-en="Germany offers excellent training opportunities and career prospects, especially in the IT sector. Furthermore, I appreciate the high quality of work and the international atmosphere here." data-fr="L'Allemagne offre d'excellentes opportunités de formation et des perspectives de carrière, en particulier dans le secteur informatique. De plus, j'apprécie la haute qualité du travail et l'atmosphère internationale qui y règne.">Germany offers excellent training opportunities and career prospects, especially in the IT sector. Furthermore, I appreciate the high quality of work and the international atmosphere here.</p></div></div>
+    <div class="faq-item" data-aos="fade-up" data-aos-duration="600" data-aos-delay="400"><button aria-controls="faq5-answer" aria-expanded="false" class="faq-question"><span class="lang" data-de="&lt;i&gt;Wie gut sind Ihre Deutsch- und Englischkenntnisse?&lt;/i&gt;" data-en="&lt;i&gt;How proficient are your German and English skills?&lt;/i&gt;" data-fr="&lt;i&gt;Quel est votre niveau de compétence en allemand et en anglais ?&lt;/i&gt;"><i>How proficient are your German and English skills?</i></span><span class="faq-icon"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></span></button><div class="faq-answer" id="faq5-answer"><p class="lang" data-de="Mein Deutsch hat sich während meines Aufenthalts in Deutschland stark verbessert, sodass ich mich gut an verschiedene Situationen anpassen kann. Mein Englisch habe ich auf ein Niveau der muttersprachlichen Kompetenz gebracht." data-en="My German improved significantly during my stay in Germany, allowing me to adapt well to various situations. I have brought my English to a level of native-like proficiency." data-fr="Mon allemand s'est considérablement amélioré pendant mon séjour en Allemagne, me permettant de bien m'adapter à diverses situations. J'ai amené mon anglais à un niveau de compétence quasi natif.">My German improved significantly during my stay in Germany, allowing me to adapt well to various situations. I have brought my English to a level of native-like proficiency.</p></div></div>
 </div>
 </section>
 <section class="container contact-section" id="kontakt">
-<h3 class="lang" data-de="Noch Fragen? Kontaktieren Sie mich über" data-en="Got any other questions? Contact me on" data-fr="D'autres questions ? Contactez-moi via">Got any other questions? Contact me on</h3>
+<h3 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Noch Fragen? Kontaktieren Sie mich über" data-en="Got any other questions? Contact me on" data-fr="D'autres questions ? Contactez-moi via">Got any other questions? Contact me on</h3>
 <div class="contact-grid">
-<div class="flip-card"><div class="flip-card-inner"><div class="flip-card-front"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"></path></svg><h4 class="lang" data-de="Email" data-en="Email" data-fr="Email">Email</h4></div><div class="flip-card-back"><a href="mailto:walidgourideche@gmail.com">walidgourideche@gmail.com</a></div></div></div>
-<div class="flip-card"><div class="flip-card-inner"><div class="flip-card-front"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg><h4 class="lang" data-de="Telefon" data-en="Phone" data-fr="Téléphone">Phone</h4></div><div class="flip-card-back"><a href="tel:+212698585528">+212-698585528</a></div></div></div>
+<div class="flip-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic"><div class="flip-card-inner"><div class="flip-card-front"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"></path></svg><h4 class="lang" data-de="Email" data-en="Email" data-fr="Email">Email</h4></div><div class="flip-card-back"><a href="mailto:walidgourideche@gmail.com">walidgourideche@gmail.com</a></div></div></div>
+<div class="flip-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic"><div class="flip-card-inner"><div class="flip-card-front"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path></svg><h4 class="lang" data-de="Telefon" data-en="Phone" data-fr="Téléphone">Phone</h4></div><div class="flip-card-back"><a href="tel:+212698585528">+212-698585528</a></div></div></div>
 
-<div class="flip-card"><div class="flip-card-inner"><div class="flip-card-front">
+<div class="flip-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic"><div class="flip-card-inner"><div class="flip-card-front">
 <svg class="linkedin-logo" role="img" viewbox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
 <title class="lang" data-de="LinkedIn" data-en="LinkedIn" data-fr="LinkedIn">LinkedIn</title>
 <path d="M10.15 14.75h3.3v10.95h-3.3zM11.8 8.3a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8zM15.9 14.75h3.15v1.5h.05c.45-.85 1.55-1.75 3.2-1.75 3.45 0 4.1 2.3 4.1 5.3v5.9h-3.3v-5.25c0-1.25-.02-2.85-1.75-2.85-1.75 0-2.02 1.4-2.02 2.75v5.35h-3.3z"></path>
 </svg>
 <h4 class="lang" data-de="LinkedIn" data-en="LinkedIn" data-fr="LinkedIn">LinkedIn</h4></div><div class="flip-card-back"><a href="https://www.linkedin.com/in/walidgourideche/" target="_blank" rel="noopener noreferrer"><span class="lang" data-de="Mein LinkedIn" data-en="My LinkedIn" data-fr="Mon LinkedIn">My LinkedIn</span></a></div></div></div>
 </div>
-<div class="contact-form-section">
+<div class="contact-form-section" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
 <h3 class="lang" data-de="Oder schreiben Sie mir direkt" data-en="Or leave me a direct message" data-fr="Ou laissez-moi un message direct">Or leave me a direct message</h3>
-<div class="skill-card contact-form-card">
+<div class="skill-card contact-form-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
 <form action="https://formspree.io/f/xwpnvpkp" id="contact-form" method="POST">
 <div class="form-group">
 <label class="lang" data-de="Name" data-en="Name" data-fr="Nom" for="name">Name</label>
@@ -758,8 +762,8 @@
 </section>
 </main>
 <footer class="main-footer">
-  <div class="tech-stack-section">
-    <div class="tech-stack-card">
+  <div class="tech-stack-section" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+    <div class="tech-stack-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
       <h3 class="lang" data-de="Erstellt mit" data-en="Built with" data-fr="Créé avec">Built with</h3>
       <div class="tech-scroll-container">
         <div class="tech-scroll-wrapper">
@@ -823,7 +827,7 @@
       </div>
     </div>
   </div>
-  <div class="footer-legal">
+  <div class="footer-legal" data-aos="fade-up" data-aos-duration="500" data-aos-delay="200" data-aos-easing="ease-out-cubic">
     <p>© <span id="copyright-year">2025</span> Walid Gourideche. 
       <span class="lang" data-de="Alle Rechte vorbehalten." data-en="All Rights Reserved." data-fr="Tous droits réservés.">All Rights Reserved.</span>
     </p>
@@ -835,7 +839,7 @@
     </p>
   </div>
 </footer>
-<script defer src="https://cdn.jsdelivr.net/npm/ogl@0.0.32/dist/ogl.umd.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script defer src="script.js"></script>
 <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>

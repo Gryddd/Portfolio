@@ -12,217 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const themeToggleBtns = document.querySelectorAll('.theme-toggle');
     const rootElement = document.documentElement;
     const savedTheme = localStorage.getItem('portfolio-theme');
-    let liquidChromeApi = null;
-
-    function getLiquidBaseColor(isLightMode) {
-        return isLightMode ? [0.72, 0.72, 0.78] : [0.1, 0.1, 0.1];
-    }
-
-    function initLiquidChromeBackground(container, {
-        baseColor = [0.1, 0.1, 0.1],
-        speed = 1,
-        amplitude = 0.6,
-        frequencyX = 3,
-        frequencyY = 3,
-        interactive = true
-    } = {}) {
-        if (!container || typeof window.ogl === 'undefined') return null;
-
-        // Only disable WebGL if user explicitly requests reduced motion
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        
-        if (prefersReducedMotion) {
-            container.style.background = 'radial-gradient(circle at 50% 50%, rgba(16, 16, 16, 0.95), rgba(0, 0, 0, 1))';
-            return null;
-        }
-
-        const { Renderer, Program, Mesh, Geometry } = window.ogl;
-        
-        // ULTRA-OPTIMIZED: Very low DPR (0.35x) for maximum performance
-        const renderer = new Renderer({ 
-            antialias: false, 
-            alpha: true, 
-            dpr: 0.35,
-            powerPreference: 'low-power',
-            preserveDrawingBuffer: false,
-            premultipliedAlpha: false,
-            depth: false,
-            stencil: false
-        });
-        const gl = renderer.gl;
-        gl.clearColor(0, 0, 0, 0);
-
-        // PERFORMANCE: lowp precision, 2-iteration wave (33% faster than 3)
-        const fragmentShader = `
-            precision lowp float;
-            uniform float uTime;
-            uniform vec2 uResolution;
-            uniform vec3 uBaseColor;
-            uniform float uAmp;
-            uniform float uFreq;
-            uniform vec2 uMouse;
-            varying vec2 vUv;
-
-            void main() {
-                vec2 uv = (2.0 * vUv * uResolution - uResolution) / min(uResolution.x, uResolution.y);
-                
-                // 2-iteration wave (reduced from 3 for performance)
-                float t = uTime;
-                vec2 m = uMouse * 3.14159;
-                
-                uv.x += uAmp * cos(uFreq * uv.y + t + m.x);
-                uv.y += uAmp * cos(uFreq * uv.x + t + m.y);
-                
-                uv.x += uAmp * 0.5 * cos(2.0 * uFreq * uv.y + t + m.x);
-                uv.y += uAmp * 0.5 * cos(2.0 * uFreq * uv.x + t + m.y);
-
-                // Simplified ripple (no exp for performance)
-                vec2 diff = vUv - uMouse;
-                float dist = length(diff);
-                float ripple = sin(8.0 * dist - t * 1.5) * 0.015 / (dist + 0.3);
-                uv += diff * ripple;
-
-                // Fast color calculation
-                float wave = sin(t * 0.5 - uv.y - uv.x);
-                vec3 color = uBaseColor / (abs(wave) + 0.15);
-                
-                gl_FragColor = vec4(clamp(color, 0.0, 3.0), 1.0);
-            }
-        `;
-
-        const vertexShader = `
-            attribute vec2 position;
-            attribute vec2 uv;
-            varying vec2 vUv;
-            void main() {
-                vUv = uv;
-                gl_Position = vec4(position, 0.0, 1.0);
-            }
-        `;
-
-        const geometry = new Geometry(gl, {
-            position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
-            uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
-        });
-        
-        const program = new Program(gl, {
-            vertex: vertexShader,
-            fragment: fragmentShader,
-            uniforms: {
-                uTime: { value: 0 },
-                uResolution: { value: new Float32Array([gl.canvas.width, gl.canvas.height]) },
-                uBaseColor: { value: new Float32Array(baseColor) },
-                uAmp: { value: amplitude },
-                uFreq: { value: frequencyX },
-                uMouse: { value: new Float32Array([0.5, 0.5]) }
-            }
-        });
-
-        const mesh = new Mesh(gl, { geometry, program });
-
-        let resizeTimeout = null;
-        function resize() {
-            if (resizeTimeout) clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
-                const resUniform = program.uniforms.uResolution.value;
-                resUniform[0] = gl.canvas.width;
-                resUniform[1] = gl.canvas.height;
-            }, 150);
-        }
-
-        let targetMouse = { x: 0.5, y: 0.5 };
-        let currentMouse = { x: 0.5, y: 0.5 };
-        const mouseUniform = program.uniforms.uMouse.value;
-
-        function handleMouseMove(event) {
-            const rect = container.getBoundingClientRect();
-            targetMouse.x = (event.clientX - rect.left) / rect.width;
-            targetMouse.y = 1 - (event.clientY - rect.top) / rect.height;
-        }
-
-        function handleTouchMove(event) {
-            if (event.touches.length < 1) return;
-            const touch = event.touches[0];
-            const rect = container.getBoundingClientRect();
-            targetMouse.x = (touch.clientX - rect.left) / rect.width;
-            targetMouse.y = 1 - (touch.clientY - rect.top) / rect.height;
-        }
-
-        let isVisible = true;
-        let isPaused = false;
-        const observer = new IntersectionObserver((entries) => {
-            isVisible = entries[0].isIntersecting;
-        }, { threshold: 0 });
-        observer.observe(container);
-
-        function handleVisibilityChange() {
-            isPaused = document.hidden;
-        }
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        // 60 FPS for smooth animations
-        let animationId = null;
-        let lastTime = 0;
-        const frameInterval = 1000 / 60;
-        
-        function update(timeMs) {
-            animationId = requestAnimationFrame(update);
-            
-            if (!isVisible || isPaused) return;
-            
-            const delta = timeMs - lastTime;
-            if (delta < frameInterval * 0.95) return;
-            lastTime = timeMs - (delta % frameInterval);
-            
-            // Smooth mouse
-            currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
-            currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
-            mouseUniform[0] = currentMouse.x;
-            mouseUniform[1] = currentMouse.y;
-            
-            program.uniforms.uTime.value = timeMs * 0.001 * speed;
-            renderer.render({ scene: mesh });
-        }
-
-        renderer.setSize(container.offsetWidth, container.offsetHeight);
-        program.uniforms.uResolution.value[0] = gl.canvas.width;
-        program.uniforms.uResolution.value[1] = gl.canvas.height;
-        
-        window.addEventListener('resize', resize, { passive: true });
-        if (interactive) {
-            container.addEventListener('mousemove', handleMouseMove, { passive: true });
-            container.addEventListener('touchmove', handleTouchMove, { passive: true });
-        }
-
-        container.textContent = '';
-        container.appendChild(gl.canvas);
-        animationId = requestAnimationFrame(update);
-
-        return {
-            setBaseColor(nextColor) {
-                const base = program.uniforms.uBaseColor.value;
-                base[0] = nextColor[0];
-                base[1] = nextColor[1];
-                base[2] = nextColor[2];
-            },
-            destroy() {
-                if (animationId) cancelAnimationFrame(animationId);
-                if (resizeTimeout) clearTimeout(resizeTimeout);
-                observer.disconnect();
-                document.removeEventListener('visibilitychange', handleVisibilityChange);
-                window.removeEventListener('resize', resize);
-                if (interactive) {
-                    container.removeEventListener('mousemove', handleMouseMove);
-                    container.removeEventListener('touchmove', handleTouchMove);
-                }
-                if (gl.canvas.parentElement === container) {
-                    container.removeChild(gl.canvas);
-                }
-                gl.getExtension('WEBGL_lose_context')?.loseContext();
-            }
-        };
-    }
     
     if (savedTheme === 'light') {
         rootElement.setAttribute('data-theme', 'light');
@@ -235,12 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 rootElement.removeAttribute('data-theme');
                 localStorage.setItem('portfolio-theme', 'dark');
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#000000');
-                liquidChromeApi?.setBaseColor(getLiquidBaseColor(false));
             } else {
                 rootElement.setAttribute('data-theme', 'light');
                 localStorage.setItem('portfolio-theme', 'light');
                 if (themeColorMeta) themeColorMeta.setAttribute('content', '#f5f5f7');
-                liquidChromeApi?.setBaseColor(getLiquidBaseColor(true));
             }
         });
     });
@@ -250,23 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
         themeColorMeta.setAttribute('content', '#f5f5f7');
     }
 
-    // Initialize LiquidChrome background (vanilla JS port)
-    const liquidContainer = document.getElementById('pixel-snow-bg');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (liquidContainer) {
-        try {
-            liquidChromeApi = initLiquidChromeBackground(liquidContainer, {
-                baseColor: getLiquidBaseColor(savedTheme === 'light'),
-                speed: reduceMotion ? 0.05 : 0.25, // Significantly slowed down as requested
-                amplitude: reduceMotion ? 0.35 : 0.6,
-                frequencyX: 3,
-                frequencyY: 3,
-                interactive: !reduceMotion
-            });
-        } catch (e) {
-            console.error("Failed to initialize background:", e);
-        }
-    }
+    // Background video is now handled by the HTML video element
+    // The old WebGL LiquidChrome background has been replaced
 
     const config = {
         defaultLang: "en",
@@ -715,6 +487,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     // AOS removed - all content loads at once during preloader for smoother experience
+
+    // ============================================
+    // AOS SCROLL ANIMATIONS
+    // ============================================
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 400,
+            easing: 'ease',
+            once: true,
+            offset: 50,
+            delay: 0,
+            anchorPlacement: 'top-bottom',
+            disable: window.innerWidth < 1024, // Disable on smaller screens
+            throttleDelay: 150,
+            debounceDelay: 100,
+            startEvent: 'load',
+            disableMutationObserver: false
+        });
+    }
 
     // ============================================
     // DYNAMIC GITHUB STATS FETCHER
