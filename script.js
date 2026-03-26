@@ -3,8 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker registration failed:', err));
+                .catch(() => {});
         });
     }
 
@@ -37,8 +36,39 @@ document.addEventListener("DOMContentLoaded", function () {
         themeColorMeta.setAttribute('content', '#f5f5f7');
     }
 
-    // Background video is now handled by the HTML video element
-    // The old WebGL LiquidChrome background has been replaced
+    const backgroundVideo = document.getElementById('background-video');
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+    function shouldEnableBackgroundVideo() {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const saveData = Boolean(connection?.saveData);
+        const slowConnection = typeof connection?.effectiveType === 'string' && /(2g|3g)/i.test(connection.effectiveType);
+        const smallViewport = window.innerWidth < 1024;
+        return !prefersReducedMotion && !saveData && !slowConnection && !smallViewport;
+    }
+
+    function initializeBackgroundVideo() {
+        if (!backgroundVideo) return;
+
+        const shouldEnable = shouldEnableBackgroundVideo();
+        document.body.classList.toggle('background-video-disabled', !shouldEnable);
+
+        if (!shouldEnable) {
+            backgroundVideo.pause();
+            backgroundVideo.innerHTML = '';
+            return;
+        }
+
+        if (!backgroundVideo.querySelector('source') && backgroundVideo.dataset.src) {
+            const source = document.createElement('source');
+            source.src = backgroundVideo.dataset.src;
+            source.type = 'video/webm';
+            backgroundVideo.appendChild(source);
+            backgroundVideo.load();
+        }
+
+        backgroundVideo.play().catch(() => {});
+    }
 
     const config = {
         defaultLang: "en",
@@ -306,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentLang = localStorage.getItem("preferredLang") || config.defaultLang;
     let player;
     let lastActiveElement;
+    let resizeTimer;
     const mainNav = document.querySelector(".main-nav");
     const mobileMenuIcon = document.querySelector(".mobile-menu-icon");
     const mobileNavOverlay = document.getElementById("mobile-nav");
@@ -317,7 +348,40 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileList = document.querySelector('.mobile-list');
     const activeDropdownSelector = '.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active, .experience-dropdown-container.active';
+    const githubDataBadge = document.getElementById('github-data-badge');
+    const githubDataStatus = document.getElementById('github-data-status');
     let mobileMenuScrollY = 0;
+
+    function getActiveModal() {
+        const activeModals = Array.from(allModals).filter(modal => modal.classList.contains("active"));
+        return activeModals[activeModals.length - 1] || null;
+    }
+
+    function getFocusableElements(container) {
+        if (!container) return [];
+        return Array.from(container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+            .filter(element => !element.disabled && element.getAttribute('aria-hidden') !== 'true');
+    }
+
+    function syncDropdownState(dropdown, isActive) {
+        if (!dropdown) return;
+        dropdown.classList.toggle('active', isActive);
+
+        const toggle = dropdown.querySelector('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
+        if (toggle) {
+            toggle.setAttribute('aria-expanded', String(isActive));
+            toggle.classList.toggle('active', isActive);
+        }
+
+        const menu = dropdown.querySelector('.nav-dropdown-menu, .mobile-list, .cta-dropdown-menu');
+        if (menu) {
+            menu.setAttribute('aria-hidden', String(!isActive));
+        }
+
+        if (!isActive) {
+            collapseMobileLanguageList(dropdown);
+        }
+    }
 
     function collapseMobileLanguageList(dropdown) {
         if (!dropdown || !dropdown.matches('.mobile-language-selector')) return;
@@ -328,8 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeActiveDropdown() {
         const activeDropdown = document.querySelector(activeDropdownSelector);
         if (!activeDropdown) return;
-        activeDropdown.classList.remove('active');
-        collapseMobileLanguageList(activeDropdown);
+        syncDropdownState(activeDropdown, false);
     }
 
     function lockMobileMenuScroll() {
@@ -348,6 +411,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!mobileMenuIcon || !mobileNavOverlay) return;
         const isOpen = mobileMenuIcon.classList.toggle("change");
         mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
+        mobileMenuIcon.setAttribute('aria-expanded', String(isOpen));
+        mobileNavOverlay.setAttribute('aria-hidden', String(!isOpen));
         if (isOpen) {
             lockMobileMenuScroll();
         } else {
@@ -386,10 +451,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById(modalId);
             if (!project || !modal) return;
             const descriptionItems = modal.querySelectorAll(".project-modal-description-item");
+            const slideItems = modal.querySelectorAll(".project-modal-slide");
             project.slides.forEach((slideData, index) => {
                 if (descriptionItems[index]) {
                     descriptionItems[index].querySelector("h4").textContent = slideData.title[currentLang];
                     descriptionItems[index].querySelector("p").innerHTML = slideData.text[currentLang];
+                }
+                if (slideItems[index]) {
+                    slideItems[index].setAttribute('aria-label', `Open enlarged image for ${slideData.title[currentLang] || slideData.title.en}`);
                 }
             });
         });
@@ -399,23 +468,32 @@ document.addEventListener("DOMContentLoaded", function () {
         mainNav.classList.add("nav-hidden");
         lastActiveElement = triggerElement || document.activeElement;
         modal.classList.add("active");
+        modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add("modal-open");
         setTimeout(() => {
-            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const firstFocusable = getFocusableElements(modal)[0];
             firstFocusable?.focus();
         }, 100);
     }
     function closeModal(modal) {
         if (!modal) return;
         modal.classList.remove("active");
+        modal.setAttribute('aria-hidden', 'true');
         const parentModal = document.querySelector('.project-modal.is-covered');
-        if (parentModal) parentModal.classList.remove('is-covered');
+        if (parentModal) {
+            parentModal.classList.remove('is-covered');
+            parentModal.setAttribute('aria-hidden', 'false');
+        }
         const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains("active"));
         if (!isAnyModalOpen) {
             document.body.classList.remove("modal-open");
             mainNav.classList.remove("nav-hidden");
         }
-        lastActiveElement?.focus();
+        if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+            lastActiveElement.focus();
+        } else if (parentModal) {
+            getFocusableElements(parentModal)[0]?.focus();
+        }
         lastActiveElement = null;
     }
     function createOrPlayPlayer() {
@@ -449,9 +527,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const descriptions = modal.querySelectorAll(".project-modal-description-item");
         const counter = modal.querySelector(".project-modal-counter");
         slides[project.currentSlide].classList.remove("active");
+        slides[project.currentSlide].setAttribute('aria-hidden', 'true');
         descriptions[project.currentSlide].classList.remove("active");
+        descriptions[project.currentSlide].setAttribute('aria-hidden', 'true');
         slides[nextIndex].classList.add("active");
+        slides[nextIndex].setAttribute('aria-hidden', 'false');
         descriptions[nextIndex].classList.add("active");
+        descriptions[nextIndex].setAttribute('aria-hidden', 'false');
         const newActiveImg = slides[nextIndex].querySelector("img");
         if (newActiveImg) newActiveImg.alt = project.slides[nextIndex].title[currentLang] || project.slides[nextIndex].title.en;
         project.currentSlide = nextIndex;
@@ -470,17 +552,29 @@ document.addEventListener("DOMContentLoaded", function () {
             project.slides.forEach(slideData => {
                 const slideEl = document.createElement("div");
                 slideEl.className = "project-modal-slide";
+                slideEl.tabIndex = 0;
+                slideEl.setAttribute('role', 'button');
+                slideEl.setAttribute('aria-hidden', 'true');
+                slideEl.setAttribute('aria-label', `Open enlarged image for ${slideData.title[currentLang] || slideData.title.en}`);
                 slideEl.innerHTML = `<img src="images/${slideData.img}" alt="${slideData.title.en}" loading="lazy">`;
                 slideEl.addEventListener("click", function () {
                     const imageModalImg = imageModal.querySelector("img");
                     imageModalImg.src = this.querySelector('img').src;
                     imageModalImg.alt = `Enlarged view of ${slideData.title[currentLang] || slideData.title.en}`;
                     modal.classList.add("is-covered");
+                    modal.setAttribute('aria-hidden', 'true');
                     openModal(imageModal, this);
+                });
+                slideEl.addEventListener("keydown", event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        slideEl.click();
+                    }
                 });
                 imageContainer.appendChild(slideEl);
                 const descEl = document.createElement("div");
                 descEl.className = "project-modal-description-item";
+                descEl.setAttribute('aria-hidden', 'true');
                 descEl.innerHTML = `<h4></h4><p></p>`;
                 descriptionContainer.appendChild(descEl);
             });
@@ -524,8 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const { data, timestamp } = JSON.parse(cached);
                 if (Date.now() - timestamp < CACHE_DURATION && data && data.contributions) {
-                    console.log('Using cached GitHub stats');
-                    return data;
+                    return { ...data, dataSource: 'cached' };
                 }
             } catch (e) {
                 localStorage.removeItem(CACHE_KEY);
@@ -542,7 +635,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if GitHub API is rate limited
             if (!userResponse.ok) {
-                console.warn('GitHub API rate limited or error:', userResponse.status);
                 throw new Error('GitHub API error');
             }
 
@@ -587,10 +679,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 contributions: yearlyContributions,
                 repos: publicRepos,
                 stars: totalStars,
-                languages: languages
+                languages: languages,
+                dataSource: 'live'
             };
-
-            console.log('Fetched fresh GitHub stats:', stats);
 
             // Cache the results
             localStorage.setItem(CACHE_KEY, JSON.stringify({
@@ -600,7 +691,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return stats;
         } catch (error) {
-            console.error('GitHub API fetch failed:', error);
             // Return fallback static data
             return {
                 contributions: 542,
@@ -611,28 +701,43 @@ document.addEventListener("DOMContentLoaded", function () {
                     { name: 'Python', percentage: 25 },
                     { name: 'JavaScript', percentage: 15 },
                     { name: 'CSS', percentage: 5 }
-                ]
+                ],
+                dataSource: 'fallback'
             };
+        }
+    }
+
+    function updateGitHubBadge(dataSource) {
+        if (!githubDataBadge || !githubDataStatus) return;
+
+        githubDataBadge.classList.remove('is-cached', 'is-fallback');
+
+        if (dataSource === 'cached') {
+            githubDataBadge.classList.add('is-cached');
+            githubDataBadge.title = 'Cached GitHub stats from the last hour.';
+            githubDataStatus.textContent = 'GitHub stats are currently shown from a recent cache.';
+        } else if (dataSource === 'fallback') {
+            githubDataBadge.classList.add('is-fallback');
+            githubDataBadge.title = 'Fallback GitHub stats are being shown because the live APIs were unavailable.';
+            githubDataStatus.textContent = 'GitHub stats are currently using a fallback snapshot.';
+        } else {
+            githubDataBadge.title = 'GitHub stats were refreshed from live APIs.';
+            githubDataStatus.textContent = 'GitHub stats were refreshed from live APIs.';
         }
     }
 
     // Update GitHub Stats in DOM
     async function updateGitHubStats() {
         const githubSection = document.getElementById('github-activity');
-        if (!githubSection) {
-            console.error('GitHub section not found');
-            return;
-        }
+        if (!githubSection) return;
 
         try {
             const stats = await fetchGitHubStats();
             
             if (!stats) {
-                console.warn('API failed, using HTML fallback values');
                 return false;
             }
-            
-            console.log('✅ API SUCCESS - Stats:', stats);
+            updateGitHubBadge(stats.dataSource);
             
             // Get all stat number elements
             const statNumbers = githubSection.querySelectorAll('.stat-number');
@@ -686,7 +791,6 @@ document.addEventListener("DOMContentLoaded", function () {
             
             return true;
         } catch (error) {
-            console.error('Error updating GitHub stats:', error);
             return false;
         }
     }
@@ -697,7 +801,6 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Safety check for NaN
         if (isNaN(target) || target === null || target === undefined) {
-            console.warn('Invalid data-count for element:', element);
             element.textContent = '0';
             return;
         }
@@ -740,15 +843,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const copyrightYearEl = document.getElementById("copyright-year");
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
+    initializeBackgroundVideo();
     initializeProjectModals();
     switchLanguage(currentLang);
+    allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
+    document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .experience-dropdown-container').forEach(dropdown => {
+        syncDropdownState(dropdown, false);
+    });
+    document.querySelectorAll(".faq-question").forEach((button, index) => {
+        const panel = button.nextElementSibling;
+        if (!panel) return;
+        if (!button.id) button.id = `faq-question-${index + 1}`;
+        panel.setAttribute('role', 'region');
+        panel.setAttribute('aria-labelledby', button.id);
+        panel.setAttribute('aria-hidden', 'true');
+    });
     document.querySelectorAll(".language-item").forEach(item => {
         item.addEventListener("click", e => {
             e.preventDefault();
             const newLang = item.getAttribute("data-lang");
             if (newLang !== currentLang) switchLanguage(newLang);
             
-            item.closest(".nav-dropdown")?.classList.remove("active");
+            const navDropdown = item.closest(".nav-dropdown");
+            if (navDropdown) syncDropdownState(navDropdown, false);
             if (item.closest(".mobile-list")) {
                 mobileToggle?.classList.remove("active");
                 if (mobileList) mobileList.style.maxHeight = '0';
@@ -779,11 +896,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const isActive = parentDropdown.classList.contains('active');
             document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container').forEach(dd => {
                 if (dd !== parentDropdown) {
-                    dd.classList.remove('active');
-                    collapseMobileLanguageList(dd);
+                    syncDropdownState(dd, false);
                 }
             });
-            parentDropdown.classList.toggle('active', !isActive);
+            syncDropdownState(parentDropdown, !isActive);
             if (parentDropdown.matches('.mobile-language-selector')) {
                 const list = parentDropdown.querySelector('.mobile-list');
                 if (list) {
@@ -809,6 +925,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const panel = button.nextElementSibling;
             const isActive = button.classList.toggle("active");
             button.setAttribute("aria-expanded", isActive);
+            panel.setAttribute('aria-hidden', String(!isActive));
             panel.style.maxHeight = isActive ? panel.scrollHeight + "px" : null;
         });
     });
@@ -847,11 +964,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     window.addEventListener("keydown", event => {
-        const activeModal = document.querySelector(".modal.active");
+        const activeModal = getActiveModal();
         if (!activeModal) {
             // Close dropdowns on Escape when no modal is open
             if (event.key === "Escape") {
                 closeActiveDropdown();
+            }
+            return;
+        }
+        if (event.key === "Tab") {
+            const focusableElements = getFocusableElements(activeModal);
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (event.shiftKey && document.activeElement === firstElement) {
+                event.preventDefault();
+                lastElement.focus();
+            } else if (!event.shiftKey && document.activeElement === lastElement) {
+                event.preventDefault();
+                firstElement.focus();
             }
             return;
         }
@@ -869,6 +1002,12 @@ document.addEventListener("DOMContentLoaded", function () {
             showProjectSlide(activeModal.id, nextIndex);
         }
     });
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            initializeBackgroundVideo();
+        }, 150);
+    }, { passive: true });
 
     // ========== MERGED SCROLL HANDLER (rAF throttled) ==========
     const scrollProgressBar = document.getElementById('scroll-progress');
@@ -920,6 +1059,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!toastContainer) {
         toastContainer = document.createElement('div');
         toastContainer.className = 'toast-container';
+        toastContainer.setAttribute('role', 'status');
+        toastContainer.setAttribute('aria-live', 'polite');
         document.body.appendChild(toastContainer);
     }
     function showToast(message, type = 'success', duration = 4000) {
@@ -953,8 +1094,11 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const submitBtn = newForm.querySelector(".submit-btn");
             const btnSpan = submitBtn.querySelector('span');
+            const formStatus = newForm.querySelector('#form-status');
             const originalText = btnSpan.textContent;
             submitBtn.disabled = true;
+            newForm.setAttribute('aria-busy', 'true');
+            if (formStatus) formStatus.textContent = '';
             btnSpan.textContent = submitBtn.dataset[`sending${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || 'Sending...';
             fetch(newForm.action, {
                 method: "POST",
@@ -964,13 +1108,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok) {
                     showToast(formMessages.success[currentLang] || formMessages.success.en, 'success');
                     newForm.reset();
+                    if (formStatus) formStatus.textContent = formMessages.success[currentLang] || formMessages.success.en;
                 } else {
                     throw new Error('Form submission failed');
                 }
             }).catch(() => {
                 showToast(formMessages.error[currentLang] || formMessages.error.en, 'error');
+                if (formStatus) formStatus.textContent = formMessages.error[currentLang] || formMessages.error.en;
             }).finally(() => {
                 submitBtn.disabled = false;
+                newForm.removeAttribute('aria-busy');
                 btnSpan.textContent = originalText;
             });
         });

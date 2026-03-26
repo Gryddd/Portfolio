@@ -1,21 +1,21 @@
-const CACHE_NAME = 'walid-portfolio-v1';
+const CACHE_NAME = 'walid-portfolio-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
-  '/pixelsnow.js',
   '/images/aura.webp',
-  '/images/aura.jpg',
-  '/images/favicon.png'
+  '/images/favicon-32.png',
+  '/images/icon-192.png'
 ];
+
+const STATIC_DESTINATIONS = new Set(['style', 'script', 'image', 'font']);
 
 // Install event - cache essential files
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Caching files');
         return cache.addAll(urlsToCache);
       })
       .then(() => self.skipWaiting())
@@ -29,7 +29,6 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log('Service Worker: Clearing old cache');
             return caches.delete(cache);
           }
         })
@@ -40,27 +39,49 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - network first, fallback to cache
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  const url = new URL(event.request.url);
+  const isSameOrigin = url.origin === self.location.origin;
+  const isNavigation = event.request.mode === 'navigate';
+  const isStaticAsset = isSameOrigin && STATIC_DESTINATIONS.has(event.request.destination);
+
+  if (!isSameOrigin && !isNavigation) {
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Clone response to cache it
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseClone);
-        });
+    (async () => {
+      if (isStaticAsset) {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+      }
+
+      try {
+        const response = await fetch(event.request);
+
+        if (isSameOrigin && response.ok && (isNavigation || isStaticAsset)) {
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(event.request, response.clone());
+        }
+
         return response;
-      })
-      .catch(() => {
-        // If network fails, try cache
-        return caches.match(event.request).then((response) => {
-          if (response) {
-            return response;
-          }
-          // Return offline page for navigation requests
-          if (event.request.mode === 'navigate') {
-            return caches.match('/index.html');
-          }
-        });
-      })
+      } catch (error) {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        if (isNavigation) {
+          return caches.match('/index.html');
+        }
+
+        throw error;
+      }
+    })()
   );
 });
