@@ -521,18 +521,49 @@ main {
     cursor: pointer;
     z-index: 1002;
     position: fixed;
-    top: calc(env(safe-area-inset-top, 0) + 1rem);
-    right: calc(env(safe-area-inset-right, 0) + 1rem);
-    background: none;
-    border: none;
-    padding: 0;
+    top: calc(env(safe-area-inset-top, 0) + 0.75rem);
+    right: calc(env(safe-area-inset-right, 0) + 0.75rem);
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--nav-bg) 88%, transparent);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    padding: 0.5rem;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    appearance: none;
+    flex-direction: column;
+    gap: 4px;
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .mobile-menu-icon div {
-    width: 25px;
-    height: 3px;
+    width: 1.4rem;
+    height: 2px;
     background-color: var(--primary-blue);
-    margin: 4px 0;
-    transition: 0.4s;
+    margin: 0;
+    border-radius: 999px;
+    transform-origin: center;
+    transition: transform 0.3s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+.mobile-menu-icon:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 3px;
+}
+.mobile-menu-icon.change {
+    background: color-mix(in srgb, var(--nav-bg) 94%, transparent);
+    border-color: color-mix(in srgb, var(--primary-blue) 24%, var(--card-border));
+}
+.mobile-menu-icon.change .bar1 {
+    transform: translateY(6px) rotate(45deg);
+}
+.mobile-menu-icon.change .bar2 {
+    opacity: 0;
+}
+.mobile-menu-icon.change .bar3 {
+    transform: translateY(-6px) rotate(-45deg);
 }
 .mobile-nav-overlay {
     height: 100%;
@@ -1430,6 +1461,7 @@ transition: transform var(--transition-speed), box-shadow var(--transition-speed
 }
 .contact-form-card {
     margin: 0 auto;
+    width: 100%;
     max-width: 32rem;
     padding: 2.5rem 2rem;
 }
@@ -1853,7 +1885,7 @@ button:hover,
         display: none;
     }
     .mobile-menu-icon {
-        display: block;
+        display: inline-flex;
     }
     .mobile-theme-in-menu {
         display: flex;
@@ -1987,6 +2019,11 @@ button:hover,
     }
     .tech-item span {
         font-size: 0.75rem;
+    }
+}
+@media (max-width: 700px) {
+    .contact-form-card {
+        padding: 1.75rem 1rem;
     }
 }
 @media (max-width: 480px) {
