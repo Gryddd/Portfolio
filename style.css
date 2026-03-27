@@ -535,14 +535,18 @@ main {
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     appearance: none;
+    color: var(--primary-blue);
     flex-direction: column;
     gap: 4px;
+    line-height: 0;
     transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.mobile-menu-icon div {
+.mobile-menu-icon .mobile-menu-bar {
+    display: block;
+    flex: 0 0 auto;
     width: 1.4rem;
     height: 2px;
-    background-color: var(--primary-blue);
+    background-color: currentColor;
     margin: 0;
     border-radius: 999px;
     transform-origin: center;
@@ -791,21 +795,43 @@ main {
     .hero-card-footer {
         padding: 0 1.5rem 1.5rem;
     }
-    h1 {
-        font-size: 1.8rem;
+    .hero .hero-text h1 {
+        font-size: clamp(1.55rem, 8vw, 1.8rem);
+        max-width: 100%;
+        white-space: normal;
+        overflow: visible;
+        overflow-wrap: normal;
+        word-break: keep-all;
+        text-wrap: balance;
+        line-height: 1.1;
+        border-right: 0;
+        animation: none;
     }
     .hero-job-title {
         font-size: 1.1rem;
     }
 }
-h1 {
+.hero-text h1 {
     display: inline-block;
     border-right: 2px solid var(--primary-blue);
+    max-width: 100%;
     font-size: 2.5rem;
+    line-height: 1.05;
     white-space: nowrap;
     overflow: hidden;
     margin: 0;
     animation: typing 2s steps(18, end), blink-caret 0.75s step-end infinite;
+}
+.hero-text .hero-name-part {
+    display: inline-block;
+}
+@media (max-width: 430px) {
+    .hero .hero-text h1 {
+        font-size: clamp(1.45rem, 8.5vw, 1.7rem);
+    }
+    .hero .hero-text .hero-name-part {
+        display: block;
+    }
 }
 @keyframes typing {
     from {
