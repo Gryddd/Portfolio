@@ -141,10 +141,8 @@
     color: var(--case-text-strong);
 }
 
-.project-case-page .project-case-actions .submit-btn,
-.project-case-page .project-case-actions .cta-dropdown-toggle,
-.project-case-page .project-case-actions .submit-btn span,
-.project-case-page .project-case-actions .cta-dropdown-toggle span {
+.project-case-page .project-case-actions .submit-btn > span,
+.project-case-page .project-case-actions .cta-dropdown-toggle > span {
     color: inherit;
 }
 
