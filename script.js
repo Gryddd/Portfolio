@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const saveData = Boolean(connection?.saveData);
         const slowConnection = typeof connection?.effectiveType === 'string' && /(2g|3g)/i.test(connection.effectiveType);
-        const smallViewport = window.innerWidth < 1024;
-        return !prefersReducedMotion && !saveData && !slowConnection && !smallViewport;
+        return !prefersReducedMotion && !saveData && !slowConnection;
     }
 
     function initializeBackgroundVideo() {
@@ -587,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
             offset: 50,
             delay: 0,
             anchorPlacement: 'top-bottom',
-            disable: window.innerWidth < 1024,
+            disable: false,
             throttleDelay: 150,
             debounceDelay: 100,
             startEvent: 'load',
@@ -596,67 +595,74 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchGitHubStats() {
-        const username = 'Gryddd';
-        const CACHE_KEY = 'github_stats_cache';
+        const CACHE_KEY = 'github_stats_cache_v4';
         const CACHE_DURATION = 3600000;
+        const statsUrl = new URL('./data/github-stats.json', window.location.href).toString();
 
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
+        function isValidLanguageEntry(entry) {
+            return !!entry
+                && typeof entry.name === 'string'
+                && entry.name.length > 0
+                && typeof entry.percentage === 'number'
+                && Number.isFinite(entry.percentage);
+        }
+
+        function isValidStatsPayload(data) {
+            return !!data
+                && typeof data.lastYearContributions === 'number'
+                && Number.isFinite(data.lastYearContributions)
+                && typeof data.repos === 'number'
+                && Number.isFinite(data.repos)
+                && typeof data.stars === 'number'
+                && Number.isFinite(data.stars)
+                && Array.isArray(data.languages)
+                && data.languages.every(isValidLanguageEntry);
+        }
+
+        function readCachedStats() {
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (!cached) {
+                return null;
+            }
+
             try {
-                const { data, timestamp } = JSON.parse(cached);
-                if (Date.now() - timestamp < CACHE_DURATION && data && typeof data.followers === 'number') {
-                    return { ...data, dataSource: 'cached' };
+                const parsed = JSON.parse(cached);
+                if (!parsed || !isValidStatsPayload(parsed.data)) {
+                    localStorage.removeItem(CACHE_KEY);
+                    return null;
                 }
-            } catch (e) {
+
+                return parsed;
+            } catch (error) {
                 localStorage.removeItem(CACHE_KEY);
+                return null;
             }
         }
 
+        const cached = readCachedStats();
+        if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+            return { ...cached.data, dataSource: 'cached' };
+        }
+
         try {
-            const [userResponse, reposResponse] = await Promise.all([
-                fetch(`https://api.github.com/users/${username}`),
-                fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
-            ]);
+            const response = await fetch(statsUrl, { cache: 'no-store' });
 
-            if (!userResponse.ok || !reposResponse.ok) {
-                throw new Error('GitHub API error');
+            if (!response.ok) {
+                throw new Error('GitHub stats data request failed.');
             }
 
-            const userData = await userResponse.json();
-            const repos = await reposResponse.json();
-
-            const totalStars = Array.isArray(repos)
-                ? repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0)
-                : 0;
-            const followers = userData.followers || 0;
-            const publicRepos = userData.public_repos || 0;
-
-            const languageBytes = {};
-            if (Array.isArray(repos)) {
-                repos.forEach(repo => {
-                    if (repo.language) {
-                        languageBytes[repo.language] = (languageBytes[repo.language] || 0) + (repo.size || 0);
-                    }
-                });
+            const data = await response.json();
+            if (!isValidStatsPayload(data)) {
+                throw new Error('GitHub stats data is invalid.');
             }
-
-            const totalBytes = Object.values(languageBytes).reduce((a, b) => a + b, 0);
-            const languages = totalBytes > 0
-                ? Object.entries(languageBytes)
-                    .map(([lang, bytes]) => ({
-                        name: lang,
-                        percentage: Math.round((bytes / totalBytes) * 100)
-                    }))
-                    .sort((a, b) => b.percentage - a.percentage)
-                    .slice(0, 4)
-                : [];
 
             const stats = {
-                followers: followers,
-                repos: publicRepos,
-                stars: totalStars,
-                languages: languages,
-                dataSource: 'live'
+                lastYearContributions: data.lastYearContributions,
+                repos: data.repos,
+                stars: data.stars,
+                languages: data.languages,
+                updatedAt: data.updatedAt || '',
+                dataSource: 'synced'
             };
 
             localStorage.setItem(CACHE_KEY, JSON.stringify({
@@ -666,26 +672,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return stats;
         } catch (error) {
+            if (cached) {
+                return { ...cached.data, dataSource: 'cached' };
+            }
+
             return null;
         }
     }
 
-    function updateGitHubBadge(dataSource) {
+    function formatGitHubSyncDate(updatedAt) {
+        if (!updatedAt) {
+            return '';
+        }
+
+        const parsedDate = new Date(updatedAt);
+        if (Number.isNaN(parsedDate.getTime())) {
+            return '';
+        }
+
+        return parsedDate.toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    function updateGitHubBadge(dataSource, updatedAt = '') {
         if (!githubDataBadge || !githubDataStatus) return;
 
         githubDataBadge.classList.remove('is-cached', 'is-unavailable');
+        const formattedDate = formatGitHubSyncDate(updatedAt);
 
         if (dataSource === 'cached') {
             githubDataBadge.classList.add('is-cached');
-            githubDataBadge.title = 'Cached GitHub profile data from the last hour.';
-            githubDataStatus.textContent = 'GitHub profile data is currently shown from a recent cache.';
+            githubDataBadge.title = formattedDate
+                ? `Cached GitHub stats from the latest synced data on ${formattedDate}.`
+                : 'Cached GitHub stats from the latest synced data.';
+            githubDataStatus.textContent = formattedDate
+                ? `GitHub stats are currently shown from a recent cache synced on ${formattedDate}.`
+                : 'GitHub stats are currently shown from a recent cache.';
         } else if (dataSource === 'unavailable') {
             githubDataBadge.classList.add('is-unavailable');
-            githubDataBadge.title = 'GitHub profile data is temporarily unavailable.';
-            githubDataStatus.textContent = 'GitHub profile data is temporarily unavailable.';
+            githubDataBadge.title = 'GitHub stats are temporarily unavailable.';
+            githubDataStatus.textContent = 'GitHub stats are temporarily unavailable.';
         } else {
-            githubDataBadge.title = 'GitHub profile data was refreshed from the public API.';
-            githubDataStatus.textContent = 'GitHub profile data was refreshed from the public API.';
+            githubDataBadge.title = formattedDate
+                ? `GitHub stats were synced from public GitHub data on ${formattedDate}.`
+                : 'GitHub stats were synced from public GitHub data.';
+            githubDataStatus.textContent = formattedDate
+                ? `GitHub stats were synced from public GitHub data on ${formattedDate}.`
+                : 'GitHub stats were synced from public GitHub data.';
         }
     }
 
@@ -722,12 +758,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 setGitHubUnavailable(githubSection);
                 return false;
             }
-            updateGitHubBadge(stats.dataSource);
+            updateGitHubBadge(stats.dataSource, stats.updatedAt);
 
             const statNumbers = githubSection.querySelectorAll('.stat-number');
 
             if (statNumbers[0]) {
-                statNumbers[0].setAttribute('data-count', stats.followers);
+                statNumbers[0].setAttribute('data-count', stats.lastYearContributions);
                 statNumbers[0].textContent = '0';
             }
 

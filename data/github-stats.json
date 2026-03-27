@@ -1,0 +1,31 @@
+{
+  "username": "Gryddd",
+  "lastYearContributions": 545,
+  "repos": 3,
+  "stars": 3,
+  "languages": [
+    {
+      "name": "JavaScript",
+      "percentage": 38
+    },
+    {
+      "name": "HTML",
+      "percentage": 36
+    },
+    {
+      "name": "CSS",
+      "percentage": 23
+    },
+    {
+      "name": "Python",
+      "percentage": 3
+    }
+  ],
+  "updatedAt": "2026-03-27T12:13:10.161Z",
+  "sources": {
+    "profile": "https://github.com/Gryddd",
+    "contributions": "https://github.com/users/Gryddd/contributions",
+    "apiUser": "https://api.github.com/users/Gryddd",
+    "apiRepos": "https://api.github.com/users/Gryddd/repos?type=owner"
+  }
+}

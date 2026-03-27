@@ -1,9 +1,10 @@
-const CACHE_NAME = 'walid-portfolio-v4';
+const CACHE_NAME = 'walid-portfolio-v5';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
+  '/data/github-stats.json',
   '/images/aura.webp',
   '/images/favicon-32.png',
   '/images/icon-192.png'
@@ -44,6 +45,7 @@ self.addEventListener('fetch', (event) => {
   const isSameOrigin = url.origin === self.location.origin;
   const isNavigation = event.request.mode === 'navigate';
   const isStaticAsset = isSameOrigin && STATIC_DESTINATIONS.has(event.request.destination);
+  const isDataAsset = isSameOrigin && url.pathname.endsWith('.json');
 
   if (!isSameOrigin && !isNavigation) {
     return;
@@ -54,7 +56,7 @@ self.addEventListener('fetch', (event) => {
       try {
         const response = await fetch(event.request);
 
-        if (isSameOrigin && response.ok && (isNavigation || isStaticAsset)) {
+        if (isSameOrigin && response.ok && (isNavigation || isStaticAsset || isDataAsset)) {
           const cache = await caches.open(CACHE_NAME);
           cache.put(event.request, response.clone());
         }
