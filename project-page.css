@@ -1,0 +1,1004 @@
+.project-case-page {
+    --case-shell-bg: rgba(9, 9, 11, 0.82);
+    --case-shell-border: rgba(255, 255, 255, 0.1);
+    --case-panel-bg: rgba(7, 7, 8, 0.96);
+    --case-panel-border: rgba(255, 255, 255, 0.12);
+    --case-card-bg: rgba(14, 14, 16, 0.92);
+    --case-card-stroke: rgba(255, 255, 255, 0.12);
+    --case-accent-surface: rgba(255, 255, 255, 0.08);
+    --case-accent-line: rgba(255, 255, 255, 0.18);
+    --case-line: rgba(255, 255, 255, 0.26);
+    --case-connector-line: rgba(255, 255, 255, 0.44);
+    --case-connector-line-strong: rgba(255, 255, 255, 0.6);
+    --case-arrow-fill: #f8fafc;
+    --case-arrow-stroke: rgba(15, 23, 42, 0.72);
+    --case-button-hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    --case-button-secondary-hover-bg: rgba(255, 255, 255, 0.08);
+    --case-button-secondary-hover-border: rgba(255, 255, 255, 0.24);
+    --case-dropdown-bg: linear-gradient(145deg, rgba(18, 18, 20, 0.96), rgba(28, 28, 32, 0.94));
+    --case-dropdown-border: rgba(255, 255, 255, 0.1);
+    --case-dropdown-link: rgba(255, 255, 255, 0.86);
+    --case-dropdown-hover-bg: rgba(255, 255, 255, 0.08);
+    --case-dropdown-hover-color: #fafafa;
+    --case-text-strong: #fafafa;
+    --case-text-main: rgba(255, 255, 255, 0.86);
+    --case-text-muted: rgba(255, 255, 255, 0.62);
+    --case-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="light"] .project-case-page {
+    --case-shell-bg: rgba(255, 255, 255, 0.9);
+    --case-shell-border: rgba(17, 17, 17, 0.08);
+    --case-panel-bg: #f8f8f8;
+    --case-panel-border: rgba(17, 17, 17, 0.1);
+    --case-card-bg: #ffffff;
+    --case-card-stroke: rgba(17, 17, 17, 0.1);
+    --case-accent-surface: rgba(17, 17, 17, 0.05);
+    --case-accent-line: rgba(17, 17, 17, 0.14);
+    --case-line: rgba(17, 17, 17, 0.28);
+    --case-connector-line: rgba(17, 17, 17, 0.48);
+    --case-connector-line-strong: rgba(17, 17, 17, 0.64);
+    --case-arrow-fill: #111111;
+    --case-arrow-stroke: rgba(255, 255, 255, 0.94);
+    --case-button-hover-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+    --case-button-secondary-hover-bg: rgba(17, 17, 17, 0.06);
+    --case-button-secondary-hover-border: rgba(17, 17, 17, 0.18);
+    --case-dropdown-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 247, 0.98));
+    --case-dropdown-border: rgba(17, 17, 17, 0.1);
+    --case-dropdown-link: #111111;
+    --case-dropdown-hover-bg: rgba(17, 17, 17, 0.08);
+    --case-dropdown-hover-color: #111111;
+    --case-text-strong: #111111;
+    --case-text-main: rgba(17, 17, 17, 0.86);
+    --case-text-muted: rgba(82, 82, 91, 0.78);
+    --case-shadow: 0 18px 32px rgba(17, 17, 17, 0.08);
+}
+
+.project-case-page .hero {
+    min-height: auto;
+    padding-top: clamp(7rem, 12vh, 8rem);
+    padding-bottom: clamp(4rem, 8vh, 5rem);
+}
+
+.project-case-page .hero-card {
+    max-width: 68rem;
+}
+
+.project-case-page .hero-card.hero-card-static {
+    border: 1px solid var(--case-shell-border);
+    background: rgba(10, 10, 12, 0.78);
+    box-shadow: var(--case-shadow);
+    transition: box-shadow 0.5s ease;
+}
+
+.project-case-page .hero-card.hero-card-static:hover {
+    transform: none;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
+}
+
+.project-case-page .hero-card-inner {
+    display: block;
+}
+
+.project-case-page .hero-text {
+    max-width: 58rem;
+}
+
+.project-case-page .hero-text h1 {
+    border-right: 0;
+    animation: none;
+    white-space: normal;
+    overflow: visible;
+}
+
+.project-case-hero-media {
+    background:
+        linear-gradient(180deg, rgba(4, 4, 6, 0.32) 0%, rgba(4, 4, 6, 0.76) 76%, rgba(4, 4, 6, 0.94) 100%),
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 34%),
+        radial-gradient(circle at right center, rgba(255, 255, 255, 0.1), transparent 30%),
+        url("images/portguardian_infra.png") center/cover no-repeat;
+}
+
+.project-case-eyebrow,
+.project-panel-label {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--case-text-muted);
+}
+
+.project-case-page .hero-card-accent {
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
+}
+
+.project-case-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    align-items: center;
+    margin-top: 1.75rem;
+}
+
+.project-case-page .submit-btn,
+.project-case-page .cta-dropdown-toggle {
+    border: 1px solid var(--case-accent-line);
+    box-shadow: none;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.project-case-page .submit-btn {
+    background: #f8f8f8;
+    color: #09090b;
+}
+
+.project-case-page .submit-btn.submit-btn-secondary,
+.project-case-page .cta-dropdown-toggle {
+    background: transparent;
+    color: var(--case-text-strong);
+}
+
+.project-case-page .project-case-actions .submit-btn,
+.project-case-page .project-case-actions .cta-dropdown-toggle,
+.project-case-page .project-case-actions .submit-btn span,
+.project-case-page .project-case-actions .cta-dropdown-toggle span {
+    color: inherit;
+}
+
+.project-case-page .submit-btn:hover,
+.project-case-page .cta-dropdown-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--case-button-hover-shadow);
+}
+
+.project-case-page .submit-btn:hover {
+    background: #eaeaea;
+    color: #09090b;
+}
+
+.project-case-page .submit-btn.submit-btn-secondary:hover,
+.project-case-page .cta-dropdown-toggle:hover {
+    background: var(--case-button-secondary-hover-bg);
+    border-color: var(--case-button-secondary-hover-border);
+    color: var(--case-text-strong);
+}
+
+.project-case-page .hero-cta-dropdown .cta-dropdown-toggle .arrow-icon {
+    fill: currentColor;
+}
+
+.project-case-page .hero-cta-dropdown .cta-dropdown-menu {
+    background: var(--case-dropdown-bg);
+    border: 1px solid var(--case-dropdown-border);
+    box-shadow: var(--case-shadow);
+}
+
+.project-case-page .hero-cta-dropdown .cta-dropdown-menu a {
+    color: var(--case-dropdown-link);
+    opacity: 0.92;
+}
+
+.project-case-page .hero-cta-dropdown .cta-dropdown-menu a:hover,
+.project-case-page .hero-cta-dropdown .cta-dropdown-menu a:focus-visible {
+    background: var(--case-dropdown-hover-bg);
+    color: var(--case-dropdown-hover-color);
+    opacity: 1;
+}
+
+.project-case-actions .submit-btn {
+    min-width: 0;
+}
+
+.project-case-actions .hero-cta-dropdown {
+    margin-top: 0;
+}
+
+.project-hero-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.project-hero-brand-copy {
+    min-width: 0;
+}
+
+.project-hero-brand-copy h1 {
+    margin: 0;
+}
+
+.project-hero-brand-copy .hero-job-title {
+    margin: 0.5rem 0 0;
+}
+
+.project-case-page .hero-job-title,
+.project-case-page .hero-description {
+    color: var(--case-text-main);
+}
+
+.project-hero-icon {
+    width: 108px;
+    height: 108px;
+    flex: 0 0 auto;
+    display: block;
+    object-fit: contain;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.project-fact-line {
+    max-width: 56rem;
+    margin: 1.25rem 0 0;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: var(--case-text-muted);
+}
+
+.project-case-tags {
+    justify-content: flex-start;
+    margin-top: 1.4rem;
+}
+
+.project-case-page .container,
+.project-case-footer .container {
+    max-width: 76rem;
+}
+
+.project-case-page section.container h2 {
+    margin-bottom: 1.3rem;
+    color: var(--case-text-strong);
+}
+
+.project-copy {
+    max-width: 62rem;
+    display: grid;
+    gap: 1.1rem;
+}
+
+.project-copy p {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--case-text-main);
+}
+
+.project-points {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.65rem;
+}
+
+.project-points li {
+    line-height: 1.65;
+    color: var(--case-text-main);
+}
+
+.case-icon-sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.topology-visual-shell,
+.schema-visual-shell {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: 28px;
+    border: 1px solid var(--case-shell-border);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+        var(--case-shell-bg);
+    box-shadow: var(--case-shadow);
+    overflow: hidden;
+}
+
+.topology-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.topology-diagram-title,
+.topology-diagram-subtitle,
+.topology-pill-text,
+.topology-card-title,
+.topology-card-subtitle,
+.topology-bullet-text,
+.topology-bullet-subtext,
+.topology-conn-text,
+.topology-conn-subtext,
+.topology-conn-badge-text,
+.topology-footer-note {
+    font-family: var(--font-heading);
+}
+
+.topology-board {
+    fill: var(--case-panel-bg);
+    stroke: var(--case-panel-border);
+    stroke-width: 1;
+}
+
+.topology-diagram-title {
+    fill: var(--case-text-strong);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.topology-diagram-subtitle {
+    fill: var(--case-text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.topology-pill {
+    fill: var(--case-accent-surface);
+    stroke: var(--case-accent-line);
+    stroke-width: 1;
+}
+
+.topology-pill-text {
+    fill: var(--case-text-main);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.topology-chip {
+    fill: rgba(255, 255, 255, 0.04);
+    stroke: var(--case-accent-line);
+    stroke-width: 1;
+}
+
+.topology-chip-text {
+    fill: var(--case-text-main);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.topology-chip-symbol,
+.topology-card-symbol {
+    color: var(--case-text-strong);
+}
+
+.topology-card-shadow {
+    filter: url(#topology-shadow);
+}
+
+.topology-card-bg {
+    fill: var(--case-card-bg);
+    stroke: var(--case-card-stroke);
+    stroke-width: 1.1;
+}
+
+.topology-card-header-endpoint {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.topology-card-header-server {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.topology-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    fill: var(--case-text-strong);
+}
+
+.topology-card-subtitle {
+    font-size: 0.81rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.topology-card-icon-bg {
+    fill: rgba(255, 255, 255, 0.05);
+    stroke: var(--case-accent-line);
+    stroke-width: 1;
+}
+
+.topology-icon-stroke {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.topology-icon-fill {
+    fill: var(--case-text-strong);
+}
+
+.topology-bullet-icon-endpoint {
+    fill: rgba(255, 255, 255, 0.78);
+}
+
+.topology-bullet-icon-server {
+    fill: rgba(255, 255, 255, 0.78);
+}
+
+.topology-bullet-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    fill: var(--case-text-strong);
+}
+
+.topology-bullet-subtext {
+    font-size: 0.74rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.topology-conn-line {
+    stroke: var(--case-connector-line-strong);
+    stroke-width: 3;
+    stroke-dasharray: 8 8;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.topology-arrowhead {
+    fill: var(--case-arrow-fill);
+    stroke: var(--case-arrow-stroke);
+    stroke-width: 1.05;
+    stroke-linejoin: round;
+    paint-order: stroke fill;
+}
+
+.topology-conn-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    fill: var(--case-text-strong);
+}
+
+.topology-conn-subtext {
+    font-size: 0.73rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.topology-conn-badge {
+    fill: rgba(255, 255, 255, 0.04);
+    stroke: var(--case-accent-line);
+    stroke-width: 1;
+}
+
+.topology-conn-badge-text {
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    fill: var(--case-text-main);
+}
+
+.topology-footer-note {
+    font-size: 0.73rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.topology-caption,
+.topology-note {
+    max-width: 62rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    text-align: center;
+    line-height: 1.72;
+}
+
+.topology-caption {
+    margin-top: 1rem;
+    color: var(--case-text-main);
+}
+
+.topology-note {
+    margin-top: 0.55rem;
+    color: var(--case-text-muted);
+    font-size: 0.95rem;
+}
+
+.schema-visual-shell + .schema-visual-shell {
+    margin-top: 1.65rem;
+}
+
+.schema-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.schema-label,
+.schema-title,
+.schema-desc,
+.schema-node-title,
+.schema-node-sub,
+.schema-caption {
+    font-family: var(--font-heading);
+}
+
+.schema-board {
+    fill: var(--case-panel-bg);
+    stroke: var(--case-panel-border);
+    stroke-width: 1;
+}
+
+.schema-separator {
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 2;
+}
+
+.schema-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    fill: var(--case-text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.schema-title {
+    font-size: 1.28rem;
+    font-weight: 700;
+    fill: var(--case-text-strong);
+}
+
+.schema-desc {
+    font-size: 0.85rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.schema-desc-center {
+    text-anchor: middle;
+}
+
+.schema-node-card {
+    fill: var(--case-card-bg);
+    stroke: var(--case-card-stroke);
+    stroke-width: 1.4;
+}
+
+.schema-node-card-alert {
+    stroke: var(--case-accent-line);
+}
+
+.schema-node-title,
+.schema-node-sub {
+    text-anchor: middle;
+}
+
+.schema-node-title {
+    font-size: 0.79rem;
+    font-weight: 700;
+    fill: var(--case-text-strong);
+}
+
+.schema-node-sub {
+    font-size: 0.66rem;
+    font-weight: 500;
+    fill: var(--case-text-muted);
+}
+
+.schema-symbol {
+    color: var(--case-text-strong);
+}
+
+.schema-conn-line {
+    stroke: var(--case-connector-line);
+    stroke-width: 2.4;
+    stroke-dasharray: 5 5;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.schema-arrowhead {
+    fill: var(--case-arrow-fill);
+    stroke: var(--case-arrow-stroke);
+    stroke-width: 1.1;
+    stroke-linejoin: round;
+    paint-order: stroke fill;
+}
+
+.schema-bus-line {
+    stroke: var(--case-connector-line-strong);
+    stroke-width: 3.1;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.schema-bus-node {
+    fill: var(--case-connector-line-strong);
+}
+
+.schema-node-bg-blue {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.schema-node-bg-red {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.schema-node-bg-green {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.schema-node-bg-purple {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.schema-node-bg-orange {
+    fill: rgba(255, 255, 255, 0.08);
+}
+
+.schema-icon-blue,
+.schema-icon-red,
+.schema-icon-green,
+.schema-icon-purple,
+.schema-icon-orange {
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.schema-icon-blue {
+    stroke: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-red {
+    stroke: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-green {
+    stroke: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-purple {
+    stroke: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-orange {
+    stroke: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-blue-fill {
+    fill: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-red-fill {
+    fill: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-green-fill {
+    fill: rgba(255, 255, 255, 0.82);
+}
+
+.schema-icon-orange-fill {
+    fill: rgba(255, 255, 255, 0.82);
+}
+
+.schema-text-icon-green {
+    fill: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    text-anchor: middle;
+}
+
+.schema-text-icon-purple {
+    fill: rgba(255, 255, 255, 0.82);
+    font-size: 0.7rem;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    text-anchor: middle;
+    letter-spacing: 0.08em;
+}
+
+.schema-node-title-accent {
+    fill: var(--case-text-strong);
+}
+
+.schema-caption {
+    max-width: 58rem;
+    margin: 1.15rem auto 0;
+    padding-inline: 1rem;
+    text-align: center;
+    line-height: 1.72;
+    color: var(--case-text-main);
+}
+
+.schema-list {
+    display: grid;
+    gap: 0;
+}
+
+.schema-row {
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--case-shell-border);
+}
+
+.schema-row:last-child {
+    border-bottom: 1px solid var(--case-shell-border);
+}
+
+.schema-row h3,
+.schema-row p {
+    margin: 0;
+}
+
+.schema-code {
+    margin-top: 0.8rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.96rem;
+    line-height: 1.8;
+    color: var(--case-text-strong);
+    word-break: break-word;
+}
+
+.schema-row > p:last-child {
+    max-width: 56rem;
+    margin-top: 0.8rem;
+    line-height: 1.72;
+}
+
+.validation-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.validation-list {
+    display: grid;
+}
+
+.validation-item {
+    display: grid;
+    grid-template-columns: minmax(7rem, 8.5rem) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1.05rem 0;
+    border-top: 1px solid var(--case-shell-border);
+}
+
+.validation-item:last-child {
+    border-bottom: 1px solid var(--case-shell-border);
+}
+
+.validation-value {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--case-text-strong);
+}
+
+.validation-copy {
+    margin: 0;
+    line-height: 1.68;
+    color: var(--case-text-main);
+}
+
+.proof-figure {
+    margin: 0;
+}
+
+.proof-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 22px;
+    border: 1px solid var(--case-shell-border);
+    background: var(--case-panel-bg);
+}
+
+.proof-figure figcaption {
+    margin-top: 0.85rem;
+    line-height: 1.68;
+    color: var(--case-text-muted);
+}
+
+.project-case-footer {
+    padding-top: 0;
+}
+
+[data-theme="light"] .project-case-hero-media {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(245, 245, 247, 0.74) 76%, rgba(245, 245, 247, 0.96) 100%),
+        radial-gradient(circle at top left, rgba(17, 17, 17, 0.08), transparent 34%),
+        radial-gradient(circle at right center, rgba(17, 17, 17, 0.05), transparent 30%),
+        url("images/portguardian_infra.png") center/cover no-repeat;
+}
+
+[data-theme="light"] .project-case-page .hero-card.hero-card-static {
+    background: rgba(255, 255, 255, 0.94);
+}
+
+[data-theme="light"] .project-case-page .hero-card-accent {
+    background:
+        linear-gradient(90deg, rgba(17, 17, 17, 0.28), rgba(17, 17, 17, 0));
+}
+
+[data-theme="light"] .project-case-page .submit-btn {
+    background: #111111;
+    color: #ffffff;
+}
+
+[data-theme="light"] .project-case-page .submit-btn.submit-btn-secondary,
+[data-theme="light"] .project-case-page .cta-dropdown-toggle {
+    background: transparent;
+    color: var(--case-text-strong);
+}
+
+[data-theme="light"] .project-case-page .submit-btn:hover {
+    background: #1f1f1f;
+    border-color: #1f1f1f;
+    color: #ffffff;
+}
+
+[data-theme="light"] .project-case-page .submit-btn.submit-btn-secondary:hover,
+[data-theme="light"] .project-case-page .cta-dropdown-toggle:hover {
+    background: var(--case-button-secondary-hover-bg);
+}
+
+[data-theme="light"] .project-case-page .project-case-actions .submit-btn.submit-btn-secondary,
+[data-theme="light"] .project-case-page .project-case-actions .submit-btn.submit-btn-secondary:hover,
+[data-theme="light"] .project-case-page .project-case-actions .cta-dropdown-toggle,
+[data-theme="light"] .project-case-page .project-case-actions .cta-dropdown-toggle:hover {
+    color: #111111;
+}
+
+[data-theme="light"] .topology-visual-shell,
+[data-theme="light"] .schema-visual-shell {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.28)),
+        var(--case-shell-bg);
+}
+
+[data-theme="light"] .topology-icon-stroke {
+    stroke: #111111;
+}
+
+[data-theme="light"] .topology-icon-fill,
+[data-theme="light"] .topology-bullet-icon-endpoint,
+[data-theme="light"] .topology-bullet-icon-server {
+    fill: #111111;
+}
+
+[data-theme="light"] .schema-icon-blue,
+[data-theme="light"] .schema-icon-red,
+[data-theme="light"] .schema-icon-green,
+[data-theme="light"] .schema-icon-purple,
+[data-theme="light"] .schema-icon-orange {
+    stroke: #111111;
+}
+
+[data-theme="light"] .schema-icon-blue-fill,
+[data-theme="light"] .schema-icon-red-fill,
+[data-theme="light"] .schema-icon-green-fill,
+[data-theme="light"] .schema-icon-orange-fill,
+[data-theme="light"] .schema-text-icon-green,
+[data-theme="light"] .schema-text-icon-purple {
+    fill: #111111;
+}
+
+[data-theme="light"] .topology-caption,
+[data-theme="light"] .schema-caption,
+[data-theme="light"] .validation-copy,
+[data-theme="light"] .proof-figure figcaption {
+    color: var(--case-text-muted);
+}
+
+@media (max-width: 720px) {
+    .project-hero-brand {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9rem;
+    }
+
+    .project-hero-icon {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+[data-theme="light"] .topology-caption {
+    color: rgba(17, 17, 17, 0.8);
+}
+
+[data-theme="light"] .topology-note {
+    color: rgba(82, 82, 91, 0.82);
+}
+
+@media (max-width: 980px) {
+    .validation-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .project-case-page .hero {
+        padding-inline: 1rem;
+    }
+
+    .project-hero-brand {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9rem;
+    }
+
+    .project-hero-icon {
+        width: 84px;
+        height: 84px;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .project-case-actions {
+        width: 100%;
+    }
+
+    .project-case-actions .submit-btn {
+        flex: 1 1 12rem;
+    }
+
+    .topology-visual-shell {
+        padding: 1rem;
+    }
+
+    .topology-diagram-title {
+        font-size: 1.2rem;
+    }
+
+    .topology-diagram-subtitle,
+    .topology-pill-text,
+    .topology-card-subtitle,
+    .topology-bullet-subtext,
+    .topology-conn-text,
+    .topology-conn-subtext,
+    .topology-conn-badge-text,
+    .topology-footer-note {
+        font-size: 0.6rem;
+    }
+
+    .topology-card-title,
+    .topology-bullet-text {
+        font-size: 0.72rem;
+    }
+
+    .schema-label {
+        font-size: 0.54rem;
+    }
+
+    .schema-title {
+        font-size: 0.9rem;
+    }
+
+    .schema-desc,
+    .schema-node-title,
+    .schema-text-icon-green {
+        font-size: 0.62rem;
+    }
+
+    .schema-node-sub {
+        font-size: 0.52rem;
+    }
+
+    .schema-caption {
+        font-size: 0.92rem;
+    }
+
+    .schema-code {
+        font-size: 0.84rem;
+    }
+
+    .validation-item {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+}

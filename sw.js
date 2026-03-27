@@ -1,12 +1,15 @@
-const CACHE_NAME = 'walid-portfolio-v5';
+const CACHE_NAME = 'walid-portfolio-v9';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/portguardian.html',
   '/style.css',
+  '/project-page.css',
   '/script.js',
   '/data/github-stats.json',
   '/images/aura.webp',
   '/images/favicon-32.png',
+  '/images/portguardian-icon.png',
   '/images/icon-192.png'
 ];
 

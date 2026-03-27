@@ -38,10 +38,10 @@
     --page-backdrop-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
     --hero-video-glow: rgba(255, 255, 255, 0.14);
     --hero-video-soft-glow: rgba(255, 255, 255, 0.08);
-    --hero-video-shadow: rgba(0, 0, 0, 0.52);
+    --hero-video-shadow: rgba(0, 0, 0, 0.24);
     --hero-video-overlay-start: rgba(0, 0, 0, 0.18);
-    --hero-video-overlay-mid: rgba(0, 0, 0, 0.34);
-    --hero-video-overlay-end: rgba(0, 0, 0, 0.86);
+    --hero-video-overlay-mid: rgba(0, 0, 0, 0.26);
+    --hero-video-overlay-end: rgba(0, 0, 0, 0.38);
 }
 
 [data-theme="light"] {
@@ -2677,6 +2677,10 @@ button:hover,
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08), transparent);
     margin: 0 auto;
     max-width: 72rem;
+}
+
+body:not(.project-case-page) .hero + .section-divider {
+    display: none;
 }
 
 .nav-links a.active {
