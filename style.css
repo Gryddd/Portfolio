@@ -1258,7 +1258,7 @@ transition: transform var(--transition-speed), box-shadow var(--transition-speed
 .github-live-badge.is-cached {
     color: #f59e0b;
 }
-.github-live-badge.is-fallback {
+.github-live-badge.is-unavailable {
     color: #ef4444;
 }
 
@@ -1330,6 +1330,9 @@ transition: transform var(--transition-speed), box-shadow var(--transition-speed
     gap: 0.75rem;
     font-size: 0.8rem;
     color: var(--text-muted);
+}
+.language-labels.is-muted {
+    opacity: 0.8;
 }
 
 .lang-dot {
@@ -1852,10 +1855,6 @@ button:hover,
 .footer-legal p {
     margin: 0.5rem 0;
     font-size: 0.9rem;
-}
-.privacy-note {
-    opacity: 0.7;
-    font-size: 0.8rem !important;
 }
 @media screen and (min-width: 990px) {
     html {

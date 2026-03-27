@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cached) {
             try {
                 const { data, timestamp } = JSON.parse(cached);
-                if (Date.now() - timestamp < CACHE_DURATION && data && data.contributions) {
+                if (Date.now() - timestamp < CACHE_DURATION && data && typeof data.followers === 'number') {
                     return { ...data, dataSource: 'cached' };
                 }
             } catch (e) {
@@ -613,25 +613,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const [userResponse, reposResponse, contributionsResponse] = await Promise.all([
+            const [userResponse, reposResponse] = await Promise.all([
                 fetch(`https://api.github.com/users/${username}`),
-                fetch(`https://api.github.com/users/${username}/repos?per_page=100`),
-                fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
+                fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
             ]);
 
-            if (!userResponse.ok) {
+            if (!userResponse.ok || !reposResponse.ok) {
                 throw new Error('GitHub API error');
             }
 
             const userData = await userResponse.json();
             const repos = await reposResponse.json();
-            const contributionsData = await contributionsResponse.json();
 
             const totalStars = Array.isArray(repos)
                 ? repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0)
                 : 0;
+            const followers = userData.followers || 0;
             const publicRepos = userData.public_repos || 0;
-            const yearlyContributions = contributionsData?.total?.lastYear || 542;
 
             const languageBytes = {};
             if (Array.isArray(repos)) {
@@ -651,15 +649,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     }))
                     .sort((a, b) => b.percentage - a.percentage)
                     .slice(0, 4)
-                : [
-                    { name: 'HTML', percentage: 55 },
-                    { name: 'Python', percentage: 25 },
-                    { name: 'JavaScript', percentage: 15 },
-                    { name: 'CSS', percentage: 5 }
-                ];
+                : [];
 
             const stats = {
-                contributions: yearlyContributions,
+                followers: followers,
                 repos: publicRepos,
                 stars: totalStars,
                 languages: languages,
@@ -673,38 +666,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return stats;
         } catch (error) {
-            return {
-                contributions: 542,
-                repos: 4,
-                stars: 2,
-                languages: [
-                    { name: 'HTML', percentage: 55 },
-                    { name: 'Python', percentage: 25 },
-                    { name: 'JavaScript', percentage: 15 },
-                    { name: 'CSS', percentage: 5 }
-                ],
-                dataSource: 'fallback'
-            };
+            return null;
         }
     }
 
     function updateGitHubBadge(dataSource) {
         if (!githubDataBadge || !githubDataStatus) return;
 
-        githubDataBadge.classList.remove('is-cached', 'is-fallback');
+        githubDataBadge.classList.remove('is-cached', 'is-unavailable');
 
         if (dataSource === 'cached') {
             githubDataBadge.classList.add('is-cached');
-            githubDataBadge.title = 'Cached GitHub stats from the last hour.';
-            githubDataStatus.textContent = 'GitHub stats are currently shown from a recent cache.';
-        } else if (dataSource === 'fallback') {
-            githubDataBadge.classList.add('is-fallback');
-            githubDataBadge.title = 'Fallback GitHub stats are being shown because the live APIs were unavailable.';
-            githubDataStatus.textContent = 'GitHub stats are currently using a fallback snapshot.';
+            githubDataBadge.title = 'Cached GitHub profile data from the last hour.';
+            githubDataStatus.textContent = 'GitHub profile data is currently shown from a recent cache.';
+        } else if (dataSource === 'unavailable') {
+            githubDataBadge.classList.add('is-unavailable');
+            githubDataBadge.title = 'GitHub profile data is temporarily unavailable.';
+            githubDataStatus.textContent = 'GitHub profile data is temporarily unavailable.';
         } else {
-            githubDataBadge.title = 'GitHub stats were refreshed from live APIs.';
-            githubDataStatus.textContent = 'GitHub stats were refreshed from live APIs.';
+            githubDataBadge.title = 'GitHub profile data was refreshed from the public API.';
+            githubDataStatus.textContent = 'GitHub profile data was refreshed from the public API.';
         }
+    }
+
+    function setGitHubUnavailable(githubSection) {
+        const statNumbers = githubSection.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            stat.removeAttribute('data-count');
+            stat.textContent = '—';
+        });
+
+        const languageBar = githubSection.querySelector('.language-bar');
+        const languageLabels = githubSection.querySelector('.language-labels');
+
+        if (languageBar) {
+            languageBar.innerHTML = '';
+        }
+
+        if (languageLabels) {
+            languageLabels.classList.add('is-muted');
+            languageLabels.textContent = 'GitHub language data is temporarily unavailable.';
+        }
+
+        updateGitHubBadge('unavailable');
     }
 
     async function updateGitHubStats() {
@@ -715,6 +719,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const stats = await fetchGitHubStats();
 
             if (!stats) {
+                setGitHubUnavailable(githubSection);
                 return false;
             }
             updateGitHubBadge(stats.dataSource);
@@ -722,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const statNumbers = githubSection.querySelectorAll('.stat-number');
 
             if (statNumbers[0]) {
-                statNumbers[0].setAttribute('data-count', stats.contributions);
+                statNumbers[0].setAttribute('data-count', stats.followers);
                 statNumbers[0].textContent = '0';
             }
 
@@ -740,6 +745,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const languageLabels = githubSection.querySelector('.language-labels');
 
             if (languageBar && languageLabels && stats.languages && stats.languages.length > 0) {
+                languageLabels.classList.remove('is-muted');
                 const languageColors = {
                     'HTML': '#e34c26',
                     'Python': '#3572A5',
@@ -762,10 +768,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 languageLabels.innerHTML = stats.languages.map(lang =>
                     `<span><span class="lang-dot" style="background: ${languageColors[lang.name] || '#666'};"></span> ${lang.name} ${lang.percentage}%</span>`
                 ).join('');
+            } else if (languageBar && languageLabels) {
+                languageBar.innerHTML = '';
+                languageLabels.classList.add('is-muted');
+                languageLabels.textContent = 'No public language breakdown is available yet.';
             }
 
             return true;
         } catch (error) {
+            setGitHubUnavailable(githubSection);
             return false;
         }
     }
@@ -774,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const target = parseInt(element.getAttribute('data-count'));
 
         if (isNaN(target) || target === null || target === undefined) {
-            element.textContent = '0';
+            element.textContent = '—';
             return;
         }
 

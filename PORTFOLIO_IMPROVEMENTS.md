@@ -17,7 +17,7 @@
 ### ✅ 3. Performance Optimizations
 - **Reduced motion support** - WebGL background disabled for users with motion sensitivity
 - **Low-memory device detection** - Graceful fallback for devices with <4GB RAM
-- **Enhanced caching headers** in `_headers` file for Cloudflare Pages
+- **Optional caching headers** in `_headers` for compatible static hosts
 - Images already have width/height attributes (prevents layout shift)
 
 ### ✅ 4. SEO Enhancements
@@ -41,8 +41,8 @@
 
 ## 🚀 Quick Setup Instructions
 
-### 1. Deploy to Cloudflare Pages
-Your `_headers` file is already configured for optimal caching. No changes needed!
+### 1. Deploy to Static Hosting
+The site is ready for GitHub Pages or other static hosts. The `_headers` file is optional and only used by platforms that support custom response headers.
 
 ### 2. Test PWA Installation
 - Visit your site on mobile
@@ -77,7 +77,7 @@ Expected performance gains:
 ### New Files:
 - `manifest.json` - PWA manifest
 - `sw.js` - Service worker for offline caching
-- `_headers` - Cloudflare Pages cache headers
+- `_headers` - Optional cache headers for compatible static hosts
 - `PORTFOLIO_IMPROVEMENTS.md` - This file
 
 ### Modified Files:

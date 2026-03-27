@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walid-portfolio-v2';
+const CACHE_NAME = 'walid-portfolio-v4';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -51,13 +51,6 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     (async () => {
-      if (isStaticAsset) {
-        const cachedResponse = await caches.match(event.request);
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-      }
-
       try {
         const response = await fetch(event.request);
 

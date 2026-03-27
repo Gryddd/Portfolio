@@ -22,7 +22,7 @@
 
 ### Sehr geehrte Personalverantwortliche,
 
-herzlich willkommen auf meinem Portfolio. Mein Name ist Walid Gourideche, und ich bin ein motivierter, 23-jähriger angehender IT-Spezialist mit einem klaren Fokus auf **Systemintegration und Netzwerkadministration**. Dieses Portfolio wurde entwickelt, um meine praktischen Fähigkeiten und mein technisches Verständnis zu demonstrieren, die ich mir durch selbstgesteuerte Projekte und Praktika angeeignet habe. Mein Ziel ist es, eine **Ausbildung zum Fachinformatiker für Systemintegration** in Deutschland zu beginnen und meine Leidenschaft für die IT in einem professionellen Umfeld einzubringen.
+herzlich willkommen auf meinem Portfolio. Mein Name ist Walid Gourideche, und ich bin ein motivierter angehender IT-Spezialist mit einem klaren Fokus auf **Systemintegration und Netzwerkadministration**. Dieses Portfolio wurde entwickelt, um meine praktischen Fähigkeiten und mein technisches Verständnis zu demonstrieren, die ich mir durch selbstgesteuerte Projekte und Praktika angeeignet habe. Mein Ziel ist es, eine **Ausbildung zum Fachinformatiker für Systemintegration** in Deutschland zu beginnen und meine Leidenschaft für die IT in einem professionellen Umfeld einzubringen.
 
 ### 🛠️ Technologie-Stack dieser Webseite
 
@@ -31,8 +31,8 @@ herzlich willkommen auf meinem Portfolio. Mein Name ist Walid Gourideche, und ic
 | **Struktur**  | `HTML5`, `Semantisches Markup`             |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
 | **Logik**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
-| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`      |
-| **Deployment**| `Cloudflare Pages`                         |
+| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`, `Live GitHub Profile Card`      |
+| **Deployment**| `GitHub Pages`, `Custom Domain (grydsh.dev)` |
 
 ---
 
@@ -83,7 +83,7 @@ Um eine lokale Kopie dieser Webseite zu betreiben:
 
 1.  Klonen Sie das Repository:
     ```sh
-    git clone https://github.com/Gryddd/Walid-Gourideche-Portfolio.git
+    git clone https://github.com/Gryddd/Portfolio.git
     ```
 2.  Öffnen Sie die `index.html`-Datei in Ihrem Browser. Es sind keine weiteren Build-Schritte erforderlich.
 
@@ -94,7 +94,7 @@ Um eine lokale Kopie dieser Webseite zu betreiben:
 
 ### Dear Hiring Managers,
 
-Welcome to my portfolio. My name is Walid Gourideche, and I am a motivated, 23-year-old aspiring IT specialist with a clear focus on **System Integration and Network Administration**. This portfolio was developed to demonstrate the practical skills and technical understanding I have acquired through self-directed projects and internships. My goal is to begin an **apprenticeship (`Ausbildung`) as an IT Specialist for System Integration** in Germany and to contribute my passion for IT in a professional environment.
+Welcome to my portfolio. My name is Walid Gourideche, and I am a motivated aspiring IT specialist with a clear focus on **System Integration and Network Administration**. This portfolio was developed to demonstrate the practical skills and technical understanding I have acquired through self-directed projects and internships. My goal is to begin an **apprenticeship (`Ausbildung`) as an IT Specialist for System Integration** in Germany and to contribute my passion for IT in a professional environment.
 
 ### 🛠️ Technology Stack of This Website
 
@@ -103,8 +103,8 @@ Welcome to my portfolio. My name is Walid Gourideche, and I am a motivated, 23-y
 | **Structure** | `HTML5`, `Semantic Markup`                 |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
 | **Logic**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
-| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`      |
-| **Deployment**| `Cloudflare Pages`                         |
+| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`, `Live GitHub Profile Card`      |
+| **Deployment**| `GitHub Pages`, `Custom Domain (grydsh.dev)` |
 
 ---
 
@@ -143,7 +143,7 @@ This project showcases the construction of a complete web application infrastruc
 
 #### Languages
 - **German:** Goethe-Certificate B2
-- **English:** Near-Native Proficiency (C2)
+- **English:** C2 (Professional Working Proficiency)
 - **French:** Fluent
 - **Arabic:** Native Speaker
 
@@ -155,6 +155,6 @@ To get a local copy up and running:
 
 1.  Clone the repository:
     ```sh
-    git clone https://github.com/Gryddd/Walid-Gourideche-Portfolio.git
+    git clone https://github.com/Gryddd/Portfolio.git
     ```
 2.  Open the `index.html` file in your browser. No build steps are required.
