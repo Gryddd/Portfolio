@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
@@ -7,11 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Theme Toggle Logic
     const themeToggleBtns = document.querySelectorAll('.theme-toggle');
     const rootElement = document.documentElement;
     const savedTheme = localStorage.getItem('portfolio-theme');
-    
+
     if (savedTheme === 'light') {
         rootElement.setAttribute('data-theme', 'light');
     }
@@ -209,80 +207,80 @@ document.addEventListener("DOMContentLoaded", function () {
                 slides: [
                     {
                         img: "portguardian_main_v2.png",
-                        title: { 
-                            de: "Enterprise UI & WMI-Überwachung", 
-                            en: "Enterprise UI & WMI Monitoring", 
-                            fr: "Interface Enterprise & Surveillance WMI" 
+                        title: {
+                            de: "Enterprise UI & WMI-Überwachung",
+                            en: "Enterprise UI & WMI Monitoring",
+                            fr: "Interface Enterprise & Surveillance WMI"
                         },
-                        text: { 
-                            de: "Das System wurde komplett auf <b>PyQt6</b> und OOP umgestellt. Es nutzt die Windows Management Instrumentation (WMI) API für die Echtzeit-Hardwareüberwachung ohne Polling-Overhead. Die Benutzeroberfläche ist thread-sicher (QThread) und reagiert sofort auf USB-Ereignisse.", 
-                            en: "The system was overhauled using <b>PyQt6</b> and OOP standards. It utilizes the Windows Management Instrumentation (WMI) API for real-time hardware monitoring without polling overhead. The UI is thread-safe (QThread) and reacts instantly to USB events.", 
-                            fr: "Le système a été refondu avec <b>PyQt6</b> et la POO. Il utilise l'API WMI pour la surveillance matérielle en temps réel. L'interface est thread-safe et réagit instantanément aux événements USB." 
+                        text: {
+                            de: "Das System wurde komplett auf <b>PyQt6</b> und OOP umgestellt. Es nutzt die Windows Management Instrumentation (WMI) API für die Echtzeit-Hardwareüberwachung ohne Polling-Overhead. Die Benutzeroberfläche ist thread-sicher (QThread) und reagiert sofort auf USB-Ereignisse.",
+                            en: "The system was overhauled using <b>PyQt6</b> and OOP standards. It utilizes the Windows Management Instrumentation (WMI) API for real-time hardware monitoring without polling overhead. The UI is thread-safe (QThread) and reacts instantly to USB events.",
+                            fr: "Le système a été refondu avec <b>PyQt6</b> et la POO. Il utilise l'API WMI pour la surveillance matérielle en temps réel. L'interface est thread-safe et réagit instantanément aux événements USB."
                         }
                     },
                     {
                         img: "portguardian_infra.png",
-                        title: { 
-                            de: "Systemintegration: Dual-VM Setup", 
-                            en: "System Integration: Dual-VM Setup", 
-                            fr: "Intégration Système : Configuration Double VM" 
+                        title: {
+                            de: "Systemintegration: Dual-VM Setup",
+                            en: "System Integration: Dual-VM Setup",
+                            fr: "Intégration Système : Configuration Double VM"
                         },
-                        text: { 
-                            de: "Entwicklung und Tests erfolgten in einer realistischen Client-Server-Umgebung. <b>Links:</b> Windows 10 Client, der den Agenten ausführt. <b>Rechts:</b> Windows Server 2019, der Splunk Enterprise hostet. Dies simuliert eine echte Unternehmensdomäne.", 
-                            en: "Development and testing were conducted in a realistic Client-Server environment. <b>Left:</b> Windows 10 Client running the agent. <b>Right:</b> Windows Server 2019 hosting Splunk Enterprise. This simulates a real corporate domain.", 
-                            fr: "Développement et tests effectués dans un environnement Client-Serveur réaliste. <b>Gauche :</b> Client Windows 10 exécutant l'agent. <b>Droite :</b> Windows Server 2019 hébergeant Splunk. Cela simule un véritable domaine d'entreprise." 
+                        text: {
+                            de: "Entwicklung und Tests erfolgten in einer realistischen Client-Server-Umgebung. <b>Links:</b> Windows 10 Client, der den Agenten ausführt. <b>Rechts:</b> Windows Server 2019, der Splunk Enterprise hostet. Dies simuliert eine echte Unternehmensdomäne.",
+                            en: "Development and testing were conducted in a realistic Client-Server environment. <b>Left:</b> Windows 10 Client running the agent. <b>Right:</b> Windows Server 2019 hosting Splunk Enterprise. This simulates a real corporate domain.",
+                            fr: "Développement et tests effectués dans un environnement Client-Serveur réaliste. <b>Gauche :</b> Client Windows 10 exécutant l'agent. <b>Droite :</b> Windows Server 2019 hébergeant Splunk. Cela simule un véritable domaine d'entreprise."
                         }
                     },
                     {
                         img: "portguardian_splunk.png",
-                        title: { 
-                            de: "SIEM-Integration (Splunk)", 
-                            en: "SIEM Integration (Splunk)", 
-                            fr: "Intégration SIEM (Splunk)" 
+                        title: {
+                            de: "SIEM-Integration (Splunk)",
+                            en: "SIEM Integration (Splunk)",
+                            fr: "Intégration SIEM (Splunk)"
                         },
-                        text: { 
-                            de: "PortGuardian sendet strukturierte JSON-Logs über <b>UDP Port 514 (Syslog)</b> an den zentralen Server. Das Dashboard zeigt Ereignis-Korrelationen in Echtzeit, Hash-Werte und Bedrohungs-Scores, was SOC-Analysten sofortige Reaktionen ermöglicht.", 
-                            en: "PortGuardian transmits structured JSON logs via <b>UDP Port 514 (Syslog)</b> to the central server. The dashboard displays real-time event correlation, file hashes, and threat scores, enabling immediate response capabilities for SOC analysts.", 
-                            fr: "PortGuardian transmet des journaux JSON structurés via <b>UDP Port 514 (Syslog)</b> au serveur central. Le tableau de bord affiche la corrélation des événements en temps réel, permettant une réponse immédiate des analystes SOC." 
+                        text: {
+                            de: "PortGuardian sendet strukturierte JSON-Logs über <b>UDP Port 514 (Syslog)</b> an den zentralen Server. Das Dashboard zeigt Ereignis-Korrelationen in Echtzeit, Hash-Werte und Bedrohungs-Scores, was SOC-Analysten sofortige Reaktionen ermöglicht.",
+                            en: "PortGuardian transmits structured JSON logs via <b>UDP Port 514 (Syslog)</b> to the central server. The dashboard displays real-time event correlation, file hashes, and threat scores, enabling immediate response capabilities for SOC analysts.",
+                            fr: "PortGuardian transmet des journaux JSON structurés via <b>UDP Port 514 (Syslog)</b> au serveur central. Le tableau de bord affiche la corrélation des événements en temps réel, permettant une réponse immédiate des analystes SOC."
                         }
                     },
                     {
                         img: "portguardian_alert.png",
-                        title: { 
-                            de: "Automatisierte Eindämmung (Containment)", 
-                            en: "Automated Threat Containment", 
-                            fr: "Confinement Automatisé des Menaces" 
+                        title: {
+                            de: "Automatisierte Eindämmung (Containment)",
+                            en: "Automated Threat Containment",
+                            fr: "Confinement Automatisé des Menaces"
                         },
-                        text: { 
-                            de: "Bei Erkennung einer kritischen Bedrohung (Score > 85) reagiert das System autonom: 1. Physikalischer Auswurf des USB-Laufwerks via <code>mountvol</code>. 2. <b>Netzwerk-Isolation</b> durch Blockieren aller Ports via Windows Firewall API und Deaktivierung der Netzwerkadapter.", 
-                            en: "Upon detecting a critical threat (Score > 85), the system reacts autonomously: 1. Physical ejection of the USB drive via <code>mountvol</code>. 2. <b>Network Isolation</b> by creating blocking Firewall rules and disabling network adapters via OS APIs.", 
-                            fr: "Lors de la détection d'une menace critique, le système réagit de manière autonome : 1. Éjection physique du lecteur USB via <code>mountvol</code>. 2. <b>Isolation réseau</b> en créant des règles de pare-feu bloquantes et en désactivant les adaptateurs réseau." 
+                        text: {
+                            de: "Bei Erkennung einer kritischen Bedrohung (Score > 85) reagiert das System autonom: 1. Physikalischer Auswurf des USB-Laufwerks via <code>mountvol</code>. 2. <b>Netzwerk-Isolation</b> durch Blockieren aller Ports via Windows Firewall API und Deaktivierung der Netzwerkadapter.",
+                            en: "Upon detecting a critical threat (Score > 85), the system reacts autonomously: 1. Physical ejection of the USB drive via <code>mountvol</code>. 2. <b>Network Isolation</b> by creating blocking Firewall rules and disabling network adapters via OS APIs.",
+                            fr: "Lors de la détection d'une menace critique, le système réagit de manière autonome : 1. Éjection physique du lecteur USB via <code>mountvol</code>. 2. <b>Isolation réseau</b> en créant des règles de pare-feu bloquantes et en désactivant les adaptateurs réseau."
                         }
                     },
                     {
                         img: "portguardian_auth.png",
-                        title: { 
-                            de: "Rollenbasierte Sicherheit (RBAC)", 
-                            en: "Role-Based Security (RBAC)", 
-                            fr: "Sécurité Basée sur les Rôles" 
+                        title: {
+                            de: "Rollenbasierte Sicherheit (RBAC)",
+                            en: "Role-Based Security (RBAC)",
+                            fr: "Sécurité Basée sur les Rôles"
                         },
-                        text: { 
-                            de: "Um unbefugte Manipulationen zu verhindern, ist die Wiederherstellung der Netzwerkverbindung durch ein SOC-Admin-Passwort geschützt. Dies verhindert, dass Malware oder ungeschulte Benutzer die Isolation umgehen (Anti-Tamper).", 
-                            en: "To prevent unauthorized tampering, network restoration is protected by a SOC Admin password protocol. This ensures that neither malware nor untrained users can bypass the isolation state (Anti-Tamper).", 
-                            fr: "Pour empêcher toute manipulation non autorisée, la restauration du réseau est protégée par un mot de passe Admin SOC. Cela garantit que ni les logiciels malveillants ni les utilisateurs ne peuvent contourner l'isolation." 
+                        text: {
+                            de: "Um unbefugte Manipulationen zu verhindern, ist die Wiederherstellung der Netzwerkverbindung durch ein SOC-Admin-Passwort geschützt. Dies verhindert, dass Malware oder ungeschulte Benutzer die Isolation umgehen (Anti-Tamper).",
+                            en: "To prevent unauthorized tampering, network restoration is protected by a SOC Admin password protocol. This ensures that neither malware nor untrained users can bypass the isolation state (Anti-Tamper).",
+                            fr: "Pour empêcher toute manipulation non autorisée, la restauration du réseau est protégée par un mot de passe Admin SOC. Cela garantit que ni les logiciels malveillants ni les utilisateurs ne peuvent contourner l'isolation."
                         }
                     },
                     {
                         img: "portguardian_hash.png",
-                        title: { 
-                            de: "Offline-Datenbank & Heuristik", 
-                            en: "Offline Database & Heuristics", 
-                            fr: "Base de Données Hors Ligne & Heuristique" 
+                        title: {
+                            de: "Offline-Datenbank & Heuristik",
+                            en: "Offline Database & Heuristics",
+                            fr: "Base de Données Hors Ligne & Heuristique"
                         },
-                        text: { 
-                            de: "Anstatt sich auf langsame Cloud-APIs zu verlassen, nutzt das System eine lokale SHA-256 Hash-Datenbank (>1 Million Signaturen) und eine Heuristik-Engine (Entropie-Analyse, PE-Header-Prüfung) für millisekundenschnelle Entscheidungen ohne Internet.", 
-                            en: "Instead of relying on slow Cloud APIs, the system uses a local SHA-256 hash database (>1M signatures) and a heuristics engine (Entropy analysis, PE Header checks) for millisecond-fast decisions without internet access.", 
-                            fr: "Au lieu de s'appuyer sur des API Cloud lentes, le système utilise une base de données locale de hachage SHA-256 et un moteur heuristique pour des décisions ultra-rapides sans accès Internet." 
+                        text: {
+                            de: "Anstatt sich auf langsame Cloud-APIs zu verlassen, nutzt das System eine lokale SHA-256 Hash-Datenbank (>1 Million Signaturen) und eine Heuristik-Engine (Entropie-Analyse, PE-Header-Prüfung) für millisekundenschnelle Entscheidungen ohne Internet.",
+                            en: "Instead of relying on slow Cloud APIs, the system uses a local SHA-256 hash database (>1M signatures) and a heuristics engine (Entropy analysis, PE Header checks) for millisecond-fast decisions without internet access.",
+                            fr: "Au lieu de s'appuyer sur des API Cloud lentes, le système utilise une base de données locale de hachage SHA-256 et un moteur heuristique pour des décisions ultra-rapides sans accès Internet."
                         }
                     }
                 ]
@@ -291,11 +289,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentSlide: 0,
                 slides: [
                     {
-                        img: "leagueskins_thumb.png", 
-                        title: { 
-                            de: "Open Source Maintainer Rolle", 
-                            en: "Open Source Maintainer Role", 
-                            fr: "Rôle de Mainteneur Open Source" 
+                        img: "leagueskins_thumb.png",
+                        title: {
+                            de: "Open Source Maintainer Rolle",
+                            en: "Open Source Maintainer Role",
+                            fr: "Rôle de Mainteneur Open Source"
                         },
                         text: {
                             de: "Ich verwalte die Asset-Datenbank für 'Rose', eine Anwendung mit über 10K täglichen Nutzern weltweit. Meine Rolle ist entscheidend für die Systemstabilität, da ich sicherstelle, dass proprietäre Spieldaten korrekt validiert, strukturiert und bereitgestellt werden. Ich fungiere als Schnittstelle zwischen den Kernentwicklern und der Community.",
@@ -304,11 +302,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     },
                     {
-                        img: "leagueskins_code.png", 
-                        title: { 
-                            de: "Reverse Engineering & Debugging", 
-                            en: "Reverse Engineering & Debugging", 
-                            fr: "Rétro-ingénierie & Débogage" 
+                        img: "leagueskins_code.png",
+                        title: {
+                            de: "Reverse Engineering & Debugging",
+                            en: "Reverse Engineering & Debugging",
+                            fr: "Rétro-ingénierie & Débogage"
                         },
                         text: {
                             de: "Um komplexe Rendering-Fehler zu beheben (wie im Code gezeigt), führe ich Reverse Engineering an binären Konfigurationsdateien (.bin) durch. Ich analysiere Parameter wie <code>InitialSubmeshToHide</code> und patche die Logik manuell, um fehlende Assets wiederherzustellen, die von automatisierten Tools übersehen wurden.",
@@ -317,11 +315,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     },
                     {
-                        img: "leagueskins_files.png", 
-                        title: { 
-                            de: "Datenstruktur & QA-Workflow", 
-                            en: "Data Structure & QA Workflow", 
-                            fr: "Structure des Données & Workflow QA" 
+                        img: "leagueskins_files.png",
+                        title: {
+                            de: "Datenstruktur & QA-Workflow",
+                            en: "Data Structure & QA Workflow",
+                            fr: "Structure des Données & Workflow QA"
                         },
                         text: {
                             de: "Ich leite ein Sub-Team von Testern, um Regressionstests für neue Patches durchzuführen. Mein Workflow umfasst die Nutzung von CLI-Tools (RitoBIN) zur Datenextraktion, Git zur Versionskontrolle und strikte JSON-Validierung, bevor Updates in die Live-Umgebung gepusht werden.",
@@ -580,11 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-    // AOS removed - all content loads at once during preloader for smoother experience
 
-    // ============================================
-    // AOS SCROLL ANIMATIONS
-    // ============================================
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 400,
@@ -593,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
             offset: 50,
             delay: 0,
             anchorPlacement: 'top-bottom',
-            disable: window.innerWidth < 1024, // Disable on smaller screens
+            disable: window.innerWidth < 1024,
             throttleDelay: 150,
             debounceDelay: 100,
             startEvent: 'load',
@@ -601,18 +595,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ============================================
-    // DYNAMIC GITHUB STATS FETCHER
-    // ============================================
-    // Fetches real-time GitHub data with 1-hour caching
-    // Works on static hosting (GitHub Pages / Cloudflare)
-    
     async function fetchGitHubStats() {
         const username = 'Gryddd';
         const CACHE_KEY = 'github_stats_cache';
-        const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+        const CACHE_DURATION = 3600000;
 
-        // Check cache first
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
             try {
@@ -626,14 +613,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            // Fetch data directly from APIs (works on static hosting)
             const [userResponse, reposResponse, contributionsResponse] = await Promise.all([
                 fetch(`https://api.github.com/users/${username}`),
                 fetch(`https://api.github.com/users/${username}/repos?per_page=100`),
                 fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
             ]);
 
-            // Check if GitHub API is rate limited
             if (!userResponse.ok) {
                 throw new Error('GitHub API error');
             }
@@ -642,14 +627,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const repos = await reposResponse.json();
             const contributionsData = await contributionsResponse.json();
 
-            // Calculate stats
-            const totalStars = Array.isArray(repos) 
+            const totalStars = Array.isArray(repos)
                 ? repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0)
                 : 0;
             const publicRepos = userData.public_repos || 0;
             const yearlyContributions = contributionsData?.total?.lastYear || 542;
 
-            // Calculate language percentages from repos
             const languageBytes = {};
             if (Array.isArray(repos)) {
                 repos.forEach(repo => {
@@ -660,7 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const totalBytes = Object.values(languageBytes).reduce((a, b) => a + b, 0);
-            const languages = totalBytes > 0 
+            const languages = totalBytes > 0
                 ? Object.entries(languageBytes)
                     .map(([lang, bytes]) => ({
                         name: lang,
@@ -683,7 +666,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 dataSource: 'live'
             };
 
-            // Cache the results
             localStorage.setItem(CACHE_KEY, JSON.stringify({
                 data: stats,
                 timestamp: Date.now()
@@ -691,7 +673,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return stats;
         } catch (error) {
-            // Return fallback static data
             return {
                 contributions: 542,
                 repos: 4,
@@ -726,44 +707,38 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Update GitHub Stats in DOM
     async function updateGitHubStats() {
         const githubSection = document.getElementById('github-activity');
         if (!githubSection) return;
 
         try {
             const stats = await fetchGitHubStats();
-            
+
             if (!stats) {
                 return false;
             }
             updateGitHubBadge(stats.dataSource);
-            
-            // Get all stat number elements
+
             const statNumbers = githubSection.querySelectorAll('.stat-number');
-            
-            // Update contributions (first stat)
+
             if (statNumbers[0]) {
                 statNumbers[0].setAttribute('data-count', stats.contributions);
                 statNumbers[0].textContent = '0';
             }
-            
-            // Update repos (second stat)
+
             if (statNumbers[1]) {
                 statNumbers[1].setAttribute('data-count', stats.repos);
                 statNumbers[1].textContent = '0';
             }
-            
-            // Update stars (third stat)
+
             if (statNumbers[2]) {
                 statNumbers[2].setAttribute('data-count', stats.stars);
                 statNumbers[2].textContent = '0';
             }
 
-            // Update language bar
             const languageBar = githubSection.querySelector('.language-bar');
             const languageLabels = githubSection.querySelector('.language-labels');
-            
+
             if (languageBar && languageLabels && stats.languages && stats.languages.length > 0) {
                 const languageColors = {
                     'HTML': '#e34c26',
@@ -780,33 +755,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     'PHP': '#4F5D95'
                 };
 
-                languageBar.innerHTML = stats.languages.map(lang => 
+                languageBar.innerHTML = stats.languages.map(lang =>
                     `<div class="language-segment" style="width: ${lang.percentage}%; background: ${languageColors[lang.name] || '#666'};" title="${lang.name}"></div>`
                 ).join('');
 
-                languageLabels.innerHTML = stats.languages.map(lang => 
+                languageLabels.innerHTML = stats.languages.map(lang =>
                     `<span><span class="lang-dot" style="background: ${languageColors[lang.name] || '#666'};"></span> ${lang.name} ${lang.percentage}%</span>`
                 ).join('');
             }
-            
+
             return true;
         } catch (error) {
             return false;
         }
     }
 
-    // Animated Counter for GitHub Stats
     function animateCounter(element) {
         const target = parseInt(element.getAttribute('data-count'));
-        
-        // Safety check for NaN
+
         if (isNaN(target) || target === null || target === undefined) {
             element.textContent = '0';
             return;
         }
-        
-        const duration = 2000; // 2 seconds
-        const increment = target / (duration / 16); // 60 FPS
+
+        const duration = 2000;
+        const increment = target / (duration / 16);
         let current = 0;
 
         const timer = setInterval(() => {
@@ -820,12 +793,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 16);
     }
 
-    // Initialize GitHub Stats
     const githubSection = document.getElementById('github-activity');
     if (githubSection) {
-        // Fetch and update stats first
         updateGitHubStats().then(() => {
-            // Then setup animation observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -839,7 +809,6 @@ document.addEventListener("DOMContentLoaded", function () {
             observer.observe(githubSection);
         });
     }
-
 
     const copyrightYearEl = document.getElementById("copyright-year");
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
@@ -863,7 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const newLang = item.getAttribute("data-lang");
             if (newLang !== currentLang) switchLanguage(newLang);
-            
+
             const navDropdown = item.closest(".nav-dropdown");
             if (navDropdown) syncDropdownState(navDropdown, false);
             if (item.closest(".mobile-list")) {
@@ -966,7 +935,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("keydown", event => {
         const activeModal = getActiveModal();
         if (!activeModal) {
-            // Close dropdowns on Escape when no modal is open
             if (event.key === "Escape") {
                 closeActiveDropdown();
             }
@@ -1009,7 +977,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 150);
     }, { passive: true });
 
-    // ========== MERGED SCROLL HANDLER (rAF throttled) ==========
     const scrollProgressBar = document.getElementById('scroll-progress');
     const scrollToTopBtn = document.getElementById('scroll-to-top');
     let scrollTicking = false;
@@ -1017,12 +984,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!scrollTicking) {
             requestAnimationFrame(() => {
                 const scrollTop = window.scrollY;
-                // Progress bar
                 if (scrollProgressBar) {
                     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                     scrollProgressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
                 }
-                // Scroll-to-top button
                 if (scrollToTopBtn) {
                     scrollToTopBtn.classList.toggle('visible', scrollTop > 400);
                 }
@@ -1037,7 +1002,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ========== ACTIVE NAV SECTION HIGHLIGHTING ==========
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     const sections = document.querySelectorAll('section[id]');
     if (sections.length > 0 && navLinks.length > 0) {
@@ -1054,7 +1018,6 @@ document.addEventListener("DOMContentLoaded", function () {
         sections.forEach(section => sectionObserver.observe(section));
     }
 
-    // ========== TOAST NOTIFICATION SYSTEM ==========
     let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -1074,7 +1037,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, duration);
     }
 
-    // ========== LOCALIZED FORM MESSAGES WITH TOASTS ==========
     const formMessages = {
         success: {
             de: 'Vielen Dank! Ihre Nachricht wurde gesendet.',
@@ -1123,25 +1085,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ========== PRELOADER ==========
     const preloader = document.getElementById('preloader');
     if (preloader) {
         window.addEventListener('load', () => {
             setTimeout(() => preloader.classList.add('hidden'), 300);
         });
-        // Fallback — hide after 4s no matter what
         setTimeout(() => preloader.classList.add('hidden'), 4000);
     }
 
-
-    // ========== MAGNETIC 3D TILT ON HERO CARD ==========
     const heroCard = document.querySelector('.hero-card');
     if (heroCard && window.matchMedia('(hover: hover)').matches) {
         heroCard.addEventListener('mousemove', (e) => {
             const rect = heroCard.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 to 0.5
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
             const y = (e.clientY - rect.top) / rect.height - 0.5;
-            const tiltX = y * -6;  // degrees
+            const tiltX = y * -6;
             const tiltY = x * 6;
             heroCard.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
         });

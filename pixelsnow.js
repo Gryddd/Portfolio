@@ -1,13 +1,6 @@
-/**
- * Dither background — vanilla Three.js port of @react-bits/Dither
- * Uses WebGL 1.0 (GLSL ES 1.00) for universal compatibility.
- * Avoids WebGL2 array literal bugs by using a DataTexture for the Bayer matrix.
- * Two-pass: FBM wave → RenderTarget → Bayer dither → screen
- */
 (function () {
   'use strict';
 
-  // ── Pass 1: Wave shader (WebGL 1.0) ───────────────────────────────────────
   var waveVert = `
 varying vec2 vUv;
 void main() {
@@ -65,7 +58,6 @@ void main(){
   gl_FragColor = vec4(mix(vec3(0.0), waveColor, f), 1.0);
 }`;
 
-  // ── Pass 2: Dither shader (WebGL 1.0) ─────────────────────────────────────
   var ditherVert = `
 varying vec2 vUv;
 void main(){
@@ -85,11 +77,10 @@ uniform float pixelSize;
 
 vec3 dither(vec2 uv, vec3 color){
   vec2 sc = floor(uv * resolution / pixelSize);
-  
-  // Sample the 8x8 bayer texture. Add 0.5 to sample center of texel.
-  vec2 bayerUv = (mod(sc, 8.0) + 0.5) / 8.0; 
+
+  vec2 bayerUv = (mod(sc, 8.0) + 0.5) / 8.0;
   float threshold = texture2D(bayerTexture, bayerUv).r * 0.004;
-  
+
   float stepsize = 1.0 / (colorNum - 1.0);
   color += threshold * stepsize;
   color = clamp(color, 0.0, 1.0);
@@ -97,13 +88,11 @@ vec3 dither(vec2 uv, vec3 color){
 }
 
 void main(){
-  // Use bilinear sampling instead of pixelated sampling for smooth gradients
   vec4 color = texture2D(inputBuffer, vUv);
   color.rgb = dither(vUv, color.rgb);
   gl_FragColor = color;
 }`;
 
-  // ── Init ────────────────────────────────────────────────────────────────────
   function initDither(container, opts) {
     opts = Object.assign({
       waveColor:     [0.5, 0.5, 0.5],
@@ -130,10 +119,8 @@ void main(){
 
     var W = container.offsetWidth, H = container.offsetHeight;
 
-    // Full-screen quad
     var quad = new THREE.PlaneGeometry(2, 2);
 
-    // ── Generate Bayer 8x8 DataTexture ────────────────────────────────────────
     var bayerData = new Uint8Array([
        0,192, 48,240, 12,204, 60,252,
      128, 64,176,112,140, 76,188,124,
@@ -151,14 +138,12 @@ void main(){
     bayerTex.wrapT = THREE.RepeatWrapping;
     bayerTex.needsUpdate = true;
 
-    // Render target for Pass 1
     var rt = new THREE.WebGLRenderTarget(W, H, {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat
     });
 
-    // Wave material (Pass 1)
     var waveUniforms = {
       resolution:    { value: new THREE.Vector2(W, H) },
       time:          { value: 0.0 },
@@ -169,10 +154,9 @@ void main(){
     };
     var waveScene = new THREE.Scene();
     waveScene.add(new THREE.Mesh(quad, new THREE.ShaderMaterial({
-      vertexShader: waveVert, fragmentShader: waveFrag, uniforms: waveUniforms 
+      vertexShader: waveVert, fragmentShader: waveFrag, uniforms: waveUniforms
     })));
 
-    // Dither material (Pass 2)
     var ditherUniforms = {
       inputBuffer:  { value: rt.texture },
       bayerTexture: { value: bayerTex },
@@ -188,7 +172,6 @@ void main(){
     var cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     cam.position.z = 1;
 
-    // Resize
     var resizeTimer;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
@@ -201,23 +184,19 @@ void main(){
       }, 120);
     });
 
-    // Visibility observer
     var isVisible = true;
     var obs = new IntersectionObserver(function (e) { isVisible = e[0].isIntersecting; }, { threshold: 0 });
     obs.observe(container);
 
-    // Animate
     var animId, t0 = performance.now();
     function animate() {
       animId = requestAnimationFrame(animate);
       if (!isVisible) return;
       waveUniforms.time.value = (performance.now() - t0) * 0.001;
-      
-      // Pass 1: render wave to internal target
+
       renderer.setRenderTarget(rt);
       renderer.render(waveScene, cam);
-      
-      // Pass 2: render dithered output to screen
+
       renderer.setRenderTarget(null);
       renderer.render(ditherScene, cam);
     }
