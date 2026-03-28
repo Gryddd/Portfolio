@@ -1992,6 +1992,10 @@ button:hover,
     .mobile-theme-in-menu {
         display: flex;
     }
+    .hero {
+        min-height: 100svh;
+        padding: clamp(4.2rem, 7.5vh, 5.15rem) 1.25rem clamp(4.7rem, 10.5vh, 6.7rem);
+    }
     h1 {
         font-size: 2rem;
     }
