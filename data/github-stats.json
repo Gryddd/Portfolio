@@ -1,27 +1,27 @@
 {
   "username": "Gryddd",
-  "lastYearContributions": 545,
+  "lastYearContributions": 549,
   "repos": 3,
   "stars": 3,
   "languages": [
     {
-      "name": "JavaScript",
-      "percentage": 38
+      "name": "HTML",
+      "percentage": 42
     },
     {
-      "name": "HTML",
-      "percentage": 36
+      "name": "JavaScript",
+      "percentage": 31
     },
     {
       "name": "CSS",
-      "percentage": 23
+      "percentage": 24
     },
     {
       "name": "Python",
       "percentage": 3
     }
   ],
-  "updatedAt": "2026-03-27T12:13:10.161Z",
+  "updatedAt": "2026-03-28T05:36:35.576Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
