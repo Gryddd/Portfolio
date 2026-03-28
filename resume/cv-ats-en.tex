@@ -1,0 +1,117 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=0.50in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tgpagella}
+\usepackage{microtype}
+\usepackage{titlesec}
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\definecolor{linkblue}{HTML}{0F5DA8}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkblue,
+  linkcolor=linkblue
+}
+
+\pagestyle{empty}
+\flushbottom
+\linespread{1.025}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.15em plus 0.05em minus 0.02em}
+\setlist[itemize]{leftmargin=1.12em, itemsep=0.11em, topsep=0.14em plus 0.06em minus 0.02em, parsep=0em, partopsep=0em, after=\vspace{0.10em plus 0.05em minus 0.02em}}
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{0.70em plus 0.18em minus 0.03em}{0.25em plus 0.05em minus 0.02em}
+\graphicspath{{./}{../images/}}
+
+\newcommand{\cvheading}[4]{
+  \textbf{#1} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
+}
+\newcommand{\cvheadinglink}[5]{
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
+}
+\newcommand{\contactlink}[2]{\href{#1}{\textbf{#2}}}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[t]{0.78\textwidth}
+{\LARGE \textbf{Walid Gourideche}}\\[0.18em]
+\small
+Taza, Morocco \textbar{} +212 698 585 528 \textbar{} \href{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.11em]
+\footnotesize
+Date of Birth: 20 Jul 2003 \textbar{} Nationality: Moroccan\\[0.10em]
+\contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.18\textwidth}
+\raggedleft
+\raisebox{-1.02cm}[0pt][0pt]{\includegraphics[width=1.95cm]{cv-photo.jpg}}
+\end{minipage}
+\vspace{-0.01em}
+
+\section*{Profile}
+Aspiring IT specialist focused on system integration, network administration, and defensive security. Hands-on experience with Windows Server, Active Directory, Linux, virtualization, pfSense, Splunk, and endpoint monitoring through internships, lab work, and well-documented technical projects.
+
+\section*{Technical Skills}
+\textbf{Networking:} Cisco IOS, TCP/IP, VLANs, DNS/DHCP, Wireshark, GNS3, SSH/RDP \\
+\textbf{Systems:} Windows Server, Active Directory, Linux, Hyper-V, VMware \\
+\textbf{Security:} pfSense, Suricata, Splunk, WMI, Syslog, Firewall, Nmap \\
+\textbf{Development:} Python, JavaScript, HTML/CSS, Node.js, Express, MongoDB, Git
+
+\section*{Experience}
+\cvheading{Regional Multiservices Company Fès-Meknès (SRM)}{Apr 2026 -- May 2026}{IT Network Intern}{Taza, Morocco}
+\begin{itemize}
+  \item Supported network operations with a focus on troubleshooting, user support, and foundational security tasks in a regulated infrastructure environment.
+\end{itemize}
+
+\cvheading{IQRA Company}{Jan 2026 -- Feb 2026}{IT Network Intern}{Casablanca, Morocco}
+\begin{itemize}
+  \item Monitored and administered network systems and services through SSH and RDP while providing remote support in an enterprise environment.
+\end{itemize}
+
+\cvheading{Click Service}{Jun 2025 -- Sep 2025}{IT Specialist Intern}{Taza, Morocco}
+\begin{itemize}
+  \item Completed software and operating system installations with a 98\% first-time completion rate, improved inventory accuracy by 20\%, and set up or maintained more than 10 local networks while reducing post-installation support requests by 25\%.
+\end{itemize}
+
+\cvheading{Ministry of Health}{Oct 2022 -- Dec 2022}{System Administration Intern}{Taza, Morocco}
+\begin{itemize}
+  \item Assisted with Hyper-V deployments that reduced test-environment setup time by 30\% and supported more than 50 Active Directory requests.
+\end{itemize}
+
+\section*{Selected Projects}
+\cvheadinglink{LeagueSkins}{Ongoing}{Open-source maintainer and reverse engineering}{Remote}{https://github.com/Alban1911/LeagueSkins}
+\begin{itemize}
+  \item Maintained the asset database for an application with 10K+ daily users worldwide, reverse-engineered binary files, and coordinated regression testing before releases.
+\end{itemize}
+
+\cvheadinglink{PortGuardian Enterprise}{2026}{USB threat detection and response system}{Security project}{https://github.com/Gryddd/PortGuardian}
+\begin{itemize}
+  \item Co-developed a Windows endpoint agent in Python and PyQt6 with WMI USB monitoring, six-stage local file analysis, automatic device ejection, network isolation, and Splunk Syslog integration.
+  \item Validated 350 ms average USB detection, 95\%+ detection with under 5\% false positives on 200 samples, 98\% USB ejection success, and 99.8\% alert delivery reliability across 1,000 Splunk events.
+\end{itemize}
+
+\section*{Education}
+\cvheading{Institute for Applied Technology (ISTA)}{Sep 2024 -- Jul 2026}{Technicien Spécialisé en réseaux et systèmes informatiques}{Taza, Morocco}
+\begin{itemize}
+  \item Focused on network administration, Linux servers, virtualization, and Windows Server management.
+\end{itemize}
+
+\cvheading{Hann. Münden Clinic}{2023 -- 2024}{Six-month orientation phase in nursing specialist training}{Hann. Münden, Germany}
+
+\cvheading{Polydisciplinary Faculty of Taza}{Sep 2021 -- Jun 2022}{Foundation studies in Mathematics and Computer Science}{Taza, Morocco}
+
+\section*{Languages}
+German (Goethe B2), English (C2 / professional), French (fluent), Arabic (native)
+
+\end{document}

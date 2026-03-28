@@ -1,0 +1,118 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=0.50in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tgpagella}
+\usepackage{microtype}
+\usepackage{titlesec}
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\definecolor{linkblue}{HTML}{0F5DA8}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkblue,
+  linkcolor=linkblue
+}
+
+\pagestyle{empty}
+\flushbottom
+\linespread{1.025}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.15em plus 0.05em minus 0.02em}
+\setlist[itemize]{label=\textbullet, leftmargin=1.12em, itemsep=0.11em, topsep=0.14em plus 0.06em minus 0.02em, parsep=0em, partopsep=0em, after=\vspace{0.10em plus 0.05em minus 0.02em}}
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{0.70em plus 0.18em minus 0.03em}{0.25em plus 0.05em minus 0.02em}
+\graphicspath{{./}{../images/}}
+
+\newcommand{\cvheading}[4]{
+  \textbf{#1} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
+}
+\newcommand{\cvheadinglink}[5]{
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
+}
+\newcommand{\contactlink}[2]{\href{#1}{\textbf{#2}}}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[t]{0.78\textwidth}
+{\LARGE \textbf{Walid Gourideche}}\\[0.18em]
+\small
+Taza, Maroc \textbar{} +212 698 585 528 \textbar{} \href{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.11em]
+\footnotesize
+Date de naissance : 20/07/2003 \textbar{} Nationalité : marocaine\\[0.10em]
+\contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.18\textwidth}
+\raggedleft
+\raisebox{-1.02cm}[0pt][0pt]{\includegraphics[width=1.95cm]{cv-photo.jpg}}
+\end{minipage}
+\vspace{-0.01em}
+
+\section*{Profil}
+Futur spécialiste IT axé sur l'intégration de systèmes, l'administration réseau et la sécurité défensive. Expérience pratique avec Windows Server, Active Directory, Linux, la virtualisation, pfSense, Splunk et la supervision d'endpoints à travers des stages, des laboratoires techniques et des projets bien documentés.
+
+\section*{Compétences techniques}
+\textbf{Réseau :} Cisco IOS, TCP/IP, VLAN, DNS/DHCP, Wireshark, GNS3, SSH/RDP \\
+\textbf{Systèmes :} Windows Server, Active Directory, Linux, Hyper-V, VMware \\
+\textbf{Sécurité :} pfSense, Suricata, Splunk, WMI, Syslog, pare-feu, Nmap \\
+\textbf{Développement :} Python, JavaScript, HTML/CSS, Node.js, Express, MongoDB, Git
+
+\section*{Expérience professionnelle}
+\cvheading{Société Régionale Multiservices Fès-Meknès (SRM)}{avr. 2026 -- mai 2026}{Stagiaire en réseau informatique}{Taza, Maroc}
+\begin{itemize}
+  \item Participation à l'exploitation réseau avec un focus sur le diagnostic d'incidents, le support utilisateur et des tâches de sécurité de base dans une infrastructure réglementée.
+\end{itemize}
+
+\cvheading{IQRA Société}{jan. 2026 -- févr. 2026}{Stagiaire en réseau informatique}{Casablanca, Maroc}
+\begin{itemize}
+  \item Supervision et administration de systèmes et services réseau via SSH et RDP, avec support technique à distance dans un environnement d'entreprise.
+\end{itemize}
+
+\cvheading{Click Service}{juin 2025 -- sept. 2025}{Stagiaire spécialiste informatique}{Taza, Maroc}
+\begin{itemize}
+  \item Installations logicielles et systèmes avec 98\% de réussite au premier passage, amélioration de 20\% de la précision de l'inventaire, mise en place ou maintenance de plus de 10 réseaux locaux et réduction de 25\% des demandes de support après installation.
+\end{itemize}
+
+\cvheading{Ministère de la Santé}{oct. 2022 -- déc. 2022}{Stagiaire en administration système}{Taza, Maroc}
+\begin{itemize}
+  \item Participation aux déploiements Hyper-V, réduisant de 30\% le temps de mise en place des environnements de test, et traitement de plus de 50 demandes liées à Active Directory.
+\end{itemize}
+
+\section*{Projets sélectionnés}
+\cvheadinglink{LeagueSkins}{En cours}{Mainteneur open source et rétro-ingénierie}{À distance}{https://github.com/Alban1911/LeagueSkins}
+\begin{itemize}
+  \item Maintenance de la base d'assets pour une application utilisée par plus de 10k utilisateurs quotidiens dans le monde, rétro-ingénierie de fichiers binaires et coordination des tests de régression avant publication.
+\end{itemize}
+
+\cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et de réponse aux menaces USB}{Projet sécurité}{https://github.com/Gryddd/PortGuardian}
+\begin{itemize}
+  \item Co-développement d'un agent endpoint Windows en Python et PyQt6 avec surveillance WMI des périphériques USB, analyse locale en six étapes, éjection automatique, isolation réseau et intégration Syslog vers Splunk.
+  \item Validation avec 350 ms de détection USB moyenne, plus de 95\% de détection pour moins de 5\% de faux positifs sur 200 échantillons, 98\% de réussite d'éjection et 99,8\% de fiabilité d'envoi vers Splunk sur 1000 alertes.
+\end{itemize}
+
+\section*{Formation}
+\cvheading{Institut Spécialisé de Technologie Appliquée (ISTA)}{sept. 2024 -- juil. 2026}{Technicien Spécialisé en réseaux et systèmes informatiques}{Taza, Maroc}
+\begin{itemize}
+  \item Formation centrée sur l'administration réseau, les serveurs Linux, la virtualisation et la gestion de Windows Server.
+\end{itemize}
+
+\cvheading{Clinique de Hann. Münden}{2023 -- 2024}{Six mois d'orientation professionnelle en soins infirmiers}{Hann. Münden, Allemagne}
+
+\cvheading{Faculté Polydisciplinaire de Taza}{sept. 2021 -- juin 2022}{Études fondamentales en mathématiques et informatique}{Taza, Maroc}
+
+\section*{Langues}
+Allemand (Goethe B2), anglais (C2 / professionnel), français (courant), arabe (langue maternelle)
+
+\end{document}
