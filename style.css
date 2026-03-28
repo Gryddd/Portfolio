@@ -1710,6 +1710,7 @@ transition: transform var(--transition-speed), box-shadow var(--transition-speed
     background: var(--accent-gradient);
     border: none;
     color: var(--btn-text);
+    text-decoration: none;
     padding: 0.65rem 1rem;
     border-radius: 8px;
     cursor: pointer;
@@ -1728,6 +1729,7 @@ button:hover,
 .submit-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgb(0 0 0 / 0.3);
+    text-decoration: none;
 }
 .submit-btn:disabled {
     background: var(--accent-gradient);
@@ -2913,5 +2915,6 @@ section[id] {
     .hero-card::before { background: #fff !important; }
     .hero-card { padding: 0; animation: none; }
     a { color: #000 !important; text-decoration: underline; }
+    a.submit-btn { text-decoration: none !important; }
     .hero-image { border: 1px solid #ccc; }
 }

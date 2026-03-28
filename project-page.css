@@ -288,8 +288,8 @@
 
 .topology-visual-shell,
 .schema-visual-shell {
-    padding: clamp(1.25rem, 3vw, 1.75rem);
-    border-radius: 28px;
+    padding: clamp(1.6rem, 3.8vw, 2.35rem);
+    border-radius: 30px;
     border: 1px solid var(--case-shell-border);
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
@@ -298,10 +298,13 @@
     overflow: hidden;
 }
 
-.topology-svg {
+.topology-svg,
+.schema-svg {
     display: block;
     width: 100%;
     height: auto;
+    box-sizing: border-box;
+    padding: clamp(0.35rem, 0.95vw, 0.8rem);
 }
 
 .topology-diagram-title,
@@ -503,13 +506,7 @@
 }
 
 .schema-visual-shell + .schema-visual-shell {
-    margin-top: 1.65rem;
-}
-
-.schema-svg {
-    display: block;
-    width: 100%;
-    height: auto;
+    margin-top: 1.95rem;
 }
 
 .schema-label,

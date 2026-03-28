@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" height="100%">
+  <defs>
+    <!-- Fonts -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      
+      .bg-canvas { fill: #F4F7F9; }
+      .box-shadow { filter: url(#drop-shadow); }
+      
+      .title { font-size: 26px; font-weight: 700; fill: #0F172A; }
+      .subtitle { font-size: 15px; font-weight: 500; fill: #64748B; }
+      
+      .card-bg { fill: #FFFFFF; stroke: #E2E8F0; stroke-width: 1; }
+      .card-title { font-size: 18px; font-weight: 700; fill: #FFFFFF; }
+      .card-subtitle { font-size: 13px; font-weight: 500; fill: #E2E8F0; }
+      
+      .bullet-icon { fill: #3B82F6; }
+      .bullet-text { font-size: 14px; font-weight: 500; fill: #334155; }
+      .bullet-subtext { font-size: 12px; font-weight: 400; fill: #64748B; }
+      
+      .conn-text { font-size: 13px; font-weight: 600; fill: #0F172A; }
+      .conn-subtext { font-size: 12px; font-weight: 500; fill: #64748B; }
+      .conn-line { stroke: #94A3B8; stroke-width: 3; stroke-dasharray: 6 6; fill: none; }
+    </style>
+
+    <!-- Subtle Drop Shadow -->
+    <filter id="drop-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+
+    <!-- Arrowhead -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,1 L8,5 L0,9 Z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg-canvas" width="1000" height="500" />
+
+  <!-- Main Title -->
+  <text x="500" y="60" text-anchor="middle" class="title">PortGuardian High-Level Topology</text>
+  <text x="500" y="85" text-anchor="middle" class="subtitle">Simplified Host-to-Server Architecture</text>
+
+  <!-- ========================================== -->
+  <!-- 1. HOST (WINDOWS 10 ENDPOINT)              -->
+  <!-- ========================================== -->
+  <g transform="translate(80, 140)">
+    <!-- Card Base -->
+    <rect x="0" y="0" width="340" height="280" rx="12" class="card-bg box-shadow"/>
+    
+    <!-- Card Header (Blue) -->
+    <path d="M0,12 Q0,0 12,0 L328,0 Q340,0 340,12 L340,75 L0,75 Z" fill="#1E3A8A"/>
+    
+    <!-- Host Icon -->
+    <g transform="translate(20, 20)" fill="#FFFFFF">
+      <rect x="0" y="0" width="36" height="24" rx="3" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <path d="M -4,28 L 40,28" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+      <polygon points="12,24 24,24 20,28 16,28" fill="#FFFFFF"/>
+    </g>
+    
+    <!-- Header Text -->
+    <text x="75" y="35" class="card-title">Windows 10 Endpoint</text>
+    <text x="75" y="55" class="card-subtitle">PortGuardian Agent (Standalone)</text>
+
+    <!-- Key Points (Bullets) -->
+    <!-- Point 1 -->
+    <circle cx="30" cy="115" r="4" class="bullet-icon"/>
+    <text x="45" y="120" class="bullet-text">Real-Time USB Monitoring</text>
+    <text x="45" y="138" class="bullet-subtext">WMI integration with &lt; 500ms latency</text>
+
+    <!-- Point 2 -->
+    <circle cx="30" cy="170" r="4" class="bullet-icon"/>
+    <text x="45" y="175" class="bullet-text">6-Layer Forensics Engine</text>
+    <text x="45" y="193" class="bullet-subtext">Hashes, Heuristics, Entropy, Extensions, PE, IOCs</text>
+
+    <!-- Point 3 -->
+    <circle cx="30" cy="225" r="4" class="bullet-icon"/>
+    <text x="45" y="230" class="bullet-text">Automated Mitigation</text>
+    <text x="45" y="248" class="bullet-subtext">Hardware Eject + Triple Network Isolation</text>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- 2. NETWORK CONNECTION (MIDDLE)             -->
+  <!-- ========================================== -->
+  <g transform="translate(420, 260)">
+    <!-- Line and Arrow -->
+    <path d="M0,0 L145,0" class="conn-line" marker-end="url(#arrow)"/>
+    
+    <!-- Connection Labels -->
+    <text x="75" y="-30" text-anchor="middle" class="conn-text">Syslog (RFC 5424)</text>
+    <text x="75" y="-12" text-anchor="middle" class="conn-subtext">UDP Port 514</text>
+    
+    <!-- Filter Badge -->
+    <rect x="25" y="15" width="100" height="24" rx="12" fill="#FEF2F2" stroke="#FCA5A5"/>
+    <text x="75" y="32" text-anchor="middle" font-size="11" font-weight="600" fill="#EF4444">WARN / CRITICAL</text>
+  </g>
+
+  <!-- ========================================== -->
+  <!-- 3. SERVER (SPLUNK SIEM)                    -->
+  <!-- ========================================== -->
+  <g transform="translate(580, 140)">
+    <!-- Card Base -->
+    <rect x="0" y="0" width="340" height="280" rx="12" class="card-bg box-shadow"/>
+    
+    <!-- Card Header (Green) -->
+    <path d="M0,12 Q0,0 12,0 L328,0 Q340,0 340,12 L340,75 L0,75 Z" fill="#047857"/>
+    
+    <!-- Server Icon -->
+    <g transform="translate(20, 20)" fill="none" stroke="#FFFFFF" stroke-width="2">
+      <rect x="4" y="0" width="28" height="32" rx="3"/>
+      <line x1="4" y1="10" x2="32" y2="10"/>
+      <line x1="4" y1="20" x2="32" y2="20"/>
+      <circle cx="10" cy="5" r="1.5" fill="#FFFFFF"/>
+      <circle cx="10" cy="15" r="1.5" fill="#FFFFFF"/>
+      <circle cx="10" cy="25" r="1.5" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Header Text -->
+    <text x="75" y="35" class="card-title">Windows Server 2019</text>
+    <text x="75" y="55" class="card-subtitle">Splunk Enterprise 9.x (Central SIEM)</text>
+
+    <!-- Key Points (Bullets) -->
+    <!-- Point 1 -->
+    <circle cx="30" cy="115" r="4" fill="#10B981"/>
+    <text x="45" y="120" class="bullet-text">Centralized Event Collection</text>
+    <text x="45" y="138" class="bullet-subtext">Listens on inputs.conf (192.168.1.50)</text>
+
+    <!-- Point 2 -->
+    <circle cx="30" cy="170" r="4" fill="#10B981"/>
+    <text x="45" y="175" class="bullet-text">Intelligent Data Parsing</text>
+    <text x="45" y="193" class="bullet-subtext">Automatic JSON extraction &amp; security indexing</text>
+
+    <!-- Point 3 -->
+    <circle cx="30" cy="225" r="4" fill="#10B981"/>
+    <text x="45" y="230" class="bullet-text">SOC Visualization &amp; Alerting</text>
+    <text x="45" y="248" class="bullet-subtext">Real-time dashboards &amp; cross-endpoint correlation</text>
+  </g>
+
+</svg>
