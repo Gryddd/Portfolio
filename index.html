@@ -396,77 +396,43 @@
 <div class="section-divider"></div>
 <section class="container" id="projekte">
     <h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Meine Projekte" data-en="My Projects" data-fr="Mes Projets">My Projects</h2>
-    <div class="projects-grid" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
-        <div class="project-card" data-modal-id="project-modal-1" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
-            <div class="project-card-image">
-                <img src="images/diagram-card.webp" alt="Enterprise IT Infrastructure Diagram" loading="lazy">
+    
+    <div class="featured-project-container" data-aos="fade-up" data-aos-duration="600">
+        <div id="featured-project" class="featured-project">
+            <div class="featured-project-image">
+                <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise Interface" id="featured-img" loading="eager">
             </div>
-            <div class="project-card-content">
-                <h3 class="lang" data-de="Unternehmens-IT-Infrastruktur" data-en="Enterprise IT Infrastructure" data-fr="Infrastructure IT d'Entreprise">Enterprise IT Infrastructure</h3>
-                <p class="lang"
-                   data-de="Ein End-to-End-Projekt zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit VMware, Windows Server, pfSense und einem Suricata IPS zur Abwehr von Insider-Bedrohungen."
-                   data-en="An end-to-end project building and securing an enterprise network using VMware, Windows Server, pfSense, and a Suricata IPS to defend against insider threats."
-                   data-fr="Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise en utilisant VMware, Windows Server, pfSense et un IPS Suricata pour se défendre contre les menaces internes.">
-                   An end-to-end project building and securing an enterprise network using VMware, Windows Server, pfSense, and a Suricata IPS to defend against insider threats.
-                </p>
-                <div class="project-card-buttons">
-                    <button class="submit-btn open-project-modal-btn lang" data-de="Details" data-en="Details" data-fr="Détails">Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="project-card" data-modal-id="project-modal-2" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
-            <div class="project-card-image">
-                <img src="images/borealis_main_menu.webp" alt="Borealis e-commerce project screenshot" loading="lazy">
-            </div>
-            <div class="project-card-content">
-                <h3 class="lang" data-de="E-Commerce MERN Stack App" data-en="E-Commerce MERN Stack App" data-fr="App E-Commerce MERN Stack">E-Commerce MERN Stack App</h3>
-                <p class="lang"
-                   data-de="Eine vollständige E-Commerce-Webanwendung, die von Grund auf mit dem MERN-Stack erstellt wurde, mit Schwerpunkt auf einer sicheren, zustandslosen Backend-API und Frontend-Zustandsverwaltung."
-                   data-en="A complete e-commerce web application built from the ground up using the MERN stack, focusing on a secure, stateless backend API and frontend state management."
-                   data-fr="Une application web e-commerce complète construite à partir de zéro avec la stack MERN, axée sur une API backend sécurisée et sans état et la gestion de l'état du frontend.">
-                   A complete e-commerce web application built from the ground up using the MERN stack, focusing on a secure, stateless backend API and frontend state management.
-                </p>
-                <div class="project-card-buttons">
-                    <button class="submit-btn open-project-modal-btn lang" data-de="Details" data-en="Details" data-fr="Détails">Details</button>
-                    <a href="https://github.com/Gryddd/PROJECT-Borealis" target="_blank" rel="noopener noreferrer" class="submit-btn submit-btn-secondary lang" data-de="Code" data-en="Code" data-fr="Code">Code</a>
-                    <a href="https://project-borealis.vercel.app/" target="_blank" rel="noopener noreferrer" class="submit-btn submit-btn-secondary lang" data-de="Live" data-en="Live" data-fr="Live">Live</a>
-                </div>
-            </div>
-        </div>
-        <div class="project-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
-            <div class="project-card-image">
-                <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise Interface" loading="lazy">
-            </div>
-            <div class="project-card-content">
-                <h3 class="lang" data-de="PortGuardian Enterprise" data-en="PortGuardian Enterprise" data-fr="PortGuardian Enterprise">PortGuardian Enterprise</h3>
-                <p class="lang"
+            <div class="featured-project-content">
+                <h3 id="featured-title" class="lang" data-de="PortGuardian Enterprise" data-en="PortGuardian Enterprise" data-fr="PortGuardian Enterprise">PortGuardian Enterprise</h3>
+                <p id="featured-desc" class="lang"
                    data-de="Ein Windows-USB-Schutzagent mit WMI-Erkennung, lokaler sechsstufiger Analyse, automatischer Isolation und Splunk-Weiterleitung."
                    data-en="A Windows USB defense agent with WMI detection, local six-layer analysis, automatic isolation, and Splunk forwarding."
                    data-fr="Un agent de défense USB Windows avec détection WMI, analyse locale en six couches, isolation automatique et transfert vers Splunk.">
                    A Windows USB defense agent with WMI detection, local six-layer analysis, automatic isolation, and Splunk forwarding.
                 </p>
-                <div class="project-card-buttons">
+                <div id="featured-buttons" class="project-card-buttons">
                     <a href="portguardian.html" class="submit-btn lang" data-de="Details ansehen" data-en="View Details" data-fr="Voir détails">View Details</a>
                 </div>
             </div>
         </div>
-        <div class="project-card" data-modal-id="project-modal-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300" data-aos-easing="ease-out-cubic">
-            <div class="project-card-image">
-                <img src="images/leagueskins_thumb.webp" alt="LeagueSkins Infrastructure" loading="lazy">
-            </div>
-            <div class="project-card-content">
-                <h3 class="lang" data-de="Infrastruktur & Reverse Engineering" data-en="Infrastructure & Reverse Engineering" data-fr="Infrastructure & Rétro-ingénierie">Infrastructure & Reverse Engineering</h3>
-                <p class="lang"
-                         data-de="Wartung der Asset-Datenbank für eine Open-Source-Anwendung mit 10K+ täglichen Nutzern weltweit. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung."
-                         data-en="Maintained the asset database for an open-source application with 10K+ daily users worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership."
-                         data-fr="Maintenance de la base de données d'actifs pour une application open-source avec 10K+ utilisateurs quotidiens dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA.">
-                         Maintained the asset database for an open-source application with 10K+ daily users worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership.
-                </p>
-                <div class="project-card-buttons">
-                    <button class="submit-btn open-project-modal-btn lang" data-de="Details" data-en="Details" data-fr="Détails">Details</button>
-                    <a href="https://github.com/Alban1911/LeagueSkins" target="_blank" rel="noopener noreferrer" class="submit-btn submit-btn-secondary lang" data-de="Repo" data-en="Repo" data-fr="Repo">Repo</a>
-                </div>
-            </div>
+    </div>
+
+    <div class="project-thumbnails" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+        <div class="project-thumbnail active" data-project-id="3">
+            <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise">
+            <div class="thumbnail-title lang" data-de="PortGuardian" data-en="PortGuardian" data-fr="PortGuardian">PortGuardian</div>
+        </div>
+        <div class="project-thumbnail" data-project-id="4">
+            <img src="images/leagueskins_thumb.webp" alt="Infrastructure & Reverse Engineering">
+            <div class="thumbnail-title lang" data-de="Reverse Engineering" data-en="Reverse Engineering" data-fr="Rétro-ingénierie">Reverse Engineering</div>
+        </div>
+        <div class="project-thumbnail" data-project-id="1">
+            <img src="images/diagram-card.webp" alt="Enterprise IT Infrastructure">
+            <div class="thumbnail-title lang" data-de="IT-Infrastruktur" data-en="IT Infrastructure" data-fr="Infrastr. IT">IT Infrastructure</div>
+        </div>
+        <div class="project-thumbnail" data-project-id="2">
+            <img src="images/borealis_main_menu.webp" alt="E-Commerce MERN Stack App">
+            <div class="thumbnail-title lang" data-de="MERN E-Commerce" data-en="MERN E-Commerce" data-fr="E-Commerce MERN">MERN E-Commerce</div>
         </div>
     </div>
 </section>

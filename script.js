@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Enable smooth scroll after initial load to prevent "fast scroll" on return
+    setTimeout(() => {
+        document.documentElement.classList.add('smooth-scroll');
+    }, 500);
+
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
@@ -258,6 +263,154 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactForm = document.getElementById("contact-form");
     const allModals = document.querySelectorAll(".modal");
     const videoModal = document.getElementById("video-modal");
+
+    // Project Data for switching
+    const projectsData = {
+        "1": {
+            id: "1",
+            modalId: "project-modal-1",
+            img: "images/diagram-card.webp",
+            title: {
+                de: "Unternehmens-IT-Infrastruktur",
+                en: "Enterprise IT Infrastructure",
+                fr: "Infrastructure IT d'Entreprise"
+            },
+            desc: {
+                de: "Ein End-to-End-Projekt zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit VMware, Windows Server, pfSense und einem Suricata IPS zur Abwehr von Insider-Bedrohungen.",
+                en: "An end-to-end project building and securing an enterprise network using VMware, Windows Server, pfSense, and a Suricata IPS to defend against insider threats.",
+                fr: "Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise en utilisant VMware, Windows Server, pfSense et un IPS Suricata pour se défendre contre les menaces internes."
+            },
+            buttons: [
+                { type: "modal", modalId: "project-modal-1", text: { de: "Details", en: "Details", fr: "Détails" } }
+            ]
+        },
+        "2": {
+            id: "2",
+            modalId: "project-modal-2",
+            img: "images/borealis_main_menu.webp",
+            title: {
+                de: "E-Commerce MERN Stack App",
+                en: "E-Commerce MERN Stack App",
+                fr: "App E-Commerce MERN Stack"
+            },
+            desc: {
+                de: "Eine vollständige E-Commerce-Webanwendung, die von Grund auf mit dem MERN-Stack erstellt wurde, mit Schwerpunkt auf einer sicheren, zustandslosen Backend-API und Frontend-Zustandsverwaltung.",
+                en: "A complete e-commerce web application built from the ground up using the MERN stack, focusing on a secure, stateless backend API and frontend state management.",
+                fr: "Une application web e-commerce complète construite à partir de zéro avec la stack MERN, axée sur une API backend sécurisée et sans état et la gestion de l'état du frontend."
+            },
+            buttons: [
+                { type: "modal", modalId: "project-modal-2", text: { de: "Details", en: "Details", fr: "Détails" } },
+                { type: "link", url: "https://github.com/Gryddd/PROJECT-Borealis", text: { de: "Code", en: "Code", fr: "Code" }, secondary: true },
+                { type: "link", url: "https://project-borealis.vercel.app/", text: { de: "Live", en: "Live", fr: "Live" }, secondary: true }
+            ]
+        },
+        "3": {
+            id: "3",
+            img: "images/portguardian_main_v2.png",
+            title: {
+                de: "PortGuardian Enterprise",
+                en: "PortGuardian Enterprise",
+                fr: "PortGuardian Enterprise"
+            },
+            desc: {
+                de: "Ein Windows-USB-Schutzagent mit WMI-Erkennung, lokaler sechsstufiger Analyse, automatischer Isolation und Splunk-Weiterleitung.",
+                en: "A Windows USB defense agent with WMI detection, local six-layer analysis, automatic isolation, and Splunk forwarding.",
+                fr: "Un agent de défense USB Windows avec détection WMI, analyse locale en six couches, isolation automatique et transfert vers Splunk."
+            },
+            buttons: [
+                { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
+            ]
+        },
+        "4": {
+            id: "4",
+            modalId: "project-modal-4",
+            img: "images/leagueskins_thumb.webp",
+            title: {
+                de: "Infrastruktur & Reverse Engineering",
+                en: "Infrastructure & Reverse Engineering",
+                fr: "Infrastructure & Rétro-ingénierie"
+            },
+            desc: {
+                de: "Wartung der Asset-Datenbank für eine Open-Source-Anwendung mit 10K+ täglichen Nutzern weltweit. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung.",
+                en: "Maintained the asset database for an open-source application with 10K+ daily users worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership.",
+                fr: "Maintenance de la base de données d'actifs pour une application open-source avec 10K+ utilisateurs quotidiens dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA."
+            },
+            buttons: [
+                { type: "modal", modalId: "project-modal-4", text: { de: "Details", en: "Details", fr: "Détails" } },
+                { type: "link", url: "https://github.com/Alban1911/LeagueSkins", text: { de: "Repo", en: "Repo", fr: "Repo" }, secondary: true }
+            ]
+        }
+    };
+
+    function updateFeaturedProject(projectId, direction = 'next') {
+        const project = projectsData[projectId];
+        if (!project) return;
+
+        const featuredImg = document.getElementById('featured-img');
+        const featuredTitle = document.getElementById('featured-title');
+        const featuredDesc = document.getElementById('featured-desc');
+        const featuredButtons = document.getElementById('featured-buttons');
+        const featuredProject = document.getElementById('featured-project');
+
+        const outX = direction === 'next' ? -40 : 40;
+        const inX = direction === 'next' ? 40 : -40;
+
+        // Slide out
+        featuredProject.style.opacity = '0';
+        featuredProject.style.transform = `translateX(${outX}px)`;
+        
+        setTimeout(() => {
+            // Update content while invisible
+            featuredImg.src = project.img;
+            featuredImg.alt = project.title[currentLang];
+            
+            featuredTitle.textContent = project.title[currentLang];
+            featuredTitle.dataset.de = project.title.de;
+            featuredTitle.dataset.en = project.title.en;
+            featuredTitle.dataset.fr = project.title.fr;
+
+            featuredDesc.textContent = project.desc[currentLang];
+            featuredDesc.dataset.de = project.desc.de;
+            featuredDesc.dataset.en = project.desc.en;
+            featuredDesc.dataset.fr = project.desc.fr;
+
+            // Update buttons
+            featuredButtons.innerHTML = project.buttons.map(btn => {
+                if (btn.type === 'modal') {
+                    return `<button class="submit-btn open-project-modal-btn lang" 
+                            data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}" 
+                            data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
+                } else {
+                    return `<a href="${btn.url}" ${btn.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} 
+                            class="submit-btn ${btn.secondary ? 'submit-btn-secondary' : ''} lang" 
+                            data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</a>`;
+                }
+            }).join('');
+
+            // Re-attach modal listener
+            featuredButtons.querySelectorAll('.open-project-modal-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const mId = this.dataset.modalId;
+                    const m = document.getElementById(mId);
+                    config.projects[mId].currentSlide = 0;
+                    showProjectSlide(mId, 0);
+                    openModal(m, this);
+                });
+            });
+
+            // Position for slide in
+            featuredProject.style.transition = 'none';
+            featuredProject.style.transform = `translateX(${inX}px)`;
+            
+            // Force reflow
+            void featuredProject.offsetHeight;
+
+            // Slide in
+            featuredProject.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            featuredProject.style.opacity = '1';
+            featuredProject.style.transform = 'translateX(0)';
+        }, 400);
+    }
     const imageModal = document.getElementById("image-modal");
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileList = document.querySelector('.mobile-list');
@@ -391,6 +544,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         const profilePicture = document.getElementById("profile-picture");
         if (profilePicture) profilePicture.alt = config.altTexts[currentLang];
+        
+        const featuredImg = document.getElementById("featured-img");
+        if (featuredImg && featuredImg.dataset[currentLang]) {
+            featuredImg.alt = featuredImg.dataset[currentLang];
+        }
         document.querySelectorAll(".language-item").forEach(item => {
             item.classList.toggle("active", item.getAttribute("data-lang") === newLang);
         });
@@ -918,10 +1076,55 @@ document.addEventListener("DOMContentLoaded", function () {
         openModal(videoModal, this);
         createOrPlayPlayer();
     });
-    document.querySelectorAll('.project-card .open-project-modal-btn').forEach(button => {
+    // Project rotation logic
+    let projectRotationInterval;
+    const rotationDelay = 10000;
+
+    function startProjectRotation() {
+        stopProjectRotation();
+        projectRotationInterval = setInterval(() => {
+            const thumbs = Array.from(document.querySelectorAll('.project-thumbnail'));
+            if (thumbs.length === 0) return;
+            const activeThumb = document.querySelector('.project-thumbnail.active');
+            const currentIndex = thumbs.indexOf(activeThumb);
+            const nextIndex = (currentIndex + 1) % thumbs.length;
+            thumbs[nextIndex].click();
+        }, rotationDelay);
+    }
+
+    function stopProjectRotation() {
+        if (projectRotationInterval) clearInterval(projectRotationInterval);
+    }
+
+    // Thumbnail click listeners
+    document.querySelectorAll('.project-thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                startProjectRotation(); // Reset timer
+                return;
+            }
+            
+            const activeThumb = document.querySelector('.project-thumbnail.active');
+            const currentIndex = parseInt(activeThumb.dataset.projectId);
+            const newIndex = parseInt(this.dataset.projectId);
+            
+            // Determine direction: if newIndex > currentIndex, slide next (left). Otherwise slide prev (right).
+            const direction = newIndex > currentIndex ? 'next' : 'prev';
+
+            document.querySelectorAll('.project-thumbnail').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            updateFeaturedProject(this.dataset.projectId, direction);
+            startProjectRotation(); // Reset timer on manual click
+        });
+    });
+
+    startProjectRotation();
+
+    // Initial modal listener for the first featured project (already in HTML)
+    document.querySelectorAll('#featured-project .open-project-modal-btn').forEach(button => {
         button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const modalId = this.closest('.project-card').dataset.modalId;
+            const modalId = this.dataset.modalId;
             const modal = document.getElementById(modalId);
             config.projects[modalId].currentSlide = 0;
             showProjectSlide(modalId, 0);
