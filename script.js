@@ -1093,11 +1093,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const preloader = document.getElementById('preloader');
-    if (preloader) {
-        window.addEventListener('load', () => {
-            setTimeout(() => preloader.classList.add('hidden'), 300);
-        });
-        setTimeout(() => preloader.classList.add('hidden'), 4000);
+    const preloaderBar = document.getElementById('preloader-bar');
+    const preloaderPercent = document.getElementById('preloader-percent');
+    if (preloader && preloaderBar && preloaderPercent) {
+        let progress = 0;
+        let isComplete = false;
+        let progressTimer;
+
+        const renderPreloader = (value) => {
+            const nextValue = Math.max(0, Math.min(100, Math.round(value)));
+            preloaderBar.style.width = `${nextValue}%`;
+            preloaderPercent.textContent = `${nextValue}%`;
+        };
+
+        const finishPreloader = () => {
+            if (isComplete) return;
+            isComplete = true;
+            window.clearInterval(progressTimer);
+            progress = 100;
+            renderPreloader(progress);
+            window.setTimeout(() => preloader.classList.add('hidden'), 260);
+        };
+
+        renderPreloader(progress);
+
+        progressTimer = window.setInterval(() => {
+            if (isComplete) return;
+            const remaining = 92 - progress;
+            const step = remaining > 48 ? 8 : remaining > 24 ? 5 : remaining > 10 ? 3 : 1;
+            progress = Math.min(92, progress + step);
+            renderPreloader(progress);
+        }, 90);
+
+        window.addEventListener('load', finishPreloader, { once: true });
+        window.setTimeout(finishPreloader, 4500);
     }
 
     const heroCard = document.querySelector('.hero-card');

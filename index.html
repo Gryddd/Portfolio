@@ -76,7 +76,15 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="preloader" id="preloader">
-    <div class="preloader-ring"></div>
+    <div class="preloader-panel" role="status" aria-label="Initializing website">
+        <div class="preloader-copy">
+            <span class="preloader-label">Initializing</span>
+            <span class="preloader-percent" id="preloader-percent" aria-hidden="true">0%</span>
+        </div>
+        <div class="preloader-track" aria-hidden="true">
+            <div class="preloader-bar" id="preloader-bar"></div>
+        </div>
+    </div>
 </div>
 <div class="scroll-progress" id="scroll-progress"></div>
 <nav class="main-nav">
