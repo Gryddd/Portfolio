@@ -316,10 +316,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function unlockMobileMenuScroll({ restoreScroll = true } = {}) {
+        const inlineScrollBehavior = document.documentElement.style.scrollBehavior;
         document.body.classList.remove('mobile-nav-open');
         document.body.style.top = '';
         if (restoreScroll) {
-            window.scrollTo(0, mobileMenuScrollY);
+            document.documentElement.style.scrollBehavior = 'auto';
+            window.scrollTo({ top: mobileMenuScrollY, left: 0, behavior: 'auto' });
+            window.requestAnimationFrame(() => {
+                if (inlineScrollBehavior) {
+                    document.documentElement.style.scrollBehavior = inlineScrollBehavior;
+                } else {
+                    document.documentElement.style.removeProperty('scroll-behavior');
+                }
+            });
         }
     }
 
