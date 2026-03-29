@@ -1,21 +1,17 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=0.50in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[top=0.38in,bottom=0.38in,left=0.46in,right=0.46in]{geometry}
 \usepackage[french]{babel}
+\usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{tgpagella}
+\usepackage{tikz}
 \usepackage{microtype}
 \usepackage{titlesec}
 
-\input{glyphtounicode}
-\pdfgentounicode=1
-
-\definecolor{linkblue}{HTML}{0F5DA8}
+\definecolor{linkblue}{HTML}{0B57D0}
 \hypersetup{
   colorlinks=true,
   urlcolor=linkblue,
@@ -24,13 +20,20 @@
 
 \pagestyle{empty}
 \flushbottom
-\linespread{1.025}
+\linespread{1.00}
+\pretolerance=10000
+\tolerance=4000
+\emergencystretch=3em
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.15em plus 0.05em minus 0.02em}
-\setlist[itemize]{label=\textbullet, leftmargin=1.12em, itemsep=0.11em, topsep=0.14em plus 0.06em minus 0.02em, parsep=0em, partopsep=0em, after=\vspace{0.10em plus 0.05em minus 0.02em}}
+\setlength{\parskip}{0.14em plus 0.04em minus 0.02em}
+\setlist[itemize]{label=\textbullet, leftmargin=1.08em, itemsep=0.12em, topsep=0.14em plus 0.04em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.04em plus 0.02em minus 0.01em}}
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.70em plus 0.18em minus 0.03em}{0.25em plus 0.05em minus 0.02em}
+\titlespacing*{\section}{0pt}{0.68em plus 0.12em minus 0.03em}{0.22em plus 0.04em minus 0.01em}
 \graphicspath{{./}{../images/}}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{TeX Gyre Heros}[Scale=0.95]
 
 \newcommand{\cvheading}[4]{
   \textbf{#1} \hfill #2 \\[0.05em]
@@ -40,47 +43,65 @@
   \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
   \textit{#3} \hfill \textit{#4}
 }
-\newcommand{\contactlink}[2]{\href{#1}{\textbf{#2}}}
+\newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
+\newcommand{\roundphoto}[1]{%
+  \begin{tikzpicture}
+    \clip (0,0) circle (0.975cm);
+    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+  \end{tikzpicture}%
+}
 
 \begin{document}
 
 \noindent
-\begin{minipage}[t]{0.78\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.18em]
+\begin{minipage}[t]{0.80\textwidth}
+\vspace*{-0.58cm}
+{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
 \small
-Taza, Maroc \textbar{} +212 698 585 528 \textbar{} \href{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.11em]
-\footnotesize
-Date de naissance : 20/07/2003 \textbar{} Nationalité : marocaine\\[0.10em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Maroc\\[0.12em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
 \contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.18\textwidth}
+\begin{minipage}[t]{0.16\textwidth}
 \raggedleft
-\raisebox{-1.02cm}[0pt][0pt]{\includegraphics[width=1.95cm]{cv-photo.jpg}}
+\raisebox{-1.04cm}[0pt][0pt]{\roundphoto{cv-photo.jpg}}
 \end{minipage}
-\vspace{-0.01em}
+\vspace{0.06em}
 
-\section*{Profil}
-Futur spécialiste IT axé sur l'intégration de systèmes, l'administration réseau et la sécurité défensive. Expérience pratique avec Windows Server, Active Directory, Linux, la virtualisation, pfSense, Splunk et la supervision d'endpoints à travers des stages, des laboratoires techniques et des projets bien documentés.
+\section*{Formation}
+\cvheading{Institut Spécialisé de Technologie Appliquée (ISTA)}{sept. 2024 -- juil. 2026}{Technicien spécialisé en réseaux et systèmes informatiques}{Taza, Maroc}
+\begin{itemize}
+  \item Participation à des séances animées par les étudiants sur Linux, la virtualisation et l'administration de Windows Server.
+\end{itemize}
 
-\section*{Compétences techniques}
-\textbf{Réseau :} Cisco IOS, TCP/IP, VLAN, DNS/DHCP, Wireshark, GNS3, SSH/RDP \\
-\textbf{Systèmes :} Windows Server, Active Directory, Linux, Hyper-V, VMware \\
-\textbf{Sécurité :} pfSense, Suricata, Splunk, WMI, Syslog, pare-feu, Nmap \\
-\textbf{Développement :} Python, JavaScript, HTML/CSS, Node.js, Express, MongoDB, Git
+\cvheading{Clinique de Hann. Münden}{oct. 2023 -- févr. 2024}{Période d'orientation de six mois en formation infirmière}{Hann. Münden, Allemagne}
+\begin{itemize}
+  \item Approfondissement de l'allemand et découverte de la culture de travail allemande.
+\end{itemize}
+
+\cvheading{Faculté Polydisciplinaire de Taza}{sept. 2021 -- juin 2022}{Études fondamentales en mathématiques et informatique}{Taza, Maroc}
+\begin{itemize}
+  \item Application de la logique mathématique à la résolution de problèmes en algorithmique et en informatique.
+\end{itemize}
+
+\cvheading{Lycée Al Falah 2}{sept. 2020 -- juin 2021}{Baccalauréat, option physique}{Taza, Maroc}
+\begin{itemize}
+  \item Bases solides en mathématiques et en physique utiles pour l'informatique et les réseaux.
+\end{itemize}
 
 \section*{Expérience professionnelle}
 \cvheading{Société Régionale Multiservices Fès-Meknès (SRM)}{avr. 2026 -- mai 2026}{Stagiaire en réseau informatique}{Taza, Maroc}
 \begin{itemize}
-  \item Participation à l'exploitation réseau avec un focus sur le diagnostic d'incidents, le support utilisateur et des tâches de sécurité de base dans une infrastructure réglementée.
+  \item Stage confirmé axé sur l'exploitation réseau, le support et des tâches de sécurité de base dans une infrastructure réglementée.
 \end{itemize}
 
 \cvheading{IQRA Société}{jan. 2026 -- févr. 2026}{Stagiaire en réseau informatique}{Casablanca, Maroc}
 \begin{itemize}
-  \item Supervision et administration de systèmes et services réseau via SSH et RDP, avec support technique à distance dans un environnement d'entreprise.
+  \item Supervision et administration de systèmes et services réseau via SSH et RDP dans un environnement d'entreprise.
 \end{itemize}
 
-\cvheading{Click Service}{juin 2025 -- sept. 2025}{Stagiaire spécialiste informatique}{Taza, Maroc}
+\cvheading{Click Service}{juin 2025 -- sept. 2025}{Stagiaire en support informatique}{Taza, Maroc}
 \begin{itemize}
   \item Installations logicielles et systèmes avec 98\% de réussite au premier passage, amélioration de 20\% de la précision de l'inventaire, mise en place ou maintenance de plus de 10 réseaux locaux et réduction de 25\% des demandes de support après installation.
 \end{itemize}
@@ -90,29 +111,28 @@ Futur spécialiste IT axé sur l'intégration de systèmes, l'administration ré
   \item Participation aux déploiements Hyper-V, réduisant de 30\% le temps de mise en place des environnements de test, et traitement de plus de 50 demandes liées à Active Directory.
 \end{itemize}
 
-\section*{Projets sélectionnés}
-\cvheadinglink{LeagueSkins}{En cours}{Mainteneur open source et rétro-ingénierie}{À distance}{https://github.com/Alban1911/LeagueSkins}
+\cvheading{Résidence pour seniors Inc.}{mai 2022 -- juil. 2022}{Stagiaire en conseil informatique}{Taza, Maroc}
 \begin{itemize}
-  \item Maintenance de la base d'assets pour une application utilisée par plus de 10k utilisateurs quotidiens dans le monde, rétro-ingénierie de fichiers binaires et coordination des tests de régression avant publication.
+  \item Installation et configuration de matériel et d'équipements réseau.
 \end{itemize}
 
-\cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et de réponse aux menaces USB}{Projet sécurité}{https://github.com/Gryddd/PortGuardian}
+\section*{Projets informatiques}
+\cvheadinglink{LeagueSkins}{En cours}{Maintenance d'un projet open source et analyse binaire}{À distance}{https://github.com/Alban1911/LeagueSkins}
 \begin{itemize}
-  \item Co-développement d'un agent endpoint Windows en Python et PyQt6 avec surveillance WMI des périphériques USB, analyse locale en six étapes, éjection automatique, isolation réseau et intégration Syslog vers Splunk.
-  \item Validation avec 350 ms de détection USB moyenne, plus de 95\% de détection pour moins de 5\% de faux positifs sur 200 échantillons, 98\% de réussite d'éjection et 99,8\% de fiabilité d'envoi vers Splunk sur 1000 alertes.
+  \item Maintenance de la base de ressources pour une application open source utilisée par plus de 10\,000 utilisateurs quotidiens dans le monde, rétro-ingénierie de fichiers binaires et coordination des tests de régression avant publication.
 \end{itemize}
 
-\section*{Formation}
-\cvheading{Institut Spécialisé de Technologie Appliquée (ISTA)}{sept. 2024 -- juil. 2026}{Technicien Spécialisé en réseaux et systèmes informatiques}{Taza, Maroc}
+\cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et de réponse aux menaces USB}{Projet cybersécurité}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Formation centrée sur l'administration réseau, les serveurs Linux, la virtualisation et la gestion de Windows Server.
+  \item Technologies : Python, PyQt6, WMI et Splunk Syslog ; mise en œuvre d'une détection locale des périphériques USB, de l'analyse des fichiers, de l'isolation automatique et de la transmission des alertes pour des postes Windows, validée avec un temps moyen de détection USB de 350 ms, plus de 95\% de détection, moins de 5\% de faux positifs sur 200 échantillons, 98\% de réussite d'éjection et 99,8\% de fiabilité d'envoi vers Splunk.
 \end{itemize}
 
-\cvheading{Clinique de Hann. Münden}{2023 -- 2024}{Six mois d'orientation professionnelle en soins infirmiers}{Hann. Münden, Allemagne}
-
-\cvheading{Faculté Polydisciplinaire de Taza}{sept. 2021 -- juin 2022}{Études fondamentales en mathématiques et informatique}{Taza, Maroc}
+\section*{Compétences techniques}
+\textbf{Réseaux :} Cisco IOS, routage et commutation, TCP/IP, sous-réseaux, VLAN, DNS/DHCP, Wireshark, GNS3 \\
+\textbf{Administration système :} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware \\
+\textbf{Sécurité :} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, analyse des vulnérabilités, ajustement des règles
 
 \section*{Langues}
-Allemand (Goethe B2), anglais (C2 / professionnel), français (courant), arabe (langue maternelle)
+Allemand (Goethe B2), anglais (C2), français (courant), arabe (langue maternelle)
 
 \end{document}

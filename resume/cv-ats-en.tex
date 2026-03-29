@@ -1,20 +1,16 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=0.50in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[top=0.38in,bottom=0.38in,left=0.46in,right=0.46in]{geometry}
+\usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{tgpagella}
+\usepackage{tikz}
 \usepackage{microtype}
 \usepackage{titlesec}
 
-\input{glyphtounicode}
-\pdfgentounicode=1
-
-\definecolor{linkblue}{HTML}{0F5DA8}
+\definecolor{linkblue}{HTML}{0B57D0}
 \hypersetup{
   colorlinks=true,
   urlcolor=linkblue,
@@ -23,13 +19,20 @@
 
 \pagestyle{empty}
 \flushbottom
-\linespread{1.025}
+\linespread{1.00}
+\pretolerance=10000
+\tolerance=4000
+\emergencystretch=3em
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.15em plus 0.05em minus 0.02em}
-\setlist[itemize]{leftmargin=1.12em, itemsep=0.11em, topsep=0.14em plus 0.06em minus 0.02em, parsep=0em, partopsep=0em, after=\vspace{0.10em plus 0.05em minus 0.02em}}
+\setlength{\parskip}{0.14em plus 0.04em minus 0.02em}
+\setlist[itemize]{leftmargin=1.08em, itemsep=0.12em, topsep=0.14em plus 0.04em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.04em plus 0.02em minus 0.01em}}
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.70em plus 0.18em minus 0.03em}{0.25em plus 0.05em minus 0.02em}
+\titlespacing*{\section}{0pt}{0.68em plus 0.12em minus 0.03em}{0.22em plus 0.04em minus 0.01em}
 \graphicspath{{./}{../images/}}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{TeX Gyre Heros}[Scale=0.95]
 
 \newcommand{\cvheading}[4]{
   \textbf{#1} \hfill #2 \\[0.05em]
@@ -39,49 +42,46 @@
   \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
   \textit{#3} \hfill \textit{#4}
 }
-\newcommand{\contactlink}[2]{\href{#1}{\textbf{#2}}}
+\newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
+\newcommand{\roundphoto}[1]{%
+  \begin{tikzpicture}
+    \clip (0,0) circle (0.975cm);
+    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+  \end{tikzpicture}%
+}
 
 \begin{document}
 
 \noindent
-\begin{minipage}[t]{0.78\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.18em]
+\begin{minipage}[t]{0.80\textwidth}
+\vspace*{-0.58cm}
+{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
 \small
-Taza, Morocco \textbar{} +212 698 585 528 \textbar{} \href{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.11em]
-\footnotesize
-Date of Birth: 20 Jul 2003 \textbar{} Nationality: Moroccan\\[0.10em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.12em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
 \contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.18\textwidth}
+\begin{minipage}[t]{0.16\textwidth}
 \raggedleft
-\raisebox{-1.02cm}[0pt][0pt]{\includegraphics[width=1.95cm]{cv-photo.jpg}}
+\raisebox{-1.04cm}[0pt][0pt]{\roundphoto{cv-photo.jpg}}
 \end{minipage}
-\vspace{-0.01em}
-
-\section*{Profile}
-Aspiring IT specialist focused on system integration, network administration, and defensive security. Hands-on experience with Windows Server, Active Directory, Linux, virtualization, pfSense, Splunk, and endpoint monitoring through internships, lab work, and well-documented technical projects.
-
-\section*{Technical Skills}
-\textbf{Networking:} Cisco IOS, TCP/IP, VLANs, DNS/DHCP, Wireshark, GNS3, SSH/RDP \\
-\textbf{Systems:} Windows Server, Active Directory, Linux, Hyper-V, VMware \\
-\textbf{Security:} pfSense, Suricata, Splunk, WMI, Syslog, Firewall, Nmap \\
-\textbf{Development:} Python, JavaScript, HTML/CSS, Node.js, Express, MongoDB, Git
+\vspace{0.06em}
 
 \section*{Experience}
 \cvheading{Regional Multiservices Company Fès-Meknès (SRM)}{Apr 2026 -- May 2026}{IT Network Intern}{Taza, Morocco}
 \begin{itemize}
-  \item Supported network operations with a focus on troubleshooting, user support, and foundational security tasks in a regulated infrastructure environment.
+  \item Confirmed internship placement focused on network operations, support, and foundational security tasks in a regulated infrastructure.
 \end{itemize}
 
 \cvheading{IQRA Company}{Jan 2026 -- Feb 2026}{IT Network Intern}{Casablanca, Morocco}
 \begin{itemize}
-  \item Monitored and administered network systems and services through SSH and RDP while providing remote support in an enterprise environment.
+  \item Monitored and administered network systems and services through SSH and RDP in an enterprise environment.
 \end{itemize}
 
-\cvheading{Click Service}{Jun 2025 -- Sep 2025}{IT Specialist Intern}{Taza, Morocco}
+\cvheading{Click Service}{Jun 2025 -- Sep 2025}{IT Support Intern}{Taza, Morocco}
 \begin{itemize}
-  \item Completed software and operating system installations with a 98\% first-time completion rate, improved inventory accuracy by 20\%, and set up or maintained more than 10 local networks while reducing post-installation support requests by 25\%.
+  \item Completed software and operating system installations with a 98\% first-time completion rate, improved inventory accuracy by 20\%, set up or maintained more than 10 local networks, and reduced post-installation support requests by 25\%.
 \end{itemize}
 
 \cvheading{Ministry of Health}{Oct 2022 -- Dec 2022}{System Administration Intern}{Taza, Morocco}
@@ -89,29 +89,49 @@ Aspiring IT specialist focused on system integration, network administration, an
   \item Assisted with Hyper-V deployments that reduced test-environment setup time by 30\% and supported more than 50 Active Directory requests.
 \end{itemize}
 
-\section*{Selected Projects}
-\cvheadinglink{LeagueSkins}{Ongoing}{Open-source maintainer and reverse engineering}{Remote}{https://github.com/Alban1911/LeagueSkins}
+\cvheading{Senior Residence Inc.}{May 2022 -- Jul 2022}{IT Consulting Intern}{Taza, Morocco}
 \begin{itemize}
-  \item Maintained the asset database for an application with 10K+ daily users worldwide, reverse-engineered binary files, and coordinated regression testing before releases.
+  \item Installed and configured hardware and network devices.
+\end{itemize}
+
+\section*{Education}
+\cvheading{Institute for Applied Technology (ISTA)}{Sep 2024 -- Jul 2026}{IT Networks and Systems Specialist}{Taza, Morocco}
+\begin{itemize}
+  \item Contributed to student-led sessions on Linux, virtualization, and Windows Server administration.
+\end{itemize}
+
+\cvheading{Hann. Münden Hospital}{Oct 2023 -- Feb 2024}{Six-month orientation period in nursing training}{Hann. Münden, Germany}
+\begin{itemize}
+  \item Deepened German language skills and gained insight into German work culture.
+\end{itemize}
+
+\cvheading{Polydisciplinary Faculty of Taza}{Sep 2021 -- Jun 2022}{Foundation studies in Mathematics and Computer Science}{Taza, Morocco}
+\begin{itemize}
+  \item Applied mathematical logic to problem-solving in algorithms and computer science.
+\end{itemize}
+
+\cvheading{Al Falah 2 Secondary School}{Sep 2020 -- Jun 2021}{Secondary school diploma (Baccalauréat), Physics focus}{Taza, Morocco}
+\begin{itemize}
+  \item Built a strong foundation in mathematics and physics relevant to IT and network engineering.
+\end{itemize}
+
+\section*{IT Projects}
+\cvheadinglink{LeagueSkins}{Ongoing}{Open-source project maintenance and binary analysis}{Remote}{https://github.com/Alban1911/LeagueSkins}
+\begin{itemize}
+  \item Maintained the asset database for an open-source application with 10,000+ daily users worldwide, reverse-engineered binary files, and coordinated regression testing before releases.
 \end{itemize}
 
 \cvheadinglink{PortGuardian Enterprise}{2026}{USB threat detection and response system}{Security project}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Co-developed a Windows endpoint agent in Python and PyQt6 with WMI USB monitoring, six-stage local file analysis, automatic device ejection, network isolation, and Splunk Syslog integration.
-  \item Validated 350 ms average USB detection, 95\%+ detection with under 5\% false positives on 200 samples, 98\% USB ejection success, and 99.8\% alert delivery reliability across 1,000 Splunk events.
+  \item Tech stack: Python, PyQt6, WMI, and Splunk Syslog; built local USB detection, file inspection, automated isolation, and alert forwarding for Windows endpoints, validated with 350 ms average USB detection, over 95\% detection, under 5\% false positives across 200 samples, 98\% device ejection success, and 99.8\% Splunk delivery reliability.
 \end{itemize}
 
-\section*{Education}
-\cvheading{Institute for Applied Technology (ISTA)}{Sep 2024 -- Jul 2026}{Technicien Spécialisé en réseaux et systèmes informatiques}{Taza, Morocco}
-\begin{itemize}
-  \item Focused on network administration, Linux servers, virtualization, and Windows Server management.
-\end{itemize}
-
-\cvheading{Hann. Münden Clinic}{2023 -- 2024}{Six-month orientation phase in nursing specialist training}{Hann. Münden, Germany}
-
-\cvheading{Polydisciplinary Faculty of Taza}{Sep 2021 -- Jun 2022}{Foundation studies in Mathematics and Computer Science}{Taza, Morocco}
+\section*{Technical Skills}
+\textbf{Networking:} Cisco IOS, Routing \& Switching, TCP/IP, Subnetting, VLANs, DNS/DHCP, Wireshark, GNS3 \\
+\textbf{Systems Administration:} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware \\
+\textbf{Security:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, vulnerability analysis, rule tuning
 
 \section*{Languages}
-German (Goethe B2), English (C2 / professional), French (fluent), Arabic (native)
+German (Goethe B2), English (C2), French (fluent), Arabic (native)
 
 \end{document}

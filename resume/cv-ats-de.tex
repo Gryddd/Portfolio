@@ -1,21 +1,17 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=0.50in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[top=0.38in,bottom=0.38in,left=0.46in,right=0.46in]{geometry}
 \usepackage[ngerman]{babel}
+\usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{tgpagella}
+\usepackage{tikz}
 \usepackage{microtype}
 \usepackage{titlesec}
 
-\input{glyphtounicode}
-\pdfgentounicode=1
-
-\definecolor{linkblue}{HTML}{0F5DA8}
+\definecolor{linkblue}{HTML}{0B57D0}
 \hypersetup{
   colorlinks=true,
   urlcolor=linkblue,
@@ -24,13 +20,20 @@
 
 \pagestyle{empty}
 \flushbottom
-\linespread{1.03}
+\linespread{1.00}
+\pretolerance=10000
+\tolerance=4000
+\emergencystretch=3em
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.16em plus 0.05em minus 0.02em}
-\setlist[itemize]{leftmargin=1.12em, itemsep=0.14em, topsep=0.16em plus 0.06em minus 0.02em, parsep=0em, partopsep=0em, after=\vspace{0.14em plus 0.05em minus 0.02em}}
+\setlength{\parskip}{0.14em plus 0.04em minus 0.02em}
+\setlist[itemize]{leftmargin=1.08em, itemsep=0.12em, topsep=0.14em plus 0.04em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.04em plus 0.02em minus 0.01em}}
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.72em plus 0.18em minus 0.03em}{0.28em plus 0.05em minus 0.02em}
+\titlespacing*{\section}{0pt}{0.68em plus 0.12em minus 0.03em}{0.22em plus 0.04em minus 0.01em}
 \graphicspath{{./}{../images/}}
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{TeX Gyre Heros}[Scale=0.95]
 
 \newcommand{\cvheading}[4]{
   \textbf{#1} \hfill #2 \\[0.05em]
@@ -40,79 +43,99 @@
   \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
   \textit{#3} \hfill \textit{#4}
 }
-\newcommand{\contactlink}[2]{\href{#1}{\textbf{#2}}}
+\newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
+\newcommand{\roundphoto}[1]{%
+  \begin{tikzpicture}
+    \clip (0,0) circle (0.975cm);
+    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+  \end{tikzpicture}%
+}
 
 \begin{document}
 
 \noindent
-\begin{minipage}[t]{0.78\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.22em]
+\begin{minipage}[t]{0.80\textwidth}
+\vspace*{-0.62cm}
+{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
 \small
-Taza, Marokko \textbar{} +212 698 585 528 \textbar{} \href{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.14em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.12em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
 \footnotesize
-Geburtsdatum: 20.07.2003 \textbar{} Staatsangehörigkeit: Marokkanisch\\[0.12em]
+Geburtsdatum: 20.07.2003 \textbar{} Geburtsort: Taza, Marokko \textbar{} Staatsangehörigkeit: Marokkanisch\\[0.10em]
 \contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.18\textwidth}
+\begin{minipage}[t]{0.16\textwidth}
 \raggedleft
-\raisebox{-1.02cm}[0pt][0pt]{\includegraphics[width=1.95cm]{cv-photo.jpg}}
+\raisebox{-1.14cm}[0pt][0pt]{\roundphoto{cv-photo.jpg}}
 \end{minipage}
-\vspace{0.02em}
+\vspace{0.06em}
 
-\section*{Profil}
-Angehender IT-Spezialist mit Fokus auf Systemintegration, Netzwerkadministration und IT-Sicherheit. Praktische Erfahrung mit Windows Server, Active Directory, Linux, Virtualisierung, pfSense und Splunk aus Praktika, Praxisprojekten und technischer Dokumentation.
-
-\section*{Technische Kenntnisse}
-\textbf{Netzwerk:} Cisco IOS, TCP/IP, VLANs, DNS/DHCP, Wireshark, GNS3, SSH/RDP \\
-\textbf{Systeme:} Windows Server, Active Directory, Linux, Hyper-V, VMware \\
-\textbf{Sicherheit:} pfSense, Suricata, Splunk, WMI, Syslog, Firewall, Nmap \\
-\textbf{Entwicklung:} Python, JavaScript, HTML/CSS, Node.js, Express, MongoDB, Git
-
-\section*{Berufserfahrung}
-\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{Apr. 2026 -- Mai 2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
+\section*{Bildungsweg}
+\cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{09/2024 -- 07/2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
 \begin{itemize}
-  \item Mitarbeit im Netzwerkbetrieb mit Fehleranalyse, Support und grundlegenden Sicherheitsaufgaben in einer regulierten Infrastruktur.
+  \item Mitwirkung an von Studenten geleiteten Sitzungen zu Linux, Virtualisierung und Windows Server.
 \end{itemize}
 
-\cvheading{IQRA Société}{Jan. 2026 -- Feb. 2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
+\cvheading{Klinikum Hann. Münden}{10/2023 -- 02/2024}{Sechsmonatige Orientierungsphase in der Pflegeausbildung}{Hann. Münden, Deutschland}
 \begin{itemize}
-  \item Fernüberwachung und Verwaltung von Netzwerksystemen und -diensten über SSH und RDP sowie technischer Fernsupport in einer Unternehmensumgebung.
+  \item Vertiefung der Deutschkenntnisse und Einblick in die deutsche Arbeitskultur.
 \end{itemize}
 
-\cvheading{Click Service}{Juni 2025 -- Sep. 2025}{Praktikant IT-Support}{Taza, Marokko}
+\cvheading{Interdisziplinäre Fakultät Taza}{09/2021 -- 06/2022}{Grundstudium Mathematik und Informatik}{Taza, Marokko}
 \begin{itemize}
-  \item Software- und Betriebssystem-Installationen mit 98\% Erstlösungsquote; Inventargenauigkeit um 20\% verbessert; mehr als 10 lokale Netzwerke eingerichtet oder gewartet und Supportanfragen nach Installationen um 25\% reduziert.
+  \item Anwendung mathematischer Logik zur Lösung von Problemen in Algorithmen und Informatik.
 \end{itemize}
 
-\cvheading{Gesundheitsministerium}{Okt 2022 -- Dez 2022}{Praktikant Systemadministration}{Taza, Marokko}
+\cvheading{Weiterführende Schule Al Falah 2}{09/2020 -- 06/2021}{Sekundarschulabschluss (Baccalauréat), Schwerpunkt Physik}{Taza, Marokko}
 \begin{itemize}
-  \item Mitarbeit bei Hyper-V-Bereitstellungen, wodurch sich die Einrichtungszeit für Testumgebungen um 30\% verringerte, sowie Bearbeitung von über 50 Anfragen in Active Directory.
+  \item Grundlagen in Mathematik und Physik, wichtige Kompetenzen für IT- und Netzwerktechnik.
 \end{itemize}
 
-\section*{Ausgewählte Projekte}
-\cvheadinglink{LeagueSkins}{Laufend}{Pflege eines Open-Source-Projekts und Binäranalyse}{ortsunabhängig}{https://github.com/Alban1911/LeagueSkins}
+\section*{Praktische Erfahrungen}
+\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{04/2026 -- 05/2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
 \begin{itemize}
-  \item Pflege der Asset-Datenbank für eine Anwendung mit mehr als 10.000 täglichen Nutzern weltweit, Analyse von Binärdateien und Koordination von Regressionstests vor neuen Veröffentlichungen.
+  \item Bestätigter Praktikumsplatz mit Schwerpunkt auf Netzwerkbetrieb, Support und grundlegenden Sicherheitsaufgaben in einer regulierten Infrastruktur.
+\end{itemize}
+
+\cvheading{IQRA Société}{01/2026 -- 02/2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
+\begin{itemize}
+  \item Fernüberwachung und Administration von Netzwerksystemen und -diensten über SSH und RDP in einer Unternehmensumgebung.
+\end{itemize}
+
+\cvheading{Click Service}{06/2025 -- 09/2025}{Praktikant IT-Support}{Taza, Marokko}
+\begin{itemize}
+  \item Software- und Betriebssysteminstallationen mit 98\% Erstlösungsquote, 20\% höherer Inventargenauigkeit, über 10 eingerichteten oder gewarteten lokalen Netzwerken und 25\% weniger Nachsorge-Supportanfragen.
+\end{itemize}
+
+\cvheading{Gesundheitsministerium}{10/2022 -- 12/2022}{Praktikant Systemadministration}{Taza, Marokko}
+\begin{itemize}
+  \item Mitwirkung an Hyper-V-Deployments, die die Bereitstellungszeit für Testumgebungen um 30\% verkürzten, sowie Bearbeitung von über 50 Active-Directory-Anfragen.
+\end{itemize}
+
+\cvheading{Seniorenresidenz Inc.}{05/2022 -- 07/2022}{Praktikant IT-Beratung}{Taza, Marokko}
+\begin{itemize}
+  \item Installation und Konfiguration von Hardware und Netzwerkgeräten.
+\end{itemize}
+
+\section*{IT-Projekte}
+\cvheadinglink{LeagueSkins}{Laufend}{Wartung und Weiterentwicklung eines Open-Source-Projekts sowie Binäranalyse}{ortsunabhängig}{https://github.com/Alban1911/LeagueSkins}
+\begin{itemize}
+  \item Wartung der Asset-Datenbank für eine Open-Source-Anwendung mit 10.000+ täglichen Nutzern weltweit sowie Reverse Engineering von Binärdateien und Koordination von Regressionstests vor Releases.
 \end{itemize}
 
 \cvheadinglink{PortGuardian Enterprise}{2026}{USB-Bedrohungserkennung und Reaktionssystem}{Sicherheitsprojekt}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Mitarbeit an einem Windows-Agenten in Python und PyQt6 mit Überwachung über WMI, sechsstufiger Dateianalyse, automatischem Auswerfen von USB-Geräten, Trennung vom Netzwerk und Splunk-Syslog-Anbindung.
-  \item Validierung mit durchschnittlich 350 ms USB-Erkennung, über 95\% Erkennungsrate bei unter 5\% Fehlalarmen auf 200 Proben, 98\% Erfolgsrate beim Auswerfen und 99,8\% Zuverlässigkeit der Splunk-Anbindung bei 1.000 Warnmeldungen.
+  \item Technologien: Python, PyQt6, WMI und Splunk-Syslog; Umsetzung einer lokalen USB-Erkennung, Dateiprüfung, automatischen Isolation und Alarmweiterleitung für Windows-Endpunkte, validiert mit durchschnittlich 350 ms USB-Erkennung, über 95\% Erkennungsrate bei unter 5\% Fehlalarmen auf 200 Proben, 98\% Auswurferfolg und 99,8\% Splunk-Zustellzuverlässigkeit.
 \end{itemize}
 
-\section*{Bildungsweg}
-\cvheading{Institut für angewandte Technologie (ISTA)}{Sep. 2024 -- Juli 2026}{Fachrichtung Netzwerke und IT-Systeme}{Taza, Marokko}
-\begin{itemize}
-  \item Schwerpunkt auf Netzwerkadministration, Linux-Servern, Virtualisierung und Verwaltung von Windows Servern.
-\end{itemize}
-
-\cvheading{Klinikum Hann. Münden}{2023 -- 2024}{Sechsmonatige Orientierungsphase in der Pflegeausbildung}{Hann. Münden, Deutschland}
-
-\cvheading{Interdisziplinäre Fakultät Taza}{Sep. 2021 -- Juni 2022}{Grundstudium Mathematik und Informatik}{Taza, Marokko}
+\section*{Technische Kenntnisse}
+\textbf{Netzwerk:} Cisco IOS, Routing \& Switching, TCP/IP, Subnetting, VLANs, DNS/DHCP, Wireshark, GNS3 \\
+\textbf{Systemadministration:} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware \\
+\textbf{IT-Sicherheit:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Schwachstellenanalyse, Regel-Tuning
 
 \section*{Sprachen}
-Deutsch (Goethe-Zertifikat B2), Englisch (C2, professionell), Französisch (fließend), Arabisch (Muttersprache)
+Deutsch (Goethe-Zertifikat B2), Englisch (C2), Französisch (fließend), Arabisch (Muttersprache)
+
 
 \end{document}

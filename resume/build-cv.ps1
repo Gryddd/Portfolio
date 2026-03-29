@@ -10,8 +10,8 @@ if (Test-Path $miktexBin) {
     $env:PATH = "$env:PATH;$miktexBin"
 }
 
-if (-not (Get-Command pdflatex -ErrorAction SilentlyContinue)) {
-    throw "pdflatex was not found. Install MiKTeX or add it to PATH."
+if (-not (Get-Command xelatex -ErrorAction SilentlyContinue)) {
+    throw "xelatex was not found. Install MiKTeX or add it to PATH."
 }
 
 $resumeDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -32,8 +32,15 @@ try {
             $sourceFile
         )
 
-        & pdflatex @arguments | Out-Host
-        & pdflatex @arguments | Out-Host
+        & xelatex @arguments | Out-Host
+        if ($LASTEXITCODE -ne 0) {
+            throw "xelatex failed for $sourceFile"
+        }
+
+        & xelatex @arguments | Out-Host
+        if ($LASTEXITCODE -ne 0) {
+            throw "xelatex failed for $sourceFile"
+        }
 
         $baseName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile)
         $builtPdf = "$baseName.pdf"
