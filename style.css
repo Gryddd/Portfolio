@@ -2397,6 +2397,15 @@ button:hover,
     margin: 0 auto;
 }
 
+/* Center the 3rd thumbnail on mobile when there are exactly 3 items */
+@media (max-width: 599px) {
+    .project-thumbnails .project-thumbnail:last-child:nth-child(3) {
+        grid-column: 1 / -1;
+        max-width: calc(50% - 0.35rem);
+        margin: 0 auto;
+    }
+}
+
 @media (min-width: 600px) {
     .project-thumbnails {
         grid-template-columns: repeat(3, 1fr);
@@ -2493,6 +2502,16 @@ button:hover,
         aspect-ratio: 16/9;
     }
 
+    .featured-project-image:has(img[src*="widepre.png"]) {
+        aspect-ratio: auto;
+    }
+    .featured-project-image img[src*="widepre.png"] {
+        position: static;
+        height: auto !important;
+        object-fit: contain !important;
+        background: transparent;
+    }
+
     .featured-project-content {
         padding: 1rem 1.1rem 1rem;
     }
@@ -2507,16 +2526,7 @@ button:hover,
     }
 
     .featured-project-arrow {
-        width: 2rem;
-        height: 2rem;
-    }
-
-    .featured-project-arrow.prev {
-        left: -0.25rem;
-    }
-
-    .featured-project-arrow.next {
-        right: -0.25rem;
+        display: none;
     }
 }
 

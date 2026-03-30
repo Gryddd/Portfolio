@@ -1219,9 +1219,9 @@ body.rose-loader-active {
 .rose-brand-tagline {
     font-family: "Poppins", sans-serif;
     font-size: clamp(1rem, 1.7vw, 1.3rem);
-    font-weight: 200;
+    font-weight: 300;
     letter-spacing: 0.05em;
-    color: var(--case-text-muted);
+    color: rgba(255, 255, 255, 0.82);
 }
 
 .leagueskins-shell {
