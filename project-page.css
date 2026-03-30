@@ -1061,12 +1061,16 @@ body.project-background-video-disabled .project-case-background-video {
     --portguardian-loader-muted: rgba(255, 255, 255, 0.66);
     --portguardian-loader-gap: clamp(0.9rem, 2.4vw, 1.4rem);
     --portguardian-loader-icon-start-offset: 0px;
+    --portguardian-subtitle-weight: 100;
+    --portguardian-loader-subtitle-weight: 260;
 }
 
 [data-theme="light"] .portguardian-case-page {
     --portguardian-loader-bg: #f5f6f8;
     --portguardian-loader-text: #111111;
     --portguardian-loader-muted: rgba(17, 17, 17, 0.48);
+    --portguardian-subtitle-weight: 115;
+    --portguardian-loader-subtitle-weight: 280;
 }
 
 .leagueskins-case-page::before {
@@ -1131,8 +1135,23 @@ body.case-loader-active {
     overflow: hidden;
 }
 
+.portguardian-case-page {
+    transition: background 0.72s ease, color 0.4s ease;
+}
+
+.portguardian-case-page .main-nav,
+.portguardian-case-page .mobile-menu-icon,
+.portguardian-case-page .scroll-progress,
+.portguardian-case-page main {
+    transition:
+        opacity 0.82s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.82s cubic-bezier(0.19, 1, 0.22, 1),
+        filter 0.82s ease;
+    will-change: opacity, transform, filter;
+}
+
 .portguardian-case-page.case-loader-active {
-    background: #000000;
+    background: var(--portguardian-loader-bg);
 }
 
 .portguardian-case-page.case-loader-active .main-nav,
@@ -1140,7 +1159,8 @@ body.case-loader-active {
 .portguardian-case-page.case-loader-active .scroll-progress,
 .portguardian-case-page.case-loader-active main {
     opacity: 0;
-    visibility: hidden;
+    transform: translateY(1rem) scale(0.988);
+    filter: blur(12px);
     pointer-events: none;
 }
 
@@ -1429,17 +1449,38 @@ body.case-loader-active {
         radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.07), transparent 28%),
         linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 52%, rgba(0, 0, 0, 0.82) 100%),
         url("images/portguardian-video-poster.webp") center/cover no-repeat;
+    transition: background 0.6s ease;
 }
 
 .portguardian-case-page .project-case-background-video {
     opacity: 0.72;
     transform: scale(1.03);
     filter: saturate(0.86) brightness(0.54) contrast(1.06);
+    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
 }
 
 .portguardian-case-page .project-case-hero-media .video-overlay {
     background:
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
+    transition: background 0.6s ease;
+}
+
+[data-theme="light"] .portguardian-case-page .project-case-hero-media {
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.88), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(244, 247, 250, 0.62) 52%, rgba(237, 242, 246, 0.95) 100%),
+        url("images/portguardian-video-poster.webp") center/cover no-repeat;
+}
+
+[data-theme="light"] .portguardian-case-page .project-case-background-video {
+    opacity: 0.3;
+    transform: scale(1.02);
+    filter: saturate(0.58) brightness(1.22) contrast(0.78);
+}
+
+[data-theme="light"] .portguardian-case-page .project-case-hero-media .video-overlay {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(243, 247, 250, 0.66) 58%, rgba(238, 242, 246, 0.94) 100%);
 }
 
 .portguardian-case-page .hero {
@@ -1452,13 +1493,18 @@ body.case-loader-active {
 }
 
 .portguardian-case-page .case-loader {
-    background: #000000;
-    --portguardian-loader-text: #f8fbff;
-    --portguardian-loader-muted: rgba(255, 255, 255, 0.66);
+    background:
+        radial-gradient(circle at 24% 28%, rgba(255, 255, 255, 0.05), transparent 34%),
+        radial-gradient(circle at 76% 64%, rgba(120, 136, 154, 0.08), transparent 32%),
+        linear-gradient(180deg, #04090d 0%, #000000 100%);
+    transition: opacity 0.82s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.82s ease, background 0.45s ease;
 }
 
 [data-theme="light"] .portguardian-case-page .case-loader {
-    background: #000000;
+    background:
+        radial-gradient(circle at 24% 28%, rgba(255, 255, 255, 0.96), transparent 36%),
+        radial-gradient(circle at 76% 64%, rgba(220, 228, 235, 0.84), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #eef3f7 100%);
 }
 
 .portguardian-case-page .case-loader-panel {
@@ -1469,6 +1515,14 @@ body.case-loader-active {
     width: min(100%, 52rem);
     min-height: clamp(120px, 18vw, 168px);
     overflow: visible;
+    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1), filter 0.44s ease;
+    will-change: opacity, transform, filter;
+}
+
+.portguardian-case-page .case-loader.is-complete .case-loader-panel {
+    opacity: 0;
+    transform: translateY(-0.6rem) scale(0.986);
+    filter: blur(8px);
 }
 
 .portguardian-case-page .case-loader-icon {
@@ -1533,10 +1587,18 @@ body.case-loader-active {
     font-size: 0.3em;
     line-height: 1.02;
     font-style: normal;
-    font-weight: 100;
-    font-variation-settings: "wght" 100;
     color: var(--portguardian-loader-muted);
     letter-spacing: 0.023em;
+}
+
+.portguardian-case-page .case-loader-title .case-brand-subtitle {
+    font-weight: var(--portguardian-loader-subtitle-weight);
+    font-variation-settings: "wght" var(--portguardian-loader-subtitle-weight);
+}
+
+.portguardian-case-page .case-brand-title .case-brand-subtitle {
+    font-weight: var(--portguardian-subtitle-weight);
+    font-variation-settings: "wght" var(--portguardian-subtitle-weight);
 }
 
 .portguardian-case-page .case-brand-tagline {

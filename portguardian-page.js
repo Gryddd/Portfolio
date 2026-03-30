@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const startedAt = performance.now();
+    const cleanupDelay = reduceMotion ? 240 : 820;
     const minimumVisibleMs = reduceMotion ? 300 : 2800;
     let completed = false;
 
@@ -78,12 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
         window.setTimeout(() => {
             loader.classList.add("is-complete");
             loader.setAttribute("aria-hidden", "true");
-            window.setTimeout(() => {
+            window.requestAnimationFrame(() => {
                 document.body.classList.remove("case-loader-active");
+            });
+            window.setTimeout(() => {
                 document.body.classList.remove("case-loader-animate");
                 document.body.style.removeProperty("--portguardian-loader-icon-start-offset");
                 loader.remove();
-            }, 720);
+            }, cleanupDelay);
         }, remaining);
     };
 
