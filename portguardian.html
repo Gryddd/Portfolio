@@ -28,9 +28,10 @@
     <link rel="manifest" href="manifest.json"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&family=Inter:wght@100;400;700&display=swap" rel="stylesheet">
     <link as="image" href="images/portguardian_infra.png" rel="preload"/>
     <link as="image" href="images/portguardian-icon.png" rel="preload"/>
+    <link as="image" href="images/portguardian-video-poster.webp" rel="preload"/>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link href="project-page.css" rel="stylesheet">
@@ -52,18 +53,15 @@
     }
     </script>
 </head>
-<body class="project-case-page">
+<body class="project-case-page portguardian-case-page">
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<div class="preloader" id="preloader">
-    <div class="preloader-panel" role="status" aria-label="Initializing website">
-        <div class="preloader-copy">
-            <span class="preloader-label">Initializing</span>
-            <span class="preloader-percent" id="preloader-percent" aria-hidden="true">0%</span>
-        </div>
-        <div class="preloader-track" aria-hidden="true">
-            <div class="preloader-bar" id="preloader-bar"></div>
+<div class="case-loader" id="case-loader" role="status" aria-live="polite" aria-label="Loading PortGuardian page">
+    <div class="case-loader-panel">
+        <img src="images/portguardian-icon.png" alt="" class="case-loader-icon" width="132" height="132" decoding="async">
+        <div class="case-loader-copy" aria-hidden="true">
+            <span class="case-loader-title">PortGuardian <span class="case-brand-subtitle">Enterprise SIEM Edition</span></span>
         </div>
     </div>
 </div>
@@ -188,7 +186,10 @@
 
 <main id="main-content">
 <section class="hero" id="hero">
-<div class="hero-media project-case-hero-media" aria-hidden="true"></div>
+<div class="hero-media project-case-hero-media" aria-hidden="true">
+<video id="portguardian-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" poster="images/portguardian-video-poster.webp" data-src="videos/portguardian-hero.webm"></video>
+<div class="video-overlay"></div>
+</div>
 <div class="hero-card hero-card-static" data-aos="fade-up" data-aos-duration="700" data-aos-easing="ease-out-cubic">
 <div class="hero-card-accent"></div>
 <div class="hero-card-inner">
@@ -197,8 +198,7 @@
 <div class="project-hero-brand">
         <img src="images/portguardian-icon.png" alt="PortGuardian application icon" class="project-hero-icon" loading="eager" decoding="async" width="108" height="108">
     <div class="project-hero-brand-copy">
-        <h1>PortGuardian Enterprise</h1>
-        <p class="hero-job-title lang" data-de="USB-Bedrohungserkennung und Reaktion fuer Windows-Endpunkte" data-en="USB Threat Detection and Response for Windows Endpoints" data-fr="Détection et réponse aux menaces USB pour endpoints Windows">USB Threat Detection and Response for Windows Endpoints</p>
+        <h1 class="case-brand-title">PortGuardian <span class="case-brand-subtitle">Enterprise SIEM Edition</span></h1>
     </div>
 </div>
 <p class="hero-description lang" data-de="PortGuardian ist ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erkennt USB-Einsteckvorgaenge, prueft verdaechtige Dateien lokal mit sechs Kontrollen, isoliert den Host bei kritischen Treffern und leitet nur WARN- und CRITICAL-Alarme an Splunk weiter." data-en="PortGuardian is a Windows endpoint agent tested in a VMware-based small-enterprise lab. It detects USB insertions, scans suspicious files locally with six checks, isolates the host on critical hits, and forwards only WARN and CRITICAL alerts to Splunk." data-fr="PortGuardian est un agent endpoint Windows testé dans un labo PME virtualisé sous VMware. Il détecte les insertions USB, analyse localement les fichiers suspects avec six contrôles, isole l'hôte en cas de détection critique et n'envoie à Splunk que les alertes WARN et CRITICAL.">PortGuardian is a Windows endpoint agent tested in a VMware-based small-enterprise lab. It detects USB insertions, scans suspicious files locally with six checks, isolates the host on critical hits, and forwards only WARN and CRITICAL alerts to Splunk.</p>
@@ -769,6 +769,7 @@
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="portguardian-page.js"></script>
 <script defer src="script.js"></script>
 <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>

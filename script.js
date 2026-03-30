@@ -945,6 +945,9 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeProjectShowcase();
     switchLanguage(currentLang);
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
+    document.querySelectorAll('.project-modal .modal-lang-switcher').forEach(switcher => {
+        switcher.remove();
+    });
     document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .experience-dropdown-container').forEach(dropdown => {
         syncDropdownState(dropdown, false);
     });

@@ -91,6 +91,16 @@
     overflow: visible;
 }
 
+.project-case-background-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+}
+
 .project-case-hero-media {
     background:
         linear-gradient(180deg, rgba(4, 4, 6, 0.32) 0%, rgba(4, 4, 6, 0.76) 76%, rgba(4, 4, 6, 0.94) 100%),
@@ -211,6 +221,33 @@
 
 .project-hero-brand-copy .hero-job-title {
     margin: 0.5rem 0 0;
+}
+
+.case-brand-title {
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3rem, 7vw, 5.9rem);
+    line-height: 0.92;
+    letter-spacing: 0.05em;
+}
+
+.case-brand-tagline {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(1rem, 1.7vw, 1.3rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.case-brand-subtitle {
+    display: inline-block;
+    margin-left: 0.08em;
+    font-family: "Inter", sans-serif;
+    font-size: 0.34em;
+    font-style: normal;
+    font-weight: 100;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    vertical-align: baseline;
 }
 
 .project-case-page .hero-job-title,
@@ -810,6 +847,10 @@
         url("images/portguardian_infra.png") center/cover no-repeat;
 }
 
+body.project-background-video-disabled .project-case-background-video {
+    display: none;
+}
+
 [data-theme="light"] .project-case-page .hero-card.hero-card-static {
     background: rgba(255, 255, 255, 0.94);
 }
@@ -1001,7 +1042,7 @@
 .leagueskins-case-page {
     --leagueskins-loader-bg: #020202;
     --leagueskins-loader-text: #f7f7f8;
-    --leagueskins-loader-muted: rgba(255, 255, 255, 0.272);
+    --leagueskins-loader-muted: rgba(255, 255, 255, 0.68);
     --leagueskins-shell-bg:
         linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.004)),
         rgba(6, 6, 8, 0.72);
@@ -1011,7 +1052,21 @@
 [data-theme="light"] .leagueskins-case-page {
     --leagueskins-loader-bg: #f5f5f7;
     --leagueskins-loader-text: #111111;
-    --leagueskins-loader-muted: rgba(17, 17, 17, 0.248);
+    --leagueskins-loader-muted: rgba(17, 17, 17, 0.56);
+}
+
+.portguardian-case-page {
+    --portguardian-loader-bg: #02060a;
+    --portguardian-loader-text: #f8fbff;
+    --portguardian-loader-muted: rgba(255, 255, 255, 0.66);
+    --portguardian-loader-gap: clamp(0.9rem, 2.4vw, 1.4rem);
+    --portguardian-loader-icon-start-offset: 0px;
+}
+
+[data-theme="light"] .portguardian-case-page {
+    --portguardian-loader-bg: #f5f6f8;
+    --portguardian-loader-text: #111111;
+    --portguardian-loader-muted: rgba(17, 17, 17, 0.48);
 }
 
 .leagueskins-case-page::before {
@@ -1070,6 +1125,23 @@
 
 body.rose-loader-active {
     overflow: hidden;
+}
+
+body.case-loader-active {
+    overflow: hidden;
+}
+
+.portguardian-case-page.case-loader-active {
+    background: #000000;
+}
+
+.portguardian-case-page.case-loader-active .main-nav,
+.portguardian-case-page.case-loader-active .mobile-menu-icon,
+.portguardian-case-page.case-loader-active .scroll-progress,
+.portguardian-case-page.case-loader-active main {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .rose-loader {
@@ -1189,6 +1261,133 @@ body.rose-loader-active {
     }
 }
 
+.case-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background:
+        radial-gradient(circle at 28% 28%, rgba(255, 255, 255, 0.036), transparent 32%),
+        radial-gradient(circle at 76% 66%, rgba(255, 255, 255, 0.024), transparent 30%),
+        var(--portguardian-loader-bg);
+    transition: opacity 0.68s ease, visibility 0.68s ease;
+}
+
+[data-theme="light"] .case-loader {
+    background:
+        radial-gradient(circle at 28% 28%, rgba(17, 17, 17, 0.024), transparent 32%),
+        radial-gradient(circle at 76% 66%, rgba(17, 17, 17, 0.016), transparent 30%),
+        var(--portguardian-loader-bg);
+}
+
+.case-loader.is-complete {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.case-loader-panel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 3vw, 1.55rem);
+    width: min(100%, 48rem);
+    text-align: left;
+}
+
+.case-loader-icon,
+.case-loader-title,
+.case-loader-tagline {
+    opacity: 0;
+}
+
+.case-loader-icon {
+    width: clamp(88px, 10vw, 132px);
+    height: auto;
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34));
+    animation: roseLoaderIcon 1.16s cubic-bezier(0.19, 1, 0.22, 1) 0.18s forwards;
+}
+
+[data-theme="light"] .case-loader-icon {
+    filter: drop-shadow(0 12px 24px rgba(17, 17, 17, 0.16));
+}
+
+.case-loader-copy {
+    display: grid;
+    justify-items: start;
+    gap: 0.08rem;
+    min-width: 0;
+}
+
+.case-loader-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(3rem, 6.6vw, 5.8rem);
+    line-height: 0.88;
+    letter-spacing: 0.05em;
+    color: var(--portguardian-loader-text);
+    transform: translateX(-2rem);
+    white-space: normal;
+    animation: roseLoaderTitle 1.18s cubic-bezier(0.19, 1, 0.22, 1) 0.74s forwards;
+}
+
+.case-loader-title .case-brand-subtitle {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.04rem;
+    font-size: 0.3em;
+    line-height: 1.02;
+}
+
+.case-loader-tagline {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(0.96rem, 1.5vw, 1.2rem);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--portguardian-loader-muted);
+    transform: translateX(-1.2rem) translateY(0.35rem);
+    animation: roseLoaderTagline 0.96s ease 1.28s forwards;
+}
+
+@keyframes portguardianLoaderIconSettle {
+    0% {
+        opacity: 0;
+        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(0.88);
+    }
+
+    18% {
+        opacity: 1;
+        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(1);
+    }
+
+    46% {
+        opacity: 1;
+        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes portguardianLoaderCopyReveal {
+    0% {
+        opacity: 0;
+        transform: translateX(-0.9rem);
+        clip-path: inset(0 100% 0 0);
+        filter: blur(6px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+        clip-path: inset(0 0 0 0);
+        filter: blur(0);
+    }
+}
+
 .leagueskins-hero-media {
     display: none;
     background: none;
@@ -1222,6 +1421,127 @@ body.rose-loader-active {
     font-weight: 300;
     letter-spacing: 0.05em;
     color: rgba(255, 255, 255, 0.82);
+}
+
+.portguardian-case-page .project-case-hero-media {
+    display: block;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.07), transparent 28%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 52%, rgba(0, 0, 0, 0.82) 100%),
+        url("images/portguardian-video-poster.webp") center/cover no-repeat;
+}
+
+.portguardian-case-page .project-case-background-video {
+    opacity: 0.72;
+    transform: scale(1.03);
+    filter: saturate(0.86) brightness(0.54) contrast(1.06);
+}
+
+.portguardian-case-page .project-case-hero-media .video-overlay {
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+.portguardian-case-page .hero {
+    padding-top: clamp(6.5rem, 10vh, 7.5rem);
+    padding-bottom: clamp(3.6rem, 6vh, 4.25rem);
+}
+
+.portguardian-case-page .hero-card {
+    max-width: 56rem;
+}
+
+.portguardian-case-page .case-loader {
+    background: #000000;
+    --portguardian-loader-text: #f8fbff;
+    --portguardian-loader-muted: rgba(255, 255, 255, 0.66);
+}
+
+[data-theme="light"] .portguardian-case-page .case-loader {
+    background: #000000;
+}
+
+.portguardian-case-page .case-loader-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--portguardian-loader-gap);
+    width: min(100%, 52rem);
+    min-height: clamp(120px, 18vw, 168px);
+    overflow: visible;
+}
+
+.portguardian-case-page .case-loader-icon {
+    position: static;
+    flex: 0 0 auto;
+    opacity: 0;
+    transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(0.88);
+}
+
+.portguardian-case-page .case-loader-copy {
+    position: static;
+    width: auto;
+    justify-items: start;
+    opacity: 0;
+    overflow: visible;
+    transform: translateX(-0.9rem);
+    clip-path: inset(0 100% 0 0);
+    filter: blur(6px);
+}
+
+.portguardian-case-page .case-loader-title {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    white-space: nowrap;
+}
+
+.portguardian-case-page.case-loader-animate .case-loader-icon {
+    animation: portguardianLoaderIconSettle 1.34s cubic-bezier(0.19, 1, 0.22, 1) 0.14s forwards;
+}
+
+.portguardian-case-page.case-loader-animate .case-loader-copy {
+    animation: portguardianLoaderCopyReveal 1.02s cubic-bezier(0.19, 1, 0.22, 1) 0.72s forwards;
+}
+
+.portguardian-case-page .project-hero-brand {
+    align-items: center;
+    gap: clamp(1rem, 2.6vw, 1.45rem);
+    margin-bottom: 0.7rem;
+}
+
+.portguardian-case-page .project-hero-brand-copy {
+    display: grid;
+    gap: 0.04rem;
+}
+
+.portguardian-case-page .project-hero-icon {
+    width: clamp(102px, 12vw, 130px);
+    height: clamp(102px, 12vw, 130px);
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+}
+
+.portguardian-case-page .case-brand-title {
+    font-size: clamp(3rem, 6.8vw, 5.8rem);
+}
+
+.portguardian-case-page .case-loader-title .case-brand-subtitle,
+.portguardian-case-page .case-brand-title .case-brand-subtitle {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.04rem;
+    font-size: 0.3em;
+    line-height: 1.02;
+    font-style: normal;
+    font-weight: 100;
+    font-variation-settings: "wght" 100;
+    color: var(--portguardian-loader-muted);
+    letter-spacing: 0.023em;
+}
+
+.portguardian-case-page .case-brand-tagline {
+    margin: 0;
+    color: var(--case-text-main);
 }
 
 .leagueskins-shell {
@@ -1529,9 +1849,72 @@ body.rose-loader-active {
         letter-spacing: 0.04em;
     }
 
+    .case-loader-panel {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        width: auto;
+        text-align: center;
+        gap: 0.7rem;
+    }
+
+    .case-loader-copy {
+        justify-items: center;
+    }
+
+    .case-loader-icon {
+        width: clamp(82px, 24vw, 108px);
+    }
+
+    .case-loader-title {
+        font-size: clamp(2rem, 9.6vw, 3rem);
+        letter-spacing: 0.04em;
+    }
+
+    .case-loader-title .case-brand-subtitle,
+    .case-brand-title .case-brand-subtitle {
+        margin-top: 0.02rem;
+        font-size: 0.4em;
+    }
+
+    .case-loader-tagline {
+        font-size: clamp(0.82rem, 3.2vw, 0.98rem);
+        letter-spacing: 0.04em;
+    }
+
+    .portguardian-case-page {
+        --portguardian-loader-gap: clamp(0.55rem, 2.8vw, 0.9rem);
+    }
+
+    .portguardian-case-page .case-loader-panel {
+        width: min(100%, 30rem);
+        min-height: clamp(108px, 28vw, 148px);
+    }
+
+    .portguardian-case-page .case-loader-copy {
+        max-width: calc(100vw - 3rem);
+    }
+
     .leagueskins-hero-icon {
         width: 104px;
         height: 104px;
+    }
+
+    .portguardian-case-page .project-hero-brand {
+        align-items: center;
+        text-align: center;
+    }
+
+    .portguardian-case-page .project-hero-brand-copy {
+        justify-items: center;
+    }
+
+    .portguardian-case-page .project-hero-icon {
+        width: 96px;
+        height: 96px;
+    }
+
+    .portguardian-case-page .case-brand-title .case-brand-subtitle {
+        font-size: 0.52em;
     }
 
     .leagueskins-feature-grid,
@@ -1563,6 +1946,22 @@ body.rose-loader-active {
 
     .rose-loader-tagline {
         font-size: clamp(0.88rem, 1.4vw, 1rem);
+    }
+
+    .case-loader {
+        padding: 1rem;
+    }
+
+    .case-loader-icon {
+        width: clamp(78px, 10vw, 106px);
+    }
+
+    .case-loader-title {
+        font-size: clamp(2.2rem, 5.8vw, 4rem);
+    }
+
+    .case-loader-tagline {
+        font-size: clamp(0.86rem, 1.4vw, 0.98rem);
     }
 }
 
