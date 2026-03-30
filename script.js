@@ -156,56 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                 ],
             },
-            "project-modal-2": {
-                currentSlide: 0,
-                slides: [
-                    {
-                        img: "borealis_architecture.png",
-                        title: { de: "Full-Stack MERN Architektur", en: "Full-Stack MERN Architecture", fr: "Architecture Full-Stack MERN" },
-                        text: {
-                            de: "Borealis ist eine vollständige E-Commerce-Anwendung, die auf dem MERN-Stack basiert. Die Kernarchitektur umfasst eine Node.js/Express REST-API für Backend-Logik, eine MongoDB-Datenbank für die Datenpersistenz und eine reine Vanilla-JS-Frontend-Anwendung, die für eine optimale Leistung ohne Framework-Overhead sorgt.",
-                            en: "Borealis is a complete e-commerce application built on the MERN stack. The core architecture features a Node.js/Express REST API for backend logic, a MongoDB database for data persistence, and a pure Vanilla JS frontend for optimal performance without framework overhead.",
-                            fr: "Borealis est une application e-commerce complète basée sur la stack MERN. L'architecture de base comprend une API REST Node.js/Express pour la logique backend, une base de données MongoDB pour la persistance des données, et une application frontend en JavaScript pur pour des performances optimales sans la surcharge d'un framework."
-                        }
-                    },
-                    {
-                        img: "borealis_auth.png",
-                        title: { de: "Sichere Authentifizierung & Sitzungsverwaltung", en: "Secure Authentication & Session Management", fr: "Authentification et Gestion de Session Sécurisées" },
-                        text: {
-                            de: "Die Benutzerauthentifizierung wird durch JSON Web Tokens (JWT) gesichert. Passwörter werden vor der Speicherung mit bcrypt gehasht, um die Einhaltung von Sicherheitsstandards zu gewährleisten. Token-basierte Sitzungen ermöglichen eine zustandslose und skalierbare Backend-Architektur.",
-                            en: "User authentication is secured using JSON Web Tokens (JWT). Passwords are hashed with bcrypt before storage, ensuring security compliance. Token-based sessions allow for a stateless and scalable backend architecture.",
-                            fr: "L'authentification des utilisateurs est sécurisée à l'aide de JSON Web Tokens (JWT). Les mots de passe sont hachés avec bcrypt avant d'être stockés, garantissant la conformité en matière de sécurité. Les sessions basées sur des jetons permettent une architecture backend sans état et évolutive."
-                        }
-                    },
-                    {
-                        img: "borealis_admin_dashboard.png",
-                        title: { de: "Systemadministration & Rollenbasierte Zugriffskontrolle", en: "System Administration & Role-Based Access Control", fr: "Administration Système & Contrôle d'Accès Basé sur les Rôles" },
-                        text: {
-                            de: "Ein Admin-Dashboard bietet rollenbasierte Zugriffskontrolle (RBAC), die es autorisierten Benutzern ermöglicht, das System zu verwalten. Administratoren können CRUD-Operationen (Erstellen, Lesen, Aktualisieren, Löschen) an Produkten durchführen und alle Benutzer- und Bestelldaten einsehen, was wichtige Systemverwaltungsaufgaben demonstriert.",
-                            en: "An admin dashboard provides Role-Based Access Control (RBAC), allowing authorized users to manage the system. Admins can perform CRUD (Create, Read, Update, Delete) operations on products and view all user and order data, demonstrating key system administration tasks.",
-                            fr: "Un tableau de bord d'administration fournit un contrôle d'accès basé sur les rôles (RBAC), permettant aux utilisateurs autorisés de gérer le système. Les administrateurs peuvent effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) sur les produits et consulter toutes les données des utilisateurs et des commandes, illustrant ainsi des tâches essentielles d'administration système."
-                        }
-                    },
-                    {
-                        img: "borealis_api_integration.png",
-                        title: { de: "Integration von Drittanbieter-APIs", en: "Third-Party API Integration", fr: "Intégration d'API Tierces" },
-                        text: {
-                            de: "Das Projekt integriert externe Dienste über APIs für wichtige Funktionalitäten. Stripe wird für eine sichere Zahlungsabwicklung genutzt, wodurch sensible Finanzdaten von den eigenen Servern ferngehalten werden. SendGrid wird für transaktionale E-Mails, wie z.B. das Zurücksetzen von Passwörtern, verwendet.",
-                            en: "The project integrates external services via APIs for critical functionality. Stripe is utilized for secure payment processing, keeping sensitive financial data off the local servers. SendGrid is used for transactional emails, such as password resets.",
-                            fr: "Le projet intègre des services externes via des API pour des fonctionnalités critiques. Stripe est utilisé pour le traitement sécurisé des paiements, gardant les données financières sensibles hors des serveurs locaux. SendGrid est utilisé pour les e-mails transactionnels, tels que la réinitialisation des mots de passe."
-                        }
-                    },
-                    {
-                        img: "borealis_state_management.png",
-                        title: { de: "Zustandsverwaltung: Gast vs. Benutzer", en: "State Management: Guest vs. User", fr: "Gestion d'État : Invité vs. Utilisateur" },
-                        text: {
-                            de: "Eine duale Zustandsverwaltungsstrategie wurde implementiert. Gast-Sitzungen verwenden LocalStorage für die clientseitige Persistenz des Warenkorbs. Beim Einloggen wird der LocalStorage-Zustand nahtlos mit dem in MongoDB gespeicherten Benutzerzustand zusammengeführt, was die Datenintegrität über verschiedene Sitzungstypen hinweg gewährleistet.",
-                            en: "A dual state management strategy is implemented. Guest sessions utilize LocalStorage for client-side cart persistence. Upon login, the LocalStorage state is seamlessly merged with the user's database state stored in MongoDB, ensuring data integrity across session types.",
-                            fr: "Une double stratégie de gestion d'état est mise en œuvre. Les sessions invitées utilisent LocalStorage pour la persistance du panier côté client. Lors de la connexion, l'état de LocalStorage est fusionné de manière transparente avec l'état de l'utilisateur stocké dans MongoDB, garantissant l'intégrité des données entre les types de session."
-                        }
-                    }
-                ]
-            },
             "project-modal-4": {
                 currentSlide: 0,
                 slides: [
@@ -265,11 +215,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const videoModal = document.getElementById("video-modal");
 
     // Project Data for switching
+    const projectOrder = ["3", "4", "1"];
     const projectsData = {
         "1": {
             id: "1",
             modalId: "project-modal-1",
-            img: "images/diagram-card.webp",
+            img: "images/widepre.png",
+            imagePosition: "center center",
             title: {
                 de: "Unternehmens-IT-Infrastruktur",
                 en: "Enterprise IT Infrastructure",
@@ -284,29 +236,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 { type: "modal", modalId: "project-modal-1", text: { de: "Details", en: "Details", fr: "Détails" } }
             ]
         },
-        "2": {
-            id: "2",
-            modalId: "project-modal-2",
-            img: "images/borealis_main_menu.webp",
-            title: {
-                de: "E-Commerce MERN Stack App",
-                en: "E-Commerce MERN Stack App",
-                fr: "App E-Commerce MERN Stack"
-            },
-            desc: {
-                de: "Eine vollständige E-Commerce-Webanwendung, die von Grund auf mit dem MERN-Stack erstellt wurde, mit Schwerpunkt auf einer sicheren, zustandslosen Backend-API und Frontend-Zustandsverwaltung.",
-                en: "A complete e-commerce web application built from the ground up using the MERN stack, focusing on a secure, stateless backend API and frontend state management.",
-                fr: "Une application web e-commerce complète construite à partir de zéro avec la stack MERN, axée sur une API backend sécurisée et sans état et la gestion de l'état du frontend."
-            },
-            buttons: [
-                { type: "modal", modalId: "project-modal-2", text: { de: "Details", en: "Details", fr: "Détails" } },
-                { type: "link", url: "https://github.com/Gryddd/PROJECT-Borealis", text: { de: "Code", en: "Code", fr: "Code" }, secondary: true },
-                { type: "link", url: "https://project-borealis.vercel.app/", text: { de: "Live", en: "Live", fr: "Live" }, secondary: true }
-            ]
-        },
         "3": {
             id: "3",
-            img: "images/portguardian_main_v2.png",
+            img: "images/Portpreview.jpg",
+            imagePosition: "center center",
             title: {
                 de: "PortGuardian Enterprise",
                 en: "PortGuardian Enterprise",
@@ -324,11 +257,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "4": {
             id: "4",
             modalId: "project-modal-4",
-            img: "images/leagueskins_thumb.webp",
+            img: "images/leagueskins.jpg",
+            imagePosition: "center center",
             title: {
-                de: "Infrastruktur & Reverse Engineering",
-                en: "Infrastructure & Reverse Engineering",
-                fr: "Infrastructure & Rétro-ingénierie"
+                de: "LeagueSkins/ROSE",
+                en: "LeagueSkins/ROSE",
+                fr: "LeagueSkins/ROSE"
             },
             desc: {
                 de: "Wartung der Asset-Datenbank für eine Open-Source-Anwendung mit 10K+ täglichen Nutzern weltweit. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung.",
@@ -336,13 +270,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 fr: "Maintenance de la base de données d'actifs pour une application open-source avec 10K+ utilisateurs quotidiens dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA."
             },
             buttons: [
-                { type: "modal", modalId: "project-modal-4", text: { de: "Details", en: "Details", fr: "Détails" } },
-                { type: "link", url: "https://github.com/Alban1911/LeagueSkins", text: { de: "Repo", en: "Repo", fr: "Repo" }, secondary: true }
+                { type: "link", url: "leagueskins.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
             ]
         }
     };
+    let activeProjectId = "3";
+    let featuredProjectTimer;
 
-    function updateFeaturedProject(projectId, direction = 'next') {
+    function attachFeaturedProjectButtonListeners(container) {
+        container?.querySelectorAll('.open-project-modal-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.dataset.modalId;
+                const modal = document.getElementById(modalId);
+                if (!modal || !config.projects[modalId]) return;
+                config.projects[modalId].currentSlide = 0;
+                showProjectSlide(modalId, 0);
+                openModal(modal, this);
+            });
+        });
+    }
+
+    function updateActiveProjectThumbnail(projectId) {
+        document.querySelectorAll('.project-thumbnail').forEach(thumb => {
+            const isActive = thumb.dataset.projectId === projectId;
+            thumb.classList.toggle('active', isActive);
+            thumb.setAttribute('aria-pressed', String(isActive));
+        });
+    }
+
+    function updateFeaturedProject(projectId, direction = 'next', options = {}) {
+        const { animate = true } = options;
         const project = projectsData[projectId];
         if (!project) return;
 
@@ -352,64 +309,74 @@ document.addEventListener("DOMContentLoaded", function () {
         const featuredButtons = document.getElementById('featured-buttons');
         const featuredProject = document.getElementById('featured-project');
 
-        const outX = direction === 'next' ? -40 : 40;
-        const inX = direction === 'next' ? 40 : -40;
+        const applyProjectContent = () => {
+            if (featuredImg) {
+                featuredImg.src = project.img;
+                featuredImg.alt = project.title[currentLang];
+                featuredImg.style.objectFit = project.imageFit || 'cover';
+                featuredImg.style.objectPosition = project.imagePosition || 'top center';
+            }
 
-        // Slide out
+            if (featuredTitle) {
+                featuredTitle.textContent = project.title[currentLang];
+                featuredTitle.dataset.de = project.title.de;
+                featuredTitle.dataset.en = project.title.en;
+                featuredTitle.dataset.fr = project.title.fr;
+            }
+
+            if (featuredDesc) {
+                featuredDesc.textContent = project.desc[currentLang];
+                featuredDesc.dataset.de = project.desc.de;
+                featuredDesc.dataset.en = project.desc.en;
+                featuredDesc.dataset.fr = project.desc.fr;
+            }
+
+            if (featuredButtons) {
+                featuredButtons.innerHTML = project.buttons.map(btn => {
+                    if (btn.type === 'modal') {
+                        return `<button type="button" class="submit-btn open-project-modal-btn lang"
+                            data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}"
+                            data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
+                    }
+                    return `<a href="${btn.url}" ${btn.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}
+                        class="submit-btn ${btn.secondary ? 'submit-btn-secondary' : ''} lang"
+                        data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</a>`;
+                }).join('');
+
+                attachFeaturedProjectButtonListeners(featuredButtons);
+            }
+        };
+
+        clearTimeout(featuredProjectTimer);
+        activeProjectId = projectId;
+        updateActiveProjectThumbnail(projectId);
+
+        if (!featuredProject || !animate) {
+            applyProjectContent();
+            if (featuredProject) {
+                featuredProject.style.opacity = '1';
+                featuredProject.style.transform = 'translateX(0)';
+            }
+            return;
+        }
+
+        const outX = direction === 'next' ? -28 : 28;
+        const inX = direction === 'next' ? 28 : -28;
+
         featuredProject.style.opacity = '0';
         featuredProject.style.transform = `translateX(${outX}px)`;
-        
-        setTimeout(() => {
-            // Update content while invisible
-            featuredImg.src = project.img;
-            featuredImg.alt = project.title[currentLang];
-            
-            featuredTitle.textContent = project.title[currentLang];
-            featuredTitle.dataset.de = project.title.de;
-            featuredTitle.dataset.en = project.title.en;
-            featuredTitle.dataset.fr = project.title.fr;
 
-            featuredDesc.textContent = project.desc[currentLang];
-            featuredDesc.dataset.de = project.desc.de;
-            featuredDesc.dataset.en = project.desc.en;
-            featuredDesc.dataset.fr = project.desc.fr;
-
-            // Update buttons
-            featuredButtons.innerHTML = project.buttons.map(btn => {
-                if (btn.type === 'modal') {
-                    return `<button class="submit-btn open-project-modal-btn lang" 
-                            data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}" 
-                            data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
-                } else {
-                    return `<a href="${btn.url}" ${btn.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} 
-                            class="submit-btn ${btn.secondary ? 'submit-btn-secondary' : ''} lang" 
-                            data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</a>`;
-                }
-            }).join('');
-
-            // Re-attach modal listener
-            featuredButtons.querySelectorAll('.open-project-modal-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const mId = this.dataset.modalId;
-                    const m = document.getElementById(mId);
-                    config.projects[mId].currentSlide = 0;
-                    showProjectSlide(mId, 0);
-                    openModal(m, this);
-                });
-            });
-
-            // Position for slide in
+        featuredProjectTimer = setTimeout(() => {
+            applyProjectContent();
             featuredProject.style.transition = 'none';
             featuredProject.style.transform = `translateX(${inX}px)`;
-            
-            // Force reflow
+
             void featuredProject.offsetHeight;
 
-            // Slide in
-            featuredProject.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            featuredProject.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
             featuredProject.style.opacity = '1';
             featuredProject.style.transform = 'translateX(0)';
-        }, 400);
+        }, 220);
     }
     const imageModal = document.getElementById("image-modal");
     const mobileToggle = document.querySelector('.mobile-toggle');
@@ -552,6 +519,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".language-item").forEach(item => {
             item.classList.toggle("active", item.getAttribute("data-lang") === newLang);
         });
+        updateFeaturedProject(activeProjectId, 'next', { animate: false });
         updateAllProjectModalsText();
         updateModalLanguageSwitchers();
     }
@@ -974,6 +942,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
     initializeBackgroundVideo();
     initializeProjectModals();
+    initializeProjectShowcase();
     switchLanguage(currentLang);
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
     document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .experience-dropdown-container').forEach(dropdown => {
@@ -1076,61 +1045,33 @@ document.addEventListener("DOMContentLoaded", function () {
         openModal(videoModal, this);
         createOrPlayPlayer();
     });
-    // Project rotation logic
-    let projectRotationInterval;
-    const rotationDelay = 10000;
-
-    function startProjectRotation() {
-        stopProjectRotation();
-        projectRotationInterval = setInterval(() => {
-            const thumbs = Array.from(document.querySelectorAll('.project-thumbnail'));
-            if (thumbs.length === 0) return;
-            const activeThumb = document.querySelector('.project-thumbnail.active');
-            const currentIndex = thumbs.indexOf(activeThumb);
-            const nextIndex = (currentIndex + 1) % thumbs.length;
-            thumbs[nextIndex].click();
-        }, rotationDelay);
+    function navigateFeaturedProject(step) {
+        const currentIndex = projectOrder.indexOf(activeProjectId);
+        if (currentIndex === -1) return;
+        const nextIndex = (currentIndex + step + projectOrder.length) % projectOrder.length;
+        updateFeaturedProject(projectOrder[nextIndex], step > 0 ? 'next' : 'prev');
     }
 
-    function stopProjectRotation() {
-        if (projectRotationInterval) clearInterval(projectRotationInterval);
+    function initializeProjectShowcase() {
+        document.querySelectorAll('.project-thumbnail').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                if (this.dataset.projectId === activeProjectId) return;
+                const currentIndex = projectOrder.indexOf(activeProjectId);
+                const nextIndex = projectOrder.indexOf(this.dataset.projectId);
+                const direction = nextIndex > currentIndex ? 'next' : 'prev';
+                updateFeaturedProject(this.dataset.projectId, direction);
+            });
+        });
+
+        document.querySelector('.featured-project-arrow.next')?.addEventListener('click', () => {
+            navigateFeaturedProject(1);
+        });
+
+        document.querySelector('.featured-project-arrow.prev')?.addEventListener('click', () => {
+            navigateFeaturedProject(-1);
+        });
     }
 
-    // Thumbnail click listeners
-    document.querySelectorAll('.project-thumbnail').forEach(thumb => {
-        thumb.addEventListener('click', function() {
-            if (this.classList.contains('active')) {
-                startProjectRotation(); // Reset timer
-                return;
-            }
-            
-            const activeThumb = document.querySelector('.project-thumbnail.active');
-            const currentIndex = parseInt(activeThumb.dataset.projectId);
-            const newIndex = parseInt(this.dataset.projectId);
-            
-            // Determine direction: if newIndex > currentIndex, slide next (left). Otherwise slide prev (right).
-            const direction = newIndex > currentIndex ? 'next' : 'prev';
-
-            document.querySelectorAll('.project-thumbnail').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            
-            updateFeaturedProject(this.dataset.projectId, direction);
-            startProjectRotation(); // Reset timer on manual click
-        });
-    });
-
-    startProjectRotation();
-
-    // Initial modal listener for the first featured project (already in HTML)
-    document.querySelectorAll('#featured-project .open-project-modal-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            const modalId = this.dataset.modalId;
-            const modal = document.getElementById(modalId);
-            config.projects[modalId].currentSlide = 0;
-            showProjectSlide(modalId, 0);
-            openModal(modal, this);
-        });
-    });
     allModals.forEach(modal => {
         modal.querySelector(".close-button")?.addEventListener("click", () => {
             if (modal.id === 'video-modal' && player && typeof player.stopVideo === 'function') player.stopVideo();
@@ -1339,21 +1280,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         window.addEventListener('load', finishPreloader, { once: true });
         window.setTimeout(finishPreloader, 4500);
-    }
-
-    const heroCard = document.querySelector('.hero-card');
-    if (heroCard && !heroCard.classList.contains('hero-card-static') && window.matchMedia('(hover: hover)').matches) {
-        heroCard.addEventListener('mousemove', (e) => {
-            const rect = heroCard.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            const tiltX = y * -6;
-            const tiltY = x * 6;
-            heroCard.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
-        });
-        heroCard.addEventListener('mouseleave', () => {
-            heroCard.style.transform = '';
-        });
     }
 
 });

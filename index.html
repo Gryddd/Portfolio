@@ -76,9 +76,9 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="preloader" id="preloader">
-    <div class="preloader-panel" role="status" aria-label="Initializing website">
+    <div class="preloader-panel lang-aria" id="preloader-panel" role="status" aria-label="Initializing website" data-de="Website wird initialisiert" data-en="Initializing website" data-fr="Initialisation du site">
         <div class="preloader-copy">
-            <span class="preloader-label">Initializing</span>
+            <span class="preloader-label lang" id="preloader-label" data-de="Initialisiere" data-en="Initializing" data-fr="Initialisation">Initializing</span>
             <span class="preloader-percent" id="preloader-percent" aria-hidden="true">0%</span>
         </div>
         <div class="preloader-track" aria-hidden="true">
@@ -86,6 +86,18 @@
         </div>
     </div>
 </div>
+<script>
+(() => {
+    try {
+        const preferredLang = localStorage.getItem('preferredLang') || 'en';
+        const preloaderLabel = document.getElementById('preloader-label');
+        const preloaderPanel = document.getElementById('preloader-panel');
+        if (preloaderLabel?.dataset?.[preferredLang]) preloaderLabel.textContent = preloaderLabel.dataset[preferredLang];
+        if (preloaderPanel?.dataset?.[preferredLang]) preloaderPanel.setAttribute('aria-label', preloaderPanel.dataset[preferredLang]);
+        document.documentElement.lang = preferredLang;
+    } catch (_) {}
+})();
+</script>
 <div class="scroll-progress" id="scroll-progress"></div>
 <nav class="main-nav">
 <div class="nav-content">
@@ -396,11 +408,14 @@
 <div class="section-divider"></div>
 <section class="container" id="projekte">
     <h2 class="lang" data-aos="fade-up" data-aos-duration="500" data-de="Meine Projekte" data-en="My Projects" data-fr="Mes Projets">My Projects</h2>
-    
+
     <div class="featured-project-container" data-aos="fade-up" data-aos-duration="600">
+        <button type="button" class="featured-project-arrow prev lang-aria" data-de="Vorheriges Projekt" data-en="Previous project" data-fr="Projet précédent" aria-label="Previous project">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+        </button>
         <div id="featured-project" class="featured-project">
             <div class="featured-project-image">
-                <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise Interface" id="featured-img" loading="eager">
+                <img src="images/Portpreview.jpg" alt="PortGuardian Enterprise Interface" id="featured-img" loading="eager">
             </div>
             <div class="featured-project-content">
                 <h3 id="featured-title" class="lang" data-de="PortGuardian Enterprise" data-en="PortGuardian Enterprise" data-fr="PortGuardian Enterprise">PortGuardian Enterprise</h3>
@@ -415,54 +430,29 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="featured-project-arrow next lang-aria" data-de="Nächstes Projekt" data-en="Next project" data-fr="Projet suivant" aria-label="Next project">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+        </button>
     </div>
 
     <div class="project-thumbnails" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
-        <div class="project-thumbnail active" data-project-id="3">
-            <img src="images/portguardian_main_v2.png" alt="PortGuardian Enterprise">
-            <div class="thumbnail-title lang" data-de="PortGuardian" data-en="PortGuardian" data-fr="PortGuardian">PortGuardian</div>
-        </div>
-        <div class="project-thumbnail" data-project-id="4">
-            <img src="images/leagueskins_thumb.webp" alt="Infrastructure & Reverse Engineering">
-            <div class="thumbnail-title lang" data-de="Reverse Engineering" data-en="Reverse Engineering" data-fr="Rétro-ingénierie">Reverse Engineering</div>
-        </div>
-        <div class="project-thumbnail" data-project-id="1">
-            <img src="images/diagram-card.webp" alt="Enterprise IT Infrastructure">
-            <div class="thumbnail-title lang" data-de="IT-Infrastruktur" data-en="IT Infrastructure" data-fr="Infrastr. IT">IT Infrastructure</div>
-        </div>
-        <div class="project-thumbnail" data-project-id="2">
-            <img src="images/borealis_main_menu.webp" alt="E-Commerce MERN Stack App">
-            <div class="thumbnail-title lang" data-de="MERN E-Commerce" data-en="MERN E-Commerce" data-fr="E-Commerce MERN">MERN E-Commerce</div>
-        </div>
+        <button class="project-thumbnail active" data-project-id="3" type="button" aria-pressed="true">
+            <img src="images/Portpreview.jpg" alt="PortGuardian Enterprise">
+            <span class="thumbnail-title lang" data-de="PortGuardian" data-en="PortGuardian" data-fr="PortGuardian">PortGuardian</span>
+        </button>
+        <button class="project-thumbnail" data-project-id="4" type="button" aria-pressed="false">
+            <img src="images/leagueskins.jpg" alt="LeagueSkins/ROSE">
+            <span class="thumbnail-title lang" data-de="LeagueSkins/ROSE" data-en="LeagueSkins/ROSE" data-fr="LeagueSkins/ROSE">LeagueSkins/ROSE</span>
+        </button>
+        <button class="project-thumbnail" data-project-id="1" type="button" aria-pressed="false">
+            <img src="images/minipre.png" alt="Enterprise IT Infrastructure">
+            <span class="thumbnail-title lang" data-de="IT-Infrastruktur" data-en="IT Infrastructure" data-fr="Infrastr. IT">IT Infrastructure</span>
+        </button>
     </div>
 </section>
 <div class="modal project-modal" id="project-modal-1" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="project-modal-1-title" tabindex="-1">
     <div class="modal-content">
         <h3 class="sr-only lang" data-de="Projektdetails" data-en="Project details" data-fr="Détails du projet" id="project-modal-1-title">Project details</h3>
-        <div class="modal-lang-switcher">
-            <button data-lang="de" class="modal-language-item">DE</button>
-            <button data-lang="en" class="modal-language-item">EN</button>
-            <button data-lang="fr" class="modal-language-item">FR</button>
-        </div>
-        <button aria-label="Close project modal" class="close-button">×</button>
-        <div class="project-modal-body">
-            <div class="project-modal-image-wrapper"></div>
-            <div class="project-modal-description"></div>
-            <div class="project-modal-controls">
-                <button class="project-modal-arrow prev" aria-label="Previous Slide">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
-                </button>
-                <div class="project-modal-counter"></div>
-                <button class="project-modal-arrow next" aria-label="Next Slide">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal project-modal" id="project-modal-2" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="project-modal-2-title" tabindex="-1">
-    <div class="modal-content">
-        <h3 class="sr-only lang" data-de="Projektdetails" data-en="Project details" data-fr="Détails du projet" id="project-modal-2-title">Project details</h3>
         <div class="modal-lang-switcher">
             <button data-lang="de" class="modal-language-item">DE</button>
             <button data-lang="en" class="modal-language-item">EN</button>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>LeagueSkins/ROSE | Walid Gourideche</title>
+    <meta content="Case page for LeagueSkins/ROSE, the asset backbone behind Rose, focused on ID-mapped packages, preview layers, and patch maintenance." name="description"/>
+    <meta content="Walid Gourideche" name="author"/>
+    <meta content="LeagueSkins, ROSE, League of Legends, skin assets, open source, chromas, custom forms, asset layout" name="keywords"/>
+    <link href="https://grydsh.dev/leagueskins.html" rel="canonical"/>
+    <meta content="LeagueSkins/ROSE | Walid Gourideche" property="og:title"/>
+    <meta content="A focused project page for LeagueSkins/ROSE based on its asset layout, binary package structure, and patch-facing workflow." property="og:description"/>
+    <meta content="https://grydsh.dev/images/leagueskins_thumb.png" property="og:image"/>
+    <meta content="https://grydsh.dev/leagueskins.html" property="og:url"/>
+    <meta content="article" property="og:type"/>
+    <meta content="Walid Gourideche" property="og:site_name"/>
+    <meta content="en_US" property="og:locale"/>
+    <meta name="theme-color" content="#000000" id="theme-color-meta">
+    <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem('portfolio-theme');
+        const root = document.documentElement;
+        const themeColorMeta = document.getElementById('theme-color-meta');
+
+        if (savedTheme === 'light') {
+          root.setAttribute('data-theme', 'light');
+          root.style.colorScheme = 'light';
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', '#f5f5f7');
+          }
+        } else {
+          root.style.colorScheme = 'dark';
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', '#000000');
+          }
+        }
+      } catch (error) {
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    })();
+    </script>
+    <meta content="summary_large_image" name="twitter:card"/>
+    <meta content="https://grydsh.dev" property="twitter:domain"/>
+    <meta content="https://grydsh.dev/leagueskins.html" property="twitter:url"/>
+    <meta content="LeagueSkins/ROSE | Walid Gourideche" name="twitter:title"/>
+    <meta content="Asset layout, binary package structure, and reverse-engineering context for LeagueSkins/ROSE." name="twitter:description"/>
+    <meta content="https://grydsh.dev/images/leagueskins_thumb.png" name="twitter:image"/>
+    <meta name="robots" content="index, follow, max-image-preview:large"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
+    <link rel="manifest" href="manifest.json"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@200;400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link as="image" href="images/rose.png" rel="preload"/>
+    <link as="image" href="images/leagueskins_thumb.png" rel="preload"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link href="project-page.css" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "LeagueSkins",
+      "codeRepository": "https://github.com/Alban1911/LeagueSkins",
+      "description": "Open-source League of Legends skin assets organized by champion and skin IDs with binary package paths, preview layers, and patch maintenance.",
+      "url": "https://grydsh.dev/leagueskins.html",
+      "image": "https://grydsh.dev/images/leagueskins_thumb.png",
+      "creator": {
+        "@type": "Person",
+        "name": "Walid Gourideche",
+        "url": "https://grydsh.dev"
+      }
+    }
+    </script>
+</head>
+<body class="project-case-page leagueskins-case-page">
+<div class="rose-loader" id="rose-loader" role="status" aria-live="polite" aria-label="Loading LeagueSkins page">
+    <div class="rose-loader-panel">
+        <img src="images/rose.png" alt="" class="rose-loader-icon" width="144" height="144" decoding="async">
+        <div class="rose-loader-copy" aria-hidden="true">
+            <span class="rose-loader-title">LeagueSkins/ROSE</span>
+            <span class="rose-loader-tagline">League, Unlocked.</span>
+        </div>
+    </div>
+</div>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<nav class="main-nav">
+<div class="nav-content">
+<div class="nav-links">
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="index.html#projekte">Home</a>
+<a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
+<a class="lang" data-de="Struktur" data-en="Structure" data-fr="Structure" href="#structure">Structure</a>
+<a class="lang" data-de="Funktionen" data-en="Features" data-fr="Fonctions" href="#features">Features</a>
+<a class="lang" data-de="Engineering" data-en="Engineering" data-fr="Ingénierie" href="#community">Engineering</a>
+</div>
+<div class="nav-actions">
+<div class="nav-dropdown">
+<button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+<span class="lang" data-de="Lebenslauf" data-en="Resume" data-fr="CV">Resume</span>
+<svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="nav-dropdown-menu">
+<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+</ul>
+</div>
+<div class="nav-dropdown" id="lang-desktop-dropdown">
+<button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" id="language-toggle">
+<span class="lang" data-de="Sprache" data-en="Language" data-fr="Langue">Language</span>
+<svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="nav-dropdown-menu" aria-labelledby="language-toggle">
+<li><a class="language-item" data-lang="de" href="#">Deutsch</a></li>
+<li><a class="language-item" data-lang="en" href="#">English</a></li>
+<li><a class="language-item" data-lang="fr" href="#">Français</a></li>
+</ul>
+</div>
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z"/></svg>
+    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.454z"/></svg>
+</button>
+</div>
+</div>
+</nav>
+<button aria-controls="mobile-nav" aria-expanded="false" aria-label="Toggle menu" class="mobile-menu-icon lang-aria" data-de="Menü umschalten" data-en="Toggle menu" data-fr="Basculer le menu" type="button">
+<span aria-hidden="true" class="mobile-menu-bar bar1"></span>
+<span aria-hidden="true" class="mobile-menu-bar bar2"></span>
+<span aria-hidden="true" class="mobile-menu-bar bar3"></span>
+</button>
+<div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
+<div class="mobile-nav-overlay-content">
+<button id="mobile-theme-toggle" class="theme-toggle mobile-theme-in-menu" aria-label="Toggle Theme">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z"/></svg>
+    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.454z"/></svg>
+</button>
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="index.html#projekte">Home</a>
+<a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
+<a class="lang" data-de="Struktur" data-en="Structure" data-fr="Structure" href="#structure">Structure</a>
+<a class="lang" data-de="Funktionen" data-en="Features" data-fr="Fonctions" href="#features">Features</a>
+<a class="lang" data-de="Engineering" data-en="Engineering" data-fr="Ingénierie" href="#community">Engineering</a>
+<div class="mobile-language-selector mobile-language-selector-offset">
+<button class="mobile-toggle">
+<span class="lang" data-de="Lebenslauf" data-en="Resume" data-fr="CV">Resume</span>
+<svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="mobile-list">
+<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+</ul>
+</div>
+<div class="mobile-language-buttons">
+<button class="language-item" data-lang="de">DE</button>
+<button class="language-item" data-lang="en">EN</button>
+<button class="language-item" data-lang="fr">FR</button>
+</div>
+</div>
+</div>
+
+<main id="main-content">
+<section class="hero" id="hero">
+<div class="hero-media project-case-hero-media leagueskins-hero-media" aria-hidden="true"></div>
+<div class="hero-card hero-card-static" data-aos="fade-up" data-aos-duration="700" data-aos-easing="ease-out-cubic">
+<div class="hero-card-accent"></div>
+<div class="hero-card-inner">
+<div class="hero-text" data-aos="fade-right" data-aos-duration="650" data-aos-delay="100" data-aos-easing="ease-out-cubic">
+<p class="project-case-eyebrow lang" data-de="Reverse-Engineering Asset-Projekt" data-en="Reverse-Engineering Asset Project" data-fr="Projet d'actifs de reverse engineering">Reverse-Engineering Asset Project</p>
+<div class="project-hero-brand leagueskins-hero-brand">
+    <img src="images/rose.png" alt="Rose icon" class="project-hero-icon leagueskins-hero-icon" loading="eager" decoding="async" width="128" height="128">
+    <div class="project-hero-brand-copy">
+        <h1 class="rose-brand-title">LeagueSkins/ROSE</h1>
+        <p class="hero-job-title rose-brand-tagline">League, Unlocked.</p>
+    </div>
+</div>
+<p class="hero-description lang" data-de="LeagueSkins bildet das Asset-Backbone hinter Rose. Skinpakete werden über Champion- und Skin-IDs, binäre Paketpfade, Preview-Dateien und Patch-Updates konsistent zugeordnet." data-en="LeagueSkins is the asset backbone behind Rose. Skin packages are mapped through champion and skin IDs, binary package paths, preview files, and patch updates so the data stays consistent across releases." data-fr="LeagueSkins constitue la base d'actifs derrière Rose. Les packs de skins sont reliés par ID de champion et de skin, chemins de packages binaires, fichiers d'aperçu et mises à jour de patch afin de garder des données cohérentes d'une version à l'autre.">LeagueSkins is the asset backbone behind Rose. Skin packages are mapped through champion and skin IDs, binary package paths, preview files, and patch updates so the data stays consistent across releases.</p>
+<div class="project-case-actions">
+    <a href="index.html#projekte" class="submit-btn submit-btn-secondary lang" data-de="Zurück zum Portfolio" data-en="Back to Portfolio" data-fr="Retour au portfolio">Back to Portfolio</a>
+    <a href="https://github.com/Alban1911/LeagueSkins" target="_blank" rel="noopener noreferrer" class="submit-btn lang" data-de="Repository ansehen" data-en="View Repository" data-fr="Voir le dépôt">View Repository</a>
+    <a href="https://discord.com/invite/roseapp" target="_blank" rel="noopener noreferrer" class="submit-btn submit-btn-secondary lang" data-de="Discord öffnen" data-en="Open Discord" data-fr="Ouvrir Discord">Open Discord</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="summary">
+    <h2 class="lang" data-de="Technischer Überblick" data-en="Technical Overview" data-fr="Vue technique">Technical Overview</h2>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="LeagueSkins hält Skins, Chromas und Form-Varianten in einer festen Dateilogik zusammen. Gerade diese Vorhersagbarkeit macht Patch-Diffs, Paketprüfung und Fehlersuche im Asset-Layer praktikabel." data-en="LeagueSkins keeps skins, chromas, and form variants on a fixed filesystem contract. That predictability is what makes patch diffs, package inspection, and asset-layer troubleshooting practical." data-fr="LeagueSkins maintient skins, chromas et variantes de forme dans une logique de fichiers stable. C'est cette prévision qui rend les diff de patch, l'inspection des packages et le dépannage de la couche d'actifs vraiment praticables.">LeagueSkins keeps skins, chromas, and form variants on a fixed filesystem contract. That predictability is what makes patch diffs, package inspection, and asset-layer troubleshooting practical.</p>
+        <ul class="project-points">
+            <li class="lang" data-de="Champion-IDs bilden die stabile Hauptebene für das Routing aller Assets." data-en="Champion IDs act as the stable top-level routing layer for all assets." data-fr="Les ID de champion servent de couche de routage stable pour tous les actifs.">Champion IDs act as the stable top-level routing layer for all assets.</li>
+            <li class="lang" data-de="Skin- und Chroma-Pakete bleiben direkt unter ihrem jeweiligen ID-Pfad gebunden." data-en="Skin and chroma packages stay bound directly to their matching ID path." data-fr="Les packages de skin et de chroma restent rattachés directement à leur chemin d'ID correspondant.">Skin and chroma packages stay bound directly to their matching ID path.</li>
+            <li class="lang" data-de="Preview-PNGs tauchen nur dort auf, wo Formen oder gezielte visuelle Kontrolle gebraucht werden." data-en="Preview PNGs appear only where forms or targeted visual checks are needed." data-fr="Les aperçus PNG n'apparaissent que là où des formes ou des contrôles visuels ciblés sont nécessaires.">Preview PNGs appear only where forms or targeted visual checks are needed.</li>
+            <li class="lang" data-de="Fehlerberichte und Change-Intake laufen sichtbar über GitHub und Discord." data-en="Error reporting and change intake remain visible through GitHub and Discord." data-fr="Les signalements d'erreurs et l'entrée des changements restent visibles via GitHub et Discord.">Error reporting and change intake remain visible through GitHub and Discord.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="container" id="structure">
+    <h2 class="lang" data-de="Asset Layout" data-en="Asset Layout" data-fr="Structure des actifs">Asset Layout</h2>
+    <div class="leagueskins-structure-layout">
+        <div class="leagueskins-shell" data-aos="fade-up" data-aos-duration="600">
+            <p class="lang" data-de="Die Arbeitsstruktur ist streng: oben das Champion-Verzeichnis, darunter der Skin-Pfad, danach Paketarchive und bei Bedarf Chroma- oder Form-Abzweige. Genau diese Regelmäßigkeit macht Reverse Engineering und Update-QA beherrschbar." data-en="The working tree is strict: champion directory on top, skin path underneath, then package archives and optional chroma or form branches. That regularity is what keeps reverse engineering and update QA manageable." data-fr="L'arborescence de travail est stricte : repertoire du champion en haut, chemin du skin en dessous, puis archives de packages et branches chroma ou forme si necessaire. C'est cette regularite qui rend le reverse engineering et la QA de mise a jour gerables.">The working tree is strict: champion directory on top, skin path underneath, then package archives and optional chroma or form branches. That regularity is what keeps reverse engineering and update QA manageable.</p>
+            <ul class="project-points">
+                <li class="lang" data-de="Numerische Champion-IDs bleiben der feste Einstiegspunkt." data-en="Numeric champion IDs remain the fixed entry point." data-fr="Les ID numériques de champion restent le point d'entrée fixe.">Numeric champion IDs remain the fixed entry point.</li>
+                <li class="lang" data-de="Skin- und Chroma-Pfade werden direkt aus diesem Stamm abgeleitet." data-en="Skin and chroma paths are derived directly from that root." data-fr="Les chemins de skin et de chroma sont derives directement de cette racine.">Skin and chroma paths are derived directly from that root.</li>
+                <li class="lang" data-de="ZIP-Dateien tragen Pakete, PNG-Dateien liefern die gezielte Preview-Schicht für Formen." data-en="ZIP files carry packages, while PNG files provide the targeted preview layer for forms." data-fr="Les fichiers ZIP portent les packages tandis que les PNG fournissent la couche d'aperçu ciblée pour les formes.">ZIP files carry packages, while PNG files provide the targeted preview layer for forms.</li>
+            </ul>
+        </div>
+        <div class="leagueskins-repo-tree" data-aos="fade-up" data-aos-duration="600" data-aos-delay="80">
+<pre><code>skins/
+├── {champion_id}/
+│   ├── {skin_id}/
+│   │   ├── {skin_id}.zip
+│   │   └── {chroma_id}/
+│   │       └── {chroma_id}.zip
+│   └── {skin_id}/
+│       ├── {skin_id}.png
+│       ├── {skin_id}.zip
+│       └── {form_id}/
+│           ├── {form_id}.png
+│           └── {form_id}.zip</code></pre>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="features">
+    <h2 class="lang" data-de="Kernschichten" data-en="Core Layers" data-fr="Couches principales">Core Layers</h2>
+    <div class="leagueskins-feature-grid">
+        <article class="leagueskins-feature-card" data-aos="fade-up" data-aos-duration="550">
+            <h3 class="lang" data-de="Vollständige Asset-Abdeckung" data-en="Full Asset Coverage" data-fr="Couverture complète des actifs">Full Asset Coverage</h3>
+            <p class="lang" data-de="Die Sammlung bündelt Standard-, Legacy-, limitierte und Form-basierte Inhalte in einer einzigen indexierten Struktur." data-en="The collection brings standard, legacy, limited, and form-based content under one indexed structure." data-fr="La collection regroupe contenus standards, legacy, limites et bases sur les formes dans une seule structure indexee.">The collection brings standard, legacy, limited, and form-based content under one indexed structure.</p>
+        </article>
+        <article class="leagueskins-feature-card" data-aos="fade-up" data-aos-duration="550" data-aos-delay="50">
+            <h3 class="lang" data-de="Binäres Paketlayout" data-en="Binary Package Layout" data-fr="Structure des packages binaires">Binary Package Layout</h3>
+            <p class="lang" data-de="ZIP-Pakete bleiben an feste IDs gebunden. Genau das macht Inspektion, Austausch und CLI-orientierte Validierung skriptbar." data-en="ZIP packages stay bound to fixed IDs. That is what makes inspection, replacement, and CLI-oriented validation scriptable." data-fr="Les packages ZIP restent lies a des ID fixes. C'est ce qui rend l'inspection, le remplacement et la validation orientee CLI scriptables.">ZIP packages stay bound to fixed IDs. That is what makes inspection, replacement, and CLI-oriented validation scriptable.</p>
+        </article>
+        <article class="leagueskins-feature-card" data-aos="fade-up" data-aos-duration="550" data-aos-delay="100">
+            <h3 class="lang" data-de="Preview Routing" data-en="Preview Routing" data-fr="Routage des aperçus">Preview Routing</h3>
+            <p class="lang" data-de="Preview-Dateien liegen nur an den Stellen, an denen Formen oder gezielte visuelle Prüfung wirklich notwendig sind. Das hält den Baum leicht und gezielt." data-en="Preview files sit only where forms or targeted visual checks are actually needed. That keeps the tree lightweight and deliberate." data-fr="Les fichiers d'aperçu ne restent qu'aux endroits où des formes ou des contrôles visuels ciblés sont vraiment nécessaires. Cela garde l'arborescence légère et précise.">Preview files sit only where forms or targeted visual checks are actually needed. That keeps the tree lightweight and deliberate.</p>
+        </article>
+        <article class="leagueskins-feature-card" data-aos="fade-up" data-aos-duration="550" data-aos-delay="150">
+            <h3 class="lang" data-de="Patch-orientierte Pflege" data-en="Patch-Oriented Maintenance" data-fr="Maintenance orientée patch">Patch-Oriented Maintenance</h3>
+            <p class="lang" data-de="Neue Releases folgen derselben Dateilogik. Dadurch bleiben Diffs, Regressionsprüfung und Fehlerisolierung über mehrere Patches hinweg wiederholbar." data-en="New releases follow the same filesystem contract. That keeps diffing, regression checks, and fault isolation repeatable across patches." data-fr="Les nouvelles versions suivent la même logique de fichiers. Cela rend les diff, les vérifications de régression et l'isolation des erreurs répétables d'un patch à l'autre.">New releases follow the same filesystem contract. That keeps diffing, regression checks, and fault isolation repeatable across patches.</p>
+        </article>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="community">
+    <h2 class="lang" data-de="Reverse Engineering & Ops" data-en="Reverse Engineering & Ops" data-fr="Reverse engineering & ops">Reverse Engineering & Ops</h2>
+    <div class="leagueskins-community-grid">
+        <article class="leagueskins-shell leagueskins-note-card" data-aos="fade-up" data-aos-duration="600">
+            <span class="project-panel-label lang" data-de="Reverse Engineering" data-en="Reverse Engineering" data-fr="Reverse engineering">Reverse Engineering</span>
+            <p class="lang" data-de="Der technische Kern liegt nicht im Frontend, sondern im Analysieren von Binärdateien, dem Nachvollziehen von Rendering-Fehlern und dem Korrigieren von Asset-Pfaden auf Datenebene." data-en="The technical core is not frontend work, but analyzing binary files, tracing rendering faults, and correcting asset paths at the data layer." data-fr="Le coeur technique n'est pas le frontend, mais l'analyse de fichiers binaires, le suivi des défauts de rendu et la correction des chemins d'actifs au niveau des données.">The technical core is not frontend work, but analyzing binary files, tracing rendering faults, and correcting asset paths at the data layer.</p>
+            <ul class="project-points">
+                <li class="lang" data-de="Arbeitsschwerpunkt: Binärdateien, strukturierte Asset-Logik und Dateipfade." data-en="Work centers on binary files, structured asset logic, and file paths." data-fr="Le travail se concentre sur les fichiers binaires, la logique d'actifs structuree et les chemins de fichiers.">Work centers on binary files, structured asset logic, and file paths.</li>
+                <li class="lang" data-de="Fehlerbilder werden über ID-Hierarchie, Paketinhalt und Form-Verzweigungen eingegrenzt." data-en="Failure cases are narrowed down through ID hierarchy, package contents, and form branches." data-fr="Les cas d'echec sont isoles via la hierarchie d'ID, le contenu des packages et les branches de forme.">Failure cases are narrowed down through ID hierarchy, package contents, and form branches.</li>
+            </ul>
+        </article>
+        <article class="leagueskins-shell leagueskins-note-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="70">
+            <span class="project-panel-label lang" data-de="Patch QA Workflow" data-en="Patch QA Workflow" data-fr="Workflow QA de patch">Patch QA Workflow</span>
+            <p class="lang" data-de="Jeder Patch trifft dieselbe Baumstruktur. Dadurch lassen sich Regressionen systematisch statt intuitiv prüfen." data-en="Each patch lands on the same tree structure. That makes regressions something you can check systematically instead of by guesswork." data-fr="Chaque patch arrive sur la meme structure d'arborescence. Cela permet de verifier les regressions de maniere systematique plutot qu'a l'intuition.">Each patch lands on the same tree structure. That makes regressions something you can check systematically instead of by guesswork.</p>
+            <ul class="project-points">
+                <li class="lang" data-de="Neue Inhalte verlangen Regressionsprüfung über Champion-, Skin-, Chroma- und Form-Ebenen." data-en="New content requires regression checks across champion, skin, chroma, and form layers." data-fr="Les nouveaux contenus exigent des vérifications de régression sur les couches champion, skin, chroma et forme.">New content requires regression checks across champion, skin, chroma, and form layers.</li>
+                <li class="lang" data-de="Die Dateilogik begünstigt CLI-Validierung, Diffing und gezielte Paketinspektion." data-en="The file layout lends itself to CLI validation, diffing, and targeted package inspection." data-fr="La logique de fichiers se prête à la validation CLI, au diff et à l'inspection ciblée des packages.">The file layout lends itself to CLI validation, diffing, and targeted package inspection.</li>
+                <li class="lang" data-de="Issues und Pull Requests bleiben der saubere Pfad für Fehlerberichte und Änderungen." data-en="Issues and pull requests remain the clean path for bug reports and changes." data-fr="Les issues et les pull requests restent la voie propre pour les rapports de bug et les changements.">Issues and pull requests remain the clean path for bug reports and changes.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container leagueskins-telemetry-section" id="telemetry">
+    <h2 class="lang" data-de="Werde Teil unserer Community!" data-en="Join our community!" data-fr="Rejoignez notre communauté !">Join our community!</h2>
+    <article class="leagueskins-shell leagueskins-note-card discord-metric-card" data-aos="fade-up" data-aos-duration="650">
+        <div class="discord-metric-head">
+            <img src="https://cdn.discordapp.com/icons/1465467335946272780/d0d1a663f750c32006ba111ef73548e4.png?size=256" alt="Rose Discord server icon" class="discord-metric-icon" id="discord-server-icon" loading="lazy" decoding="async">
+            <div>
+                <h3>Rose</h3>
+                <p class="lang" data-de="Live-Präsenz und Mitgliederstand für den Projekt-Discord." data-en="Live presence and membership for the project Discord." data-fr="Présence et volume de membres en direct pour le Discord du projet.">Live presence and membership for the project Discord.</p>
+            </div>
+        </div>
+        <div class="discord-metric-grid">
+            <div class="discord-metric-stat">
+                <span class="discord-metric-value" id="discord-online-count" data-value="3993">0</span>
+                <span class="discord-metric-label lang" data-de="Online" data-en="Online" data-fr="En ligne">Online</span>
+            </div>
+            <div class="discord-metric-stat">
+                <span class="discord-metric-value" id="discord-member-count" data-value="11446">0</span>
+                <span class="discord-metric-label lang" data-de="Mitglieder" data-en="Members" data-fr="Membres">Members</span>
+            </div>
+        </div>
+        <a href="https://discord.com/invite/roseapp" target="_blank" rel="noopener noreferrer" class="submit-btn submit-btn-secondary lang" data-de="Discord öffnen" data-en="Open Discord" data-fr="Ouvrir Discord">Open Discord</a>
+    </article>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="compliance">
+    <article class="leagueskins-shell leagueskins-note-card leagueskins-compliance-shell" data-aos="fade-up" data-aos-duration="600">
+        <span class="project-panel-label lang" data-de="Compliance Hinweis" data-en="Compliance Note" data-fr="Note de conformité">Compliance Note</span>
+        <p class="lang" data-de="LeagueSkins arbeitet als inoffizielle Asset-Schicht und steht nicht in offizieller Verbindung zu Riot Games. Für ein technisches Portfolio ist diese Trennung wichtig, weil sie klar zwischen Plattform, Tooling und Community-maintained Datenbestand unterscheidet." data-en="LeagueSkins operates as an unofficial asset layer and is not officially affiliated with Riot Games. For a technical portfolio, that separation matters because it clearly distinguishes platform ownership from tooling and community-maintained asset data." data-fr="LeagueSkins fonctionne comme une couche d'actifs non officielle et n'est pas affilié officiellement à Riot Games. Pour un portfolio technique, cette séparation compte car elle distingue clairement la plateforme, l'outillage et les données d'actifs maintenues par la communauté.">LeagueSkins operates as an unofficial asset layer and is not officially affiliated with Riot Games. For a technical portfolio, that separation matters because it clearly distinguishes platform ownership from tooling and community-maintained asset data.</p>
+    </article>
+</section>
+</main>
+
+<footer class="project-case-footer">
+    <div class="container footer-legal" data-aos="fade-up" data-aos-duration="500">
+        <p>© <span id="copyright-year">2025</span> Walid Gourideche.
+            <span class="lang" data-de="Alle Rechte vorbehalten." data-en="All Rights Reserved." data-fr="Tous droits réservés.">All Rights Reserved.</span>
+        </p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script defer src="leagueskins-page.js"></script>
+<script defer src="script.js"></script>
+<button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+</body>
+</html>
+

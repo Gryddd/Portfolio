@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">Homelab infrastructure topology preview</title>
+  <desc id="desc">A simplified network topology showing the internet, a pfSense firewall with Suricata, VMware infrastructure, Active Directory, monitoring, and segmented clients.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060914" />
+      <stop offset="55%" stop-color="#0b1224" />
+      <stop offset="100%" stop-color="#101a30" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#121d33" />
+      <stop offset="100%" stop-color="#0d1628" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6ddcff" />
+      <stop offset="100%" stop-color="#3c8dff" />
+    </linearGradient>
+    <linearGradient id="security" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7c96d" />
+      <stop offset="100%" stop-color="#ff7b54" />
+    </linearGradient>
+    <linearGradient id="ops" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6df7c1" />
+      <stop offset="100%" stop-color="#20b486" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="700" rx="40" fill="url(#bg)" />
+  <circle cx="1260" cy="82" r="200" fill="#123d8a" opacity="0.14" />
+  <circle cx="220" cy="620" r="220" fill="#10a1c6" opacity="0.11" />
+
+  <text x="92" y="98" fill="#eef5ff" font-size="38" font-family="Segoe UI, Arial, sans-serif" font-weight="700" letter-spacing="1.5">Homelab Infrastructure</text>
+  <text x="92" y="136" fill="#8ea4c7" font-size="18" font-family="Segoe UI, Arial, sans-serif" letter-spacing="0.8">pfSense, VMware, Windows Server, Segmentation, Monitoring</text>
+
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M270 330H468" stroke="#4d7cff" stroke-width="9" opacity="0.95" filter="url(#glow)" />
+    <path d="M628 330H816" stroke="#4d7cff" stroke-width="9" opacity="0.95" filter="url(#glow)" />
+    <path d="M980 330H1134" stroke="#4d7cff" stroke-width="9" opacity="0.95" filter="url(#glow)" />
+    <path d="M980 330V220H1134" stroke="#35ddb0" stroke-width="8" opacity="0.9" filter="url(#glow)" />
+    <path d="M980 330V442H1134" stroke="#ff995e" stroke-width="8" opacity="0.9" filter="url(#glow)" />
+    <path d="M1298 330H1432" stroke="#4d7cff" stroke-width="9" opacity="0.95" filter="url(#glow)" />
+  </g>
+
+  <g transform="translate(92 234)">
+    <rect width="178" height="190" rx="26" fill="url(#panel)" stroke="#294264" stroke-width="2" />
+    <circle cx="89" cy="58" r="28" fill="#12294f" stroke="#6ddcff" stroke-width="3" />
+    <path d="M68 60c14-26 37-34 58-17 8 7 12 17 11 28-2 26-25 44-51 41-26-3-43-25-40-51 1-11 6-20 14-28" fill="none" stroke="#6ddcff" stroke-width="4" stroke-linecap="round" />
+    <text x="89" y="122" text-anchor="middle" fill="#eef5ff" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Internet</text>
+    <text x="89" y="150" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">WAN ingress</text>
+    <text x="89" y="170" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Remote access</text>
+  </g>
+
+  <g transform="translate(468 214)">
+    <rect width="160" height="232" rx="28" fill="url(#panel)" stroke="#455d80" stroke-width="2" />
+    <rect x="25" y="28" width="110" height="84" rx="20" fill="#1a2740" stroke="#f7c96d" stroke-width="3" />
+    <path d="M80 50l26 16v34l-26 15-26-15V66l26-16z" fill="none" stroke="#f7c96d" stroke-width="4" />
+    <path d="M80 58v49M54 74h52" stroke="#f7c96d" stroke-width="4" />
+    <text x="80" y="146" text-anchor="middle" fill="#eef5ff" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">pfSense</text>
+    <text x="80" y="176" text-anchor="middle" fill="#ffd3b2" font-size="17" font-family="Segoe UI, Arial, sans-serif" font-weight="600">Suricata IPS</text>
+    <text x="80" y="203" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Segmentation</text>
+    <text x="80" y="223" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Threat filtering</text>
+  </g>
+
+  <g transform="translate(816 206)">
+    <rect width="164" height="248" rx="28" fill="url(#panel)" stroke="#3f5f86" stroke-width="2" />
+    <rect x="28" y="26" width="108" height="72" rx="18" fill="#14223a" stroke="#72b6ff" stroke-width="3" />
+    <rect x="43" y="42" width="78" height="40" rx="10" fill="#0d1628" />
+    <path d="M82 112v28" stroke="#72b6ff" stroke-width="4" />
+    <path d="M57 140h50" stroke="#72b6ff" stroke-width="4" />
+    <text x="82" y="148" text-anchor="middle" fill="#eef5ff" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">VMware</text>
+    <text x="82" y="178" text-anchor="middle" fill="#9ec8ff" font-size="17" font-family="Segoe UI, Arial, sans-serif" font-weight="600">Virtualization</text>
+    <text x="82" y="206" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Lab workloads</text>
+    <text x="82" y="226" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Isolated segments</text>
+  </g>
+
+  <g transform="translate(1134 120)">
+    <rect width="164" height="186" rx="28" fill="url(#panel)" stroke="#427299" stroke-width="2" />
+    <rect x="29" y="28" width="106" height="54" rx="14" fill="#14223a" stroke="#6df7c1" stroke-width="3" />
+    <path d="M59 55h46M59 67h31" stroke="#6df7c1" stroke-width="4" stroke-linecap="round" />
+    <text x="82" y="118" text-anchor="middle" fill="#eef5ff" font-size="22" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Windows Server</text>
+    <text x="82" y="146" text-anchor="middle" fill="#a8f0d4" font-size="16" font-family="Segoe UI, Arial, sans-serif" font-weight="600">AD / DNS / DHCP</text>
+    <text x="82" y="170" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Identity core</text>
+  </g>
+
+  <g transform="translate(1134 350)">
+    <rect width="164" height="186" rx="28" fill="url(#panel)" stroke="#7d5b42" stroke-width="2" />
+    <rect x="32" y="30" width="100" height="56" rx="14" fill="#1d2230" stroke="#ff995e" stroke-width="3" />
+    <path d="M57 53h50M57 67h28" stroke="#ff995e" stroke-width="4" stroke-linecap="round" />
+    <text x="82" y="122" text-anchor="middle" fill="#eef5ff" font-size="22" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Monitoring</text>
+    <text x="82" y="150" text-anchor="middle" fill="#ffc9aa" font-size="16" font-family="Segoe UI, Arial, sans-serif" font-weight="600">Netdata + Logs</text>
+    <text x="82" y="174" text-anchor="middle" fill="#8ea4c7" font-size="15" font-family="Segoe UI, Arial, sans-serif">Health telemetry</text>
+  </g>
+
+  <g transform="translate(1432 236)">
+    <rect width="96" height="188" rx="28" fill="url(#panel)" stroke="#406994" stroke-width="2" />
+    <rect x="23" y="28" width="50" height="58" rx="12" fill="#17253d" stroke="#72b6ff" stroke-width="3" />
+    <circle cx="48" cy="138" r="9" fill="#6ddcff" />
+    <circle cx="48" cy="162" r="9" fill="#6df7c1" />
+    <circle cx="48" cy="186" r="9" fill="#ff995e" />
+    <text x="48" y="224" text-anchor="middle" fill="#eef5ff" font-size="20" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Clients</text>
+  </g>
+
+  <g transform="translate(690 526)">
+    <rect width="260" height="86" rx="22" fill="#0f182a" stroke="#21385a" stroke-width="2" />
+    <rect x="18" y="22" width="18" height="18" rx="6" fill="url(#accent)" />
+    <text x="48" y="37" fill="#dce8fb" font-size="17" font-family="Segoe UI, Arial, sans-serif" font-weight="600">Virtualized enterprise lab</text>
+    <rect x="18" y="50" width="18" height="18" rx="6" fill="url(#security)" />
+    <text x="48" y="65" fill="#dce8fb" font-size="17" font-family="Segoe UI, Arial, sans-serif" font-weight="600">Firewall and intrusion prevention</text>
+  </g>
+</svg>
