@@ -640,6 +640,14 @@ main {
 .mobile-menu-icon.change .bar3 {
     transform: translateY(-6px) rotate(-45deg);
 }
+
+body.mobile-nav-open {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+    touch-action: none;
+}
+
 .mobile-nav-overlay {
     height: 100%;
     width: 0;
