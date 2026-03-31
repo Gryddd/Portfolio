@@ -3,12 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const backgroundVideo = document.getElementById("portguardian-background-video");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const panel = loader?.querySelector(".case-loader-panel");
-    const copy = loader?.querySelector(".case-loader-copy");
-
-    if (!loader) return;
-
-    document.body.classList.add("case-loader-active");
 
     const shouldEnableBackgroundVideo = () => {
         const saveData = Boolean(connection?.saveData);
@@ -42,54 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initializeBackgroundVideo();
 
-    const setupLoaderAnimation = () => {
-        if (!panel || !copy) {
-            document.body.classList.add("case-loader-animate");
-            return;
-        }
+    if (!loader) return;
 
-        const gap = Number.parseFloat(window.getComputedStyle(panel).gap) || 0;
-        const copyWidth = copy.getBoundingClientRect().width;
-        const startOffset = (copyWidth + gap) / 2;
-
-        document.body.style.setProperty("--portguardian-loader-icon-start-offset", `${startOffset}px`);
-        window.requestAnimationFrame(() => {
-            document.body.classList.add("case-loader-animate");
-        });
-    };
-
-    if (document.fonts?.ready) {
-        document.fonts.ready.then(setupLoaderAnimation).catch(setupLoaderAnimation);
-    } else {
-        setupLoaderAnimation();
-    }
-
-    const startedAt = performance.now();
-    const cleanupDelay = reduceMotion ? 240 : 820;
-    const minimumVisibleMs = reduceMotion ? 300 : 2800;
-    let completed = false;
-
-    const finishLoader = () => {
-        if (completed) return;
-        completed = true;
-
-        const elapsed = performance.now() - startedAt;
-        const remaining = Math.max(0, minimumVisibleMs - elapsed);
-
-        window.setTimeout(() => {
-            loader.classList.add("is-complete");
-            loader.setAttribute("aria-hidden", "true");
-            window.requestAnimationFrame(() => {
-                document.body.classList.remove("case-loader-active");
-            });
-            window.setTimeout(() => {
-                document.body.classList.remove("case-loader-animate");
-                document.body.style.removeProperty("--portguardian-loader-icon-start-offset");
-                loader.remove();
-            }, cleanupDelay);
-        }, remaining);
-    };
-
-    window.addEventListener("load", finishLoader, { once: true });
-    window.setTimeout(finishLoader, reduceMotion ? 900 : 5000);
+    window.requestAnimationFrame(() => {
+        loader.classList.add("is-complete");
+        loader.setAttribute("aria-hidden", "true");
+        window.setTimeout(() => loader.remove(), reduceMotion ? 180 : 420);
+    });
 });

@@ -2600,7 +2600,7 @@ button:hover,
     width: 100%;
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16/5;
+    aspect-ratio: var(--featured-project-aspect-ratio, 16/5);
     background: var(--card-bg-performant);
 }
 
@@ -2809,7 +2809,7 @@ button:hover,
 
 @media (max-width: 560px) {
     .featured-project-image {
-        aspect-ratio: 16/9;
+        aspect-ratio: var(--featured-project-mobile-aspect-ratio, 16/9);
     }
 
     .featured-project-content {

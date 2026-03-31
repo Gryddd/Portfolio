@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentSlide: 0,
                 slides: [
                     {
-                        img: "leagueskins_thumb.png",
+                        img: "leagueskins_thumb.webp",
                         title: {
                             de: "Open Source Maintainer Rolle",
                             en: "Open Source Maintainer Role",
@@ -220,8 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
         "1": {
             id: "1",
             modalId: "project-modal-1",
-            img: "images/widepre.png",
+            img: "images/widepre.webp",
             imagePosition: "center center",
+            mobileAspectRatio: "16 / 5",
             title: {
                 de: "Unternehmens-IT-Infrastruktur",
                 en: "Enterprise IT Infrastructure",
@@ -315,6 +316,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 featuredImg.alt = project.title[currentLang];
                 featuredImg.style.objectFit = project.imageFit || 'cover';
                 featuredImg.style.objectPosition = project.imagePosition || 'top center';
+            }
+
+            if (featuredProject) {
+                featuredProject.style.setProperty('--featured-project-mobile-aspect-ratio', project.mobileAspectRatio || '16 / 9');
             }
 
             if (featuredTitle) {
@@ -634,7 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 slideEl.setAttribute('role', 'button');
                 slideEl.setAttribute('aria-hidden', 'true');
                 slideEl.setAttribute('aria-label', `Open enlarged image for ${slideData.title[currentLang] || slideData.title.en}`);
-                slideEl.innerHTML = `<img src="images/${slideData.img}" alt="${slideData.title.en}" loading="lazy">`;
+                slideEl.innerHTML = `<img src="images/${slideData.img}" alt="${slideData.title.en}" loading="lazy" decoding="async">`;
                 slideEl.addEventListener("click", function () {
                     const imageModalImg = imageModal.querySelector("img");
                     imageModalImg.src = this.querySelector('img').src;
@@ -923,19 +928,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const githubSection = document.getElementById('github-activity');
     if (githubSection) {
-        updateGitHubStats().then(() => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const counters = githubSection.querySelectorAll('.stat-number[data-count]');
-                        counters.forEach(counter => animateCounter(counter));
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
+        let githubStatsLoaded = false;
+        let githubCountersAnimated = false;
 
-            observer.observe(githubSection);
-        });
+        const animateGitHubCounters = () => {
+            if (githubCountersAnimated) return;
+            githubCountersAnimated = true;
+            const counters = githubSection.querySelectorAll('.stat-number[data-count]');
+            counters.forEach(counter => animateCounter(counter));
+        };
+
+        const loadGitHubStats = async () => {
+            if (githubStatsLoaded) return;
+            githubStatsLoaded = true;
+            const loaded = await updateGitHubStats();
+            if (loaded && !('IntersectionObserver' in window)) {
+                animateGitHubCounters();
+            }
+        };
+
+        if ('IntersectionObserver' in window) {
+            const githubObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+
+                    loadGitHubStats().then(animateGitHubCounters);
+                    githubObserver.unobserve(entry.target);
+                });
+            }, {
+                rootMargin: '200px 0px',
+                threshold: 0.15
+            });
+
+            githubObserver.observe(githubSection);
+        } else {
+            loadGitHubStats();
+        }
     }
 
     const copyrightYearEl = document.getElementById("copyright-year");
@@ -1252,37 +1280,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const preloaderBar = document.getElementById('preloader-bar');
     const preloaderPercent = document.getElementById('preloader-percent');
     if (preloader && preloaderBar && preloaderPercent) {
-        let progress = 0;
-        let isComplete = false;
-        let progressTimer;
-
-        const renderPreloader = (value) => {
-            const nextValue = Math.max(0, Math.min(100, Math.round(value)));
-            preloaderBar.style.width = `${nextValue}%`;
-            preloaderPercent.textContent = `${nextValue}%`;
+        const dismissPreloader = () => {
+            preloaderBar.style.width = '100%';
+            preloaderPercent.textContent = '100%';
+            preloader.classList.add('hidden');
+            window.setTimeout(() => preloader.remove(), 320);
         };
 
-        const finishPreloader = () => {
-            if (isComplete) return;
-            isComplete = true;
-            window.clearInterval(progressTimer);
-            progress = 100;
-            renderPreloader(progress);
-            window.setTimeout(() => preloader.classList.add('hidden'), 260);
-        };
-
-        renderPreloader(progress);
-
-        progressTimer = window.setInterval(() => {
-            if (isComplete) return;
-            const remaining = 92 - progress;
-            const step = remaining > 48 ? 8 : remaining > 24 ? 5 : remaining > 10 ? 3 : 1;
-            progress = Math.min(92, progress + step);
-            renderPreloader(progress);
-        }, 90);
-
-        window.addEventListener('load', finishPreloader, { once: true });
-        window.setTimeout(finishPreloader, 4500);
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(dismissPreloader);
+        });
     }
 
 });

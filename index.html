@@ -29,7 +29,6 @@
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link as="image" href="images/aura.webp" rel="preload"/>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <script type="application/ld+json">
@@ -188,7 +187,7 @@
 <div class="hero-image" data-aos="fade-right" data-aos-duration="600" data-aos-delay="200" data-aos-easing="ease-out-cubic">
 <picture>
 <source srcset="images/aura.webp" type="image/webp"/>
-<img alt="A professional portrait of Walid Gourideche" id="profile-picture" src="images/aura.jpg" width="272" height="272"/>
+<img alt="A professional portrait of Walid Gourideche" id="profile-picture" src="images/aura.jpg" width="272" height="272" decoding="async" fetchpriority="high"/>
 </picture>
 </div>
 <div class="hero-text" data-aos="fade-left" data-aos-duration="600" data-aos-delay="300" data-aos-easing="ease-out-cubic">
@@ -415,7 +414,7 @@
         </button>
         <div id="featured-project" class="featured-project">
             <div class="featured-project-image">
-                <img src="images/Portpreview.jpg" alt="PortGuardian Enterprise Interface" id="featured-img" loading="eager">
+                <img src="images/Portpreview.jpg" alt="PortGuardian Enterprise Interface" id="featured-img" loading="lazy" decoding="async">
             </div>
             <div class="featured-project-content">
                 <h3 id="featured-title" class="lang" data-de="PortGuardian Enterprise" data-en="PortGuardian Enterprise" data-fr="PortGuardian Enterprise">PortGuardian Enterprise</h3>
@@ -445,7 +444,7 @@
             <span class="thumbnail-title lang" data-de="LeagueSkins/ROSE" data-en="LeagueSkins/ROSE" data-fr="LeagueSkins/ROSE">LeagueSkins/ROSE</span>
         </button>
         <button class="project-thumbnail" data-project-id="1" type="button" aria-pressed="false">
-            <img src="images/minipre.png" alt="Enterprise IT Infrastructure">
+            <img src="images/minipre.webp" alt="Enterprise IT Infrastructure" loading="lazy" decoding="async">
             <span class="thumbnail-title lang" data-de="IT-Infrastruktur" data-en="IT Infrastructure" data-fr="Infrastr. IT">IT Infrastructure</span>
         </button>
     </div>

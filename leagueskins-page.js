@@ -4,29 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const numberFormatter = new Intl.NumberFormat("en-US");
 
     if (loader) {
-        document.body.classList.add("rose-loader-active");
-
-        const startedAt = performance.now();
-        const minimumVisibleMs = reduceMotion ? 350 : 3200;
-        let completed = false;
-
-        const finishLoader = () => {
-            if (completed) return;
-            completed = true;
-
-            const elapsed = performance.now() - startedAt;
-            const remaining = Math.max(0, minimumVisibleMs - elapsed);
-
-            window.setTimeout(() => {
-                loader.classList.add("is-complete");
-                loader.setAttribute("aria-hidden", "true");
-                document.body.classList.remove("rose-loader-active");
-                window.setTimeout(() => loader.remove(), 720);
-            }, remaining);
-        };
-
-        window.addEventListener("load", finishLoader, { once: true });
-        window.setTimeout(finishLoader, reduceMotion ? 900 : 5400);
+        window.requestAnimationFrame(() => {
+            loader.classList.add("is-complete");
+            loader.setAttribute("aria-hidden", "true");
+            window.setTimeout(() => loader.remove(), reduceMotion ? 180 : 420);
+        });
     }
 
     const onlineCount = document.getElementById("discord-online-count");
@@ -78,11 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
         metricAnimations.set(element, window.requestAnimationFrame(tick));
     };
 
-    let cardVisible = !metricsCard || reduceMotion || !("IntersectionObserver" in window);
+    const canObserveMetrics = !!metricsCard && !reduceMotion && "IntersectionObserver" in window;
+    let cardVisible = !canObserveMetrics;
     let metricsReady = false;
     let metricsAnimated = false;
     let pendingOnline = 0;
     let pendingMembers = 0;
+    let pollingStarted = false;
 
     setMetricValue(onlineCount, 0);
     setMetricValue(memberCount, 0);
@@ -97,22 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         metricsAnimated = true;
         applyMetrics(pendingOnline, pendingMembers);
     };
-
-    if (metricsCard && !reduceMotion && "IntersectionObserver" in window) {
-        const metricsObserver = new IntersectionObserver(entries => {
-            const isVisible = entries.some(entry => entry.isIntersecting);
-            if (!isVisible) return;
-
-            cardVisible = true;
-            metricsObserver.disconnect();
-            maybeAnimateMetrics();
-        }, {
-            rootMargin: "0px 0px -12% 0px",
-            threshold: 0.35
-        });
-
-        metricsObserver.observe(metricsCard);
-    }
 
     const POLL_INTERVAL_MS = 3 * 60 * 1000; // refresh every 3 minutes
 
@@ -153,9 +121,30 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     };
 
-    // Initial fetch
-    fetchDiscordStats(true);
+    const startDiscordPolling = () => {
+        if (pollingStarted) return;
+        pollingStarted = true;
+        fetchDiscordStats(true);
+        setInterval(() => fetchDiscordStats(false), POLL_INTERVAL_MS);
+    };
 
-    // Poll every 3 minutes
-    setInterval(() => fetchDiscordStats(false), POLL_INTERVAL_MS);
+    if (canObserveMetrics) {
+        const metricsObserver = new IntersectionObserver(entries => {
+            const isVisible = entries.some(entry => entry.isIntersecting);
+            if (!isVisible) return;
+
+            cardVisible = true;
+            metricsObserver.disconnect();
+            startDiscordPolling();
+            maybeAnimateMetrics();
+        }, {
+            rootMargin: "160px 0px",
+            threshold: 0.15
+        });
+
+        metricsObserver.observe(metricsCard);
+    } else {
+        startDiscordPolling();
+    }
+
 });

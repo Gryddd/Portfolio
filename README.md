@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Gryddd/Portfolio/main/images/favicon.png" alt="Walid Gourideche Logo" width="100">
+  <img src="https://raw.githubusercontent.com/Gryddd/Portfolio/main/images/icon.png" alt="Walid Gourideche Logo" width="100">
 
 </p>
 
