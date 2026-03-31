@@ -96,13 +96,30 @@
             const shortCode = candidate.slice(0, 2);
             return supportedLangs.includes(shortCode) ? shortCode : null;
         };
+        const readPreferredLangCookie = () => {
+            const cookieEntry = document.cookie
+                .split(';')
+                .map(entry => entry.trim())
+                .find(entry => entry.startsWith('preferredLang='));
+
+            if (!cookieEntry) return null;
+            return normalizeLang(decodeURIComponent(cookieEntry.split('=').slice(1).join('=')));
+        };
         const url = new URL(window.location.href);
+        const queryLang = normalizeLang(url.searchParams.get('lang'));
+        const pathLang = normalizeLang(url.pathname.split('/').filter(Boolean)[0]);
+        const cookieLang = readPreferredLangCookie();
         const browserLang = (navigator.languages || [navigator.language]).map(normalizeLang).find(Boolean);
-        const preferredLang = normalizeLang(url.searchParams.get('lang'))
-            || normalizeLang(url.pathname.split('/').filter(Boolean)[0])
+        const preferredLang = queryLang
+            || pathLang
+            || cookieLang
             || normalizeLang(localStorage.getItem('preferredLang'))
             || browserLang
             || 'en';
+        if (!queryLang && !pathLang) {
+            url.searchParams.set('lang', preferredLang);
+            history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+        }
         const preloaderLabel = document.getElementById('preloader-label');
         const preloaderPanel = document.getElementById('preloader-panel');
         if (preloaderLabel?.dataset?.[preferredLang]) preloaderLabel.textContent = preloaderLabel.dataset[preferredLang];

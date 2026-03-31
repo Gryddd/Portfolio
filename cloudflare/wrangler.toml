@@ -1,0 +1,8 @@
+name = "grydsh-language-router"
+main = "worker.js"
+compatibility_date = "2026-03-31"
+workers_dev = false
+
+routes = [
+  { pattern = "grydsh.dev/*", zone_name = "grydsh.dev" }
+]

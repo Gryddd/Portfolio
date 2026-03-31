@@ -262,11 +262,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const shortCode = candidate.slice(0, 2);
         return supportedLangs.includes(shortCode) ? shortCode : null;
     };
+    const readPreferredLanguageCookie = () => {
+        const cookieEntry = document.cookie
+            .split(";")
+            .map(entry => entry.trim())
+            .find(entry => entry.startsWith("preferredLang="));
+
+        if (!cookieEntry) return null;
+        return normalizeLanguage(decodeURIComponent(cookieEntry.split("=").slice(1).join("=")));
+    };
+    const persistPreferredLanguage = lang => {
+        const secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
+        document.cookie = `preferredLang=${encodeURIComponent(lang)}; Max-Age=31536000; Path=/; SameSite=Lax${secureFlag}`;
+    };
     const resolveInitialLanguage = () => {
         const url = new URL(window.location.href);
         const browserLang = (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
         return normalizeLanguage(url.searchParams.get("lang"))
             || normalizeLanguage(url.pathname.split("/").filter(Boolean)[0])
+            || readPreferredLanguageCookie()
             || normalizeLanguage(localStorage.getItem("preferredLang"))
             || browserLang
             || config.defaultLang;
@@ -577,6 +591,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function syncLanguageUrl(lang) {
         const url = new URL(window.location.href);
+        const pathLang = normalizeLanguage(url.pathname.split("/").filter(Boolean)[0]);
+        if (pathLang) return;
         if (url.searchParams.get('lang') === lang) return;
         url.searchParams.set('lang', lang);
         history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
@@ -714,6 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const normalizedLang = normalizeLanguage(newLang) || config.defaultLang;
         currentLang = normalizedLang;
         localStorage.setItem("preferredLang", currentLang);
+        persistPreferredLanguage(currentLang);
         if (syncUrl) {
             syncLanguageUrl(currentLang);
         }
@@ -1188,7 +1205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeBackgroundVideo();
     initializeProjectModals();
     initializeProjectShowcase();
-    switchLanguage(currentLang, { syncUrl: false, refreshLayout: false });
+    switchLanguage(currentLang, { syncUrl: true, refreshLayout: false });
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
     document.querySelectorAll('.project-modal .modal-lang-switcher').forEach(switcher => {
         switcher.remove();
