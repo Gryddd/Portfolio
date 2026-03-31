@@ -43,6 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     const animationReadyEvent = 'portfolio:ready';
     const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mainHeroCard = document.querySelector('body:not(.project-case-page) .hero-card');
+
+    if (mainHeroCard && !prefersReducedMotion) {
+        document.documentElement.classList.add('hero-reveal-pending');
+    }
 
     function signalAnimationsReady() {
         if (document.documentElement.dataset.animationsReady === 'true') return;
@@ -51,6 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (typeof AOS !== 'undefined') {
             window.requestAnimationFrame(() => AOS.refreshHard());
         }
+    }
+
+    function releaseDeferredAnimations() {
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+                document.documentElement.classList.remove('hero-reveal-pending');
+                signalAnimationsReady();
+            });
+        });
     }
 
     function waitForWindowLoad(callback) {
@@ -239,7 +254,28 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     };
-    let currentLang = localStorage.getItem("preferredLang") || config.defaultLang;
+    const supportedLangs = ["de", "en", "fr"];
+    const normalizeLanguage = value => {
+        if (!value) return null;
+        const candidate = String(value).toLowerCase();
+        if (supportedLangs.includes(candidate)) return candidate;
+        const shortCode = candidate.slice(0, 2);
+        return supportedLangs.includes(shortCode) ? shortCode : null;
+    };
+    const resolveInitialLanguage = () => {
+        const url = new URL(window.location.href);
+        const browserLang = (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
+        return normalizeLanguage(url.searchParams.get("lang"))
+            || normalizeLanguage(url.pathname.split("/").filter(Boolean)[0])
+            || normalizeLanguage(localStorage.getItem("preferredLang"))
+            || browserLang
+            || config.defaultLang;
+    };
+    const parseVisibleLanguages = value => String(value || "")
+        .split(/[,\s]+/)
+        .map(normalizeLanguage)
+        .filter(Boolean);
+    let currentLang = resolveInitialLanguage();
     let player;
     let lastActiveElement;
     let resizeTimer;
@@ -426,6 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeDropdownSelector = '.nav-dropdown.active, .mobile-language-selector.active, .hero-cta-dropdown.active, .project-report-dropdown.active, .experience-dropdown-container.active';
     const githubDataBadge = document.getElementById('github-data-badge');
     const githubDataStatus = document.getElementById('github-data-status');
+    const languageConditionalElements = document.querySelectorAll('[data-visible-langs]');
     let mobileMenuScrollY = 0;
 
     function getActiveModal() {
@@ -538,9 +575,148 @@ document.addEventListener("DOMContentLoaded", function () {
             item.classList.toggle('active', item.getAttribute('data-lang') === currentLang);
         });
     }
-    function switchLanguage(newLang) {
-        currentLang = newLang;
-        localStorage.setItem("preferredLang", newLang);
+    function syncLanguageUrl(lang) {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('lang') === lang) return;
+        url.searchParams.set('lang', lang);
+        history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    }
+
+    function isEffectivelyHidden(element) {
+        return !element || Boolean(element.closest('[hidden]'));
+    }
+
+    function getLanguageSwitchAnchor() {
+        if (document.body.classList.contains('mobile-nav-open')) return null;
+
+        const navBottom = mainNav ? mainNav.getBoundingClientRect().bottom : 0;
+        const sampleY = Math.min(
+            window.innerHeight - 24,
+            Math.max(Math.round(window.innerHeight * 0.24), Math.round(navBottom + 24))
+        );
+        const sampleX = Math.round(window.innerWidth / 2);
+        const anchorSelectors = [
+            '.timeline-item',
+            '.timeline-content',
+            '.skill-card',
+            '.project-card',
+            '.featured-project-container',
+            '.github-stats-grid',
+            '.faq-item',
+            '.contact-form-section',
+            '.tech-stack-section',
+            'section[id]'
+        ].join(', ');
+
+        const sampledNode = document.elementFromPoint(sampleX, sampleY);
+        if (!(sampledNode instanceof Element)) return null;
+
+        return sampledNode.closest(anchorSelectors) || sampledNode.closest('main > *');
+    }
+
+    function resetAosState(elements) {
+        if (typeof AOS === 'undefined' || !elements?.length) return;
+
+        elements.forEach(element => {
+            const animatedNodes = [
+                ...(element.matches?.('[data-aos]') ? [element] : []),
+                ...element.querySelectorAll?.('[data-aos]') || []
+            ];
+
+            animatedNodes.forEach(node => {
+                node.classList.remove('aos-animate');
+            });
+        });
+    }
+
+    function finalizeLanguageLayout(anchor, anchorTopBefore, scrollYBefore) {
+        const anchorIsVisible = anchor && anchor.isConnected && !isEffectivelyHidden(anchor);
+        if (anchorIsVisible && Number.isFinite(anchorTopBefore)) {
+            const anchorTopAfter = anchor.getBoundingClientRect().top;
+            const delta = anchorTopAfter - anchorTopBefore;
+            if (Math.abs(delta) > 1) {
+                window.scrollTo({
+                    top: Math.max(scrollYBefore + delta, 0),
+                    left: 0,
+                    behavior: 'auto'
+                });
+            }
+        }
+
+        const maxScrollTop = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+        if (window.scrollY > maxScrollTop) {
+            window.scrollTo({ top: maxScrollTop, left: 0, behavior: 'auto' });
+        }
+
+        if (typeof AOS !== 'undefined') {
+            AOS.refreshHard();
+        }
+    }
+
+    function refreshAfterLanguageSwitch(changedElements) {
+        const anchor = getLanguageSwitchAnchor();
+        const anchorTopBefore = anchor?.getBoundingClientRect().top ?? null;
+        const scrollYBefore = window.scrollY;
+        const delayMs = document.body.classList.contains('mobile-nav-open') ? 180 : 0;
+
+        resetAosState(changedElements);
+
+        window.setTimeout(() => {
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => {
+                    finalizeLanguageLayout(anchor, anchorTopBefore, scrollYBefore);
+                });
+            });
+        }, delayMs);
+    }
+
+    function updateLanguageConditionalContent() {
+        document.body.dataset.currentLang = currentLang;
+        const changedElements = [];
+
+        if (currentLang !== 'de' && videoModal?.classList.contains('active')) {
+            if (player?.stopVideo) player.stopVideo();
+            closeModal(videoModal);
+        }
+
+        languageConditionalElements.forEach(element => {
+            const visibleLanguages = parseVisibleLanguages(element.dataset.visibleLangs);
+            const shouldShow = visibleLanguages.length === 0 || visibleLanguages.includes(currentLang);
+            const wasHidden = element.hidden;
+            element.hidden = !shouldShow;
+            if (wasHidden !== element.hidden) {
+                changedElements.push(element);
+            }
+        });
+
+        const activeElement = document.activeElement;
+        if (activeElement instanceof HTMLElement) {
+            const conditionalParent = activeElement.closest('[data-visible-langs]');
+            if (conditionalParent?.hidden) {
+                mainNav?.querySelector('a, button')?.focus();
+            }
+        }
+
+        if (window.location.hash) {
+            const targetId = decodeURIComponent(window.location.hash.slice(1));
+            const targetElement = document.getElementById(targetId);
+            if (targetElement?.hidden) {
+                const url = new URL(window.location.href);
+                url.hash = '';
+                history.replaceState(null, '', `${url.pathname}${url.search}`);
+            }
+        }
+
+        return changedElements;
+    }
+    function switchLanguage(newLang, options = {}) {
+        const { syncUrl = true, refreshLayout = true } = options;
+        const normalizedLang = normalizeLanguage(newLang) || config.defaultLang;
+        currentLang = normalizedLang;
+        localStorage.setItem("preferredLang", currentLang);
+        if (syncUrl) {
+            syncLanguageUrl(currentLang);
+        }
         document.documentElement.lang = currentLang;
         document.querySelectorAll(".lang").forEach(el => {
             if (el.dataset[currentLang]) el.innerHTML = el.dataset[currentLang];
@@ -564,6 +740,10 @@ document.addEventListener("DOMContentLoaded", function () {
         updateFeaturedProject(activeProjectId, 'next', { animate: false });
         updateAllProjectModalsText();
         updateModalLanguageSwitchers();
+        const changedElements = updateLanguageConditionalContent();
+        if (refreshLayout) {
+            refreshAfterLanguageSwitch(changedElements);
+        }
     }
     function updateAllProjectModalsText() {
         Object.keys(config.projects).forEach(modalId => {
@@ -635,7 +815,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     window.onYouTubeIframeAPIReady = () => {
-        if (videoModal && videoModal.classList.contains('active')) {
+        if (currentLang === 'de' && videoModal && videoModal.classList.contains('active')) {
             createOrPlayPlayer();
         }
     };
@@ -1008,7 +1188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeBackgroundVideo();
     initializeProjectModals();
     initializeProjectShowcase();
-    switchLanguage(currentLang);
+    switchLanguage(currentLang, { syncUrl: false, refreshLayout: false });
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
     document.querySelectorAll('.project-modal .modal-lang-switcher').forEach(switcher => {
         switcher.remove();
@@ -1110,6 +1290,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
+        if (currentLang !== 'de') return;
         openModal(videoModal, this);
         createOrPlayPlayer();
     });
@@ -1339,7 +1520,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.setTimeout(() => {
                 document.body.classList.remove('preloader-active');
                 preloader.remove();
-                window.requestAnimationFrame(signalAnimationsReady);
+                releaseDeferredAnimations();
             }, finalHoldMs + 900);
         };
 
@@ -1357,7 +1538,7 @@ document.addEventListener("DOMContentLoaded", function () {
             preloaderAssetsReady.finally(finishPreloader);
         });
     } else if (!hasProjectLoader) {
-        waitForWindowLoad(signalAnimationsReady);
+        waitForWindowLoad(releaseDeferredAnimations);
     }
 
 });

@@ -1060,7 +1060,11 @@ body.project-background-video-disabled .project-case-background-video {
     --portguardian-loader-text: #f8fbff;
     --portguardian-loader-muted: rgba(255, 255, 255, 0.66);
     --portguardian-loader-gap: clamp(0.9rem, 2.4vw, 1.4rem);
-    --portguardian-loader-icon-start-offset: 0px;
+    --portguardian-loader-gap-active: 0px;
+    --portguardian-loader-icon-size: clamp(88px, 10vw, 132px);
+    --portguardian-loader-copy-width: 0px;
+    --portguardian-loader-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --portguardian-page-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --portguardian-subtitle-weight: 100;
     --portguardian-loader-subtitle-weight: 260;
 }
@@ -1135,10 +1139,15 @@ body.case-loader-active {
     overflow: hidden;
 }
 
+body.case-loader-transitioning {
+    overflow: hidden;
+}
+
 .project-case-page .main-nav,
 .project-case-page .mobile-menu-icon,
 .project-case-page .scroll-progress {
-    transition: opacity 0.34s ease, transform 0.34s ease;
+    transition: opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1), transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
 }
 
 .project-case-page.case-loader-active .main-nav,
@@ -1148,13 +1157,16 @@ body.case-loader-active {
 .project-case-page.rose-loader-active .mobile-menu-icon,
 .project-case-page.rose-loader-active .scroll-progress {
     opacity: 0;
-    transform: translateY(0.65rem);
+    transform: translate3d(0, 0.75rem, 0);
     pointer-events: none;
 }
 
-.project-case-page.case-loader-active main,
 .project-case-page.rose-loader-active main {
     visibility: hidden;
+    pointer-events: none;
+}
+
+.project-case-page.case-loader-active main {
     pointer-events: none;
 }
 
@@ -1164,6 +1176,57 @@ body.case-loader-active {
 
 .portguardian-case-page.case-loader-active {
     background: var(--portguardian-loader-bg);
+}
+
+.portguardian-case-page .project-case-hero-media,
+.portguardian-case-page .hero-card,
+.portguardian-case-page .hero-text > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    will-change: opacity, transform;
+}
+
+.portguardian-case-page .project-case-hero-media {
+    transition: opacity 0.58s var(--portguardian-page-ease), transform 0.9s var(--portguardian-page-ease), filter 0.6s ease;
+}
+
+.portguardian-case-page .hero-card {
+    transition: opacity 0.52s var(--portguardian-page-ease), transform 0.72s var(--portguardian-page-ease), box-shadow 0.5s ease;
+}
+
+.portguardian-case-page .hero-text > * {
+    transition: opacity 0.48s var(--portguardian-page-ease), transform 0.62s var(--portguardian-page-ease);
+}
+
+.portguardian-case-page .hero-text > :nth-child(1) {
+    transition-delay: 0.04s;
+}
+
+.portguardian-case-page .hero-text > :nth-child(2) {
+    transition-delay: 0.1s;
+}
+
+.portguardian-case-page .hero-text > :nth-child(3) {
+    transition-delay: 0.16s;
+}
+
+.portguardian-case-page .hero-text > :nth-child(4) {
+    transition-delay: 0.22s;
+}
+
+.portguardian-case-page.case-loader-active .project-case-hero-media {
+    opacity: 0;
+    transform: translate3d(0, 0.8rem, 0) scale(1.02);
+}
+
+.portguardian-case-page.case-loader-active .hero-card {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0) scale(0.985);
+}
+
+.portguardian-case-page.case-loader-active .hero-text > * {
+    opacity: 0;
+    transform: translate3d(0, 0.85rem, 0) scale(0.992);
 }
 
 .rose-loader {
@@ -1314,6 +1377,7 @@ body.case-loader-active {
         radial-gradient(circle at 76% 66%, rgba(255, 255, 255, 0.024), transparent 30%),
         var(--portguardian-loader-bg);
     transition: opacity 0.68s ease, visibility 0.68s ease;
+    will-change: opacity;
 }
 
 [data-theme="light"] .case-loader {
@@ -1336,20 +1400,30 @@ body.case-loader-active {
     gap: clamp(1rem, 3vw, 1.55rem);
     width: min(100%, 48rem);
     text-align: left;
+    transform: translate3d(0, 0, 0);
 }
 
-.case-loader-icon,
+.case-loader-icon-shell,
 .case-loader-title,
 .case-loader-tagline {
     opacity: 0;
     animation: none;
 }
 
+.case-loader-icon-shell {
+    width: var(--portguardian-loader-icon-size, clamp(88px, 10vw, 132px));
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .case-loader-icon {
-    width: clamp(88px, 10vw, 132px);
+    width: 100%;
     height: auto;
+    display: block;
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34));
-    transform: scale(0.88);
+    backface-visibility: hidden;
 }
 
 [data-theme="light"] .case-loader-icon {
@@ -1393,38 +1467,24 @@ body.case-loader-active {
 @keyframes portguardianLoaderIconSettle {
     0% {
         opacity: 0;
-        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(0.88);
-    }
-
-    18% {
-        opacity: 1;
-        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(1);
-    }
-
-    46% {
-        opacity: 1;
-        transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(1);
+        transform: scale(0.92);
     }
 
     100% {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: scale(1);
     }
 }
 
 @keyframes portguardianLoaderCopyReveal {
     0% {
         opacity: 0;
-        transform: translateX(-0.9rem);
-        clip-path: inset(0 100% 0 0);
-        filter: blur(6px);
+        transform: translate3d(-0.6rem, 0, 0);
     }
 
     100% {
         opacity: 1;
-        transform: translateX(0);
-        clip-path: inset(0 0 0 0);
-        filter: blur(0);
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -1470,6 +1530,7 @@ body.case-loader-active {
         linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 52%, rgba(0, 0, 0, 0.82) 100%),
         url("images/portguardian-video-poster.webp") center/cover no-repeat;
     transition: background 0.6s ease;
+    backface-visibility: hidden;
 }
 
 .portguardian-case-page .project-case-background-video {
@@ -1477,6 +1538,7 @@ body.case-loader-active {
     transform: scale(1.03);
     filter: saturate(0.86) brightness(0.54) contrast(1.06);
     transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    backface-visibility: hidden;
 }
 
 .portguardian-case-page .project-case-hero-media .video-overlay {
@@ -1510,6 +1572,7 @@ body.case-loader-active {
 
 .portguardian-case-page .hero-card {
     max-width: 56rem;
+    backface-visibility: hidden;
 }
 
 .portguardian-case-page .case-loader {
@@ -1517,7 +1580,7 @@ body.case-loader-active {
         radial-gradient(circle at 24% 28%, rgba(255, 255, 255, 0.05), transparent 34%),
         radial-gradient(circle at 76% 64%, rgba(120, 136, 154, 0.08), transparent 32%),
         linear-gradient(180deg, #04090d 0%, #000000 100%);
-    transition: opacity 0.82s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.82s ease, background 0.45s ease;
+    transition: opacity 0.82s var(--portguardian-loader-ease), visibility 0.82s ease, background 0.45s ease;
 }
 
 [data-theme="light"] .portguardian-case-page .case-loader {
@@ -1531,51 +1594,104 @@ body.case-loader-active {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--portguardian-loader-gap);
-    width: min(100%, 52rem);
+    gap: 0;
+    width: min(100%, 72rem);
     min-height: clamp(120px, 18vw, 168px);
     overflow: visible;
-    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1), filter 0.44s ease;
-    will-change: opacity, transform, filter;
+    transition: gap 0.82s var(--portguardian-loader-ease), opacity 0.46s ease, transform 0.68s var(--portguardian-loader-ease);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    contain: layout paint;
 }
 
 .portguardian-case-page .case-loader.is-complete .case-loader-panel {
     opacity: 0;
-    transform: translateY(-0.6rem) scale(0.986);
-    filter: blur(8px);
+    transform: translate3d(0, -0.72rem, 0) scale(0.988);
 }
 
-.portguardian-case-page .case-loader-icon {
-    position: static;
-    flex: 0 0 auto;
+.portguardian-case-page .case-loader-icon-shell {
+    position: relative;
     opacity: 0;
-    transform: translateX(var(--portguardian-loader-icon-start-offset)) scale(0.88);
+    transform: scale(0.92);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-origin: center center;
+    contain: paint;
+    z-index: 2;
+    transition: opacity 0.34s ease 0.08s, transform 0.62s var(--portguardian-loader-ease) 0.08s;
 }
 
 .portguardian-case-page .case-loader-copy {
-    position: static;
-    width: auto;
+    position: relative;
+    width: 0;
+    max-width: 0;
+    padding-left: 0;
     justify-items: start;
     opacity: 0;
-    overflow: visible;
-    transform: translateX(-0.9rem);
-    clip-path: inset(0 100% 0 0);
-    filter: blur(6px);
+    overflow: hidden;
+    transform: translate3d(-0.6rem, 0, 0);
+    will-change: width, max-width, transform, opacity;
+    backface-visibility: hidden;
+    transform-origin: left center;
+    z-index: 1;
+    transition:
+        width 0.82s var(--portguardian-loader-ease) 0.34s,
+        max-width 0.82s var(--portguardian-loader-ease) 0.34s,
+        opacity 0.36s ease 0.42s,
+        transform 0.62s var(--portguardian-loader-ease) 0.34s;
 }
 
 .portguardian-case-page .case-loader-title {
     opacity: 1;
     transform: none;
     animation: none;
-    white-space: nowrap;
+    white-space: normal;
+    text-wrap: balance;
 }
 
-.portguardian-case-page.case-loader-animate .case-loader-icon {
-    animation: portguardianLoaderIconSettle 1.34s cubic-bezier(0.19, 1, 0.22, 1) 0.14s forwards;
+.portguardian-case-page.case-loader-animate .case-loader-panel {
+    gap: var(--portguardian-loader-gap-active);
+}
+
+.portguardian-case-page.case-loader-animate .case-loader-icon-shell {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .portguardian-case-page.case-loader-animate .case-loader-copy {
-    animation: portguardianLoaderCopyReveal 1.02s cubic-bezier(0.19, 1, 0.22, 1) 0.72s forwards;
+    width: var(--portguardian-loader-copy-width);
+    max-width: var(--portguardian-loader-copy-width);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.portguardian-case-page .topology-visual-shell,
+.portguardian-case-page .schema-visual-shell,
+.portguardian-case-page .validation-layout,
+.portguardian-case-page .tech-stack-section,
+.portguardian-case-page .footer-legal {
+    content-visibility: auto;
+    contain: layout paint style;
+}
+
+.portguardian-case-page .topology-visual-shell {
+    contain-intrinsic-size: 760px;
+}
+
+.portguardian-case-page .schema-visual-shell {
+    contain-intrinsic-size: 920px;
+}
+
+.portguardian-case-page .validation-layout {
+    contain-intrinsic-size: 560px;
+}
+
+.portguardian-case-page .tech-stack-section {
+    contain-intrinsic-size: 360px;
+}
+
+.portguardian-case-page .footer-legal {
+    contain-intrinsic-size: 180px;
 }
 
 .portguardian-case-page .project-hero-brand {
@@ -1943,7 +2059,7 @@ body.case-loader-active {
         justify-items: center;
     }
 
-    .case-loader-icon {
+    .case-loader-icon-shell {
         width: clamp(82px, 24vw, 108px);
     }
 
@@ -1965,6 +2081,7 @@ body.case-loader-active {
 
     .portguardian-case-page {
         --portguardian-loader-gap: clamp(0.55rem, 2.8vw, 0.9rem);
+        --portguardian-loader-icon-size: clamp(82px, 24vw, 108px);
     }
 
     .portguardian-case-page .case-loader-panel {
@@ -1973,7 +2090,7 @@ body.case-loader-active {
     }
 
     .portguardian-case-page .case-loader-copy {
-        max-width: calc(100vw - 3rem);
+        justify-items: start;
     }
 
     .leagueskins-hero-icon {
@@ -2034,8 +2151,8 @@ body.case-loader-active {
         padding: 1rem;
     }
 
-    .case-loader-icon {
-        width: clamp(78px, 10vw, 106px);
+    .portguardian-case-page {
+        --portguardian-loader-icon-size: clamp(78px, 10vw, 106px);
     }
 
     .case-loader-title {

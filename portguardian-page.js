@@ -4,14 +4,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     const loaderIcon = loader?.querySelector(".case-loader-icon");
-    const panel = loader?.querySelector(".case-loader-panel");
+    const loaderIconShell = loader?.querySelector(".case-loader-icon-shell");
     const copy = loader?.querySelector(".case-loader-copy");
+    const mainContent = document.getElementById("main-content");
     const animationReadyEvent = "portfolio:ready";
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
     const signalAnimationsReady = () => {
         if (document.documentElement.dataset.animationsReady === "true") return;
         document.documentElement.dataset.animationsReady = "true";
         document.dispatchEvent(new Event(animationReadyEvent));
+    };
+
+    let animationsReadyScheduled = false;
+
+    const scheduleAnimationsReady = () => {
+        if (animationsReadyScheduled) return;
+        animationsReadyScheduled = true;
+
+        const fireReady = () => {
+            window.requestAnimationFrame(signalAnimationsReady);
+        };
+
+        if (reduceMotion) {
+            fireReady();
+            return;
+        }
+
+        window.setTimeout(() => {
+            if (typeof window.requestIdleCallback === "function") {
+                window.requestIdleCallback(fireReady, { timeout: 900 });
+                return;
+            }
+            fireReady();
+        }, 340);
     };
 
     const waitForWindowLoad = callback => {
@@ -81,28 +107,82 @@ document.addEventListener("DOMContentLoaded", () => {
         backgroundVideo.play().catch(() => {});
     };
 
-    if (!loader) {
+    let backgroundVideoInitialized = false;
+
+    const initializeBackgroundVideoOnce = () => {
+        if (backgroundVideoInitialized) return;
+        backgroundVideoInitialized = true;
         initializeBackgroundVideo();
+    };
+
+    const scheduleBackgroundVideoInitialization = () => {
+        if (backgroundVideoInitialized) return;
+
+        if (reduceMotion) {
+            initializeBackgroundVideoOnce();
+            return;
+        }
+
+        window.setTimeout(() => {
+            if (typeof window.requestIdleCallback === "function") {
+                window.requestIdleCallback(() => initializeBackgroundVideoOnce(), { timeout: 1200 });
+                return;
+            }
+            initializeBackgroundVideoOnce();
+        }, 420);
+    };
+
+    if (!loader) {
+        initializeBackgroundVideoOnce();
         waitForWindowLoad(signalAnimationsReady);
         return;
     }
 
-    initializeBackgroundVideo();
+    if (mainContent) {
+        mainContent.inert = true;
+        mainContent.setAttribute("aria-hidden", "true");
+    }
 
     let introStartedAt = performance.now();
 
+    const measureLoaderCopyWidth = (element, maxWidth) => {
+        if (!element) return 0;
+
+        const clone = element.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        clone.style.position = "fixed";
+        clone.style.left = "-9999px";
+        clone.style.top = "0";
+        clone.style.width = "auto";
+        clone.style.maxWidth = `${Math.max(0, Math.round(maxWidth))}px`;
+        clone.style.opacity = "1";
+        clone.style.visibility = "hidden";
+        clone.style.pointerEvents = "none";
+        clone.style.overflow = "visible";
+        clone.style.transform = "none";
+        clone.style.padding = "0";
+        clone.style.zIndex = "-1";
+        document.body.appendChild(clone);
+        const width = Math.ceil(clone.getBoundingClientRect().width);
+        clone.remove();
+        return width;
+    };
+
     const setupLoaderAnimation = () => {
-        if (!panel || !copy) {
-            document.body.classList.add("case-loader-animate");
-            introStartedAt = performance.now();
-            return;
+        if (loaderIconShell && copy) {
+            const iconWidth = Math.ceil(loaderIconShell.getBoundingClientRect().width);
+            const rootFontSize = Number.parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
+            const viewportWidth = window.innerWidth;
+            const gap = viewportWidth <= 720
+                ? clamp(viewportWidth * 0.028, 0.55 * rootFontSize, 0.9 * rootFontSize)
+                : clamp(viewportWidth * 0.024, 0.9 * rootFontSize, 1.4 * rootFontSize);
+            const availableCopyWidth = Math.max(160, viewportWidth - iconWidth - gap - (rootFontSize * 2));
+            const copyWidth = measureLoaderCopyWidth(copy, availableCopyWidth);
+
+            document.body.style.setProperty("--portguardian-loader-gap-active", `${Math.round(gap)}px`);
+            document.body.style.setProperty("--portguardian-loader-copy-width", `${copyWidth}px`);
         }
 
-        const gap = Number.parseFloat(window.getComputedStyle(panel).gap) || 0;
-        const copyWidth = copy.getBoundingClientRect().width;
-        const startOffset = (copyWidth + gap) / 2;
-
-        document.body.style.setProperty("--portguardian-loader-icon-start-offset", `${startOffset}px`);
         window.requestAnimationFrame(() => {
             introStartedAt = performance.now();
             document.body.classList.add("case-loader-animate");
@@ -114,9 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
         waitForImageReady(loaderIcon)
     ]).then(setupLoaderAnimation).catch(setupLoaderAnimation);
 
-    const cleanupDelay = reduceMotion ? 220 : 860;
-    const minimumVisibleMs = reduceMotion ? 240 : 2200;
-    const finalHoldMs = 1000;
+    const cleanupDelay = reduceMotion ? 180 : 760;
+    const minimumVisibleMs = reduceMotion ? 220 : 1650;
+    const finalHoldMs = reduceMotion ? 80 : 160;
     let completed = false;
 
     const finishLoader = () => {
@@ -130,12 +210,24 @@ document.addEventListener("DOMContentLoaded", () => {
             window.setTimeout(() => {
                 loader.classList.add("is-complete");
                 loader.setAttribute("aria-hidden", "true");
+                document.body.classList.add("case-loader-transitioning");
+
+                window.requestAnimationFrame(() => {
+                    if (mainContent) {
+                        mainContent.inert = false;
+                        mainContent.removeAttribute("aria-hidden");
+                    }
+                    document.body.classList.remove("case-loader-active");
+                    scheduleBackgroundVideoInitialization();
+                    scheduleAnimationsReady();
+                });
+
                 window.setTimeout(() => {
                     document.body.classList.remove("case-loader-animate");
-                    document.body.classList.remove("case-loader-active");
-                    document.body.style.removeProperty("--portguardian-loader-icon-start-offset");
+                    document.body.classList.remove("case-loader-transitioning");
+                    document.body.style.removeProperty("--portguardian-loader-gap-active");
+                    document.body.style.removeProperty("--portguardian-loader-copy-width");
                     loader.remove();
-                    window.requestAnimationFrame(signalAnimationsReady);
                 }, cleanupDelay);
             }, remaining);
         });

@@ -848,7 +848,7 @@ main {
     padding: 2px;
     background: conic-gradient(from var(--card-angle, 0deg), transparent 25%, var(--hero-glow-color) 50%, transparent 75%);
     animation: rotate-border 6s linear infinite;
-    transition: box-shadow 0.5s ease;
+    transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1), transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
 
     box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 20px -4px var(--hero-glow-color);
 }
@@ -904,6 +904,7 @@ main {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.06);
     position: relative;
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.08s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
 }
 
 .hero-image picture,
@@ -930,6 +931,37 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.hero-text>* {
+    transition: opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1), transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-text>:nth-child(1) {
+    transition-delay: 0.14s;
+}
+
+.hero-text>:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.hero-text>:nth-child(3) {
+    transition-delay: 0.26s;
+}
+
+.hero-text>:nth-child(4) {
+    transition-delay: 0.32s;
+}
+
+html.hero-reveal-pending body:not(.project-case-page) .hero-card {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0) scale(0.985);
+}
+
+html.hero-reveal-pending body:not(.project-case-page) .hero-image,
+html.hero-reveal-pending body:not(.project-case-page) .hero-text>* {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
 }
 
 @media (max-width: 700px) {
@@ -2930,14 +2962,22 @@ button:hover,
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     .featured-project,
     .featured-project-image img,
     .hero-card,
+    .hero-image,
+    .hero-text>*,
     .featured-project-arrow,
     .project-thumbnail,
     .project-thumbnail img {
         transition: none;
+    }
+
+    html.hero-reveal-pending body:not(.project-case-page) .hero-card,
+    html.hero-reveal-pending body:not(.project-case-page) .hero-image,
+    html.hero-reveal-pending body:not(.project-case-page) .hero-text>* {
+        opacity: 1;
+        transform: none;
     }
 }
 
