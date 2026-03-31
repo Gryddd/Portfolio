@@ -1135,33 +1135,35 @@ body.case-loader-active {
     overflow: hidden;
 }
 
+.project-case-page .main-nav,
+.project-case-page .mobile-menu-icon,
+.project-case-page .scroll-progress {
+    transition: opacity 0.34s ease, transform 0.34s ease;
+}
+
+.project-case-page.case-loader-active .main-nav,
+.project-case-page.case-loader-active .mobile-menu-icon,
+.project-case-page.case-loader-active .scroll-progress,
+.project-case-page.rose-loader-active .main-nav,
+.project-case-page.rose-loader-active .mobile-menu-icon,
+.project-case-page.rose-loader-active .scroll-progress {
+    opacity: 0;
+    transform: translateY(0.65rem);
+    pointer-events: none;
+}
+
+.project-case-page.case-loader-active main,
+.project-case-page.rose-loader-active main {
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .portguardian-case-page {
     transition: background 0.72s ease, color 0.4s ease;
 }
 
-.portguardian-case-page .main-nav,
-.portguardian-case-page .mobile-menu-icon,
-.portguardian-case-page .scroll-progress,
-.portguardian-case-page main {
-    transition:
-        opacity 0.82s cubic-bezier(0.19, 1, 0.22, 1),
-        transform 0.82s cubic-bezier(0.19, 1, 0.22, 1),
-        filter 0.82s ease;
-    will-change: opacity, transform, filter;
-}
-
 .portguardian-case-page.case-loader-active {
     background: var(--portguardian-loader-bg);
-}
-
-.portguardian-case-page.case-loader-active .main-nav,
-.portguardian-case-page.case-loader-active .mobile-menu-icon,
-.portguardian-case-page.case-loader-active .scroll-progress,
-.portguardian-case-page.case-loader-active main {
-    opacity: 0;
-    transform: translateY(1rem) scale(0.988);
-    filter: blur(12px);
-    pointer-events: none;
 }
 
 .rose-loader {
@@ -1198,19 +1200,22 @@ body.case-loader-active {
     gap: 0.85rem;
     width: min(100%, 44rem);
     text-align: center;
+    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1), filter 0.44s ease;
+    will-change: opacity, transform, filter;
 }
 
 .rose-loader-icon,
 .rose-loader-title,
 .rose-loader-tagline {
     opacity: 0;
+    animation: none;
 }
 
 .rose-loader-icon {
     width: clamp(104px, 11vw, 148px);
     height: auto;
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34));
-    animation: roseLoaderIcon 1.16s cubic-bezier(0.19, 1, 0.22, 1) 0.18s forwards;
+    transform: scale(0.88);
 }
 
 [data-theme="light"] .rose-loader-icon {
@@ -1232,7 +1237,6 @@ body.case-loader-active {
     color: var(--leagueskins-loader-text);
     transform: translateX(-2rem);
     white-space: nowrap;
-    animation: roseLoaderTitle 1.18s cubic-bezier(0.19, 1, 0.22, 1) 0.74s forwards;
 }
 
 .rose-loader-tagline {
@@ -1242,7 +1246,24 @@ body.case-loader-active {
     letter-spacing: 0.06em;
     color: var(--leagueskins-loader-muted);
     transform: translateX(-1.2rem) translateY(0.35rem);
+}
+
+.leagueskins-case-page.rose-loader-animate .rose-loader-icon {
+    animation: roseLoaderIcon 1.16s cubic-bezier(0.19, 1, 0.22, 1) 0.18s forwards;
+}
+
+.leagueskins-case-page.rose-loader-animate .rose-loader-title {
+    animation: roseLoaderTitle 1.18s cubic-bezier(0.19, 1, 0.22, 1) 0.74s forwards;
+}
+
+.leagueskins-case-page.rose-loader-animate .rose-loader-tagline {
     animation: roseLoaderTagline 0.96s ease 1.28s forwards;
+}
+
+.rose-loader.is-complete .rose-loader-panel {
+    opacity: 0;
+    transform: translateY(-0.45rem) scale(0.986);
+    filter: blur(8px);
 }
 
 @keyframes roseLoaderIcon {
@@ -1321,13 +1342,14 @@ body.case-loader-active {
 .case-loader-title,
 .case-loader-tagline {
     opacity: 0;
+    animation: none;
 }
 
 .case-loader-icon {
     width: clamp(88px, 10vw, 132px);
     height: auto;
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34));
-    animation: roseLoaderIcon 1.16s cubic-bezier(0.19, 1, 0.22, 1) 0.18s forwards;
+    transform: scale(0.88);
 }
 
 [data-theme="light"] .case-loader-icon {
@@ -1349,7 +1371,6 @@ body.case-loader-active {
     color: var(--portguardian-loader-text);
     transform: translateX(-2rem);
     white-space: normal;
-    animation: roseLoaderTitle 1.18s cubic-bezier(0.19, 1, 0.22, 1) 0.74s forwards;
 }
 
 .case-loader-title .case-brand-subtitle {
@@ -1367,7 +1388,6 @@ body.case-loader-active {
     letter-spacing: 0.06em;
     color: var(--portguardian-loader-muted);
     transform: translateX(-1.2rem) translateY(0.35rem);
-    animation: roseLoaderTagline 0.96s ease 1.28s forwards;
 }
 
 @keyframes portguardianLoaderIconSettle {

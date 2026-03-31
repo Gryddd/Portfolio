@@ -41,6 +41,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const backgroundVideo = document.getElementById('background-video');
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const animationReadyEvent = 'portfolio:ready';
+    const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
+
+    function signalAnimationsReady() {
+        if (document.documentElement.dataset.animationsReady === 'true') return;
+        document.documentElement.dataset.animationsReady = 'true';
+        document.dispatchEvent(new Event(animationReadyEvent));
+        if (typeof AOS !== 'undefined') {
+            window.requestAnimationFrame(() => AOS.refreshHard());
+        }
+    }
+
+    function waitForWindowLoad(callback) {
+        if (document.readyState === 'complete') {
+            callback();
+            return;
+        }
+
+        window.addEventListener('load', callback, { once: true });
+    }
+
+    function waitForFontsReady() {
+        if (!document.fonts?.ready) return Promise.resolve();
+        return document.fonts.ready.catch(() => {});
+    }
 
     function shouldEnableBackgroundVideo() {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -54,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const shouldEnable = shouldEnableBackgroundVideo();
         document.body.classList.toggle('background-video-disabled', !shouldEnable);
+        backgroundVideo.classList.remove('is-ready');
 
         if (!shouldEnable) {
             backgroundVideo.pause();
@@ -61,12 +87,23 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        const markVideoReady = () => {
+            backgroundVideo.classList.add('is-ready');
+        };
+
+        backgroundVideo.addEventListener('loadeddata', markVideoReady, { once: true });
+        backgroundVideo.addEventListener('canplay', markVideoReady, { once: true });
+
         if (!backgroundVideo.querySelector('source') && backgroundVideo.dataset.src) {
             const source = document.createElement('source');
             source.src = backgroundVideo.dataset.src;
             source.type = 'video/webm';
             backgroundVideo.appendChild(source);
             backgroundVideo.load();
+        }
+
+        if (backgroundVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            markVideoReady();
         }
 
         backgroundVideo.play().catch(() => {});
@@ -675,7 +712,7 @@ document.addEventListener("DOMContentLoaded", function () {
             disable: false,
             throttleDelay: 150,
             debounceDelay: 100,
-            startEvent: 'load',
+            startEvent: animationReadyEvent,
             disableMutationObserver: false
         });
     }
@@ -1280,16 +1317,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const preloaderBar = document.getElementById('preloader-bar');
     const preloaderPercent = document.getElementById('preloader-percent');
     if (preloader && preloaderBar && preloaderPercent) {
-        const dismissPreloader = () => {
-            preloaderBar.style.width = '100%';
-            preloaderPercent.textContent = '100%';
-            preloader.classList.add('hidden');
-            window.setTimeout(() => preloader.remove(), 320);
+        let progress = 0;
+        let isComplete = false;
+        let progressTimer;
+        const preloaderAssetsReady = waitForFontsReady();
+        const finalHoldMs = 1000;
+
+        const renderPreloader = (value) => {
+            const nextValue = Math.max(0, Math.min(100, Math.round(value)));
+            preloaderBar.style.width = `${nextValue}%`;
+            preloaderPercent.textContent = `${nextValue}%`;
         };
 
-        window.requestAnimationFrame(() => {
-            window.requestAnimationFrame(dismissPreloader);
+        const finishPreloader = () => {
+            if (isComplete) return;
+            isComplete = true;
+            window.clearInterval(progressTimer);
+            progress = 100;
+            renderPreloader(progress);
+            window.setTimeout(() => preloader.classList.add('hidden'), finalHoldMs + 260);
+            window.setTimeout(() => {
+                document.body.classList.remove('preloader-active');
+                preloader.remove();
+                window.requestAnimationFrame(signalAnimationsReady);
+            }, finalHoldMs + 900);
+        };
+
+        renderPreloader(progress);
+
+        progressTimer = window.setInterval(() => {
+            if (isComplete) return;
+            const remaining = 92 - progress;
+            const step = remaining > 48 ? 8 : remaining > 24 ? 5 : remaining > 10 ? 3 : 1;
+            progress = Math.min(92, progress + step);
+            renderPreloader(progress);
+        }, 90);
+
+        waitForWindowLoad(() => {
+            preloaderAssetsReady.finally(finishPreloader);
         });
+    } else if (!hasProjectLoader) {
+        waitForWindowLoad(signalAnimationsReady);
     }
 
 });

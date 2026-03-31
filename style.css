@@ -276,6 +276,29 @@ body.modal-open .mobile-menu-icon {
     pointer-events: none;
 }
 
+body.preloader-active {
+    overflow: hidden;
+}
+
+body:not(.project-case-page) .main-nav,
+body:not(.project-case-page) .mobile-menu-icon,
+body:not(.project-case-page) .scroll-progress {
+    transition: opacity 0.34s ease, transform 0.34s ease;
+}
+
+body.preloader-active .main-nav,
+body.preloader-active .mobile-menu-icon,
+body.preloader-active .scroll-progress {
+    opacity: 0;
+    transform: translateY(0.65rem);
+    pointer-events: none;
+}
+
+body.preloader-active main {
+    visibility: hidden;
+    pointer-events: none;
+}
+
 body.mobile-nav-open {
     position: fixed;
     inset: 0;
@@ -336,7 +359,13 @@ h4 {
     transform: none;
     z-index: 0;
     object-fit: cover;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#background-video.is-ready {
+    opacity: 1;
 }
 
 body.background-video-disabled #background-video {
@@ -350,9 +379,12 @@ body.background-video-disabled #background-video {
 }
 
 [data-theme="light"] #background-video {
-    opacity: 0.3;
     transform: scale(1.02);
     filter: saturate(0.58) brightness(1.22) contrast(0.78);
+}
+
+[data-theme="light"] #background-video.is-ready {
+    opacity: 0.3;
 }
 
 [data-theme="light"] .video-overlay {
