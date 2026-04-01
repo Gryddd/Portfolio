@@ -919,7 +919,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchGitHubStats() {
-        const CACHE_KEY = 'github_stats_cache_v4';
+        const CACHE_KEY = 'github_stats_cache_v6';
         const CACHE_DURATION = 3600000;
         const statsUrl = new URL('./data/github-stats.json', window.location.href).toString();
 
@@ -939,6 +939,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 && Number.isFinite(data.repos)
                 && typeof data.stars === 'number'
                 && Number.isFinite(data.stars)
+                && (data.pinnedRepoStars === undefined || (typeof data.pinnedRepoStars === 'number' && Number.isFinite(data.pinnedRepoStars)))
+                && (data.pinnedRepos === undefined || Array.isArray(data.pinnedRepos))
                 && Array.isArray(data.languages)
                 && data.languages.every(isValidLanguageEntry);
         }
@@ -984,6 +986,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 lastYearContributions: data.lastYearContributions,
                 repos: data.repos,
                 stars: data.stars,
+                pinnedRepoStars: data.pinnedRepoStars || 0,
                 languages: data.languages,
                 updatedAt: data.updatedAt || '',
                 dataSource: 'synced'
@@ -1092,13 +1095,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (statNumbers[1]) {
-                statNumbers[1].setAttribute('data-count', stats.repos);
+                statNumbers[1].setAttribute('data-count', stats.pinnedRepoStars || 0);
                 statNumbers[1].textContent = '0';
-            }
-
-            if (statNumbers[2]) {
-                statNumbers[2].setAttribute('data-count', stats.stars);
-                statNumbers[2].textContent = '0';
             }
 
             const languageBar = githubSection.querySelector('.language-bar');

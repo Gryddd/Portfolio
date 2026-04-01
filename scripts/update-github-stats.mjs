@@ -104,20 +104,133 @@ async function fetchLanguageBreakdown(repos) {
     return [];
   }
 
-  return Object.entries(totalsByLanguage)
+  const topLanguages = Object.entries(totalsByLanguage)
     .map(([name, bytes]) => ({
       name,
       percentage: Math.round((bytes / totalBytes) * 100)
     }))
     .sort((left, right) => right.percentage - left.percentage)
     .slice(0, 4);
+
+  const percentageTotal = topLanguages.reduce((sum, language) => sum + language.percentage, 0);
+  if (percentageTotal !== 100 && topLanguages.length > 0) {
+    topLanguages[0].percentage += 100 - percentageTotal;
+  }
+
+  return topLanguages;
+}
+
+async function fetchGitHubProfileHtml() {
+  const response = await fetch(`https://github.com/${username}`, {
+    headers: {
+      'User-Agent': 'portfolio-github-stats-sync'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to load GitHub profile page: ${response.status} ${response.statusText}`);
+  }
+
+  return response.text();
+}
+
+function parsePinnedReposFromProfileHtml(html) {
+  const pinnedSectionMatch = html.match(/<h2 class="f4 mb-2 text-normal">\s*Pinned[\s\S]*?<ol[\s\S]*?>([\s\S]*?)<\/ol>/i);
+  if (!pinnedSectionMatch) {
+    throw new Error('Could not locate the pinned repositories section.');
+  }
+
+  const pinnedItems = [...pinnedSectionMatch[1].matchAll(/<li[\s\S]*?pinned-item-list-item[\s\S]*?<\/li>/gi)];
+  if (pinnedItems.length === 0) {
+    throw new Error('Pinned repositories section was empty.');
+  }
+
+  const pinnedRepos = [];
+  let pinnedRepoStars = 0;
+
+  for (const match of pinnedItems) {
+    const itemHtml = match[0];
+    const repoMatch = itemHtml.match(/href="\/([^"<>]+\/[^"<>]+)"/i);
+    const starMatch = itemHtml.match(/href="\/[^"<>]+\/stargazers"[\s\S]*?<\/svg>\s*([\d,]+)\s*<\/a>/i);
+
+    if (!repoMatch) {
+      continue;
+    }
+
+    pinnedRepos.push(repoMatch[1]);
+
+    if (starMatch) {
+      pinnedRepoStars += Number.parseInt(starMatch[1].replace(/,/g, ''), 10);
+    }
+  }
+
+  if (pinnedRepos.length === 0) {
+    throw new Error('Could not parse pinned repository names from the profile page.');
+  }
+
+  return { pinnedRepoStars, pinnedRepos };
+}
+
+async function fetchPinnedRepos() {
+  if (!token) {
+    return parsePinnedReposFromProfileHtml(await fetchGitHubProfileHtml());
+  }
+
+  const graphqlQuery = {
+    query: `
+      query {
+        user(login: "${username}") {
+          pinnedItems(first: 6, types: REPOSITORY) {
+            nodes {
+              ... on Repository {
+                name
+                stargazerCount
+              }
+            }
+          }
+        }
+      }
+    `
+  };
+
+  try {
+    const response = await fetch('https://api.github.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'portfolio-github-stats-sync'
+      },
+      body: JSON.stringify(graphqlQuery)
+    });
+
+    if (!response.ok) {
+      throw new Error(`GraphQL request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const result = await response.json();
+
+    if (result.errors) {
+      throw new Error(`GraphQL errors: ${JSON.stringify(result.errors)}`);
+    }
+
+    const pinnedItems = result?.data?.user?.pinnedItems?.nodes || [];
+    const pinnedRepos = pinnedItems.map(repo => repo.name);
+    const pinnedRepoStars = pinnedItems.reduce((sum, repo) => sum + (repo.stargazerCount || 0), 0);
+
+    return { pinnedRepoStars, pinnedRepos };
+  } catch (error) {
+    console.warn('Failed to fetch pinned repos through GraphQL, falling back to the public profile page:', error.message);
+    return parsePinnedReposFromProfileHtml(await fetchGitHubProfileHtml());
+  }
 }
 
 async function main() {
-  const [user, repos, lastYearContributions] = await Promise.all([
+  const [user, repos, lastYearContributions, pinnedData] = await Promise.all([
     fetchJson(`${apiBaseUrl}/users/${username}`),
     fetchAllOwnedRepos(),
-    fetchLastYearContributionCount()
+    fetchLastYearContributionCount(),
+    fetchPinnedRepos()
   ]);
 
   const stars = repos.reduce((sum, repo) => sum + (Number(repo?.stargazers_count) || 0), 0);
@@ -128,20 +241,23 @@ async function main() {
     lastYearContributions,
     repos: Number(user?.public_repos) || 0,
     stars,
+    pinnedRepoStars: pinnedData.pinnedRepoStars,
+    pinnedRepos: pinnedData.pinnedRepos,
     languages,
     updatedAt: new Date().toISOString(),
     sources: {
       profile: `https://github.com/${username}`,
       contributions: contributionUrl,
       apiUser: `${apiBaseUrl}/users/${username}`,
-      apiRepos: `${apiBaseUrl}/users/${username}/repos?type=owner`
+      apiRepos: `${apiBaseUrl}/users/${username}/repos?type=owner`,
+      pinnedProfile: `https://github.com/${username}`
     }
   };
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
 
-  console.log(`Synced GitHub stats for ${username}: ${lastYearContributions} contributions, ${payload.repos} repos, ${stars} stars.`);
+  console.log(`Synced GitHub stats for ${username}: ${lastYearContributions} contributions, ${payload.repos} repos, ${stars} stars, ${pinnedData.pinnedRepoStars} pinned repo stars.`);
 }
 
 main().catch((error) => {

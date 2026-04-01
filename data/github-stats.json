@@ -3,10 +3,16 @@
   "lastYearContributions": 569,
   "repos": 3,
   "stars": 3,
+  "pinnedRepoStars": 156,
+  "pinnedRepos": [
+    "Alban1911/LeagueSkins",
+    "Gryddd/Portfolio",
+    "Gryddd/PortGuardian"
+  ],
   "languages": [
     {
       "name": "HTML",
-      "percentage": 39
+      "percentage": 41
     },
     {
       "name": "JavaScript",
@@ -21,11 +27,12 @@
       "percentage": 3
     }
   ],
-  "updatedAt": "2026-04-01T06:04:51.648Z",
+  "updatedAt": "2026-04-01T14:14:09.275Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
     "apiUser": "https://api.github.com/users/Gryddd",
-    "apiRepos": "https://api.github.com/users/Gryddd/repos?type=owner"
+    "apiRepos": "https://api.github.com/users/Gryddd/repos?type=owner",
+    "pinnedProfile": "https://github.com/Gryddd"
   }
 }
