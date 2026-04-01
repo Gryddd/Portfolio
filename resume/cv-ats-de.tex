@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[top=0.34in,bottom=0.30in,left=0.42in,right=0.42in]{geometry}
+\usepackage[top=0.38in,bottom=0.38in,left=0.46in,right=0.46in]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage{fontspec}
 \usepackage{xcolor}
@@ -8,10 +8,10 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{tikz}
+\usepackage{microtype}
 \usepackage{titlesec}
 
 \definecolor{linkblue}{HTML}{0B57D0}
-\definecolor{metagray}{HTML}{5A5A5A}
 \hypersetup{
   colorlinks=true,
   urlcolor=linkblue,
@@ -27,10 +27,10 @@
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.15em plus 0.04em minus 0.02em}
-\setlist[itemize]{leftmargin=1.08em, itemsep=0.11em, topsep=0.12em plus 0.04em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.02em plus 0.01em minus 0.01em}}
+\setlength{\parskip}{0.14em plus 0.04em minus 0.02em}
+\setlist[itemize]{leftmargin=1.08em, itemsep=0.12em, topsep=0.14em plus 0.04em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.04em plus 0.02em minus 0.01em}}
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.72em plus 0.10em minus 0.03em}{0.40em plus 0.05em minus 0.01em}
+\titlespacing*{\section}{0pt}{0.68em plus 0.12em minus 0.03em}{0.22em plus 0.04em minus 0.01em}
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont[
@@ -43,15 +43,14 @@
 ]{Arial}
 
 \newcommand{\cvheading}[4]{
-  \textbf{#1} \hfill \textcolor{metagray}{#2} \\[0.05em]
-  \textit{#3} \hfill \textcolor{metagray}{\textit{#4}}
+  \textbf{#1} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\cvheadinglink}[5]{
-  \textbf{\href{#5}{#1}} \hfill \textcolor{metagray}{#2} \\[0.05em]
-  \textit{#3} \hfill \textcolor{metagray}{\textit{#4}}
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
-\newcommand{\maincontentoffset}{0.01\textheight}
 \newcommand{\roundphoto}[1]{%
   \begin{tikzpicture}
     \clip (0,0) circle (0.975cm);
@@ -62,66 +61,65 @@
 \begin{document}
 
 \noindent
-\vspace*{-0.34cm}
-\begin{minipage}[c]{0.80\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.60em]
+\begin{minipage}[t]{0.80\textwidth}
+\vspace*{-0.58cm}
+{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
 \small
 Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.12em]
 +212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
 \contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
 \end{minipage}
 \hfill
-\begin{minipage}[c]{0.16\textwidth}
+\begin{minipage}[t]{0.16\textwidth}
 \raggedleft
-\roundphoto{cv-photo.jpg}
+\raisebox{-1.04cm}[0pt][0pt]{\roundphoto{cv-photo.jpg}}
 \end{minipage}
-\vspace{0.44em}
-\vspace*{\maincontentoffset}
+\vspace{0.06em}
 
 \section*{Bildungsweg}
-\cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{09/2024 -- 07/2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
+\cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{Sept. 2024 -- Juli 2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
 \begin{itemize}
   \item Schwerpunkte in Windows Server, Linux-Administration, TCP/IP, Routing und Switching, DNS/DHCP, Active Directory, Virtualisierung und grundlegender IT-Sicherheit.
 \end{itemize}
 
-\cvheading{Klinikum Hann. Münden}{10/2023 -- 02/2024}{Sechsmonatige Orientierungsphase in der Pflegeausbildung}{Hann. Münden, Deutschland}
+\cvheading{Klinikum Hann. Münden}{Okt. 2023 -- Feb. 2024}{Sechsmonatige Orientierungsphase in der Pflegeausbildung}{Hann. Münden, Deutschland}
 \begin{itemize}
   \item Vertiefung der Deutschkenntnisse und Einblick in die deutsche Arbeitskultur.
 \end{itemize}
 
-\cvheading{Interdisziplinäre Fakultät Taza}{09/2021 -- 06/2022}{Grundstudium Mathematik und Informatik}{Taza, Marokko}
+\cvheading{Interdisziplinäre Fakultät Taza}{Sept. 2021 -- Juni 2022}{Grundstudium Mathematik und Informatik}{Taza, Marokko}
 \begin{itemize}
   \item Anwendung mathematischer Logik zur Lösung von Problemen in Algorithmen und Informatik.
 \end{itemize}
 
-\cvheading{Weiterführende Schule Al Falah 2}{09/2020 -- 06/2021}{Sekundarschulabschluss (Baccalauréat), Schwerpunkt Physik}{Taza, Marokko}
+\cvheading{Weiterführende Schule Al Falah 2}{Sept. 2020 -- Juni 2021}{Sekundarschulabschluss (Baccalauréat), Schwerpunkt Physik}{Taza, Marokko}
 \begin{itemize}
   \item Grundlagen in Mathematik und Physik, wichtige Kompetenzen für IT- und Netzwerktechnik.
 \end{itemize}
 
 \section*{Praktische Erfahrungen}
-\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{04/2026 -- 05/2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
+\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{Apr. 2026 -- Mai 2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
 \begin{itemize}
   \item Unterstützte Serveroptimierung und Monitoring-Maßnahmen, die die Uptime der Kerninfrastruktur um 20\% erhöhten.
   \item Half bei der Optimierung von Routineabläufen und Ressourcennutzung, was die Betriebskosten um 15\% senkte.
 \end{itemize}
 
-\cvheading{IQRA Société}{01/2026 -- 02/2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
+\cvheading{IQRA Société}{Jan. 2026 -- Feb. 2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
 \begin{itemize}
   \item Fernüberwachung und Administration von Netzwerksystemen und -diensten über SSH und RDP in einer Unternehmensumgebung.
 \end{itemize}
 
-\cvheading{Click Service}{06/2025 -- 09/2025}{Praktikant IT-Support}{Taza, Marokko}
+\cvheading{Click Service}{Juni 2025 -- Sept. 2025}{Praktikant IT-Support}{Taza, Marokko}
 \begin{itemize}
   \item Software- und Betriebssysteminstallationen mit 98\% Erstlösungsquote, 20\% höherer Inventargenauigkeit, über 10 eingerichteten oder gewarteten lokalen Netzwerken und 25\% weniger Nachsorge-Supportanfragen.
 \end{itemize}
 
-\cvheading{Delegation der öffentlichen Gesundheit}{10/2022 -- 12/2022}{Praktikant Systemadministration}{Taza, Marokko}
+\cvheading{Delegation der öffentlichen Gesundheit}{Okt. 2022 -- Dez. 2022}{Praktikant Systemadministration}{Taza, Marokko}
 \begin{itemize}
   \item Mitwirkung an Hyper-V-Deployments, die die Bereitstellungszeit für Testumgebungen um 30\% verkürzten, sowie Bearbeitung von über 50 Active-Directory-Anfragen.
 \end{itemize}
 
-\cvheading{Seniorenresidenz Inc.}{05/2022 -- 07/2022}{Praktikant IT-Beratung}{Taza, Marokko}
+\cvheading{Seniorenresidenz Inc.}{Mai 2022 -- Juli 2022}{Praktikant IT-Beratung}{Taza, Marokko}
 \begin{itemize}
   \item Installation und Konfiguration von Hardware und Netzwerkgeräten.
 \end{itemize}
