@@ -4,24 +4,32 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>PortGuardian Enterprise | Walid Gourideche</title>
-    <meta content="Technical case study for PortGuardian with the actual lab topology, host roles, server IP, simple detection and response flows, and project validation notes." name="description"/>
+    <meta content="Technical case study for PortGuardian with the actual lab topology, host roles, server IP, simple detection and response flows, and project validation notes." id="meta-description" name="description"/>
     <meta content="Walid Gourideche" name="author"/>
     <meta content="PortGuardian, Splunk, syslog, WMI, Windows Server 2019, Windows 10, USB threat detection, endpoint isolation" name="keywords"/>
-    <link href="https://grydsh.dev/portguardian.html" rel="canonical"/>
-    <meta content="PortGuardian Enterprise | Walid Gourideche" property="og:title"/>
-    <meta content="A simplified PortGuardian case study focused on the real lab topology, telemetry path, and response flow." property="og:description"/>
-    <meta content="https://grydsh.dev/images/portguardian_infra.png" property="og:image"/>
-    <meta content="https://grydsh.dev/portguardian.html" property="og:url"/>
+    <link href="https://grydsh.dev/portguardian.html" id="meta-canonical" rel="canonical"/>
+    <link href="https://grydsh.dev/portguardian.html?lang=de" rel="alternate" hreflang="de"/>
+    <link href="https://grydsh.dev/portguardian.html?lang=en" rel="alternate" hreflang="en"/>
+    <link href="https://grydsh.dev/portguardian.html?lang=fr" rel="alternate" hreflang="fr"/>
+    <link href="https://grydsh.dev/portguardian.html" rel="alternate" hreflang="x-default"/>
+    <meta content="PortGuardian Enterprise | Walid Gourideche" id="meta-og-title" property="og:title"/>
+    <meta content="A simplified PortGuardian case study focused on the real lab topology, telemetry path, and response flow." id="meta-og-description" property="og:description"/>
+    <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-og-image" property="og:image"/>
+    <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-og-image-secure" property="og:image:secure_url"/>
+    <meta content="image/png" id="meta-og-image-type" property="og:image:type"/>
+    <meta content="PortGuardian infrastructure diagram preview" id="meta-og-image-alt" property="og:image:alt"/>
+    <meta content="https://grydsh.dev/portguardian.html" id="meta-og-url" property="og:url"/>
     <meta content="article" property="og:type"/>
     <meta content="Walid Gourideche" property="og:site_name"/>
-    <meta content="en_US" property="og:locale"/>
+    <meta content="en_US" id="meta-og-locale" property="og:locale"/>
     <meta name="theme-color" content="#000000" id="theme-color-meta">
     <meta content="summary_large_image" name="twitter:card"/>
     <meta content="https://grydsh.dev" property="twitter:domain"/>
-    <meta content="https://grydsh.dev/portguardian.html" property="twitter:url"/>
-    <meta content="PortGuardian Enterprise | Walid Gourideche" name="twitter:title"/>
-    <meta content="Real lab topology and technical flow for PortGuardian." name="twitter:description"/>
-    <meta content="https://grydsh.dev/images/portguardian_infra.png" name="twitter:image"/>
+    <meta content="https://grydsh.dev/portguardian.html" id="meta-twitter-url" property="twitter:url"/>
+    <meta content="PortGuardian Enterprise | Walid Gourideche" id="meta-twitter-title" name="twitter:title"/>
+    <meta content="Real lab topology and technical flow for PortGuardian." id="meta-twitter-description" name="twitter:description"/>
+    <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-twitter-image" name="twitter:image"/>
+    <meta content="PortGuardian infrastructure diagram preview" id="meta-twitter-image-alt" name="twitter:image:alt"/>
     <meta name="robots" content="index, follow, max-image-preview:large"/>
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"/>
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
@@ -32,7 +40,29 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <link href="project-page.css" rel="stylesheet">
-    <script type="application/ld+json">
+    <script id="page-seo-config" type="application/json">
+    {
+      "pagePath": "/portguardian.html",
+      "title": {
+        "de": "PortGuardian Enterprise Fallstudie | Walid Gourideche",
+        "en": "PortGuardian Enterprise Case Study | Walid Gourideche",
+        "fr": "Etude de cas PortGuardian Enterprise | Walid Gourideche"
+      },
+      "description": {
+        "de": "Technische Fallstudie zu PortGuardian mit Labortopologie, Endpoint-Erkennungsablauf, Splunk-Telemetriepfad und Validierungsergebnissen.",
+        "en": "Technical case study for PortGuardian covering the lab topology, endpoint detection flow, Splunk telemetry path, and validation results.",
+        "fr": "Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation."
+      },
+      "image": "https://grydsh.dev/images/portguardian_infra.png?v=20260401",
+      "imageType": "image/png",
+      "imageAlt": {
+        "de": "Vorschaubild der PortGuardian-Infrastruktur",
+        "en": "PortGuardian infrastructure preview image",
+        "fr": "Image d'aperçu de l'infrastructure PortGuardian"
+      }
+    }
+    </script>
+    <script id="page-structured-data" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -41,7 +71,7 @@
       "operatingSystem": "Windows",
       "description": "A Windows endpoint protection project with real-time USB monitoring, local threat scoring, automated containment, and Splunk telemetry.",
       "url": "https://grydsh.dev/portguardian.html",
-      "image": "https://grydsh.dev/images/portguardian_infra.png",
+      "image": "https://grydsh.dev/images/portguardian_infra.png?v=20260401",
       "creator": {
         "@type": "Person",
         "name": "Walid Gourideche",
@@ -49,6 +79,7 @@
       }
     }
     </script>
+    <script src="seo.js"></script>
 </head>
 <body class="project-case-page portguardian-case-page case-loader-active">
 
@@ -677,7 +708,7 @@
 
 <footer class="main-footer project-case-footer">
   <div class="tech-stack-section" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
-    <div class="tech-stack-card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-easing="ease-out-cubic">
+    <div class="tech-stack-card">
       <h3 class="lang" data-de="Erstellt mit" data-en="Built with" data-fr="Créé avec">Built with</h3>
       <div class="tech-scroll-container">
         <div class="tech-scroll-wrapper">
@@ -762,7 +793,7 @@
       </div>
     </div>
   </div>
-  <div class="footer-legal" data-aos="fade-up" data-aos-duration="500" data-aos-delay="200" data-aos-easing="ease-out-cubic">
+  <div class="footer-legal" data-aos="fade-up" data-aos-duration="500" data-aos-easing="ease-out-cubic">
     <p>© <span id="copyright-year">2025</span> Walid Gourideche.
       <span class="lang" data-de="Alle Rechte vorbehalten." data-en="All Rights Reserved." data-fr="Tous droits réservés.">All Rights Reserved.</span>
     </p>

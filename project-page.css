@@ -1670,7 +1670,6 @@ body.case-loader-transitioning {
 .portguardian-case-page .validation-layout,
 .portguardian-case-page .tech-stack-section,
 .portguardian-case-page .footer-legal {
-    content-visibility: auto;
     contain: layout paint style;
 }
 
@@ -1709,6 +1708,40 @@ body.case-loader-transitioning {
     width: clamp(102px, 12vw, 130px);
     height: clamp(102px, 12vw, 130px);
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
+}
+
+.portguardian-case-page #topology,
+.portguardian-case-page #flows {
+    display: grid;
+    gap: clamp(1.1rem, 2.5vw, 1.9rem);
+    align-content: start;
+}
+
+.portguardian-case-page #topology > h2,
+.portguardian-case-page #flows > h2 {
+    margin-bottom: 0;
+}
+
+.portguardian-case-page .topology-visual-shell,
+.portguardian-case-page .schema-visual-shell {
+    padding: clamp(2.05rem, 4.5vw, 3.1rem);
+    border-radius: 34px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.048), rgba(255, 255, 255, 0.014)),
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 42%),
+        var(--case-shell-bg);
+}
+
+.portguardian-case-page .topology-svg,
+.portguardian-case-page .schema-svg {
+    padding: clamp(0.9rem, 1.9vw, 1.55rem);
+}
+
+.portguardian-case-page .topology-caption,
+.portguardian-case-page .schema-caption {
+    max-width: 54rem;
+    margin: 0 auto;
+    padding-inline: clamp(0.45rem, 1.2vw, 1rem);
 }
 
 .portguardian-case-page .case-brand-title {
@@ -2114,6 +2147,27 @@ body.case-loader-transitioning {
 
     .portguardian-case-page .case-brand-title .case-brand-subtitle {
         font-size: 0.52em;
+    }
+
+    .portguardian-case-page #topology,
+    .portguardian-case-page #flows {
+        gap: 1rem;
+    }
+
+    .portguardian-case-page .topology-visual-shell,
+    .portguardian-case-page .schema-visual-shell {
+        padding: 1.25rem;
+        border-radius: 24px;
+    }
+
+    .portguardian-case-page .topology-svg,
+    .portguardian-case-page .schema-svg {
+        padding: 0.72rem;
+    }
+
+    .portguardian-case-page .topology-caption,
+    .portguardian-case-page .schema-caption {
+        padding-inline: 0.15rem;
     }
 
     .leagueskins-feature-grid,

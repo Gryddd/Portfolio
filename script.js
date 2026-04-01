@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mainHeroCard = document.querySelector('body:not(.project-case-page) .hero-card');
+    const isPortGuardianPage = document.body.classList.contains('portguardian-case-page');
 
     if (mainHeroCard && !prefersReducedMotion) {
         document.documentElement.classList.add('hero-reveal-pending');
@@ -219,9 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             fr: "Rôle de Mainteneur Open Source"
                         },
                         text: {
-                            de: "Ich verwalte die Asset-Datenbank für 'Rose', eine Anwendung mit über 10K täglichen Nutzern weltweit. Meine Rolle ist entscheidend für die Systemstabilität, da ich sicherstelle, dass proprietäre Spieldaten korrekt validiert, strukturiert und bereitgestellt werden. Ich fungiere als Schnittstelle zwischen den Kernentwicklern und der Community.",
-                            en: "I manage the asset database for 'Rose', an application with over 10K daily users worldwide. My role is critical for system stability, ensuring proprietary game data is correctly validated, structured, and deployed. I act as the technical bridge between core developers and the community.",
-                            fr: "Je gère la base de données d'actifs pour 'Rose', une application avec plus de 10K utilisateurs quotidiens dans le monde. Mon rôle est crucial pour la stabilité du système, assurant que les données propriétaires du jeu sont correctement validées, structurées et déployées."
+                            de: "Ich pflege LeagueSkins/ROSE für ein Open-Source-Ökosystem mit über 10K Nutzern und mehr als 100K Downloads weltweit. Meine Rolle ist entscheidend für die Systemstabilität, da proprietäre Spieldaten korrekt validiert, strukturiert und für Releases bereitgestellt werden.",
+                            en: "I maintain LeagueSkins/ROSE for an open-source ecosystem with over 10K users and more than 100K downloads worldwide. My role is critical for stability, ensuring proprietary game data is correctly validated, structured, and prepared for release.",
+                            fr: "Je maintiens LeagueSkins/ROSE pour un écosystème open source comptant plus de 10K utilisateurs et plus de 100K téléchargements dans le monde. Mon rôle est clé pour la stabilité, en veillant à ce que les données propriétaires du jeu soient validées, structurées et prêtes pour la publication."
                         }
                     },
                     {
@@ -353,9 +354,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 fr: "LeagueSkins/ROSE"
             },
             desc: {
-                de: "Wartung der Asset-Datenbank für eine Open-Source-Anwendung mit 10K+ täglichen Nutzern weltweit. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung.",
-                en: "Maintained the asset database for an open-source application with 10K+ daily users worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership.",
-                fr: "Maintenance de la base de données d'actifs pour une application open-source avec 10K+ utilisateurs quotidiens dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA."
+                de: "LeagueSkins/ROSE für ein Open-Source-Ökosystem mit 10K+ Nutzern und mehr als 100K Downloads weltweit gepflegt. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung.",
+                en: "Maintained LeagueSkins/ROSE for an open-source ecosystem with 10K+ users and more than 100K downloads worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership.",
+                fr: "Maintenance de LeagueSkins/ROSE pour un écosystème open source avec 10K+ utilisateurs et plus de 100K téléchargements dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA."
             },
             buttons: [
                 { type: "link", url: "leagueskins.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
@@ -735,6 +736,9 @@ document.addEventListener("DOMContentLoaded", function () {
             syncLanguageUrl(currentLang);
         }
         document.documentElement.lang = currentLang;
+        if (window.PortfolioSeo?.applyLocalizedSeo) {
+            window.PortfolioSeo.applyLocalizedSeo(currentLang);
+        }
         document.querySelectorAll(".lang").forEach(el => {
             if (el.dataset[currentLang]) el.innerHTML = el.dataset[currentLang];
         });
@@ -900,15 +904,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (typeof AOS !== 'undefined') {
         AOS.init({
-            duration: 400,
-            easing: 'ease',
+            duration: isPortGuardianPage ? 440 : 400,
+            easing: isPortGuardianPage ? 'ease-out-cubic' : 'ease',
             once: true,
-            offset: 50,
+            offset: isPortGuardianPage ? 18 : 50,
             delay: 0,
             anchorPlacement: 'top-bottom',
             disable: false,
-            throttleDelay: 150,
-            debounceDelay: 100,
+            throttleDelay: isPortGuardianPage ? 70 : 150,
+            debounceDelay: isPortGuardianPage ? 40 : 100,
             startEvent: animationReadyEvent,
             disableMutationObserver: false
         });

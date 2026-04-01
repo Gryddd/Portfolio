@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.documentElement.dataset.animationsReady === "true") return;
         document.documentElement.dataset.animationsReady = "true";
         document.dispatchEvent(new Event(animationReadyEvent));
+        if (typeof window.AOS !== "undefined") {
+            window.requestAnimationFrame(() => window.AOS.refreshHard());
+        }
     };
 
     let animationsReadyScheduled = false;
