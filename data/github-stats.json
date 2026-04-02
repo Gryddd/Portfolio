@@ -1,13 +1,13 @@
 {
   "username": "Gryddd",
-  "lastYearContributions": 569,
+  "lastYearContributions": 571,
   "repos": 3,
   "stars": 3,
-  "pinnedRepoStars": 156,
+  "pinnedRepoStars": 157,
   "pinnedRepos": [
-    "Alban1911/LeagueSkins",
-    "Gryddd/Portfolio",
-    "Gryddd/PortGuardian"
+    "LeagueSkins",
+    "Portfolio",
+    "PortGuardian"
   ],
   "languages": [
     {
@@ -27,7 +27,7 @@
       "percentage": 3
     }
   ],
-  "updatedAt": "2026-04-01T14:14:09.275Z",
+  "updatedAt": "2026-04-02T05:51:35.055Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
