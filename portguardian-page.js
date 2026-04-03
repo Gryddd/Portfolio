@@ -197,9 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
         waitForImageReady(loaderIcon)
     ]).then(setupLoaderAnimation).catch(setupLoaderAnimation);
 
-    const cleanupDelay = reduceMotion ? 120 : 260;
-    const minimumVisibleMs = reduceMotion ? 120 : 420;
-    const finalHoldMs = reduceMotion ? 20 : 60;
+    const cleanupDelay = reduceMotion ? 180 : 760;
+    const minimumVisibleMs = reduceMotion ? 220 : 1650;
+    const finalHoldMs = reduceMotion ? 80 : 160;
     let completed = false;
 
     const finishLoader = () => {
@@ -236,8 +236,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    Promise.race([
-        new Promise(resolve => waitForWindowLoad(resolve)),
-        new Promise(resolve => window.setTimeout(resolve, reduceMotion ? 120 : 240))
-    ]).then(finishLoader);
+    waitForWindowLoad(finishLoader);
 });

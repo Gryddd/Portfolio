@@ -1489,12 +1489,39 @@ body.case-loader-transitioning {
 }
 
 .leagueskins-hero-media {
-    display: none;
+    display: block;
     background: none;
+    transition: background 0.6s ease;
+    backface-visibility: hidden;
 }
 
 [data-theme="light"] .leagueskins-hero-media {
     background: none;
+}
+
+.leagueskins-case-page .project-case-background-video {
+    opacity: 0.72;
+    transform: scale(1.03);
+    filter: saturate(0.86) brightness(0.54) contrast(1.06);
+    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    backface-visibility: hidden;
+}
+
+.leagueskins-case-page .project-case-hero-media .video-overlay {
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
+    transition: background 0.6s ease;
+}
+
+[data-theme="light"] .leagueskins-case-page .project-case-background-video {
+    opacity: 0.3;
+    transform: scale(1.02);
+    filter: saturate(0.58) brightness(1.22) contrast(0.78);
+}
+
+[data-theme="light"] .leagueskins-case-page .project-case-hero-media .video-overlay {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(243, 247, 250, 0.66) 58%, rgba(238, 242, 246, 0.94) 100%);
 }
 
 .leagueskins-hero-brand {

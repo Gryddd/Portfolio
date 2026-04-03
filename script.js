@@ -447,10 +447,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}"
                             data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
                     }
-                    const buttonHref = /^(https?:|mailto:|tel:)/i.test(btn.url)
+                    const isExternalLink = /^(https?:|mailto:|tel:)/i.test(btn.url);
+                    const buttonHref = isExternalLink
                         ? btn.url
                         : getLocalizedPageUrl(btn.url, currentLang);
-                    return `<a href="${buttonHref}" ${buttonHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}
+                    return `<a href="${buttonHref}" ${isExternalLink ? 'target="_blank" rel="noopener noreferrer"' : 'target="_self"'}
                         class="submit-btn ${btn.secondary ? 'submit-btn-secondary' : ''} lang"
                         data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</a>`;
                 }).join('');

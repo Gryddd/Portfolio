@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const loader = document.getElementById("rose-loader");
     const loaderIcon = loader?.querySelector(".rose-loader-icon");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const backgroundVideo = document.getElementById("leagueskins-background-video");
     const numberFormatter = new Intl.NumberFormat("en-US");
     const animationReadyEvent = "portfolio:ready";
 
@@ -9,6 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.documentElement.dataset.animationsReady === "true") return;
         document.documentElement.dataset.animationsReady = "true";
         document.dispatchEvent(new Event(animationReadyEvent));
+        if (typeof window.AOS !== "undefined") {
+            window.requestAnimationFrame(() => window.AOS.refreshHard());
+        }
     };
 
     const waitForWindowLoad = callback => {
@@ -48,10 +53,65 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
+    const shouldEnableBackgroundVideo = () => {
+        const saveData = Boolean(connection?.saveData);
+        const slowConnection = typeof connection?.effectiveType === "string" && /(2g|3g)/i.test(connection.effectiveType);
+        return !reduceMotion && !saveData && !slowConnection;
+    };
+
+    const initializeBackgroundVideo = () => {
+        if (!backgroundVideo) return;
+
+        const shouldEnable = shouldEnableBackgroundVideo();
+        document.body.classList.toggle("project-background-video-disabled", !shouldEnable);
+
+        if (!shouldEnable) {
+            backgroundVideo.pause();
+            backgroundVideo.innerHTML = "";
+            backgroundVideo.load();
+            return;
+        }
+
+        if (!backgroundVideo.querySelector("source") && backgroundVideo.dataset.src) {
+            const source = document.createElement("source");
+            source.src = backgroundVideo.dataset.src;
+            source.type = "video/webm";
+            backgroundVideo.appendChild(source);
+            backgroundVideo.load();
+        }
+
+        backgroundVideo.play().catch(() => {});
+    };
+
+    let backgroundVideoInitialized = false;
+
+    const initializeBackgroundVideoOnce = () => {
+        if (backgroundVideoInitialized) return;
+        backgroundVideoInitialized = true;
+        initializeBackgroundVideo();
+    };
+
+    const scheduleBackgroundVideoInitialization = () => {
+        if (backgroundVideoInitialized) return;
+
+        if (reduceMotion) {
+            initializeBackgroundVideoOnce();
+            return;
+        }
+
+        window.setTimeout(() => {
+            if (typeof window.requestIdleCallback === "function") {
+                window.requestIdleCallback(() => initializeBackgroundVideoOnce(), { timeout: 1200 });
+                return;
+            }
+            initializeBackgroundVideoOnce();
+        }, 420);
+    };
+
     if (loader) {
         let introStartedAt = performance.now();
-        const minimumVisibleMs = reduceMotion ? 120 : 420;
-        const finalHoldMs = reduceMotion ? 20 : 80;
+        const minimumVisibleMs = reduceMotion ? 260 : 2300;
+        const finalHoldMs = 1000;
         let completed = false;
 
         const loaderIntroReady = Promise.all([
@@ -83,18 +143,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.setTimeout(() => {
                         document.body.classList.remove("rose-loader-animate");
                         document.body.classList.remove("rose-loader-active");
+                        scheduleBackgroundVideoInitialization();
                         loader.remove();
                         window.requestAnimationFrame(signalAnimationsReady);
-                    }, reduceMotion ? 120 : 260);
+                    }, 720);
                 }, remaining);
             });
         };
 
-        Promise.race([
-            new Promise(resolve => waitForWindowLoad(resolve)),
-            new Promise(resolve => window.setTimeout(resolve, reduceMotion ? 120 : 240))
-        ]).then(finishLoader);
+        waitForWindowLoad(finishLoader);
     } else {
+        initializeBackgroundVideoOnce();
         waitForWindowLoad(signalAnimationsReady);
     }
 
