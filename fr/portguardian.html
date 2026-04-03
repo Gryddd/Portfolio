@@ -1,45 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>PortGuardian Enterprise | Walid Gourideche</title>
-    <meta content="Technical case study for PortGuardian with the actual lab topology, host roles, server IP, simple detection and response flows, and project validation notes." id="meta-description" name="description"/>
+    <title>Etude de cas PortGuardian Enterprise | Walid Gourideche</title>
+    <meta content="Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation." id="meta-description" name="description"/>
     <meta content="Walid Gourideche" name="author"/>
     <meta content="PortGuardian, Splunk, syslog, WMI, Windows Server 2019, Windows 10, USB threat detection, endpoint isolation" name="keywords"/>
-    <link href="https://grydsh.dev/portguardian.html" id="meta-canonical" rel="canonical"/>
+    <link href="https://grydsh.dev/fr/portguardian.html" id="meta-canonical" rel="canonical"/>
     <link href="https://grydsh.dev/de/portguardian.html" rel="alternate" hreflang="de"/>
     <link href="https://grydsh.dev/portguardian.html" rel="alternate" hreflang="en"/>
     <link href="https://grydsh.dev/fr/portguardian.html" rel="alternate" hreflang="fr"/>
     <link href="https://grydsh.dev/portguardian.html" rel="alternate" hreflang="x-default"/>
-    <meta content="PortGuardian Enterprise | Walid Gourideche" id="meta-og-title" property="og:title"/>
-    <meta content="A simplified PortGuardian case study focused on the real lab topology, telemetry path, and response flow." id="meta-og-description" property="og:description"/>
+    <meta content="Etude de cas PortGuardian Enterprise | Walid Gourideche" id="meta-og-title" property="og:title"/>
+    <meta content="Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation." id="meta-og-description" property="og:description"/>
     <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-og-image" property="og:image"/>
     <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-og-image-secure" property="og:image:secure_url"/>
     <meta content="image/png" id="meta-og-image-type" property="og:image:type"/>
-    <meta content="PortGuardian infrastructure diagram preview" id="meta-og-image-alt" property="og:image:alt"/>
-    <meta content="https://grydsh.dev/portguardian.html" id="meta-og-url" property="og:url"/>
+    <meta content="Image d'aperçu de l'infrastructure PortGuardian" id="meta-og-image-alt" property="og:image:alt"/>
+    <meta content="https://grydsh.dev/fr/portguardian.html" id="meta-og-url" property="og:url"/>
     <meta content="article" property="og:type"/>
     <meta content="Walid Gourideche" property="og:site_name"/>
-    <meta content="en_US" id="meta-og-locale" property="og:locale"/>
+    <meta content="fr_FR" id="meta-og-locale" property="og:locale"/>
     <meta name="theme-color" content="#000000" id="theme-color-meta">
     <meta content="summary_large_image" name="twitter:card"/>
     <meta content="https://grydsh.dev" property="twitter:domain"/>
-    <meta content="https://grydsh.dev/portguardian.html" id="meta-twitter-url" property="twitter:url"/>
-    <meta content="PortGuardian Enterprise | Walid Gourideche" id="meta-twitter-title" name="twitter:title"/>
-    <meta content="Real lab topology and technical flow for PortGuardian." id="meta-twitter-description" name="twitter:description"/>
+    <meta content="https://grydsh.dev/fr/portguardian.html" id="meta-twitter-url" property="twitter:url"/>
+    <meta content="Etude de cas PortGuardian Enterprise | Walid Gourideche" id="meta-twitter-title" name="twitter:title"/>
+    <meta content="Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation." id="meta-twitter-description" name="twitter:description"/>
     <meta content="https://grydsh.dev/images/portguardian_infra.png?v=20260401" id="meta-twitter-image" name="twitter:image"/>
-    <meta content="PortGuardian infrastructure diagram preview" id="meta-twitter-image-alt" name="twitter:image:alt"/>
+    <meta content="Image d'aperçu de l'infrastructure PortGuardian" id="meta-twitter-image-alt" name="twitter:image:alt"/>
     <meta name="robots" content="index, follow, max-image-preview:large"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png"/>
-    <link rel="manifest" href="manifest.json"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/>
+    <link rel="manifest" href="/manifest.json"/>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&family=Inter:wght@100..700&display=swap" rel="stylesheet">
-    <link href="vendor/aos/aos.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-    <link href="project-page.css" rel="stylesheet">
+    <link href="/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link href="/project-page.css" rel="stylesheet">
     <script id="page-seo-config" type="application/json">
     {
       "pagePath": "/portguardian.html",
@@ -64,31 +64,32 @@
     </script>
     <script id="page-structured-data" type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "PortGuardian Enterprise",
-      "applicationCategory": "SecurityApplication",
-      "operatingSystem": "Windows",
-      "description": "A Windows endpoint protection project with real-time USB monitoring, local threat scoring, automated containment, and Splunk telemetry.",
-      "url": "https://grydsh.dev/portguardian.html",
-      "image": "https://grydsh.dev/images/portguardian_infra.png?v=20260401",
-      "creator": {
-        "@type": "Person",
-        "name": "Walid Gourideche",
-        "url": "https://grydsh.dev"
-      }
-    }
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PortGuardian Enterprise",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Windows",
+  "description": "Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation.",
+  "url": "https://grydsh.dev/fr/portguardian.html",
+  "image": "https://grydsh.dev/images/portguardian_infra.png?v=20260401",
+  "creator": {
+    "@type": "Person",
+    "name": "Walid Gourideche",
+    "url": "https://grydsh.dev"
+  },
+  "inLanguage": "fr"
+}
     </script>
-    <script src="seo.js"></script>
+    <script src="/seo.js"></script>
 </head>
-<body class="project-case-page portguardian-case-page case-loader-active" data-page-lang="en">
+<body class="project-case-page portguardian-case-page case-loader-active" data-page-lang="fr">
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="case-loader" id="case-loader" role="status" aria-live="polite" aria-label="Loading PortGuardian page">
     <div class="case-loader-panel">
         <div class="case-loader-icon-shell" aria-hidden="true">
-            <img src="images/portguardian-icon.png" alt="" class="case-loader-icon" width="132" height="132" decoding="async">
+            <img src="/images/portguardian-icon.png" alt="" class="case-loader-icon" width="132" height="132" decoding="async">
         </div>
         <div class="case-loader-copy" aria-hidden="true">
             <span class="case-loader-title">PortGuardian <span class="case-brand-subtitle">Enterprise SIEM Edition</span></span>
@@ -145,7 +146,7 @@
 <nav class="main-nav">
 <div class="nav-content">
 <div class="nav-links">
-<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/fr/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
 <a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
 <a class="lang" data-de="Topologie" data-en="Topology" data-fr="Topologie" href="#topology">Topology</a>
 <a class="lang" data-de="Abläufe" data-en="Flows" data-fr="Flux" href="#flows">Flows</a>
@@ -158,9 +159,9 @@
 <svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
 </button>
 <ul class="nav-dropdown-menu">
-<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
-<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
-<li><a href="resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
+<li><a href="/resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="/resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+<li><a href="/resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
 </ul>
 </div>
 <div class="nav-dropdown" id="lang-desktop-dropdown">
@@ -192,7 +193,7 @@
     <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z"/></svg>
     <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.454z"/></svg>
 </button>
-<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/fr/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
 <a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
 <a class="lang" data-de="Topologie" data-en="Topology" data-fr="Topologie" href="#topology">Topology</a>
 <a class="lang" data-de="Abläufe" data-en="Flows" data-fr="Flux" href="#flows">Flows</a>
@@ -203,9 +204,9 @@
 <svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
 </button>
 <ul class="mobile-list">
-<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
-<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
-<li><a href="resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
+<li><a href="/resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="/resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+<li><a href="/resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
 </ul>
 </div>
 <div class="mobile-language-buttons">
@@ -219,7 +220,7 @@
 <main id="main-content">
 <section class="hero" id="hero">
 <div class="hero-media project-case-hero-media" aria-hidden="true">
-<video id="portguardian-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" poster="images/portguardian-video-poster.webp" data-src="videos/portguardian-hero.webm"></video>
+<video id="portguardian-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" poster="images/portguardian-video-poster.webp" data-src="/videos/portguardian-hero.webm"></video>
 <div class="video-overlay"></div>
 </div>
 <div class="hero-card hero-card-static">
@@ -228,7 +229,7 @@
 <div class="hero-text">
 <p class="project-case-eyebrow lang" data-de="PortGuardian Fallstudie" data-en="PortGuardian Case Study" data-fr="Étude de cas PortGuardian">PortGuardian Case Study</p>
 <div class="project-hero-brand">
-        <img src="images/portguardian-icon.png" alt="PortGuardian application icon" class="project-hero-icon" loading="eager" decoding="async" fetchpriority="high" width="108" height="108">
+        <img src="/images/portguardian-icon.png" alt="PortGuardian application icon" class="project-hero-icon" loading="eager" decoding="async" fetchpriority="high" width="108" height="108">
     <div class="project-hero-brand-copy">
         <h1 class="case-brand-title">PortGuardian <span class="case-brand-subtitle">Enterprise SIEM Edition</span></h1>
     </div>
@@ -236,7 +237,7 @@
 <p class="hero-description lang" data-de="PortGuardian ist ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erkennt USB-Einsteckvorgaenge, prueft verdaechtige Dateien lokal mit sechs Kontrollen, isoliert den Host bei kritischen Treffern und leitet nur WARN- und CRITICAL-Alarme an Splunk weiter." data-en="PortGuardian is a Windows endpoint agent tested in a VMware-based small-enterprise lab. It detects USB insertions, scans suspicious files locally with six checks, isolates the host on critical hits, and forwards only WARN and CRITICAL alerts to Splunk." data-fr="PortGuardian est un agent endpoint Windows testé dans un labo PME virtualisé sous VMware. Il détecte les insertions USB, analyse localement les fichiers suspects avec six contrôles, isole l'hôte en cas de détection critique et n'envoie à Splunk que les alertes WARN et CRITICAL.">PortGuardian is a Windows endpoint agent tested in a VMware-based small-enterprise lab. It detects USB insertions, scans suspicious files locally with six checks, isolates the host on critical hits, and forwards only WARN and CRITICAL alerts to Splunk.</p>
 <p class="project-fact-line lang" data-de="VMware-Versuchslabor: 2 Windows-10-Client-VMs, 1 Windows-Server-2019-Splunk-VM auf 192.168.1.50, 1 Managed Switch, 1 Router/Firewall und ein gemeinsames VLAN 192.168.1.0/24." data-en="VMware virtual lab: 2 Windows 10 client VMs, 1 Windows Server 2019 Splunk VM at 192.168.1.50, 1 managed switch, 1 router/firewall, and a shared 192.168.1.0/24 VLAN." data-fr="Labo virtuel VMware : 2 VM clientes Windows 10, 1 VM Windows Server 2019 avec Splunk sur 192.168.1.50, 1 switch administré, 1 routeur/pare-feu et un VLAN partagé 192.168.1.0/24.">VMware virtual lab: 2 Windows 10 client VMs, 1 Windows Server 2019 Splunk VM at 192.168.1.50, 1 managed switch, 1 router/firewall, and a shared 192.168.1.0/24 VLAN.</p>
 <div class="project-case-actions">
-<a href="/#projekte" class="submit-btn submit-btn-secondary lang" data-localized-path="/" data-localized-hash="projekte" data-de="Zurück zum Portfolio" data-en="Back to Portfolio" data-fr="Retour au portfolio">Back to Portfolio</a>
+<a href="/fr/#projekte" class="submit-btn submit-btn-secondary lang" data-localized-path="/" data-localized-hash="projekte" data-de="Zurück zum Portfolio" data-en="Back to Portfolio" data-fr="Retour au portfolio">Back to Portfolio</a>
     <a href="https://github.com/Gryddd/PortGuardian" target="_blank" rel="noopener noreferrer" class="submit-btn lang" data-de="Code ansehen" data-en="View Code" data-fr="Voir le code">View Code</a>
     <div class="hero-cta-dropdown">
         <button class="cta-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
@@ -244,9 +245,9 @@
             <svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
         </button>
         <ul class="cta-dropdown-menu">
-            <li><a href="reports/Project_Report_PortGuardian_EN.pdf" target="_blank" rel="noopener noreferrer">English Report</a></li>
-            <li><a href="reports/Projektbericht_PortGuardian_DE.pdf" target="_blank" rel="noopener noreferrer">Deutscher Bericht</a></li>
-            <li><a href="reports/RAPPORT DE PROJET.pdf" target="_blank" rel="noopener noreferrer">Rapport français</a></li>
+            <li><a href="/reports/Project_Report_PortGuardian_EN.pdf" target="_blank" rel="noopener noreferrer">English Report</a></li>
+            <li><a href="/reports/Projektbericht_PortGuardian_DE.pdf" target="_blank" rel="noopener noreferrer">Deutscher Bericht</a></li>
+            <li><a href="/reports/RAPPORT DE PROJET.pdf" target="_blank" rel="noopener noreferrer">Rapport français</a></li>
         </ul>
     </div>
 </div>
@@ -699,7 +700,7 @@
             </div>
         </div>
         <figure class="proof-figure">
-            <img src="images/portguardian_splunk.png" alt="PortGuardian Splunk dashboard" loading="lazy">
+            <img src="/images/portguardian_splunk.png" alt="PortGuardian Splunk dashboard" loading="lazy">
             <figcaption class="lang" data-de="Server-seitiger Nachweis: Die Splunk Ansicht zeigt die eingehenden WARN- und CRITICAL-Ereignisse der Clients auf 192.168.1.50." data-en="Server-side proof: the Splunk view shows incoming WARN and CRITICAL events from the clients on 192.168.1.50." data-fr="Preuve côté serveur : la vue Splunk montre les événements WARN et CRITICAL entrants des clients sur 192.168.1.50.">Server-side proof: the Splunk view shows incoming WARN and CRITICAL events from the clients on 192.168.1.50.</figcaption>
         </figure>
     </div>
@@ -800,9 +801,9 @@
     </div>
 </footer>
 
-<script src="vendor/aos/aos.js"></script>
-<script defer src="portguardian-page.js"></script>
-<script defer src="script.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script defer src="/portguardian-page.js"></script>
+<script defer src="/script.js"></script>
 <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
 </button>

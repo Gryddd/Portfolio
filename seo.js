@@ -5,6 +5,10 @@
         en: "en_US",
         fr: "fr_FR"
     };
+    const documentLanguage = () => normalizeLanguage(
+        document.documentElement.getAttribute("lang")
+        || document.body?.dataset?.pageLang
+    );
 
     const normalizeLanguage = value => {
         if (!value) return null;
@@ -12,6 +16,38 @@
         if (supportedLangs.includes(candidate)) return candidate;
         const shortCode = candidate.slice(0, 2);
         return supportedLangs.includes(shortCode) ? shortCode : null;
+    };
+
+    const getPathSegments = pathname => String(pathname || "/")
+        .split("/")
+        .filter(Boolean);
+
+    const stripLanguagePrefix = pathname => {
+        const segments = getPathSegments(pathname);
+        const leadingLang = normalizeLanguage(segments[0]);
+        const remainingSegments = leadingLang ? segments.slice(1) : segments;
+        if (remainingSegments.length === 0) return "/";
+        return `/${remainingSegments.join("/")}`;
+    };
+
+    const normalizePagePath = value => {
+        const fallbackPath = stripLanguagePrefix(window.location.pathname);
+        const candidate = String(value || fallbackPath || "/").trim();
+        const withLeadingSlash = candidate.startsWith("/") ? candidate : `/${candidate}`;
+        if (withLeadingSlash === "/index.html") return "/";
+        return withLeadingSlash || "/";
+    };
+
+    const buildLocalizedPath = (pagePath, lang) => {
+        const normalizedPagePath = normalizePagePath(pagePath);
+        const normalizedLang = normalizeLanguage(lang) || documentLanguage() || "en";
+        if (normalizedLang === "en") {
+            return normalizedPagePath;
+        }
+        if (normalizedPagePath === "/") {
+            return `/${normalizedLang}/`;
+        }
+        return `/${normalizedLang}${normalizedPagePath}`;
     };
 
     const readPreferredLanguageCookie = () => {
@@ -39,12 +75,14 @@
     const resolveInitialLanguage = () => {
         try {
             const url = new URL(window.location.href);
+            const pathLang = normalizeLanguage(getPathSegments(url.pathname)[0]);
             const browserLang = (navigator.languages || [navigator.language])
                 .map(normalizeLanguage)
                 .find(Boolean);
 
-            return normalizeLanguage(url.searchParams.get("lang"))
-                || normalizeLanguage(url.pathname.split("/").filter(Boolean)[0])
+            return pathLang
+                || documentLanguage()
+                || normalizeLanguage(url.searchParams.get("lang"))
                 || readPreferredLanguageCookie()
                 || readPreferredLanguageStorage()
                 || browserLang
@@ -82,11 +120,10 @@
         baseStructuredData = null;
     }
 
-    const buildLocalizedUrl = (pagePath, lang) => {
-        const localizedUrl = new URL(pagePath || window.location.pathname, window.location.origin);
+    const buildLocalizedUrl = (pagePath, lang, hash = "") => {
+        const localizedUrl = new URL(buildLocalizedPath(pagePath, lang), window.location.origin);
         localizedUrl.search = "";
-        localizedUrl.hash = "";
-        localizedUrl.searchParams.set("lang", lang);
+        localizedUrl.hash = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
         return localizedUrl.toString();
     };
 
@@ -167,8 +204,12 @@
 
     window.PortfolioSeo = {
         applyLocalizedSeo,
+        buildLocalizedPath,
+        buildLocalizedUrl,
+        getCurrentPagePath: () => normalizePagePath(stripLanguagePrefix(window.location.pathname)),
         normalizeLanguage,
-        resolveInitialLanguage
+        resolveInitialLanguage,
+        stripLanguagePrefix
     };
 
     if (seoConfig) {

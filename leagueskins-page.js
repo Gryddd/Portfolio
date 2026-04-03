@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (loader) {
         let introStartedAt = performance.now();
-        const minimumVisibleMs = reduceMotion ? 260 : 2300;
-        const finalHoldMs = 1000;
+        const minimumVisibleMs = reduceMotion ? 120 : 420;
+        const finalHoldMs = reduceMotion ? 20 : 80;
         let completed = false;
 
         const loaderIntroReady = Promise.all([
@@ -85,12 +85,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         document.body.classList.remove("rose-loader-active");
                         loader.remove();
                         window.requestAnimationFrame(signalAnimationsReady);
-                    }, 720);
+                    }, reduceMotion ? 120 : 260);
                 }, remaining);
             });
         };
 
-        waitForWindowLoad(finishLoader);
+        Promise.race([
+            new Promise(resolve => waitForWindowLoad(resolve)),
+            new Promise(resolve => window.setTimeout(resolve, reduceMotion ? 120 : 240))
+        ]).then(finishLoader);
     } else {
         waitForWindowLoad(signalAnimationsReady);
     }

@@ -1,16 +1,31 @@
-const CACHE_NAME = 'walid-portfolio-v10';
+const CACHE_NAME = 'walid-portfolio-v11';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/de/',
+  '/fr/',
   '/portguardian.html',
+  '/de/portguardian.html',
+  '/fr/portguardian.html',
+  '/leagueskins.html',
+  '/de/leagueskins.html',
+  '/fr/leagueskins.html',
+  '/offline.html',
   '/style.css',
   '/project-page.css',
   '/script.js',
+  '/seo.js',
+  '/portguardian-page.js',
+  '/leagueskins-page.js',
+  '/vendor/aos/aos.css',
+  '/vendor/aos/aos.js',
+  '/manifest.json',
   '/data/github-stats.json',
   '/images/aura.webp',
   '/images/favicon-32.png',
   '/images/portguardian-icon.png',
-  '/images/icon-192.png'
+  '/images/icon-192.png',
+  '/images/icon-512.png'
 ];
 
 const STATIC_DESTINATIONS = new Set(['style', 'script', 'image', 'font']);
@@ -72,7 +87,7 @@ self.addEventListener('fetch', (event) => {
         }
 
         if (isNavigation) {
-          return caches.match('/index.html');
+          return caches.match('/offline.html');
         }
 
         throw error;

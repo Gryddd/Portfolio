@@ -263,6 +263,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const shortCode = candidate.slice(0, 2);
         return supportedLangs.includes(shortCode) ? shortCode : null;
     };
+    const pageLanguage = normalizeLanguage(document.body?.dataset.pageLang || document.documentElement.lang);
+    const requestedQueryLanguage = (() => {
+        try {
+            return normalizeLanguage(new URL(window.location.href).searchParams.get("lang"));
+        } catch (_) {
+            return null;
+        }
+    })();
     const readPreferredLanguageCookie = () => {
         const cookieEntry = document.cookie
             .split(";")
@@ -278,9 +286,11 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     const resolveInitialLanguage = () => {
         const url = new URL(window.location.href);
+        const pathLang = normalizeLanguage(url.pathname.split("/").filter(Boolean)[0]);
         const browserLang = (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
-        return normalizeLanguage(url.searchParams.get("lang"))
-            || normalizeLanguage(url.pathname.split("/").filter(Boolean)[0])
+        return pathLang
+            || pageLanguage
+            || normalizeLanguage(url.searchParams.get("lang"))
             || readPreferredLanguageCookie()
             || normalizeLanguage(localStorage.getItem("preferredLang"))
             || browserLang
@@ -293,8 +303,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentLang = resolveInitialLanguage();
     let player;
     let lastActiveElement;
+    let lastMobileNavFocus = null;
     let resizeTimer;
     const mainNav = document.querySelector(".main-nav");
+    const mainContent = document.getElementById("main-content");
     const mobileMenuIcon = document.querySelector(".mobile-menu-icon");
     const mobileNavOverlay = document.getElementById("mobile-nav");
     const heroCtaDropdown = document.querySelector(".hero-cta-dropdown");
@@ -431,7 +443,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}"
                             data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
                     }
-                    return `<a href="${btn.url}" ${btn.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}
+                    const buttonHref = /^(https?:|mailto:|tel:)/i.test(btn.url)
+                        ? btn.url
+                        : getLocalizedPageUrl(btn.url, currentLang);
+                    return `<a href="${buttonHref}" ${buttonHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}
                         class="submit-btn ${btn.secondary ? 'submit-btn-secondary' : ''} lang"
                         data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</a>`;
                 }).join('');
@@ -479,6 +494,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const githubDataStatus = document.getElementById('github-data-status');
     const languageConditionalElements = document.querySelectorAll('[data-visible-langs]');
     let mobileMenuScrollY = 0;
+    const normalizeInternalPagePath = value => {
+        if (!value) return window.PortfolioSeo?.getCurrentPagePath?.() || "/";
+        if (/^(https?:|mailto:|tel:|#)/i.test(value)) return value;
+        const normalizedValue = value.replace(/^\.\//, "");
+        if (normalizedValue === "index.html") return "/";
+        return normalizedValue.startsWith("/") ? normalizedValue : `/${normalizedValue}`;
+    };
+    const getLocalizedPageUrl = (pagePath, lang, hash = "") => {
+        const normalizedPagePath = normalizeInternalPagePath(pagePath);
+        if (/^(https?:|mailto:|tel:|#)/i.test(normalizedPagePath)) {
+            return normalizedPagePath;
+        }
+        if (window.PortfolioSeo?.buildLocalizedUrl) {
+            return window.PortfolioSeo.buildLocalizedUrl(normalizedPagePath, lang, hash);
+        }
+        const fallbackUrl = new URL(normalizedPagePath, window.location.origin);
+        fallbackUrl.hash = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
+        return fallbackUrl.toString();
+    };
 
     function getActiveModal() {
         const activeModals = Array.from(allModals).filter(modal => modal.classList.contains("active"));
@@ -488,7 +522,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function getFocusableElements(container) {
         if (!container) return [];
         return Array.from(container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
-            .filter(element => !element.disabled && element.getAttribute('aria-hidden') !== 'true');
+            .filter(element => !element.disabled
+                && element.getAttribute('aria-hidden') !== 'true'
+                && !element.hidden
+                && !element.closest('[hidden], [inert]'));
     }
 
     function syncDropdownState(dropdown, isActive) {
@@ -546,16 +583,66 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function setBackgroundContentInert(isInert) {
+        [mainNav, mainContent].forEach(element => {
+            if (!element) return;
+            element.inert = isInert;
+            if (isInert) {
+                element.setAttribute('aria-hidden', 'true');
+            } else {
+                element.removeAttribute('aria-hidden');
+            }
+        });
+    }
+
+    function getMobileNavFocusableElements() {
+        return getFocusableElements(mobileNavOverlay)
+            .filter(element => element !== mobileMenuIcon);
+    }
+
+    function focusMobileNavFirstElement() {
+        const [firstFocusable] = getMobileNavFocusableElements();
+        firstFocusable?.focus();
+    }
+
+    function trapFocusInContainer(container, event) {
+        const focusableElements = getFocusableElements(container);
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+        }
+    }
+
     function setMobileNavState(isOpen, options = {}) {
         if (!mobileMenuIcon || !mobileNavOverlay) return;
+        const { restoreFocus = true } = options;
         mobileMenuIcon.classList.toggle("change", isOpen);
         mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
         mobileMenuIcon.setAttribute('aria-expanded', String(isOpen));
         mobileNavOverlay.setAttribute('aria-hidden', String(!isOpen));
         if (isOpen) {
+            lastMobileNavFocus = document.activeElement instanceof HTMLElement ? document.activeElement : mobileMenuIcon;
+            closeActiveDropdown();
             lockMobileMenuScroll();
+            setBackgroundContentInert(true);
+            window.requestAnimationFrame(() => {
+                window.setTimeout(focusMobileNavFirstElement, 60);
+            });
         } else {
+            setBackgroundContentInert(false);
             unlockMobileMenuScroll(options);
+            if (restoreFocus) {
+                (lastMobileNavFocus || mobileMenuIcon)?.focus?.();
+            }
+            lastMobileNavFocus = null;
         }
     }
 
@@ -590,13 +677,37 @@ document.addEventListener("DOMContentLoaded", function () {
             item.classList.toggle('active', item.getAttribute('data-lang') === currentLang);
         });
     }
-    function syncLanguageUrl(lang) {
-        const url = new URL(window.location.href);
-        const pathLang = normalizeLanguage(url.pathname.split("/").filter(Boolean)[0]);
-        if (pathLang) return;
-        if (url.searchParams.get('lang') === lang) return;
-        url.searchParams.set('lang', lang);
-        history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    function syncLanguageUrl(lang, options = {}) {
+        const { hash = window.location.hash, replace = false } = options;
+        const localizedUrl = getLocalizedPageUrl(window.PortfolioSeo?.getCurrentPagePath?.() || "/", lang, hash);
+        const currentUrl = new URL(window.location.href);
+        const nextUrl = new URL(localizedUrl, window.location.origin);
+        if (currentUrl.pathname === nextUrl.pathname && currentUrl.hash === nextUrl.hash) {
+            return false;
+        }
+        if (replace) {
+            window.location.replace(nextUrl.toString());
+        } else {
+            window.location.assign(nextUrl.toString());
+        }
+        return true;
+    }
+
+    function refreshLanguageSwitcherLinks() {
+        document.querySelectorAll('a.language-item[data-lang]').forEach(item => {
+            const targetLang = normalizeLanguage(item.getAttribute('data-lang'));
+            if (!targetLang) return;
+            item.href = getLocalizedPageUrl(window.PortfolioSeo?.getCurrentPagePath?.() || "/", targetLang, window.location.hash);
+        });
+    }
+
+    function refreshLocalizedLinks() {
+        document.querySelectorAll('[data-localized-path]').forEach(link => {
+            const pagePath = link.getAttribute('data-localized-path');
+            const hash = link.getAttribute('data-localized-hash') || '';
+            const href = getLocalizedPageUrl(pagePath, currentLang, hash);
+            link.setAttribute('href', href);
+        });
     }
 
     function isEffectivelyHidden(element) {
@@ -727,13 +838,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return changedElements;
     }
     function switchLanguage(newLang, options = {}) {
-        const { syncUrl = true, refreshLayout = true } = options;
+        const { syncUrl = true, refreshLayout = true, navigate = false, replaceHistory = false } = options;
         const normalizedLang = normalizeLanguage(newLang) || config.defaultLang;
         currentLang = normalizedLang;
         localStorage.setItem("preferredLang", currentLang);
         persistPreferredLanguage(currentLang);
-        if (syncUrl) {
-            syncLanguageUrl(currentLang);
+        if (syncUrl && navigate && syncLanguageUrl(currentLang, { replace: replaceHistory })) {
+            return;
         }
         document.documentElement.lang = currentLang;
         if (window.PortfolioSeo?.applyLocalizedSeo) {
@@ -756,8 +867,10 @@ document.addEventListener("DOMContentLoaded", function () {
             featuredImg.alt = featuredImg.dataset[currentLang];
         }
         document.querySelectorAll(".language-item").forEach(item => {
-            item.classList.toggle("active", item.getAttribute("data-lang") === newLang);
+            item.classList.toggle("active", item.getAttribute("data-lang") === normalizedLang);
         });
+        refreshLanguageSwitcherLinks();
+        refreshLocalizedLinks();
         updateFeaturedProject(activeProjectId, 'next', { animate: false });
         updateAllProjectModalsText();
         updateModalLanguageSwitchers();
@@ -1204,10 +1317,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const copyrightYearEl = document.getElementById("copyright-year");
     if (copyrightYearEl) copyrightYearEl.textContent = new Date().getFullYear();
+    if (requestedQueryLanguage && requestedQueryLanguage !== currentLang) {
+        localStorage.setItem("preferredLang", requestedQueryLanguage);
+        persistPreferredLanguage(requestedQueryLanguage);
+        syncLanguageUrl(requestedQueryLanguage, { replace: true });
+        return;
+    }
     initializeBackgroundVideo();
     initializeProjectModals();
     initializeProjectShowcase();
-    switchLanguage(currentLang, { syncUrl: true, refreshLayout: false });
+    switchLanguage(currentLang, { syncUrl: false, refreshLayout: false });
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
     document.querySelectorAll('.project-modal .modal-lang-switcher').forEach(switcher => {
         switcher.remove();
@@ -1227,7 +1346,9 @@ document.addEventListener("DOMContentLoaded", function () {
         item.addEventListener("click", e => {
             e.preventDefault();
             const newLang = item.getAttribute("data-lang");
-            if (newLang !== currentLang) switchLanguage(newLang);
+            if (newLang !== currentLang) {
+                switchLanguage(newLang, { navigate: true });
+            }
 
             const navDropdown = item.closest(".nav-dropdown");
             if (navDropdown) syncDropdownState(navDropdown, false);
@@ -1235,7 +1356,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 mobileToggle?.classList.remove("active");
                 if (mobileList) mobileList.style.maxHeight = '0';
             }
-            if (item.closest(".mobile-language-buttons")) setTimeout(toggleMobileNav, 150);
+            if (item.closest(".mobile-language-buttons")) {
+                setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
+            }
         });
     });
     document.querySelectorAll('.modal-lang-switcher .modal-language-item').forEach(item => {
@@ -1244,7 +1367,7 @@ document.addEventListener("DOMContentLoaded", function () {
             e.stopPropagation();
             const newLang = this.getAttribute('data-lang');
             if (newLang && newLang !== currentLang) {
-                switchLanguage(newLang);
+                switchLanguage(newLang, { navigate: true });
             }
         });
     });
@@ -1288,7 +1411,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             event.preventDefault();
             closeActiveDropdown();
-            setMobileNavState(false, { restoreScroll: false });
+            setMobileNavState(false, { restoreScroll: false, restoreFocus: false });
             requestAnimationFrame(() => {
                 scrollToSection(hash);
             });
@@ -1296,7 +1419,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     mobileNavOverlay?.querySelectorAll('a:not(.language-item):not([href^="#"])').forEach(link => {
         link.addEventListener("click", () => {
-            setTimeout(toggleMobileNav, 150);
+            setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
     document.querySelectorAll(".faq-question").forEach(button => {
@@ -1361,6 +1484,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     window.addEventListener("keydown", event => {
+        if (document.body.classList.contains('mobile-nav-open')) {
+            if (event.key === "Escape") {
+                closeActiveDropdown();
+                setMobileNavState(false);
+                return;
+            }
+            if (event.key === "Tab") {
+                trapFocusInContainer(mobileNavOverlay, event);
+                return;
+            }
+        }
         const activeModal = getActiveModal();
         if (!activeModal) {
             if (event.key === "Escape") {
@@ -1432,7 +1566,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     const sections = document.querySelectorAll('section[id]');
-    if (sections.length > 0 && navLinks.length > 0) {
+    if ('IntersectionObserver' in window && sections.length > 0 && navLinks.length > 0) {
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1517,11 +1651,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const preloaderBar = document.getElementById('preloader-bar');
     const preloaderPercent = document.getElementById('preloader-percent');
     if (preloader && preloaderBar && preloaderPercent) {
-        let progress = 0;
+        const preloaderStartedAt = performance.now();
         let isComplete = false;
-        let progressTimer;
         const preloaderAssetsReady = waitForFontsReady();
-        const finalHoldMs = 1000;
+        const minimumVisibleMs = prefersReducedMotion ? 0 : 180;
+        const finalHoldMs = prefersReducedMotion ? 0 : 120;
 
         const renderPreloader = (value) => {
             const nextValue = Math.max(0, Math.min(100, Math.round(value)));
@@ -1532,29 +1666,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishPreloader = () => {
             if (isComplete) return;
             isComplete = true;
-            window.clearInterval(progressTimer);
-            progress = 100;
-            renderPreloader(progress);
-            window.setTimeout(() => preloader.classList.add('hidden'), finalHoldMs + 260);
+            renderPreloader(100);
+            window.setTimeout(() => preloader.classList.add('hidden'), finalHoldMs);
             window.setTimeout(() => {
                 document.body.classList.remove('preloader-active');
                 preloader.remove();
                 releaseDeferredAnimations();
-            }, finalHoldMs + 900);
+            }, finalHoldMs + 220);
         };
 
-        renderPreloader(progress);
-
-        progressTimer = window.setInterval(() => {
-            if (isComplete) return;
-            const remaining = 92 - progress;
-            const step = remaining > 48 ? 8 : remaining > 24 ? 5 : remaining > 10 ? 3 : 1;
-            progress = Math.min(92, progress + step);
-            renderPreloader(progress);
-        }, 90);
-
-        waitForWindowLoad(() => {
-            preloaderAssetsReady.finally(finishPreloader);
+        renderPreloader(20);
+        window.setTimeout(() => renderPreloader(72), 60);
+        preloaderAssetsReady.finally(() => {
+            const elapsed = performance.now() - preloaderStartedAt;
+            const remaining = Math.max(0, minimumVisibleMs - elapsed);
+            window.setTimeout(finishPreloader, remaining);
         });
     } else if (!hasProjectLoader) {
         waitForWindowLoad(releaseDeferredAnimations);
