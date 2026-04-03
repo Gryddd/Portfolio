@@ -63,8 +63,25 @@ function buildLocalizedUrl(pagePath, lang) {
 
 function rewriteRelativeAssetUrls(html) {
     return html.replace(
-        /\b(src|href)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g,
-        (_, attr, value) => `${attr}="/${value.replace(/^\.\//, "")}"`
+        /\b(src|href|poster|data-src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g,
+        (_, attr, value) => `${attr}="/${value.replace(/^\.?\//, "")}"`
+    ).replace(
+        /\bsrcset="([^"]+)"/g,
+        (_, value) => {
+            const normalized = value
+                .split(",")
+                .map(entry => {
+                    const parts = entry.trim().split(/\s+/);
+                    const assetUrl = parts.shift() || "";
+                    if (!assetUrl || /^(https?:|data:|\/)/i.test(assetUrl)) {
+                        return entry.trim();
+                    }
+                    const rootedUrl = `/${assetUrl.replace(/^\.?\//, "")}`;
+                    return [rootedUrl, ...parts].join(" ").trim();
+                })
+                .join(", ");
+            return `srcset="${normalized}"`;
+        }
     );
 }
 

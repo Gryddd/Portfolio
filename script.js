@@ -313,6 +313,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactForm = document.getElementById("contact-form");
     const allModals = document.querySelectorAll(".modal");
     const videoModal = document.getElementById("video-modal");
+    const toRootAssetPath = assetPath => {
+        if (!assetPath || /^(https?:|data:|blob:)/i.test(assetPath)) return assetPath;
+        return assetPath.startsWith("/") ? assetPath : `/${assetPath.replace(/^\.?\//, '')}`;
+    };
 
     // Project Data for switching
     const projectOrder = ["3", "4", "1"];
@@ -412,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const applyProjectContent = () => {
             if (featuredImg) {
-                featuredImg.src = project.img;
+                featuredImg.src = toRootAssetPath(project.img);
                 featuredImg.alt = project.title[currentLang];
                 featuredImg.style.objectFit = project.imageFit || 'cover';
                 featuredImg.style.objectPosition = project.imagePosition || 'top center';
@@ -990,7 +994,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 slideEl.setAttribute('role', 'button');
                 slideEl.setAttribute('aria-hidden', 'true');
                 slideEl.setAttribute('aria-label', `Open enlarged image for ${slideData.title[currentLang] || slideData.title.en}`);
-                slideEl.innerHTML = `<img src="images/${slideData.img}" alt="${slideData.title.en}" loading="lazy" decoding="async">`;
+                slideEl.innerHTML = `<img src="${toRootAssetPath(`images/${slideData.img}`)}" alt="${slideData.title.en}" loading="lazy" decoding="async">`;
                 slideEl.addEventListener("click", function () {
                     const imageModalImg = imageModal.querySelector("img");
                     imageModalImg.src = this.querySelector('img').src;
