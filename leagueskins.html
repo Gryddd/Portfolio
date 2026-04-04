@@ -32,21 +32,13 @@
     <script>
         (() => {
             try {
-                const savedTheme = localStorage.getItem('portfolio-theme');
                 const root = document.documentElement;
                 const themeColorMeta = document.getElementById('theme-color-meta');
-
-                if (savedTheme === 'light') {
-                    root.setAttribute('data-theme', 'light');
-                    root.style.colorScheme = 'light';
-                    if (themeColorMeta) {
-                        themeColorMeta.setAttribute('content', '#f5f5f7');
-                    }
-                } else {
-                    root.style.colorScheme = 'dark';
-                    if (themeColorMeta) {
-                        themeColorMeta.setAttribute('content', '#000000');
-                    }
+                root.removeAttribute('data-theme');
+                root.style.colorScheme = 'dark';
+                localStorage.removeItem('portfolio-theme');
+                if (themeColorMeta) {
+                    themeColorMeta.setAttribute('content', '#000000');
                 }
             } catch (error) {
                 document.documentElement.style.colorScheme = 'dark';
@@ -228,7 +220,7 @@
     <main id="main-content">
         <section class="hero" id="hero">
             <div class="hero-media project-case-hero-media leagueskins-hero-media" aria-hidden="true">
-                <video id="leagueskins-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" poster="/images/leagueskins_thumb.webp" data-src="/videos/Background.webm"></video>
+                <video id="leagueskins-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" data-src="/videos/Background.webm"></video>
                 <div class="video-overlay"></div>
             </div>
             <div class="hero-card hero-card-static" data-aos="fade-up" data-aos-duration="700"

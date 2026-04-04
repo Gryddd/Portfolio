@@ -1,0 +1,318 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[top=0.32in,bottom=0.46in,left=0.52in,right=0.52in]{geometry}
+\usepackage[french]{babel}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{ragged2e}
+
+\definecolor{headerbg}{HTML}{2F3440}
+\definecolor{sectionfill}{HTML}{E9E9E9}
+\definecolor{linegray}{HTML}{B7B7B7}
+\definecolor{linkblue}{HTML}{0B57D0}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=linkblue,
+  linkcolor=linkblue
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.02}
+\pretolerance=10000
+\tolerance=4000
+\emergencystretch=3em
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\setlist[itemize]{
+  label=\textbullet,
+  leftmargin=1.15em,
+  itemsep=0.10em,
+  topsep=0.14em,
+  parsep=0pt,
+  partopsep=0pt
+}
+
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont[
+  Path = C:/Windows/Fonts/,
+  UprightFont = segoeui.ttf,
+  BoldFont = segoeuib.ttf,
+  ItalicFont = segoeuii.ttf,
+  BoldItalicFont = segoeuiz.ttf,
+  Scale = 0.97
+]{Segoe UI}
+
+\newsavebox{\timelinebox}
+\newlength{\timelineheight}
+
+\newcommand{\sectionbadge}[1]{%
+  \vspace{0.12em}%
+  {\setlength{\fboxsep}{2.8pt}\colorbox{sectionfill}{\textbf{#1}}}\par\vspace{0.32em}
+}
+
+\newcommand{\headerlink}[2]{\href{#1}{\textcolor{white}{#2}}}
+
+\newcommand{\contactcell}[1]{%
+  \begin{minipage}[t]{0.23\linewidth}
+    \centering\footnotesize\color{white}#1
+  \end{minipage}%
+}
+
+\newcommand{\roundphoto}[1]{%
+  \begin{tikzpicture}
+    \clip (0,0) circle (0.92cm);
+    \node at (0,0) {\includegraphics[width=1.84cm,height=1.84cm]{#1}};
+    \draw[linegray,line width=0.6pt] (0,0) circle (0.92cm);
+  \end{tikzpicture}%
+}
+
+\newcommand{\timelineentry}[5]{%
+  \sbox{\timelinebox}{%
+    \parbox[t]{0.93\linewidth}{%
+      \RaggedRight
+      \textbf{#1}\par
+      {\small #2 \hfill \textit{#4}}\par
+      {\small\textit{#3}}\par
+      \vspace{0.05em}
+      \begin{itemize}
+        #5
+      \end{itemize}
+    }%
+  }%
+  \setlength{\timelineheight}{\dimexpr\ht\timelinebox+\dp\timelinebox\relax}%
+  \noindent
+  \begin{minipage}[t]{0.045\linewidth}
+    \vspace{0pt}%
+    \centering
+    \begin{tikzpicture}[baseline=(dot.center)]
+      \pgfmathsetlengthmacro{\timelineend}{\timelineheight-0.55em}
+      \coordinate (top) at (0,0.72em);
+      \coordinate (dot) at (0,0.14em);
+      \coordinate (bottom) at (0,-\timelineend);
+      \draw[linegray,line width=0.5pt] (top) -- (bottom);
+      \draw[linegray,fill=white,line width=0.5pt] (dot) circle (0.078);
+    \end{tikzpicture}%
+  \end{minipage}%
+  \hspace{0.01\linewidth}%
+  \usebox{\timelinebox}\par\vspace{0.30em}
+}
+
+\newcommand{\sidebarentry}[3]{%
+  \RaggedRight
+  \textbf{#1}\par
+  {\small #2}\par
+  {\small\textit{#3}}\par
+  \vspace{0.32em}
+}
+
+\newcommand{\skillentry}[2]{%
+  \RaggedRight
+  \textbf{#1}\par
+  {\small #2}\par
+  \vspace{0.32em}
+}
+
+\newcommand{\cvheader}{%
+  \noindent
+  \begin{minipage}[c][1.95cm][c]{0.12\textwidth}
+    \centering
+    \roundphoto{cv-oussama-photo.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c][1.95cm][c]{0.84\textwidth}
+    \raggedright
+    {\fontsize{21.5}{23.5}\selectfont\textbf{OUSSAMA GOURIDECHE}}\par
+  \end{minipage}
+
+  \vspace{0.18em}
+
+  {\setlength{\fboxsep}{8pt}%
+  \colorbox{headerbg}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+      \contactcell{\headerlink{mailto:oussgourideche@gmail.com}{oussgourideche@gmail.com}}
+      \hfill
+      \contactcell{Taza, Maroc}
+      \hfill
+      \contactcell{+212 6 60 50 80 66}
+      \hfill
+      \contactcell{Né le 05/05/1995 \quad Permis B}
+    }%
+  }}
+}
+
+\begin{document}
+
+\cvheader
+
+\vspace{0.16em}
+{\fontsize{9.9}{11.55}\selectfont
+
+\noindent
+\begin{minipage}[t]{0.64\textwidth}
+  \sectionbadge{Expériences professionnelles}
+
+  \timelineentry
+    {Ingénieur opérationnel}
+    {IQRA Maroc}
+    {2025}
+    {Casablanca, Maroc}
+    {
+      \item Pilotage d'équipes terrain avec planification de charge, répartition des ressources et suivi opérationnel quotidien.
+      \item Coordination interservices, gestion des aléas et analyse des KPIs pour soutenir l'amélioration continue.
+    }
+
+  \timelineentry
+    {Chef de projet intégrateur de systèmes d'automatisation des opérations logistiques}
+    {ALINA distribution}
+    {09/2024}
+    {Maroc}
+    {
+      \item Pilotage du projet de mise en place d'un entrepôt logistique avec structuration des flux et amélioration continue de l'exploitation.
+      \item Mise en place des KPIs, suivi des performances et affectation des équipes selon les besoins opérationnels.
+      \item Intégration d'un système ERP/WMS, suivi des stocks et optimisation de la traçabilité des opérations.
+    }
+
+  \timelineentry
+    {Responsable préparation de commandes et contrôle marchandise}
+    {ID Logistique (La Voie Express)}
+    {09/2023 -- 08/2024}
+    {Skhirat, Maroc}
+    {
+      \item Supervision de la préparation et du contrôle marchandise avec suivi des niveaux de service, de la qualité et de la conformité client.
+      \item Suivi des consommables, contrôle d'exécution des clauses contractuelles et reporting KPI de l'activité plateforme.
+    }
+
+  \timelineentry
+    {Manager opérationnel et commercial}
+    {Myopla}
+    {08/2022 -- 09/2023}
+    {Maroc}
+    {
+      \item Encadrement d'une équipe B2C avec planification de production, suivi des objectifs et coordination de l'activité.
+      \item Suivi qualité, satisfaction client, recrutement et montée en compétence des collaborateurs.
+    }
+
+  \timelineentry
+    {Responsable contrôle et planification logistique}
+    {SNCF}
+    {08/2021 -- 08/2022}
+    {France}
+    {
+      \item Planification des tournées taxi, suivi GPS des chauffeurs et coordination des trajets selon les contraintes opérationnelles.
+      \item Facturation sous DOLIBARR, suivi de la consommation gasoil et appui au pilotage de l'équipe.
+    }
+
+  \timelineentry
+    {Manager de la chaîne logistique (intégrateur du système d'automatisation et digitalisation de flux)}
+    {AFD Tech}
+    {2019 -- 2022}
+    {Paris, France}
+    {
+      \item Gestion des opérations de stockage et d'approvisionnement avec coordination achats et négociation fournisseurs.
+      \item Supervision des inventaires, contrôle des flux et suivi des besoins logistiques rattachés à l'exploitation.
+      \item Intégration du système de gestion logistique avec participation à la mise en place d'un système développé de gestion logistique.
+    }
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+  \sectionbadge{Diplômes et Formations}
+
+  \sidebarentry
+    {Formation IT et sécurité réseau}
+    {AFD University}
+    {2021}
+
+  \sidebarentry
+    {Master manager de la chaîne logistique}
+    {CNAM, RNCP 7 -- obtenu}
+    {2019 -- 2021 \textbar{} Paris}
+
+  \sidebarentry
+    {Licence ST génie logistique}
+    {UVSQ}
+    {France}
+
+  \sidebarentry
+    {DUT logistique et transport}
+    {EST}
+    {2013 -- 2015 \textbar{} Oujda}
+
+  \sidebarentry
+    {Baccalauréat STG}
+    {Diplôme obtenu}
+    {}
+
+  \sectionbadge{Compétences techniques}
+
+  \skillentry
+    {Outils métiers}
+    {ERP, WMS, DOLIBARR, suivi GPS, tableaux de bord KPI}
+
+  \skillentry
+    {Flux logistiques}
+    {réception, stockage, inventaires, préparation de commandes, distribution}
+
+  \skillentry
+    {Pilotage d'activité}
+    {planification, coordination terrain, allocation des ressources, suivi qualité}
+
+  \skillentry
+    {Développement et data}
+    {Java, SQL, HTML, CSS, JavaScript, modélisation de données et requêtes}
+\end{minipage}
+
+}
+
+\newpage
+
+{\fontsize{9.9}{11.55}\selectfont
+
+\noindent
+\begin{minipage}[t]{0.64\textwidth}
+  \sectionbadge{Expériences professionnelles (suite)}
+
+  \timelineentry
+    {Gestionnaire de stock}
+    {UPS France}
+    {2018 -- 2019}
+    {France}
+    {
+      \item Gestion des entrées et sorties de stock, contrôle des références et suivi d'inventaire.
+      \item Fiabilisation des niveaux de stock, préparation des inventaires et suivi opérationnel des mouvements logistiques.
+    }
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+  \sectionbadge{Compétences techniques (suite)}
+
+  \skillentry
+    {Analyse et amélioration}
+    {suivi de performance, lecture des écarts, mise en place de plans d'action, optimisation des opérations}
+
+  \skillentry
+    {Culture IT}
+    {fondamentaux réseaux, sécurité opérationnelle, outils numériques métier, ERP/WMS et environnement bureautique}
+\end{minipage}
+
+\vspace{0.34em}
+
+\sectionbadge{Compétences complémentaires}
+\begin{itemize}
+  \item Suivi et analyse des indicateurs de performance pour piloter l'activité, identifier les écarts et prioriser les actions correctives.
+  \item Structuration des flux de réception, stockage, préparation et distribution avec attention portée à la traçabilité et à la qualité d'exécution.
+  \item Coordination d'équipes terrain et communication interservices pour fluidifier l'exploitation et sécuriser la continuité opérationnelle.
+  \item Utilisation d'outils numériques métier pour le reporting, la facturation, le suivi logistique et la consolidation d'informations d'exploitation.
+\end{itemize}
+
+}
+
+\end{document}

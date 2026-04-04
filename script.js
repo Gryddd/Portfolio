@@ -11,32 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const themeToggleBtns = document.querySelectorAll('.theme-toggle');
     const rootElement = document.documentElement;
-    const savedTheme = localStorage.getItem('portfolio-theme');
-
-    if (savedTheme === 'light') {
-        rootElement.setAttribute('data-theme', 'light');
-    }
-
-    themeToggleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const themeColorMeta = document.getElementById('theme-color-meta');
-            if (rootElement.getAttribute('data-theme') === 'light') {
-                rootElement.removeAttribute('data-theme');
-                localStorage.setItem('portfolio-theme', 'dark');
-                if (themeColorMeta) themeColorMeta.setAttribute('content', '#000000');
-            } else {
-                rootElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('portfolio-theme', 'light');
-                if (themeColorMeta) themeColorMeta.setAttribute('content', '#f5f5f7');
-            }
-        });
-    });
-
     const themeColorMeta = document.getElementById('theme-color-meta');
-    if (savedTheme === 'light' && themeColorMeta) {
-        themeColorMeta.setAttribute('content', '#f5f5f7');
+    rootElement.removeAttribute('data-theme');
+    localStorage.removeItem('portfolio-theme');
+    if (themeColorMeta) {
+        themeColorMeta.setAttribute('content', '#000000');
     }
 
     const backgroundVideo = document.getElementById('background-video');
@@ -44,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const animationReadyEvent = 'portfolio:ready';
     const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mainHeroCard = document.querySelector('body:not(.project-case-page) .hero-card');
+    const mainHeroCard = document.querySelector('body:not(.project-case-page) [data-hero-reveal-root]');
     const isPortGuardianPage = document.body.classList.contains('portguardian-case-page');
 
     if (mainHeroCard && !prefersReducedMotion) {

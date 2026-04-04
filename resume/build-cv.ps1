@@ -1,7 +1,8 @@
 $Targets = @(
     @{ Source = "cv-ats-en.tex"; PublicPdf = "cv-en.pdf" },
     @{ Source = "cv-ats-de.tex"; PublicPdf = "cv-de.pdf" },
-    @{ Source = "cv-ats-fr.tex"; PublicPdf = "cv-fr.pdf" }
+    @{ Source = "cv-ats-fr.tex"; PublicPdf = "cv-fr.pdf" },
+    @{ Source = "cv-oussama-fr.tex"; PublicPdf = "cv-oussama-fr.pdf" }
 )
 $ErrorActionPreference = "Stop"
 
@@ -45,7 +46,11 @@ try {
         $baseName = [System.IO.Path]::GetFileNameWithoutExtension($sourceFile)
         $builtPdf = "$baseName.pdf"
         if (Test-Path $builtPdf) {
-            Copy-Item -LiteralPath $builtPdf -Destination $publicPdf -Force
+            $builtPdfPath = (Resolve-Path -LiteralPath $builtPdf).Path
+            $publicPdfPath = Join-Path $resumeDir $publicPdf
+            if ($builtPdfPath -ne $publicPdfPath) {
+                Copy-Item -LiteralPath $builtPdf -Destination $publicPdf -Force
+            }
         }
 
         $cleanupFiles = @("$baseName.aux", "$baseName.log", "$baseName.out")

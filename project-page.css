@@ -1500,11 +1500,15 @@ body.case-loader-transitioning {
 }
 
 .leagueskins-case-page .project-case-background-video {
-    opacity: 0.72;
+    opacity: 0;
     transform: scale(1.03);
     filter: saturate(0.86) brightness(0.54) contrast(1.06);
     transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
     backface-visibility: hidden;
+}
+
+.leagueskins-case-page .project-case-background-video.is-ready {
+    opacity: 0.72;
 }
 
 .leagueskins-case-page .project-case-hero-media .video-overlay {
@@ -1514,9 +1518,13 @@ body.case-loader-transitioning {
 }
 
 [data-theme="light"] .leagueskins-case-page .project-case-background-video {
-    opacity: 0.3;
+    opacity: 0;
     transform: scale(1.02);
     filter: saturate(0.58) brightness(1.22) contrast(0.78);
+}
+
+[data-theme="light"] .leagueskins-case-page .project-case-background-video.is-ready {
+    opacity: 0.3;
 }
 
 [data-theme="light"] .leagueskins-case-page .project-case-hero-media .video-overlay {

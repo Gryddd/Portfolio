@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const shouldEnable = shouldEnableBackgroundVideo();
         document.body.classList.toggle("project-background-video-disabled", !shouldEnable);
+        backgroundVideo.classList.remove("is-ready");
 
         if (!shouldEnable) {
             backgroundVideo.pause();
@@ -72,12 +73,23 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const markVideoReady = () => {
+            backgroundVideo.classList.add("is-ready");
+        };
+
+        backgroundVideo.addEventListener("loadeddata", markVideoReady, { once: true });
+        backgroundVideo.addEventListener("canplay", markVideoReady, { once: true });
+
         if (!backgroundVideo.querySelector("source") && backgroundVideo.dataset.src) {
             const source = document.createElement("source");
             source.src = backgroundVideo.dataset.src;
             source.type = "video/webm";
             backgroundVideo.appendChild(source);
             backgroundVideo.load();
+        }
+
+        if (backgroundVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            markVideoReady();
         }
 
         backgroundVideo.play().catch(() => {});
@@ -114,6 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const finalHoldMs = 1000;
         let completed = false;
 
+        initializeBackgroundVideoOnce();
+
         const loaderIntroReady = Promise.all([
             waitForFontsReady(),
             waitForImageReady(loaderIcon)
@@ -143,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.setTimeout(() => {
                         document.body.classList.remove("rose-loader-animate");
                         document.body.classList.remove("rose-loader-active");
-                        scheduleBackgroundVideoInitialization();
                         loader.remove();
                         window.requestAnimationFrame(signalAnimationsReady);
                     }, 720);

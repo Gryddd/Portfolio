@@ -16,14 +16,14 @@ const PAGE_METADATA = {
     "/": {
         pagePath: "/",
         title: {
-            de: "Walid Gourideche | Fachinformatiker fuer Systemintegration",
-            en: "Walid Gourideche | IT Specialist for System Integration",
-            fr: "Walid Gourideche | Technicien en integration des systemes"
+            de: "Walid Gourideche | IT-Fachkraft fuer Systeme und Netzwerke",
+            en: "Walid Gourideche | IT Specialist for Systems and Networks",
+            fr: "Walid Gourideche | Specialiste IT en systemes et reseaux"
         },
         description: {
-            de: "Portfolio von Walid Gourideche, einem mehrsprachigen Fachinformatiker fuer Systemintegration mit Fokus auf Netzwerke, Systemadministration und Cybersicherheit.",
-            en: "Portfolio of Walid Gourideche, a multilingual IT Specialist for System Integration focused on networking, system administration, and cybersecurity.",
-            fr: "Portfolio de Walid Gourideche, technicien multilingue en integration des systemes, axe sur les reseaux, l'administration systeme et la cybersecurite."
+            de: "Portfolio von Walid Gourideche, einer mehrsprachigen IT-Fachkraft fuer Systeme und Netzwerke mit Fokus auf Netzwerke, Systemadministration und Cybersicherheit.",
+            en: "Portfolio of Walid Gourideche, a multilingual IT Specialist for Systems and Networks focused on networking, system administration, and cybersecurity.",
+            fr: "Portfolio de Walid Gourideche, specialiste IT multilingue en systemes et reseaux, axe sur les reseaux, l'administration systeme et la cybersecurite."
         },
         image: `${BASE_URL}/images/aura.jpg?v=${IMAGE_VERSION}`,
         imageType: "image/jpeg",
