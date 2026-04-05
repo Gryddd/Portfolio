@@ -7,13 +7,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const numberFormatter = new Intl.NumberFormat("en-US");
     const animationReadyEvent = "portfolio:ready";
 
+    const scheduleIdleTask = (callback, timeout = 1000) => {
+        if (typeof callback !== "function") return;
+
+        if (typeof window.requestIdleCallback === "function") {
+            window.requestIdleCallback(() => callback(), { timeout });
+            return;
+        }
+
+        window.setTimeout(callback, Math.min(timeout, 280));
+    };
+
+    const refreshAos = (hard = false) => {
+        if (typeof window.AOS === "undefined" || reduceMotion) return;
+
+        const refreshFn = hard && typeof window.AOS.refreshHard === "function"
+            ? window.AOS.refreshHard.bind(window.AOS)
+            : typeof window.AOS.refresh === "function"
+                ? window.AOS.refresh.bind(window.AOS)
+                : typeof window.AOS.refreshHard === "function"
+                    ? window.AOS.refreshHard.bind(window.AOS)
+                    : null;
+
+        if (!refreshFn) return;
+
+        scheduleIdleTask(() => {
+            window.requestAnimationFrame(() => refreshFn());
+        }, hard ? 1300 : 900);
+    };
+
     const signalAnimationsReady = () => {
         if (document.documentElement.dataset.animationsReady === "true") return;
         document.documentElement.dataset.animationsReady = "true";
         document.dispatchEvent(new Event(animationReadyEvent));
-        if (typeof window.AOS !== "undefined") {
-            window.requestAnimationFrame(() => window.AOS.refreshHard());
-        }
+        refreshAos();
     };
 
     const waitForWindowLoad = callback => {
@@ -283,8 +310,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const startDiscordPolling = () => {
         if (pollingStarted) return;
         pollingStarted = true;
-        fetchDiscordStats(true);
-        setInterval(() => fetchDiscordStats(false), POLL_INTERVAL_MS);
+        scheduleIdleTask(() => {
+            fetchDiscordStats(true);
+            setInterval(() => fetchDiscordStats(false), POLL_INTERVAL_MS);
+        }, 1400);
     };
 
     if (canObserveMetrics) {

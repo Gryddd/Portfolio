@@ -1171,7 +1171,7 @@ body.case-loader-transitioning {
 }
 
 .portguardian-case-page {
-    transition: background 0.72s ease, color 0.4s ease;
+    transition: color 0.4s ease;
 }
 
 .portguardian-case-page.case-loader-active {
@@ -1187,7 +1187,7 @@ body.case-loader-transitioning {
 }
 
 .portguardian-case-page .project-case-hero-media {
-    transition: opacity 0.58s var(--portguardian-page-ease), transform 0.9s var(--portguardian-page-ease), filter 0.6s ease;
+    transition: opacity 0.58s var(--portguardian-page-ease), transform 0.9s var(--portguardian-page-ease);
 }
 
 .portguardian-case-page .hero-card {
@@ -1263,8 +1263,8 @@ body.case-loader-transitioning {
     gap: 0.85rem;
     width: min(100%, 44rem);
     text-align: center;
-    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1), filter 0.44s ease;
-    will-change: opacity, transform, filter;
+    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
 }
 
 .rose-loader-icon,
@@ -1326,7 +1326,6 @@ body.case-loader-transitioning {
 .rose-loader.is-complete .rose-loader-panel {
     opacity: 0;
     transform: translateY(-0.45rem) scale(0.986);
-    filter: blur(8px);
 }
 
 @keyframes roseLoaderIcon {
@@ -1491,7 +1490,6 @@ body.case-loader-transitioning {
 .leagueskins-hero-media {
     display: block;
     background: none;
-    transition: background 0.6s ease;
     backface-visibility: hidden;
 }
 
@@ -1514,7 +1512,6 @@ body.case-loader-transitioning {
 .leagueskins-case-page .project-case-hero-media .video-overlay {
     background:
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
-    transition: background 0.6s ease;
 }
 
 [data-theme="light"] .leagueskins-case-page .project-case-background-video {
@@ -1562,37 +1559,41 @@ body.case-loader-transitioning {
     display: block;
     background:
         radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.07), transparent 28%),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 52%, rgba(0, 0, 0, 0.82) 100%),
-        url("images/portguardian-video-poster.webp") center/cover no-repeat;
-    transition: background 0.6s ease;
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 52%, rgba(0, 0, 0, 0.82) 100%);
     backface-visibility: hidden;
 }
 
 .portguardian-case-page .project-case-background-video {
-    opacity: 0.72;
+    opacity: 0;
     transform: scale(1.03);
     filter: saturate(0.86) brightness(0.54) contrast(1.06);
-    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.42s ease, transform 0.42s ease;
     backface-visibility: hidden;
+}
+
+.portguardian-case-page .project-case-background-video.is-ready {
+    opacity: 0.72;
 }
 
 .portguardian-case-page .project-case-hero-media .video-overlay {
     background:
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
-    transition: background 0.6s ease;
 }
 
 [data-theme="light"] .portguardian-case-page .project-case-hero-media {
     background:
         radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.88), transparent 30%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(244, 247, 250, 0.62) 52%, rgba(237, 242, 246, 0.95) 100%),
-        url("images/portguardian-video-poster.webp") center/cover no-repeat;
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(244, 247, 250, 0.62) 52%, rgba(237, 242, 246, 0.95) 100%);
 }
 
 [data-theme="light"] .portguardian-case-page .project-case-background-video {
-    opacity: 0.3;
+    opacity: 0;
     transform: scale(1.02);
     filter: saturate(0.58) brightness(1.22) contrast(0.78);
+}
+
+[data-theme="light"] .portguardian-case-page .project-case-background-video.is-ready {
+    opacity: 0.3;
 }
 
 [data-theme="light"] .portguardian-case-page .project-case-hero-media .video-overlay {
@@ -1973,8 +1974,9 @@ body.case-loader-transitioning {
     padding: 1.15rem 1rem 1.05rem;
     border-radius: 20px;
     border: 1px solid var(--case-shell-border);
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        rgba(14, 14, 18, 0.9);
 }
 
 .discord-metric-value {

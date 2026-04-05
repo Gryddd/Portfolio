@@ -10,13 +10,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const animationReadyEvent = "portfolio:ready";
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+    const scheduleIdleTask = (callback, timeout = 1000) => {
+        if (typeof callback !== "function") return;
+
+        if (typeof window.requestIdleCallback === "function") {
+            window.requestIdleCallback(() => callback(), { timeout });
+            return;
+        }
+
+        window.setTimeout(callback, Math.min(timeout, 280));
+    };
+
+    const refreshAos = (hard = false) => {
+        if (typeof window.AOS === "undefined" || reduceMotion) return;
+
+        const refreshFn = hard && typeof window.AOS.refreshHard === "function"
+            ? window.AOS.refreshHard.bind(window.AOS)
+            : typeof window.AOS.refresh === "function"
+                ? window.AOS.refresh.bind(window.AOS)
+                : typeof window.AOS.refreshHard === "function"
+                    ? window.AOS.refreshHard.bind(window.AOS)
+                    : null;
+
+        if (!refreshFn) return;
+
+        scheduleIdleTask(() => {
+            window.requestAnimationFrame(() => refreshFn());
+        }, hard ? 1300 : 900);
+    };
+
     const signalAnimationsReady = () => {
         if (document.documentElement.dataset.animationsReady === "true") return;
         document.documentElement.dataset.animationsReady = "true";
         document.dispatchEvent(new Event(animationReadyEvent));
-        if (typeof window.AOS !== "undefined") {
-            window.requestAnimationFrame(() => window.AOS.refreshHard());
-        }
+        refreshAos();
     };
 
     let animationsReadyScheduled = false;
@@ -91,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const shouldEnable = shouldEnableBackgroundVideo();
         document.body.classList.toggle("project-background-video-disabled", !shouldEnable);
+        backgroundVideo.classList.remove("is-ready");
 
         if (!shouldEnable) {
             backgroundVideo.pause();
@@ -99,12 +127,23 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const markVideoReady = () => {
+            backgroundVideo.classList.add("is-ready");
+        };
+
+        backgroundVideo.addEventListener("loadeddata", markVideoReady, { once: true });
+        backgroundVideo.addEventListener("canplay", markVideoReady, { once: true });
+
         if (!backgroundVideo.querySelector("source") && backgroundVideo.dataset.src) {
             const source = document.createElement("source");
             source.src = backgroundVideo.dataset.src;
             source.type = "video/webm";
             backgroundVideo.appendChild(source);
             backgroundVideo.load();
+        }
+
+        if (backgroundVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            markVideoReady();
         }
 
         backgroundVideo.play().catch(() => {});
@@ -118,23 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
         initializeBackgroundVideo();
     };
 
-    const scheduleBackgroundVideoInitialization = () => {
-        if (backgroundVideoInitialized) return;
-
-        if (reduceMotion) {
-            initializeBackgroundVideoOnce();
-            return;
-        }
-
-        window.setTimeout(() => {
-            if (typeof window.requestIdleCallback === "function") {
-                window.requestIdleCallback(() => initializeBackgroundVideoOnce(), { timeout: 1200 });
-                return;
-            }
-            initializeBackgroundVideoOnce();
-        }, 420);
-    };
-
     if (!loader) {
         initializeBackgroundVideoOnce();
         waitForWindowLoad(signalAnimationsReady);
@@ -145,6 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         mainContent.inert = true;
         mainContent.setAttribute("aria-hidden", "true");
     }
+
+    initializeBackgroundVideoOnce();
 
     let introStartedAt = performance.now();
 
@@ -221,7 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         mainContent.removeAttribute("aria-hidden");
                     }
                     document.body.classList.remove("case-loader-active");
-                    scheduleBackgroundVideoInitialization();
                     scheduleAnimationsReady();
                 });
 

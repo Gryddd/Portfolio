@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walid-portfolio-v11';
+const CACHE_NAME = 'walid-portfolio-v12';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -28,7 +28,7 @@ const urlsToCache = [
   '/images/icon-512.png'
 ];
 
-const STATIC_DESTINATIONS = new Set(['style', 'script', 'image', 'font']);
+const STATIC_DESTINATIONS = new Set(['style', 'script', 'image', 'font', 'video']);
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

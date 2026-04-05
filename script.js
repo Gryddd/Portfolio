@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     const animationReadyEvent = 'portfolio:ready';
     const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const prefersReducedMotion = prefersReducedMotionQuery.matches;
     const mainHeroCard = document.querySelector('body:not(.project-case-page) [data-hero-reveal-root]');
     const isPortGuardianPage = document.body.classList.contains('portguardian-case-page');
 
@@ -31,13 +32,44 @@ document.addEventListener("DOMContentLoaded", function () {
         document.documentElement.classList.add('hero-reveal-pending');
     }
 
+    function scheduleIdleTask(callback, timeout = 1000) {
+        if (typeof callback !== 'function') return;
+
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(() => callback(), { timeout });
+            return;
+        }
+
+        window.setTimeout(callback, Math.min(timeout, 280));
+    }
+
+    function shouldDisableAos() {
+        return prefersReducedMotionQuery.matches || window.innerWidth < 768;
+    }
+
+    function refreshAos(hard = false) {
+        if (typeof AOS === 'undefined' || shouldDisableAos()) return;
+
+        const refreshFn = hard && typeof AOS.refreshHard === 'function'
+            ? AOS.refreshHard.bind(AOS)
+            : typeof AOS.refresh === 'function'
+                ? AOS.refresh.bind(AOS)
+                : typeof AOS.refreshHard === 'function'
+                    ? AOS.refreshHard.bind(AOS)
+                    : null;
+
+        if (!refreshFn) return;
+
+        scheduleIdleTask(() => {
+            window.requestAnimationFrame(() => refreshFn());
+        }, hard ? 1400 : 900);
+    }
+
     function signalAnimationsReady() {
         if (document.documentElement.dataset.animationsReady === 'true') return;
         document.documentElement.dataset.animationsReady = 'true';
         document.dispatchEvent(new Event(animationReadyEvent));
-        if (typeof AOS !== 'undefined') {
-            window.requestAnimationFrame(() => AOS.refreshHard());
-        }
+        refreshAos();
     }
 
     function releaseDeferredAnimations() {
@@ -466,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             void featuredProject.offsetHeight;
 
-            featuredProject.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+            featuredProject.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
             featuredProject.style.opacity = '1';
             featuredProject.style.transform = 'translateX(0)';
         }, 220);
@@ -761,9 +793,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.scrollTo({ top: maxScrollTop, left: 0, behavior: 'auto' });
         }
 
-        if (typeof AOS !== 'undefined') {
-            AOS.refreshHard();
-        }
+        refreshAos(true);
     }
 
     function refreshAfterLanguageSwitch(changedElements) {
@@ -1008,11 +1038,11 @@ document.addEventListener("DOMContentLoaded", function () {
             offset: isPortGuardianPage ? 18 : 50,
             delay: 0,
             anchorPlacement: 'top-bottom',
-            disable: false,
-            throttleDelay: isPortGuardianPage ? 70 : 150,
-            debounceDelay: isPortGuardianPage ? 40 : 100,
+            disable: shouldDisableAos,
+            throttleDelay: isPortGuardianPage ? 60 : 110,
+            debounceDelay: isPortGuardianPage ? 30 : 70,
             startEvent: animationReadyEvent,
-            disableMutationObserver: false
+            disableMutationObserver: true
         });
     }
 
@@ -1245,23 +1275,37 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const duration = 2000;
-        const increment = target / (duration / 16);
-        let current = 0;
+        if (prefersReducedMotion || typeof window.requestAnimationFrame !== 'function') {
+            element.textContent = String(target);
+            return;
+        }
 
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                element.textContent = target;
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current);
+        const duration = 1200;
+        const startedAt = performance.now();
+        const initialValue = Number.parseInt(element.textContent, 10);
+        const fromValue = Number.isFinite(initialValue) ? initialValue : 0;
+
+        const tick = now => {
+            const progress = Math.min((now - startedAt) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const nextValue = Math.round(fromValue + ((target - fromValue) * eased));
+            element.textContent = String(nextValue);
+
+            if (progress < 1) {
+                window.requestAnimationFrame(tick);
+                return;
             }
-        }, 16);
+
+            element.textContent = String(target);
+        };
+
+        window.requestAnimationFrame(tick);
     }
 
-    const githubSection = document.getElementById('github-activity');
-    if (githubSection) {
+    function initializeGitHubSection() {
+        const githubSection = document.getElementById('github-activity');
+        if (!githubSection) return;
+
         let githubStatsLoaded = false;
         let githubCountersAnimated = false;
 
@@ -1290,7 +1334,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     githubObserver.unobserve(entry.target);
                 });
             }, {
-                rootMargin: '200px 0px',
+                rootMargin: '120px 0px',
                 threshold: 0.15
             });
 
@@ -1308,10 +1352,15 @@ document.addEventListener("DOMContentLoaded", function () {
         syncLanguageUrl(requestedQueryLanguage, { replace: true });
         return;
     }
-    initializeBackgroundVideo();
-    initializeProjectModals();
-    initializeProjectShowcase();
     switchLanguage(currentLang, { syncUrl: false, refreshLayout: false });
+    window.requestAnimationFrame(() => {
+        scheduleIdleTask(initializeBackgroundVideo, 1100);
+    });
+    scheduleIdleTask(() => {
+        initializeProjectModals();
+        initializeProjectShowcase();
+    }, 1200);
+    scheduleIdleTask(initializeGitHubSection, 1500);
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
     document.querySelectorAll('.project-modal .modal-lang-switcher').forEach(switcher => {
         switcher.remove();
@@ -1521,28 +1570,34 @@ document.addEventListener("DOMContentLoaded", function () {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             initializeBackgroundVideo();
+            refreshAos();
         }, 150);
     }, { passive: true });
 
     const scrollProgressBar = document.getElementById('scroll-progress');
     const scrollToTopBtn = document.getElementById('scroll-to-top');
     let scrollTicking = false;
+    const updateScrollChrome = () => {
+        const scrollTop = window.scrollY;
+        if (scrollProgressBar) {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+        }
+        if (scrollToTopBtn) {
+            scrollToTopBtn.classList.toggle('visible', scrollTop > 400);
+        }
+    };
+
     window.addEventListener('scroll', () => {
         if (!scrollTicking) {
             requestAnimationFrame(() => {
-                const scrollTop = window.scrollY;
-                if (scrollProgressBar) {
-                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                    scrollProgressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
-                }
-                if (scrollToTopBtn) {
-                    scrollToTopBtn.classList.toggle('visible', scrollTop > 400);
-                }
+                updateScrollChrome();
                 scrollTicking = false;
             });
             scrollTicking = true;
         }
     }, { passive: true });
+    updateScrollChrome();
     if (scrollToTopBtn) {
         scrollToTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
