@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const POLL_INTERVAL_MS = 3 * 60 * 1000; // refresh every 3 minutes
 
     const fetchDiscordStats = (isInitial = false) => {
-        fetch("https://discord.com/api/v9/invites/roseapp?with_counts=true&with_expiration=true", {
+        fetch("https://discord.com/api/v9/invites/3sjkFQqutF?with_counts=true&with_expiration=true", {
             cache: "no-store"
         })
             .then(response => {
