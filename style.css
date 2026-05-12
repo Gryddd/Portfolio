@@ -859,7 +859,7 @@ body:not(.project-case-page) .hero-stage {
     position: relative;
     width: min(72rem, 100%);
     min-height: clamp(34rem, 76vh, 46rem);
-    --hero-sprite-shift: clamp(-13.75rem, -19vw, -8.5rem);
+    --hero-sprite-shift: clamp(-16rem, -22vw, -11rem);
     --hero-copy-shift: clamp(2.6rem, 4vw, 4.6rem);
 }
 
@@ -867,7 +867,7 @@ body:not(.project-case-page) .hero-sprite-shell {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: clamp(22rem, 38vw, 32rem);
+    width: clamp(24rem, 42vw, 36rem);
     transform: translate3d(calc(-50% + var(--hero-sprite-shift)), -50%, 0);
     margin: 0;
     z-index: 1;
