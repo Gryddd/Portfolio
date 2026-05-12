@@ -867,7 +867,7 @@ body:not(.project-case-page) .hero-sprite-shell {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: clamp(18rem, 32vw, 26rem);
+    width: clamp(22rem, 38vw, 32rem);
     transform: translate3d(calc(-50% + var(--hero-sprite-shift)), -50%, 0);
     margin: 0;
     z-index: 1;
@@ -2626,7 +2626,7 @@ button:hover,
     }
 
     body:not(.project-case-page) .hero-sprite-shell {
-        width: clamp(15rem, 34vw, 21rem);
+        width: clamp(18rem, 40vw, 25rem);
     }
 
     body:not(.project-case-page) .hero-copy {
@@ -2815,7 +2815,7 @@ button:hover,
     }
 
     body:not(.project-case-page) .hero-sprite-shell {
-        width: clamp(15rem, 28vw, 20rem);
+        width: clamp(18rem, 32vw, 24rem);
     }
 
     body:not(.project-case-page) .hero-copy {
@@ -2878,8 +2878,8 @@ button:hover,
         top: auto;
         inset: auto;
         transform: none;
-        width: min(78vw, 18rem);
-        max-width: 18rem;
+        width: min(84vw, 22rem);
+        max-width: 22rem;
         margin-inline: auto;
         align-self: center;
     }
