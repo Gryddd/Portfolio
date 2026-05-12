@@ -1074,21 +1074,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function readCachedStats() {
-            const cached = localStorage.getItem(CACHE_KEY);
-            if (!cached) {
-                return null;
-            }
-
             try {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (!cached) {
+                    return null;
+                }
+
                 const parsed = JSON.parse(cached);
                 if (!parsed || !isValidStatsPayload(parsed.data)) {
-                    localStorage.removeItem(CACHE_KEY);
+                    try { localStorage.removeItem(CACHE_KEY); } catch (_) {}
                     return null;
                 }
 
                 return parsed;
             } catch (error) {
-                localStorage.removeItem(CACHE_KEY);
                 return null;
             }
         }
@@ -1120,10 +1119,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 dataSource: 'synced'
             };
 
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
-                data: stats,
-                timestamp: Date.now()
-            }));
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify({
+                    data: stats,
+                    timestamp: Date.now()
+                }));
+            } catch (_) {}
 
             return stats;
         } catch (error) {
