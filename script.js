@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function shouldDisableAos() {
-        return prefersReducedMotionQuery.matches || window.innerWidth < 768;
+        return prefersReducedMotionQuery.matches;
     }
 
     function refreshAos(hard = false) {
@@ -642,7 +642,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!mobileMenuIcon || !mobileNavOverlay) return;
         const { restoreFocus = true } = options;
         mobileMenuIcon.classList.toggle("change", isOpen);
-        mobileNavOverlay.style.width = isOpen ? "100%" : "0%";
+        // animation driven by CSS via aria-hidden attribute
         mobileMenuIcon.setAttribute('aria-expanded', String(isOpen));
         mobileNavOverlay.setAttribute('aria-hidden', String(!isOpen));
         if (isOpen) {
@@ -1438,6 +1438,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
     mobileMenuIcon?.addEventListener("click", toggleMobileNav);
+    mobileNavOverlay?.addEventListener('click', (e) => {
+        if (e.target === mobileNavOverlay) setMobileNavState(false);
+    });
     mobileNavOverlay?.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener("click", event => {
             const hash = link.getAttribute('href');
