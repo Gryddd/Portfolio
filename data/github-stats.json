@@ -1,6 +1,6 @@
 {
   "username": "Gryddd",
-  "lastYearContributions": 585,
+  "lastYearContributions": 587,
   "repos": 3,
   "stars": 5,
   "pinnedRepoStars": 177,
@@ -12,7 +12,7 @@
   "languages": [
     {
       "name": "HTML",
-      "percentage": 60
+      "percentage": 61
     },
     {
       "name": "JavaScript",
@@ -20,14 +20,14 @@
     },
     {
       "name": "CSS",
-      "percentage": 17
+      "percentage": 16
     },
     {
       "name": "TeX",
       "percentage": 2
     }
   ],
-  "updatedAt": "2026-05-17T07:15:01.971Z",
+  "updatedAt": "2026-05-18T08:15:33.619Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
