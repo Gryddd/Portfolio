@@ -1,6 +1,6 @@
 {
   "username": "Gryddd",
-  "lastYearContributions": 587,
+  "lastYearContributions": 588,
   "repos": 3,
   "stars": 5,
   "pinnedRepoStars": 179,
@@ -16,18 +16,18 @@
     },
     {
       "name": "JavaScript",
-      "percentage": 21
+      "percentage": 22
     },
     {
       "name": "CSS",
-      "percentage": 16
+      "percentage": 15
     },
     {
       "name": "TeX",
       "percentage": 2
     }
   ],
-  "updatedAt": "2026-05-21T08:04:25.516Z",
+  "updatedAt": "2026-05-22T07:54:08.531Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
