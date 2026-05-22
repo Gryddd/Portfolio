@@ -26,33 +26,6 @@
     --case-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
 }
 
-[data-theme="light"] .project-case-page {
-    --case-shell-bg: rgba(255, 255, 255, 0.9);
-    --case-shell-border: rgba(17, 17, 17, 0.08);
-    --case-panel-bg: #f8f8f8;
-    --case-panel-border: rgba(17, 17, 17, 0.1);
-    --case-card-bg: #ffffff;
-    --case-card-stroke: rgba(17, 17, 17, 0.1);
-    --case-accent-surface: rgba(17, 17, 17, 0.05);
-    --case-accent-line: rgba(17, 17, 17, 0.14);
-    --case-line: rgba(17, 17, 17, 0.28);
-    --case-connector-line: rgba(17, 17, 17, 0.48);
-    --case-connector-line-strong: rgba(17, 17, 17, 0.64);
-    --case-arrow-fill: #111111;
-    --case-arrow-stroke: rgba(255, 255, 255, 0.94);
-    --case-button-hover-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
-    --case-button-secondary-hover-bg: rgba(17, 17, 17, 0.06);
-    --case-button-secondary-hover-border: rgba(17, 17, 17, 0.18);
-    --case-dropdown-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 247, 0.98));
-    --case-dropdown-border: rgba(17, 17, 17, 0.1);
-    --case-dropdown-link: #111111;
-    --case-dropdown-hover-bg: rgba(17, 17, 17, 0.08);
-    --case-dropdown-hover-color: #111111;
-    --case-text-strong: #111111;
-    --case-text-main: rgba(17, 17, 17, 0.86);
-    --case-text-muted: rgba(82, 82, 91, 0.78);
-    --case-shadow: 0 18px 32px rgba(17, 17, 17, 0.08);
-}
 
 .project-case-page .hero {
     min-height: auto;
@@ -839,96 +812,23 @@
     padding-top: 0;
 }
 
-[data-theme="light"] .project-case-hero-media {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(245, 245, 247, 0.74) 76%, rgba(245, 245, 247, 0.96) 100%),
-        radial-gradient(circle at top left, rgba(17, 17, 17, 0.08), transparent 34%),
-        radial-gradient(circle at right center, rgba(17, 17, 17, 0.05), transparent 30%),
-        url("images/portguardian_infra.png") center/cover no-repeat;
-}
 
 body.project-background-video-disabled .project-case-background-video {
     display: none;
 }
 
-[data-theme="light"] .project-case-page .hero-card.hero-card-static {
-    background: rgba(255, 255, 255, 0.94);
-}
 
-[data-theme="light"] .project-case-page .hero-card-accent {
-    background:
-        linear-gradient(90deg, rgba(17, 17, 17, 0.28), rgba(17, 17, 17, 0));
-}
 
-[data-theme="light"] .project-case-page .submit-btn {
-    background: #111111;
-    color: #ffffff;
-}
 
-[data-theme="light"] .project-case-page .submit-btn.submit-btn-secondary,
-[data-theme="light"] .project-case-page .cta-dropdown-toggle {
-    background: transparent;
-    color: var(--case-text-strong);
-}
 
-[data-theme="light"] .project-case-page .submit-btn:hover {
-    background: #1f1f1f;
-    border-color: #1f1f1f;
-    color: #ffffff;
-}
 
-[data-theme="light"] .project-case-page .submit-btn.submit-btn-secondary:hover,
-[data-theme="light"] .project-case-page .cta-dropdown-toggle:hover {
-    background: var(--case-button-secondary-hover-bg);
-}
 
-[data-theme="light"] .project-case-page .project-case-actions .submit-btn.submit-btn-secondary,
-[data-theme="light"] .project-case-page .project-case-actions .submit-btn.submit-btn-secondary:hover,
-[data-theme="light"] .project-case-page .project-case-actions .cta-dropdown-toggle,
-[data-theme="light"] .project-case-page .project-case-actions .cta-dropdown-toggle:hover {
-    color: #111111;
-}
 
-[data-theme="light"] .topology-visual-shell,
-[data-theme="light"] .schema-visual-shell {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.28)),
-        var(--case-shell-bg);
-}
 
-[data-theme="light"] .topology-icon-stroke {
-    stroke: #111111;
-}
 
-[data-theme="light"] .topology-icon-fill,
-[data-theme="light"] .topology-bullet-icon-endpoint,
-[data-theme="light"] .topology-bullet-icon-server {
-    fill: #111111;
-}
 
-[data-theme="light"] .schema-icon-blue,
-[data-theme="light"] .schema-icon-red,
-[data-theme="light"] .schema-icon-green,
-[data-theme="light"] .schema-icon-purple,
-[data-theme="light"] .schema-icon-orange {
-    stroke: #111111;
-}
 
-[data-theme="light"] .schema-icon-blue-fill,
-[data-theme="light"] .schema-icon-red-fill,
-[data-theme="light"] .schema-icon-green-fill,
-[data-theme="light"] .schema-icon-orange-fill,
-[data-theme="light"] .schema-text-icon-green,
-[data-theme="light"] .schema-text-icon-purple {
-    fill: #111111;
-}
 
-[data-theme="light"] .topology-caption,
-[data-theme="light"] .schema-caption,
-[data-theme="light"] .validation-copy,
-[data-theme="light"] .proof-figure figcaption {
-    color: var(--case-text-muted);
-}
 
 @media (max-width: 720px) {
     .project-hero-brand {
@@ -943,13 +843,7 @@ body.project-background-video-disabled .project-case-background-video {
     }
 }
 
-[data-theme="light"] .topology-caption {
-    color: rgba(17, 17, 17, 0.8);
-}
 
-[data-theme="light"] .topology-note {
-    color: rgba(82, 82, 91, 0.82);
-}
 
 @media (max-width: 980px) {
     .validation-layout {
@@ -1049,11 +943,6 @@ body.project-background-video-disabled .project-case-background-video {
     background-image: none;
 }
 
-[data-theme="light"] .leagueskins-case-page {
-    --leagueskins-loader-bg: #f5f5f7;
-    --leagueskins-loader-text: #111111;
-    --leagueskins-loader-muted: rgba(17, 17, 17, 0.56);
-}
 
 .portguardian-case-page {
     --portguardian-loader-bg: #02060a;
@@ -1069,13 +958,6 @@ body.project-background-video-disabled .project-case-background-video {
     --portguardian-loader-subtitle-weight: 260;
 }
 
-[data-theme="light"] .portguardian-case-page {
-    --portguardian-loader-bg: #f5f6f8;
-    --portguardian-loader-text: #111111;
-    --portguardian-loader-muted: rgba(17, 17, 17, 0.48);
-    --portguardian-subtitle-weight: 115;
-    --portguardian-loader-subtitle-weight: 280;
-}
 
 .leagueskins-case-page::before {
     background: none;
@@ -1111,15 +993,7 @@ body.project-background-video-disabled .project-case-background-video {
     background: linear-gradient(90deg, transparent, var(--hero-accent-color), transparent);
 }
 
-[data-theme="light"] .leagueskins-case-page .hero-card.hero-card-static,
-[data-theme="light"] .leagueskins-case-page .hero-card.hero-card-static:hover {
-    background: conic-gradient(from var(--card-angle, 0deg), transparent 25%, var(--hero-glow-color) 50%, transparent 75%);
-    box-shadow: 0 16px 34px -12px rgba(17, 17, 17, 0.16), 0 0 16px -6px rgba(17, 17, 17, 0.18);
-}
 
-[data-theme="light"] .leagueskins-case-page .hero-card-accent {
-    background: linear-gradient(90deg, transparent, var(--hero-accent-color), transparent);
-}
 
 .leagueskins-case-page .hero-text {
     max-width: 52rem;
@@ -1243,12 +1117,6 @@ body.case-loader-transitioning {
     transition: opacity 0.68s ease, visibility 0.68s ease;
 }
 
-[data-theme="light"] .rose-loader {
-    background:
-        radial-gradient(circle at 30% 30%, rgba(17, 17, 17, 0.024), transparent 32%),
-        radial-gradient(circle at 78% 68%, rgba(17, 17, 17, 0.016), transparent 28%),
-        var(--leagueskins-loader-bg);
-}
 
 .rose-loader.is-complete {
     opacity: 0;
@@ -1281,9 +1149,6 @@ body.case-loader-transitioning {
     transform: scale(0.88);
 }
 
-[data-theme="light"] .rose-loader-icon {
-    filter: drop-shadow(0 12px 24px rgba(17, 17, 17, 0.16));
-}
 
 .rose-loader-copy {
     display: grid;
@@ -1379,12 +1244,6 @@ body.case-loader-transitioning {
     will-change: opacity;
 }
 
-[data-theme="light"] .case-loader {
-    background:
-        radial-gradient(circle at 28% 28%, rgba(17, 17, 17, 0.024), transparent 32%),
-        radial-gradient(circle at 76% 66%, rgba(17, 17, 17, 0.016), transparent 30%),
-        var(--portguardian-loader-bg);
-}
 
 .case-loader.is-complete {
     opacity: 0;
@@ -1425,9 +1284,6 @@ body.case-loader-transitioning {
     backface-visibility: hidden;
 }
 
-[data-theme="light"] .case-loader-icon {
-    filter: drop-shadow(0 12px 24px rgba(17, 17, 17, 0.16));
-}
 
 .case-loader-copy {
     display: grid;
@@ -1493,9 +1349,6 @@ body.case-loader-transitioning {
     backface-visibility: hidden;
 }
 
-[data-theme="light"] .leagueskins-hero-media {
-    background: none;
-}
 
 .leagueskins-case-page .project-case-background-video {
     opacity: 0;
@@ -1514,20 +1367,8 @@ body.case-loader-transitioning {
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
 }
 
-[data-theme="light"] .leagueskins-case-page .project-case-background-video {
-    opacity: 0;
-    transform: scale(1.02);
-    filter: saturate(0.58) brightness(1.22) contrast(0.78);
-}
 
-[data-theme="light"] .leagueskins-case-page .project-case-background-video.is-ready {
-    opacity: 0.3;
-}
 
-[data-theme="light"] .leagueskins-case-page .project-case-hero-media .video-overlay {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(243, 247, 250, 0.66) 58%, rgba(238, 242, 246, 0.94) 100%);
-}
 
 .leagueskins-hero-brand {
     align-items: center;
@@ -1580,26 +1421,9 @@ body.case-loader-transitioning {
         linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
 }
 
-[data-theme="light"] .portguardian-case-page .project-case-hero-media {
-    background:
-        radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.88), transparent 30%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(244, 247, 250, 0.62) 52%, rgba(237, 242, 246, 0.95) 100%);
-}
 
-[data-theme="light"] .portguardian-case-page .project-case-background-video {
-    opacity: 0;
-    transform: scale(1.02);
-    filter: saturate(0.58) brightness(1.22) contrast(0.78);
-}
 
-[data-theme="light"] .portguardian-case-page .project-case-background-video.is-ready {
-    opacity: 0.3;
-}
 
-[data-theme="light"] .portguardian-case-page .project-case-hero-media .video-overlay {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(243, 247, 250, 0.66) 58%, rgba(238, 242, 246, 0.94) 100%);
-}
 
 .portguardian-case-page .hero {
     padding-top: clamp(6.5rem, 10vh, 7.5rem);
@@ -1619,12 +1443,6 @@ body.case-loader-transitioning {
     transition: opacity 0.82s var(--portguardian-loader-ease), visibility 0.82s ease, background 0.45s ease;
 }
 
-[data-theme="light"] .portguardian-case-page .case-loader {
-    background:
-        radial-gradient(circle at 24% 28%, rgba(255, 255, 255, 0.96), transparent 36%),
-        radial-gradient(circle at 76% 64%, rgba(220, 228, 235, 0.84), transparent 34%),
-        linear-gradient(180deg, #ffffff 0%, #eef3f7 100%);
-}
 
 .portguardian-case-page .case-loader-panel {
     display: flex;
@@ -2057,29 +1875,9 @@ body.case-loader-transitioning {
     margin-top: 0.25rem;
 }
 
-[data-theme="light"] .leagueskins-feature-card,
-[data-theme="light"] .leagueskins-shell,
-[data-theme="light"] .leagueskins-step-card {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.38)),
-        var(--case-shell-bg);
-}
 
-[data-theme="light"] .leagueskins-repo-tree {
-    background: #f3f4f6;
-}
 
-[data-theme="light"] .leagueskins-repo-tree pre,
-[data-theme="light"] .leagueskins-repo-tree code {
-    color: rgba(17, 17, 17, 0.9);
-}
 
-[data-theme="light"] .discord-metric-card,
-[data-theme="light"] .discord-metric-stat {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.42)),
-        var(--case-shell-bg);
-}
 
 @media (max-width: 980px) {
     .leagueskins-feature-grid {

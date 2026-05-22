@@ -11,14 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const rootElement = document.documentElement;
-    const themeColorMeta = document.getElementById('theme-color-meta');
-    rootElement.removeAttribute('data-theme');
-    localStorage.removeItem('portfolio-theme');
-    if (themeColorMeta) {
-        themeColorMeta.setAttribute('content', '#000000');
-    }
-
     const backgroundVideo = document.getElementById('background-video');
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     const animationReadyEvent = 'portfolio:ready';
