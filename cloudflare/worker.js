@@ -18,12 +18,12 @@ const PAGE_METADATA = {
         title: {
             de: "Walid Gourideche | IT-Fachkraft fuer Systeme und Netzwerke",
             en: "Walid Gourideche | IT Specialist for Systems and Networks",
-            fr: "Walid Gourideche | Specialiste IT en systemes et reseaux"
+            fr: "Walid Gourideche | Spécialiste IT en systèmes et réseaux"
         },
         description: {
             de: "Portfolio von Walid Gourideche, einer mehrsprachigen IT-Fachkraft fuer Systeme und Netzwerke mit Fokus auf Netzwerke, Systemadministration und Cybersicherheit.",
             en: "Portfolio of Walid Gourideche, a multilingual IT Specialist for Systems and Networks focused on networking, system administration, and cybersecurity.",
-            fr: "Portfolio de Walid Gourideche, specialiste IT multilingue en systemes et reseaux, axe sur les reseaux, l'administration systeme et la cybersecurite."
+            fr: "Portfolio de Walid Gourideche, spécialiste IT multilingue en systèmes et réseaux, axé sur les réseaux, l'administration système et la cybersécurité."
         },
         image: `${BASE_URL}/images/aura.jpg?v=${IMAGE_VERSION}`,
         imageType: "image/jpeg",
@@ -38,12 +38,12 @@ const PAGE_METADATA = {
         title: {
             de: "PortGuardian Enterprise Fallstudie | Walid Gourideche",
             en: "PortGuardian Enterprise Case Study | Walid Gourideche",
-            fr: "Etude de cas PortGuardian Enterprise | Walid Gourideche"
+            fr: "Étude de cas PortGuardian Enterprise | Walid Gourideche"
         },
         description: {
             de: "Technische Fallstudie zu PortGuardian mit Labortopologie, Endpoint-Erkennungsablauf, Splunk-Telemetriepfad und Validierungsergebnissen.",
             en: "Technical case study for PortGuardian covering the lab topology, endpoint detection flow, Splunk telemetry path, and validation results.",
-            fr: "Etude de cas technique de PortGuardian presentant la topologie du labo, le flux de detection endpoint, le chemin de telemetrie Splunk et les resultats de validation."
+            fr: "Étude de cas technique de PortGuardian présentant la topologie du labo, le flux de détection endpoint, le chemin de télémétrie Splunk et les résultats de validation."
         },
         image: `${BASE_URL}/images/portguardian_infra.png?v=${IMAGE_VERSION}`,
         imageType: "image/png",
@@ -53,24 +53,24 @@ const PAGE_METADATA = {
             fr: "Image d'aperçu de l'infrastructure PortGuardian"
         }
     },
-    "/leagueskins.html": {
-        pagePath: "/leagueskins.html",
+    "/homelab.html": {
+        pagePath: "/homelab.html",
         title: {
-            de: "LeagueSkins/ROSE Fallstudie | Walid Gourideche",
-            en: "LeagueSkins/ROSE Case Study | Walid Gourideche",
-            fr: "Etude de cas LeagueSkins/ROSE | Walid Gourideche"
+            de: "Unternehmens-IT-Infrastruktur Fallstudie | Walid Gourideche",
+            en: "Enterprise IT Infrastructure Case Study | Walid Gourideche",
+            fr: "Étude de cas Infrastructure IT d'Entreprise | Walid Gourideche"
         },
         description: {
-            de: "Fallstudie zu LeagueSkins/ROSE mit Fokus auf ID-zugeordneten Asset-Paketen, Preview-Ebenen und Patch-Pflege.",
-            en: "Case page for LeagueSkins/ROSE, focused on ID-mapped asset packages, preview layers, and patch maintenance.",
-            fr: "Page de projet pour LeagueSkins/ROSE, axee sur les packages d'assets indexes par ID, les couches de previsualisation et la maintenance des patches."
+            de: "Technische Fallstudie zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit Windows Server 2022, Active Directory, pfSense, Netdata-Monitoring und Suricata IPS.",
+            en: "Technical case study on building and securing an enterprise network with Windows Server 2022, Active Directory, pfSense, Netdata monitoring, and a Suricata IPS.",
+            fr: "Étude de cas technique sur la construction et la sécurisation d'un réseau d'entreprise avec Windows Server 2022, Active Directory, pfSense, la supervision Netdata et un IPS Suricata."
         },
-        image: `${BASE_URL}/images/leagueskins_thumb.png?v=${IMAGE_VERSION}`,
+        image: `${BASE_URL}/images/diagram.png?v=${IMAGE_VERSION}`,
         imageType: "image/png",
         imageAlt: {
-            de: "Vorschaubild von LeagueSkins/ROSE",
-            en: "LeagueSkins/ROSE preview image",
-            fr: "Image d'aperçu de LeagueSkins/ROSE"
+            de: "Netzwerktopologie der Homelab-Infrastruktur",
+            en: "Network topology of the homelab infrastructure",
+            fr: "Topologie réseau de l'infrastructure homelab"
         }
     }
 };

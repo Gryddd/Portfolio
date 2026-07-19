@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Enterprise IT Infrastructure | Walid Gourideche</title>
+    <meta content="Technical case study on building and securing an enterprise network with Windows Server 2022, Active Directory, pfSense, Netdata monitoring, and a Suricata IPS." id="meta-description" name="description"/>
+    <meta content="Walid Gourideche" name="author"/>
+    <meta content="homelab, Windows Server 2022, Active Directory, pfSense, Suricata, Netdata, IPS, network segmentation, enterprise infrastructure" name="keywords"/>
+    <link href="https://grydsh.dev/homelab.html" id="meta-canonical" rel="canonical"/>
+    <link href="https://grydsh.dev/de/homelab.html" rel="alternate" hreflang="de"/>
+    <link href="https://grydsh.dev/homelab.html" rel="alternate" hreflang="en"/>
+    <link href="https://grydsh.dev/fr/homelab.html" rel="alternate" hreflang="fr"/>
+    <link href="https://grydsh.dev/homelab.html" rel="alternate" hreflang="x-default"/>
+    <meta content="Enterprise IT Infrastructure | Walid Gourideche" id="meta-og-title" property="og:title"/>
+    <meta content="An end-to-end lab project: building, monitoring, and defending an enterprise network with Windows Server 2022, pfSense, Netdata, and a Suricata IPS." id="meta-og-description" property="og:description"/>
+    <meta content="https://grydsh.dev/images/diagram.png?v=20260401" id="meta-og-image" property="og:image"/>
+    <meta content="https://grydsh.dev/images/diagram.png?v=20260401" id="meta-og-image-secure" property="og:image:secure_url"/>
+    <meta content="image/png" id="meta-og-image-type" property="og:image:type"/>
+    <meta content="Network topology of the homelab infrastructure" id="meta-og-image-alt" property="og:image:alt"/>
+    <meta content="https://grydsh.dev/homelab.html" id="meta-og-url" property="og:url"/>
+    <meta content="article" property="og:type"/>
+    <meta content="Walid Gourideche" property="og:site_name"/>
+    <meta content="en_US" id="meta-og-locale" property="og:locale"/>
+    <meta name="theme-color" content="#000000">
+    <meta content="summary_large_image" name="twitter:card"/>
+    <meta content="https://grydsh.dev" property="twitter:domain"/>
+    <meta content="https://grydsh.dev/homelab.html" id="meta-twitter-url" property="twitter:url"/>
+    <meta content="Enterprise IT Infrastructure | Walid Gourideche" id="meta-twitter-title" name="twitter:title"/>
+    <meta content="Building, monitoring, and defending an enterprise lab network end to end." id="meta-twitter-description" name="twitter:description"/>
+    <meta content="https://grydsh.dev/images/diagram.png?v=20260401" id="meta-twitter-image" name="twitter:image"/>
+    <meta content="Network topology of the homelab infrastructure" id="meta-twitter-image-alt" name="twitter:image:alt"/>
+    <meta name="robots" content="index, follow, max-image-preview:large"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/>
+    <link rel="manifest" href="manifest.json"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&family=Inter:wght@100..700&display=swap" rel="stylesheet">
+    <link href="vendor/aos/aos.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link href="project-page.css" rel="stylesheet">
+    <script id="page-seo-config" type="application/json">
+    {
+      "pagePath": "/homelab.html",
+      "title": {
+        "de": "Unternehmens-IT-Infrastruktur Fallstudie | Walid Gourideche",
+        "en": "Enterprise IT Infrastructure Case Study | Walid Gourideche",
+        "fr": "Étude de cas Infrastructure IT d'Entreprise | Walid Gourideche"
+      },
+      "description": {
+        "de": "Technische Fallstudie zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit Windows Server 2022, Active Directory, pfSense, Netdata-Monitoring und Suricata IPS.",
+        "en": "Technical case study on building and securing an enterprise network with Windows Server 2022, Active Directory, pfSense, Netdata monitoring, and a Suricata IPS.",
+        "fr": "Étude de cas technique sur la construction et la sécurisation d'un réseau d'entreprise avec Windows Server 2022, Active Directory, pfSense, la supervision Netdata et un IPS Suricata."
+      },
+      "image": "https://grydsh.dev/images/diagram.png?v=20260401",
+      "imageType": "image/png",
+      "imageAlt": {
+        "de": "Netzwerktopologie der Homelab-Infrastruktur",
+        "en": "Network topology of the homelab infrastructure",
+        "fr": "Topologie réseau de l'infrastructure homelab"
+      }
+    }
+    </script>
+    <script id="page-structured-data" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Enterprise IT Infrastructure Case Study",
+      "description": "An end-to-end lab project building, monitoring, and defending an enterprise network with Windows Server 2022, Active Directory, pfSense, Netdata, and a Suricata IPS.",
+      "url": "https://grydsh.dev/homelab.html",
+      "image": "https://grydsh.dev/images/diagram.png?v=20260401",
+      "author": {
+        "@type": "Person",
+        "name": "Walid Gourideche",
+        "url": "https://grydsh.dev"
+      }
+    }
+    </script>
+    <script src="seo.js"></script>
+</head>
+<body class="project-case-page portguardian-case-page homelab-case-page case-loader-active" data-page-lang="en">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="case-loader" id="case-loader" role="status" aria-live="polite" aria-label="Loading IT Infrastructure page">
+    <div class="case-loader-panel">
+        <div class="case-loader-copy" aria-hidden="true">
+            <span class="case-loader-title">IT Infrastructure <span class="case-brand-subtitle">Homelab Case Study</span></span>
+        </div>
+    </div>
+</div>
+<div class="scroll-progress" id="scroll-progress"></div>
+<svg class="case-icon-sprite" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+        <symbol id="case-icon-windows" viewBox="0 0 20 20">
+            <g fill="currentColor" fill-rule="evenodd">
+                <g transform="translate(-60 -7439)">
+                    <g transform="translate(56 160)">
+                        <path d="M13.1458647,7289.43426 C13.1508772,7291.43316 13.1568922,7294.82929 13.1619048,7297.46884 C16.7759398,7297.95757 20.3899749,7298.4613 23.997995,7299 C23.997995,7295.84873 24.002005,7292.71146 23.997995,7289.71311 C20.3809524,7289.71311 16.7649123,7289.43426 13.1458647,7289.43426 M4,7289.43526 L4,7296.22153 C6.72581454,7296.58933 9.45162907,7296.94113 12.1724311,7297.34291 C12.1774436,7294.71736 12.1704261,7292.0908 12.1704261,7289.46524 C9.44661654,7289.47024 6.72380952,7289.42627 4,7289.43526 M4,7281.84344 L4,7288.61071 C6.72581454,7288.61771 9.45162907,7288.57673 12.1774436,7288.57973 C12.1754386,7285.96017 12.1754386,7283.34361 12.1724311,7280.72405 C9.44461153,7281.06486 6.71679198,7281.42567 4,7281.84344 M24,7288.47179 C20.3879699,7288.48578 16.7759398,7288.54075 13.1619048,7288.55175 C13.1598997,7285.88921 13.1598997,7283.22967 13.1619048,7280.56914 C16.7689223,7280.01844 20.3839599,7279.50072 23.997995,7279 C24,7282.15826 23.997995,7285.31353 24,7288.47179"></path>
+                    </g>
+                </g>
+            </g>
+        </symbol>
+        <symbol id="case-icon-vmware" viewBox="0 0 32 32">
+            <path d="M21.565 15.988c0.471 0 0.925 0.070 1.354 0.2l-0.033-0.009v0.434c-0.068 0.69-0.646 1.225-1.348 1.225-0.053 0-0.106-0.003-0.158-0.009l0.006 0.001c-0.606 0-1.13-0.326-1.13-0.891 0-0.584 0.469-0.95 1.308-0.95zM28.919 14.261c0.791 0.022 1.424 0.669 1.424 1.464 0 0.019-0 0.038-0.001 0.056l0-0.003h-2.847c0.003-0.805 0.628-1.463 1.419-1.518l0.005-0zM21.772 13.723c-0.007-0-0.016-0-0.024-0-0.061 0-0.121 0.003-0.181 0.008l0.008-0.001c-0.039-0.002-0.085-0.003-0.132-0.003-0.44 0-0.858 0.095-1.234 0.267l0.019-0.008c-0.106 0.040-0.179 0.14-0.179 0.258 0 0.007 0 0.014 0.001 0.021l-0-0.001c0.007 0.158 0.135 0.283 0.293 0.286h0c0.044-0.003 0.084-0.014 0.121-0.031l-0.002 0.001c0.277-0.129 0.601-0.205 0.943-0.205 0.035 0 0.069 0.001 0.104 0.002l-0.005-0c0.863 0 1.337 0.417 1.337 1.223v0.156c-0.396-0.119-0.851-0.188-1.321-0.188-0.020 0-0.040 0-0.060 0l0.003-0c-1.115 0-1.899 0.5-1.899 1.45l-0.004-0.005c0.055 0.788 0.708 1.405 1.505 1.405 0.060 0 0.119-0.003 0.177-0.010l-0.007 0.001c0.017 0 0.037 0.001 0.056 0.001 0.637 0 1.202-0.302 1.562-0.771l0.003-0.005v0.429c0 0.001-0 0.003-0 0.004 0 0.17 0.138 0.309 0.309 0.309 0.003 0 0.006-0 0.009-0h-0c0.002 0 0.003 0 0.005 0 0.175 0 0.317-0.142 0.317-0.317 0-0.004-0-0.007-0-0.011v0-2.478c0.002-0.030 0.003-0.064 0.003-0.099 0-0.467-0.181-0.893-0.477-1.209l0.001 0.001c-0.333-0.291-0.769-0.471-1.248-0.481l-0.002-0zM28.95 13.721c-1.177 0.039-2.117 1.003-2.117 2.186 0 0.045 0.001 0.089 0.004 0.133l-0-0.006c-0.002 0.035-0.003 0.075-0.003 0.116 0 1.217 0.986 2.204 2.202 2.206h0l-0.010 0.016c0.019 0.001 0.042 0.001 0.064 0.001 0.626 0 1.192-0.258 1.597-0.674l0-0c0.060-0.052 0.098-0.128 0.098-0.213 0-0.155-0.126-0.281-0.281-0.281-0.072 0-0.138 0.027-0.188 0.072l0-0c-0.324 0.321-0.769 0.519-1.261 0.519-0.004 0-0.008 0-0.011-0h0.001c-0.001 0-0.003 0-0.004 0-0.841 0-1.524-0.671-1.545-1.506l-0-0.002h3.193c0.17-0.001 0.307-0.139 0.307-0.309 0 0 0-0 0-0v0c0.004-0.051 0.007-0.11 0.007-0.17 0-1.141-0.915-2.068-2.051-2.087l-0.002-0zM16.244 13.711c-0.155 0.010-0.281 0.122-0.312 0.269l-0 0.002-1.14 3.283-1.127-3.274c-0.036-0.158-0.175-0.275-0.342-0.275-0 0-0 0-0.001 0h0c-0.002-0-0.003-0-0.005-0-0.18 0-0.327 0.143-0.332 0.322v0.001c0.005 0.066 0.021 0.127 0.044 0.184l-0.002-0.004 1.362 3.795 0.025-0.009c0.043 0.17 0.192 0.296 0.372 0.302l0.001 0c0.181-0.001 0.331-0.129 0.366-0.3l0-0.002 1.129-3.228 1.12 3.228c0.035 0.173 0.185 0.302 0.366 0.302h0.023c0.177-0.010 0.323-0.134 0.366-0.3l0.001-0.003 1.371-3.796c0.021-0.053 0.036-0.114 0.041-0.178l0-0.002c-0.006-0.174-0.148-0.313-0.322-0.313-0.003 0-0.006 0-0.009 0h0c-0.001 0-0.001 0-0.002 0-0.157 0-0.289 0.111-0.32 0.259l-0 0.002-1.147 3.287-1.13-3.282c-0.040-0.157-0.179-0.271-0.346-0.271-0.001 0-0.001 0-0.002 0h-0.046zM24.66 13.701c-0.184 0.003-0.332 0.153-0.332 0.337 0 0.002 0 0.004 0 0.005v-0h0.003v3.926c-0.002 0.014-0.003 0.030-0.003 0.046 0 0.186 0.151 0.337 0.337 0.337s0.337-0.151 0.337-0.337c0-0.016-0.001-0.032-0.003-0.048l0 0.002v-1.527c-0.010-0.071-0.015-0.153-0.015-0.236 0-0.931 0.694-1.699 1.593-1.816l0.009-0.001c0.168-0.018 0.298-0.159 0.298-0.331 0-0.004-0-0.008-0-0.012l0 0.001c0-0.004 0-0.009 0-0.014 0-0.178-0.144-0.322-0.322-0.322-0.004 0-0.007 0-0.011 0h0.001c-0.696 0.050-1.281 0.483-1.547 1.088l-0.005 0.012v-0.767c0-0.003 0-0.007 0-0.010 0-0.184-0.149-0.332-0.332-0.332-0.002 0-0.005 0-0.007 0h0zM1.629 13.626c-0.090 0.003-0.174 0.025-0.25 0.062l0.004-0.002c-0.224 0.097-0.378 0.316-0.378 0.572 0 0.101 0.024 0.197 0.067 0.282l-0.002-0.004 1.422 3.093c0.224 0.475 0.475 0.74 0.901 0.74 0.427 0 0.677-0.275 0.9-0.74l1.253-2.732c0.027-0.068 0.092-0.115 0.168-0.115 0.004 0 0.008 0 0.013 0l-0.001-0c0.109 0.002 0.196 0.091 0.196 0.2 0 0 0 0 0 0v0 2.647c-0.002 0.017-0.003 0.037-0.003 0.058 0 0.369 0.299 0.669 0.669 0.669s0.669-0.299 0.669-0.669c0-0.020-0.001-0.040-0.003-0.060l0 0.003v-2.162c-0-0.008-0.001-0.018-0.001-0.028 0-0.366 0.297-0.664 0.664-0.664 0.016 0 0.031 0.001 0.046 0.002l-0.002-0c0.008-0 0.018-0.001 0.027-0.001 0.359 0 0.65 0.291 0.65 0.65 0 0.014-0 0.028-0.001 0.041l0-0.002v2.162c-0.003 0.023-0.005 0.050-0.005 0.077 0 0.366 0.297 0.664 0.664 0.664 0.001 0 0.002 0 0.003 0h-0c0.371-0.001 0.672-0.302 0.672-0.674 0-0.023-0.001-0.046-0.004-0.069l0 0.003v-2.162c-0-0.008-0.001-0.018-0.001-0.028 0-0.366 0.297-0.664 0.664-0.664 0.015 0 0.029 0 0.044 0.001l-0.002-0c0.009-0 0.019-0.001 0.030-0.001 0.359 0 0.65 0.291 0.65 0.65 0 0.014-0 0.028-0.001 0.041l0-0.002v2.162c-0.002 0.022-0.004 0.047-0.004 0.072 0 0.369 0.299 0.668 0.668 0.668s0.668-0.299 0.668-0.668c0-0.025-0.001-0.049-0.004-0.074l0 0.003v-2.461c-0.002-0.85-0.692-1.538-1.542-1.538-0.022 0-0.043 0-0.064 0.001l0.003-0c-0.558 0.010-1.060 0.24-1.424 0.607l-0 0c-0.291-0.372-0.739-0.609-1.243-0.609-0.044 0-0.088 0.002-0.131 0.005l0.006-0c-0.523 0.049-0.988 0.27-1.343 0.605l0.001-0.001c-0.286-0.356-0.715-0.586-1.198-0.604l-0.003-0c-0.018-0.001-0.038-0.001-0.059-0.001-0.638 0-1.181 0.406-1.384 0.973l-0.003 0.010-0.911 2.144-1.166-2.753 0.014-0.005c-0.1-0.224-0.321-0.378-0.578-0.378-0.009 0-0.017 0-0.026 0.001l0.001-0z" fill="currentColor"></path>
+        </symbol>
+        <symbol id="case-icon-firewall" viewBox="0 0 24 24">
+            <path d="M9.5 20H6.2C5.0799 20 4.51984 20 4.09202 19.782C3.71569 19.5903 3.40973 19.2843 3.21799 18.908C3 18.4802 3 17.9201 3 16.8V7.2C3 6.0799 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H15.8C16.9201 4 17.4802 4 17.908 4.21799C18.2843 4.40973 18.5903 4.71569 18.782 5.09202C19 5.51984 19 6.0799 19 7.2V8H3M3 12H11V8M3 16H9M7 4V8M7 12V16M15 4V8M19.8284 19.8284C18.2663 21.3905 15.7337 21.3905 14.1716 19.8284C13.3905 19.0474 13 18.0237 13 17C13 15.9763 13.3905 14.9526 14.1716 14.1716C14.1716 14.1716 14.5 15 15.5 15.5C15.5 14.5 15.75 13 16.9929 12C18 13 19.0456 13.3887 19.8284 14.1716C20.6095 14.9526 21 15.9763 21 17C21 18.0237 20.6095 19.0474 19.8284 19.8284Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </symbol>
+        <symbol id="case-icon-monitor" viewBox="0 0 24 24">
+            <path d="M22 12H18L15 21L9 3L6 12H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </symbol>
+        <symbol id="case-icon-shield" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </symbol>
+    </defs>
+</svg>
+
+<nav class="main-nav">
+<div class="nav-content">
+<div class="nav-links">
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
+<a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
+<a class="lang" data-de="Topologie" data-en="Topology" data-fr="Topologie" href="#topology">Topology</a>
+<a class="lang" data-de="Aufbau" data-en="Build" data-fr="Mise en place" href="#build">Build</a>
+<a class="lang" data-de="Validierung" data-en="Validation" data-fr="Validation" href="#validation">Validation</a>
+</div>
+<div class="nav-actions">
+<div class="nav-dropdown">
+<button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+<span class="lang" data-de="Lebenslauf" data-en="Resume" data-fr="CV">Resume</span>
+<svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="nav-dropdown-menu">
+<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+<li><a href="resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
+</ul>
+</div>
+<div class="nav-dropdown" id="lang-desktop-dropdown">
+<button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" id="language-toggle">
+<span class="lang" data-de="Sprache" data-en="Language" data-fr="Langue">Language</span>
+<svg class="arrow-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="nav-dropdown-menu" aria-labelledby="language-toggle">
+<li><a class="language-item" data-lang="de" href="/de/homelab.html">Deutsch</a></li>
+<li><a class="language-item" data-lang="en" href="/homelab.html">English</a></li>
+<li><a class="language-item" data-lang="fr" href="/fr/homelab.html">Français</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+</nav>
+<button aria-controls="mobile-nav" aria-expanded="false" aria-label="Toggle menu" class="mobile-menu-icon lang-aria" data-de="Menü umschalten" data-en="Toggle menu" data-fr="Basculer le menu" type="button">
+<span aria-hidden="true" class="mobile-menu-bar bar1"></span>
+<span aria-hidden="true" class="mobile-menu-bar bar2"></span>
+<span aria-hidden="true" class="mobile-menu-bar bar3"></span>
+</button>
+<div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+<div class="mobile-nav-overlay-content">
+
+<a class="lang" data-de="Startseite" data-en="Home" data-fr="Accueil" href="/#projekte" data-localized-path="/" data-localized-hash="projekte">Home</a>
+<a class="lang" data-de="Zusammenfassung" data-en="Summary" data-fr="Résumé" href="#summary">Summary</a>
+<a class="lang" data-de="Topologie" data-en="Topology" data-fr="Topologie" href="#topology">Topology</a>
+<a class="lang" data-de="Aufbau" data-en="Build" data-fr="Mise en place" href="#build">Build</a>
+<a class="lang" data-de="Validierung" data-en="Validation" data-fr="Validation" href="#validation">Validation</a>
+<div class="mobile-language-selector mobile-language-selector-offset">
+<button class="mobile-toggle">
+<span class="lang" data-de="Lebenslauf" data-en="Resume" data-fr="CV">Resume</span>
+<svg class="arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+</button>
+<ul class="mobile-list">
+<li><a href="resume/cv-en.pdf" target="_blank" rel="noopener noreferrer">English</a></li>
+<li><a href="resume/cv-de.pdf" target="_blank" rel="noopener noreferrer">Deutsch</a></li>
+<li><a href="resume/cv-fr.pdf" target="_blank" rel="noopener noreferrer">Français</a></li>
+</ul>
+</div>
+<div class="mobile-language-buttons">
+<button class="language-item" data-lang="de">DE</button>
+<button class="language-item" data-lang="en">EN</button>
+<button class="language-item" data-lang="fr">FR</button>
+</div>
+</div>
+</div>
+
+<main id="main-content">
+<section class="hero" id="hero">
+<div class="hero-media project-case-hero-media" aria-hidden="true">
+            <video id="homelab-background-video" class="project-case-background-video" autoplay muted loop playsinline preload="none" data-src="/videos/Background-lite.webm"></video>
+<div class="video-overlay"></div>
+</div>
+<div class="hero-card hero-card-static">
+<div class="hero-card-accent"></div>
+<div class="hero-card-inner">
+<div class="hero-text">
+<p class="project-case-eyebrow lang" data-de="Infrastruktur-Fallstudie" data-en="Infrastructure Case Study" data-fr="Étude de cas infrastructure">Infrastructure Case Study</p>
+<div class="project-hero-brand">
+    <div class="project-hero-brand-copy">
+        <h1 class="case-brand-title">Enterprise IT <span class="case-brand-subtitle">Infrastructure Homelab</span></h1>
+    </div>
+</div>
+<p class="hero-description lang" data-de="Ein End-to-End-Projekt zum Aufbau und zur Absicherung eines Unternehmensnetzwerks: pfSense als Firewall und Gateway, ein Windows Server 2022 als Domänencontroller für „homelab.local“, Netdata für Echtzeit-Monitoring und ein Suricata IPS, das einen simulierten Insider-Angriff in Echtzeit erkannt hat." data-en="An end-to-end project building and securing an enterprise network: pfSense as firewall and gateway, a Windows Server 2022 Domain Controller for the 'homelab.local' domain, Netdata for real-time monitoring, and a Suricata IPS that detected a simulated insider attack in real time." data-fr="Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise : pfSense comme pare-feu et passerelle, un contrôleur de domaine Windows Server 2022 pour le domaine « homelab.local », Netdata pour la supervision en temps réel et un IPS Suricata qui a détecté une attaque interne simulée en temps réel.">An end-to-end project building and securing an enterprise network: pfSense as firewall and gateway, a Windows Server 2022 Domain Controller for the 'homelab.local' domain, Netdata for real-time monitoring, and a Suricata IPS that detected a simulated insider attack in real time.</p>
+<p class="project-fact-line lang" data-de="VMware-Labor: pfSense-Firewall/Gateway, Windows Server 2022 Domänencontroller auf 192.168.10.10, interne Workstation auf 192.168.10.101, segmentiertes Subnetz 192.168.10.0/24, Suricata IPS mit ETOpen-Regeln." data-en="VMware lab: pfSense firewall/gateway, Windows Server 2022 Domain Controller at 192.168.10.10, internal workstation at 192.168.10.101, segmented 192.168.10.0/24 subnet, Suricata IPS with ETOpen rules." data-fr="Labo VMware : pare-feu/passerelle pfSense, contrôleur de domaine Windows Server 2022 sur 192.168.10.10, poste de travail interne sur 192.168.10.101, sous-réseau segmenté 192.168.10.0/24, IPS Suricata avec les règles ETOpen.">VMware lab: pfSense firewall/gateway, Windows Server 2022 Domain Controller at 192.168.10.10, internal workstation at 192.168.10.101, segmented 192.168.10.0/24 subnet, Suricata IPS with ETOpen rules.</p>
+<div class="project-case-actions">
+<a href="/#projekte" class="submit-btn submit-btn-secondary lang" data-localized-path="/" data-localized-hash="projekte" data-de="Zurück zum Portfolio" data-en="Back to Portfolio" data-fr="Retour au portfolio">Back to Portfolio</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="summary">
+    <h2 class="lang" data-de="Kurze Zusammenfassung" data-en="Short Summary" data-fr="Résumé court">Short Summary</h2>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Das Projekt bildet den vollständigen Lebenszyklus einer Unternehmens-IT ab: erst eine stabile Basis aus Firewall, Domänencontroller und Netzwerksegmentierung, dann Monitoring, dann Sicherheit. Zum Abschluss wurde die Verteidigung mit einem simulierten Insider-Angriff auf die Probe gestellt." data-en="The project covers the full lifecycle of an enterprise IT environment: first a stable foundation of firewall, Domain Controller, and network segmentation, then monitoring, then security. Finally, the defenses were put to the test with a simulated insider attack." data-fr="Le projet couvre le cycle de vie complet d'un environnement IT d'entreprise : d'abord une base stable composée d'un pare-feu, d'un contrôleur de domaine et d'une segmentation réseau, puis la supervision, puis la sécurité. Enfin, les défenses ont été mises à l'épreuve avec une attaque interne simulée.">The project covers the full lifecycle of an enterprise IT environment: first a stable foundation of firewall, Domain Controller, and network segmentation, then monitoring, then security. Finally, the defenses were put to the test with a simulated insider attack.</p>
+        <ul class="project-points">
+            <li class="lang" data-de="pfSense dient als Firewall und Gateway und segmentiert das Netzwerk in eine realistische Umgebung." data-en="pfSense serves as firewall and gateway, segmenting the network into a realistic environment." data-fr="pfSense sert de pare-feu et de passerelle et segmente le réseau en un environnement réaliste.">pfSense serves as firewall and gateway, segmenting the network into a realistic environment.</li>
+            <li class="lang" data-de="Ein Windows Server 2022 verwaltet als Domänencontroller die zentralen Active-Directory- und DNS-Dienste für „homelab.local“." data-en="A Windows Server 2022 Domain Controller manages centralized Active Directory and DNS services for 'homelab.local'." data-fr="Un contrôleur de domaine Windows Server 2022 gère de manière centralisée les services Active Directory et DNS pour « homelab.local ».">A Windows Server 2022 Domain Controller manages centralized Active Directory and DNS services for 'homelab.local'.</li>
+            <li class="lang" data-de="Netdata liefert Echtzeit-Leistungs- und Zustandsmetriken für die gesamte Kerninfrastruktur." data-en="Netdata provides real-time performance and health metrics for all core infrastructure." data-fr="Netdata fournit des métriques de performance et d'état en temps réel pour toute l'infrastructure centrale.">Netdata provides real-time performance and health metrics for all core infrastructure.</li>
+            <li class="lang" data-de="Ein Suricata IPS auf der pfSense-Firewall erkannte einen simulierten Nmap-Aufklärungsscan in Echtzeit." data-en="A Suricata IPS on the pfSense firewall detected a simulated Nmap reconnaissance scan in real time." data-fr="Un IPS Suricata sur le pare-feu pfSense a détecté en temps réel un scan de reconnaissance Nmap simulé.">A Suricata IPS on the pfSense firewall detected a simulated Nmap reconnaissance scan in real time.</li>
+        </ul>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="topology">
+    <h2 class="lang" data-de="Netzwerktopologie" data-en="Network Topology" data-fr="Topologie réseau">Network Topology</h2>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/diagram.png" alt="Architecture diagram of the homelab enterprise network" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Die Gesamtarchitektur: pfSense als Firewall und Gateway, dahinter der Windows Server 2022 Domänencontroller und die Client-Workstations im segmentierten Subnetz 192.168.10.0/24." data-en="The overall architecture: pfSense as firewall and gateway, behind it the Windows Server 2022 Domain Controller and the client workstations in the segmented 192.168.10.0/24 subnet." data-fr="L'architecture globale : pfSense comme pare-feu et passerelle, derrière lui le contrôleur de domaine Windows Server 2022 et les postes de travail clients dans le sous-réseau segmenté 192.168.10.0/24.">The overall architecture: pfSense as firewall and gateway, behind it the Windows Server 2022 Domain Controller and the client workstations in the segmented 192.168.10.0/24 subnet.</figcaption>
+    </figure>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="build">
+    <h2 class="lang" data-de="Aufbau der Kerndienste" data-en="Building the Core Services" data-fr="Mise en place des services clés">Building the Core Services</h2>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Ein Windows Server 2022 wurde als Herzstück des Netzwerks bereitgestellt. Er wurde zur Rolle eines Domänencontrollers für die Domäne „homelab.local“ heraufgestuft und verwaltet die zentralen Active-Directory- und DNS-Dienste." data-en="A Windows Server 2022 was deployed as the heart of the network. It was promoted to the role of a Domain Controller for the 'homelab.local' domain, managing centralized Active Directory and DNS services." data-fr="Un serveur Windows 2022 a été déployé comme cœur du réseau. Promu au rôle de contrôleur de domaine pour « homelab.local », il gère de manière centralisée les services Active Directory et DNS.">A Windows Server 2022 was deployed as the heart of the network. It was promoted to the role of a Domain Controller for the 'homelab.local' domain, managing centralized Active Directory and DNS services.</p>
+    </div>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/windows_server_roles.png" alt="Windows Server 2022 roles: Active Directory Domain Services and DNS" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Die installierten Serverrollen: Active Directory Domain Services und DNS auf dem Domänencontroller." data-en="The installed server roles: Active Directory Domain Services and DNS on the Domain Controller." data-fr="Les rôles serveur installés : Active Directory Domain Services et DNS sur le contrôleur de domaine.">The installed server roles: Active Directory Domain Services and DNS on the Domain Controller.</figcaption>
+    </figure>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Bevor Sicherheitsmaßnahmen ergänzt wurden, sorgte ein Echtzeit-Monitoring mit Netdata für Transparenz: Leistungs- und Zustandsmetriken der gesamten Kerninfrastruktur, inklusive SNMP-Abfrage der Netzwerkgeräte." data-en="Before layering on security, real-time monitoring with Netdata provided visibility: performance and health metrics for all core infrastructure, including SNMP polling of the network devices." data-fr="Avant d'ajouter les dispositifs de sécurité, une supervision en temps réel avec Netdata a assuré la visibilité : métriques de performance et d'état de toute l'infrastructure centrale, y compris l'interrogation SNMP des équipements réseau.">Before layering on security, real-time monitoring with Netdata provided visibility: performance and health metrics for all core infrastructure, including SNMP polling of the network devices.</p>
+    </div>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/netdata_snmp_devices.png" alt="Netdata dashboard showing SNMP-monitored network devices" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Netdata überwacht die Infrastruktur in Echtzeit, hier die per SNMP eingebundenen Netzwerkgeräte." data-en="Netdata monitors the infrastructure in real time, here the network devices integrated via SNMP." data-fr="Netdata supervise l'infrastructure en temps réel, ici les équipements réseau intégrés via SNMP.">Netdata monitors the infrastructure in real time, here the network devices integrated via SNMP.</figcaption>
+    </figure>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Nachdem die Netzwerkstabilität sichergestellt war, verlagerte sich der Fokus auf die Sicherheit: Ein Suricata IPS wurde auf der pfSense-Firewall bereitgestellt und mit den branchenüblichen ETOpen-Regelsätzen zur Bedrohungserkennung ausgestattet." data-en="With the network operational, the focus shifted to security: a Suricata IPS was deployed on the pfSense firewall and armed with the industry-standard ETOpen rule sets for threat detection." data-fr="Une fois le réseau opérationnel, l'accent a été mis sur la sécurité : un IPS Suricata a été déployé sur le pare-feu pfSense et armé avec les règles ETOpen, standard de l'industrie, pour la détection des menaces.">With the network operational, the focus shifted to security: a Suricata IPS was deployed on the pfSense firewall and armed with the industry-standard ETOpen rule sets for threat detection.</p>
+    </div>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/5.png" alt="Suricata IPS configuration on the pfSense firewall" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Das Suricata IPS auf der pfSense-Firewall mit aktivierten ETOpen-Regelsätzen." data-en="The Suricata IPS on the pfSense firewall with ETOpen rule sets enabled." data-fr="L'IPS Suricata sur le pare-feu pfSense avec les règles ETOpen activées.">The Suricata IPS on the pfSense firewall with ETOpen rule sets enabled.</figcaption>
+    </figure>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="container" id="validation">
+    <h2 class="lang" data-de="Angriffssimulation und Nachweis" data-en="Attack Simulation and Proof" data-fr="Simulation d'attaque et preuves">Attack Simulation and Proof</h2>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Um das IPS zu validieren, wurde eine Insider-Bedrohung simuliert: Von einer internen Workstation (192.168.10.101) wurde mit Nmap ein Aufklärungsscan gegen den Domänencontroller (192.168.10.10) gestartet. Das ahmt einen Angreifer nach, der das interne Netzwerk nach Schwachstellen absucht." data-en="To validate the IPS, an insider threat was simulated: a reconnaissance scan was launched with Nmap from an internal workstation (192.168.10.101) against the Domain Controller (192.168.10.10). This mimics an attacker mapping the internal network for vulnerabilities." data-fr="Pour valider l'IPS, une menace interne a été simulée : un scan de reconnaissance a été lancé avec Nmap depuis un poste de travail interne (192.168.10.101) vers le contrôleur de domaine (192.168.10.10). Cette action imite un attaquant qui cartographie le réseau interne à la recherche de vulnérabilités.">To validate the IPS, an insider threat was simulated: a reconnaissance scan was launched with Nmap from an internal workstation (192.168.10.101) against the Domain Controller (192.168.10.10). This mimics an attacker mapping the internal network for vulnerabilities.</p>
+    </div>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/6.png" alt="Nmap reconnaissance scan launched from an internal workstation" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Die simulierte Insider-Bedrohung: ein Nmap-Scan von 192.168.10.101 gegen den Domänencontroller." data-en="The simulated insider threat: an Nmap scan from 192.168.10.101 against the Domain Controller." data-fr="La menace interne simulée : un scan Nmap depuis 192.168.10.101 vers le contrôleur de domaine.">The simulated insider threat: an Nmap scan from 192.168.10.101 against the Domain Controller.</figcaption>
+    </figure>
+    <div class="project-copy" data-aos="fade-up" data-aos-duration="600">
+        <p class="lang" data-de="Das IPS hat den feindlichen Scan sofort in Echtzeit erkannt und mehrere hochpriore Alarme ausgelöst, darunter „ET SCAN Possible Nmap User-Agent“. Das beweist die Fähigkeit des Systems, Bedrohungen innerhalb des vertrauenswürdigen Netzwerks zuverlässig zu identifizieren, und bestätigt den Projekterfolg." data-en="The IPS detected the hostile scan immediately in real time, triggering multiple high-priority alerts including 'ET SCAN Possible Nmap User-Agent'. This proves the system's ability to reliably identify threats within the trusted network, confirming the project's success." data-fr="L'IPS a détecté le scan hostile immédiatement, en temps réel, en déclenchant plusieurs alertes de haute priorité, dont « ET SCAN Possible Nmap User-Agent ». Cela prouve la capacité du système à identifier de manière fiable les menaces au sein du réseau de confiance et confirme le succès du projet.">The IPS detected the hostile scan immediately in real time, triggering multiple high-priority alerts including 'ET SCAN Possible Nmap User-Agent'. This proves the system's ability to reliably identify threats within the trusted network, confirming the project's success.</p>
+    </div>
+    <figure class="proof-figure" data-aos="fade-up" data-aos-duration="650" data-aos-easing="ease-out-cubic">
+        <img src="/images/7.png" alt="Suricata alerts showing the detected Nmap scan" loading="lazy" decoding="async">
+        <figcaption class="lang" data-de="Der Nachweis: Suricata meldet den erkannten Scan mit mehreren hochprioren Alarmen in Echtzeit." data-en="The proof: Suricata reports the detected scan with multiple high-priority alerts in real time." data-fr="La preuve : Suricata signale le scan détecté avec plusieurs alertes de haute priorité en temps réel.">The proof: Suricata reports the detected scan with multiple high-priority alerts in real time.</figcaption>
+    </figure>
+</section>
+</main>
+
+<footer class="main-footer project-case-footer">
+  <div class="tech-stack-section" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out-cubic">
+    <div class="tech-stack-card">
+      <h3 class="lang" data-de="Erstellt mit" data-en="Built with" data-fr="Créé avec">Built with</h3>
+      <div class="tech-scroll-container">
+        <div class="tech-scroll-wrapper">
+          <div class="tech-scroll-track">
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="color:#607078">
+                <use href="#case-icon-vmware"></use>
+              </svg>
+              <span>VMware</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="color:#00A4EF">
+                <use href="#case-icon-windows"></use>
+              </svg>
+              <span>Windows Server</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#212121">
+                <use href="#case-icon-firewall"></use>
+              </svg>
+              <span>pfSense</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#EB5757">
+                <use href="#case-icon-shield"></use>
+              </svg>
+              <span>Suricata</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#00AB44">
+                <use href="#case-icon-monitor"></use>
+              </svg>
+              <span>Netdata</span>
+            </div>
+          </div>
+
+          <div class="tech-scroll-track" aria-hidden="true">
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="color:#607078">
+                <use href="#case-icon-vmware"></use>
+              </svg>
+              <span>VMware</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="color:#00A4EF">
+                <use href="#case-icon-windows"></use>
+              </svg>
+              <span>Windows Server</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#212121">
+                <use href="#case-icon-firewall"></use>
+              </svg>
+              <span>pfSense</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#EB5757">
+                <use href="#case-icon-shield"></use>
+              </svg>
+              <span>Suricata</span>
+            </div>
+            <div class="tech-item">
+              <svg aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#00AB44">
+                <use href="#case-icon-monitor"></use>
+              </svg>
+              <span>Netdata</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal" data-aos="fade-up" data-aos-duration="500" data-aos-easing="ease-out-cubic">
+    <p>© <span id="copyright-year">2025</span> Walid Gourideche.
+      <span class="lang" data-de="Alle Rechte vorbehalten." data-en="All Rights Reserved." data-fr="Tous droits réservés.">All Rights Reserved.</span>
+    </p>
+    </div>
+</footer>
+
+<script src="vendor/aos/aos.js"></script>
+<script defer src="homelab-page.js"></script>
+<script defer src="script.js"></script>
+<button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+</body>
+</html>

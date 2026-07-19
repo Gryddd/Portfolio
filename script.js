@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const backgroundVideo = document.getElementById('background-video');
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     const animationReadyEvent = 'portfolio:ready';
-    const hasProjectLoader = Boolean(document.getElementById('case-loader') || document.getElementById('rose-loader'));
+    const hasProjectLoader = Boolean(document.getElementById('case-loader'));
     const prefersReducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const prefersReducedMotion = prefersReducedMotionQuery.matches;
     const mainHeroCard = document.querySelector('body:not(.project-case-page) [data-hero-reveal-root]');
@@ -138,125 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
             fr: "Un portrait professionnel de Walid Gourideche",
         },
         projects: {
-            "project-modal-1": {
-                currentSlide: 0,
-                slides: [
-                    {
-                        img: "diagram.png",
-                        title: { de: "Architekturübersicht", en: "Architecture Overview", fr: "Vue d'ensemble de l'architecture" },
-                        text: {
-                            de:
-                                "Das Projekt begann mit dem Aufbau einer kompletten End-to-End-Unternehmensinfrastruktur. Dies umfasste die Konfiguration eines pfSense-Firewalls, eines Windows Servers als Domänencontroller und die Netzwerksegmentierung, um eine realistische Umgebung zu schaffen.",
-                            en:
-                                "The project began with the construction of a complete end-to-end enterprise infrastructure. This included configuring a pfSense firewall, a Windows Server as a Domain Controller, and segmenting the network to create a realistic environment.",
-                            fr:
-                                "Le projet a débuté par la mise en place d'une infrastructure d'entreprise complète. Cela incluait la configuration d'un pare-feu pfSense, d'un serveur Windows en tant que contrôleur de domaine, et la segmentation du réseau pour simuler un environnement professionnel.",
-                        },
-                    },
-                    {
-                        img: "windows_server_roles.png",
-                        title: { de: "Kerndienste: Domain Controller", en: "Core Services: Domain Controller", fr: "Services Clés : Contrôleur de Domaine" },
-                        text: {
-                            de:
-                                "Ein Windows Server 2022 wurde als Herzstück des Netzwerks bereitgestellt. Er wurde zur Rolle eines Domänencontrollers für die Domäne „homelab.local“ heraufgestuft und verwaltet die zentralen Active Directory- und DNS-Dienste.",
-                            en: 'A Windows Server 2022 was deployed as the heart of the network. It was promoted to the role of a Domain Controller for the "homelab.local" domain, managing centralized Active Directory and DNS services.',
-                            fr: "Un serveur Windows 2022 a été déployé comme cœur du réseau. Promu au rôle de contrôleur de domaine pour 'homelab.local', il gère de manière centralisée les services Active Directory et DNS.",
-                        },
-                    },
-                    {
-                        img: "netdata_snmp_devices.png",
-                        title: { de: "Netzwerk-Monitoring: Leistung", en: "Network Monitoring: Performance", fr: "Surveillance Réseau : Performance" },
-                        text: {
-                            de:
-                                "Ein anfängliches Monitoring wurde mit Netdata implementiert, um Echtzeit-Leistungs- und Zustandsmetriken für die gesamte Kerninfrastruktur zu liefern. Dies gewährleistete die Stabilität des Netzwerks, bevor weitere Sicherheitsmaßnahmen implementiert wurden.",
-                            en:
-                                "Initial monitoring was implemented using Netdata to provide real-time performance and health metrics for all core infrastructure. This ensured network stability and performance before layering on security measures.",
-                            fr:
-                                "Une surveillance initiale des performances a été mise en place avec Netdata, offrant des métriques en temps réel sur l'état de l'infrastructure. Cette étape a garanti la stabilité du réseau avant l'intégration des dispositifs de sécurité.",
-                        },
-                    },
-                    {
-                        img: "5.png",
-                        title: { de: "Sicherheitshärtung: IPS-Bereitstellung", en: "Security Hardening: IPS Deployment", fr: "Durcissement de la Sécurité : Déploiement de l'IPS" },
-                        text: {
-                            de:
-                                "Nachdem die Netzwerkstabilität sichergestellt war, verlagerte sich der Fokus auf die Sicherheit. Ein fortschrittliches Intrusion Prevention System (Suricata) wurde auf der pfSense-Firewall bereitgestellt und mit den branchenüblichen ETOpen-Regelsätzen zur Bedrohungserkennung ausgestattet.",
-                            en:
-                                "With the network operational, the focus shifted to security. An advanced Intrusion Prevention System (Suricata) was deployed on the pfSense firewall. The ETOpen rule sets were enabled to arm the system with industry-standard threat intelligence.",
-                            fr:
-                                "Une fois le réseau opérationnel, l'accent a été mis sur la sécurité. Un système de prévention d'intrusion (IPS) avancé, Suricata, a été déployé sur le pare-feu pfSense, puis armé avec les règles de menaces standard de l'industrie (ETOpen).",
-                        },
-                    },
-                    {
-                        img: "6.png",
-                        title: { de: "Simulation einer Insider-Bedrohung", en: "Insider Threat Simulation", fr: "Simulation d'une Menace Interne" },
-                        text: {
-                            de:
-                                "Um das IPS zu validieren, wurde eine Insider-Bedrohung simuliert, indem ein Aufklärungsscan von einer internen Workstation (192.168.10.101) gegen den Domänencontroller (192.168.10.10) mit Nmap gestartet wurde. Dies ahmt einen Angreifer nach, der das interne Netzwerk nach Schwachstellen absucht.",
-                            en:
-                                "To validate the IPS, an insider threat was simulated by launching a reconnaissance scan from an internal workstation (192.168.10.101) against the Domain Controller (192.168.10.10) using Nmap. This mimics an attacker mapping the internal network for vulnerabilities.",
-                            fr:
-                                "Pour valider l'IPS, une menace interne a été simulée en lançant un scan de reconnaissance depuis un poste de travail interne vers le contrôleur de domaine avec Nmap. Cette action imite un attaquant qui cartographie le réseau à la recherche de vulnérabilités.",
-                        },
-                    },
-                    {
-                        img: "7.png",
-                        title: { de: "Erfolgreiche Bedrohungserkennung", en: "Successful Threat Detection", fr: "Détection de Menace Réussie" },
-                        text: {
-                            de:
-                                "Das IPS hat den feindlichen Scan sofort in Echtzeit erkannt und mehrere hochpriore Alarme ausgelöst, darunter „ET SCAN Possible Nmap User-Agent“. Dies beweist die Fähigkeit des Systems, Bedrohungen innerhalb des vertrauenswürdigen Netzwerks zuverlässig zu identifizieren.",
-                            en:
-                                'The IPS successfully detected the hostile scan in real-time. Multiple high-priority alerts, including "ET SCAN Possible Nmap User-Agent", were triggered. This proves the system’s ability to reliably identify and alert on threats within the trusted network, confirming the project’s success.',
-                            fr:
-                                "L'IPS a détecté avec succès le scan hostile en temps réel. De multiples alertes de haute priorité, incluant « ET SCAN Possible Nmap User-Agent », ont été déclenchées. Cela prouve la capacité du système à identifier et à signaler de manière fiable les menaces au sein du réseau de confiance, confirmant ainsi le succès du projet.",
-                        },
-                    },
-                ],
-            },
-            "project-modal-4": {
-                currentSlide: 0,
-                slides: [
-                    {
-                        img: "leagueskins_thumb.webp",
-                        title: {
-                            de: "Open Source Maintainer Rolle",
-                            en: "Open Source Maintainer Role",
-                            fr: "Rôle de Mainteneur Open Source"
-                        },
-                        text: {
-                            de: "Ich pflege LeagueSkins/ROSE für ein Open-Source-Ökosystem mit über 10K Nutzern und mehr als 100K Downloads weltweit. Meine Rolle ist entscheidend für die Systemstabilität, da proprietäre Spieldaten korrekt validiert, strukturiert und für Releases bereitgestellt werden.",
-                            en: "I maintain LeagueSkins/ROSE for an open-source ecosystem with over 10K users and more than 100K downloads worldwide. My role is critical for stability, ensuring proprietary game data is correctly validated, structured, and prepared for release.",
-                            fr: "Je maintiens LeagueSkins/ROSE pour un écosystème open source comptant plus de 10K utilisateurs et plus de 100K téléchargements dans le monde. Mon rôle est clé pour la stabilité, en veillant à ce que les données propriétaires du jeu soient validées, structurées et prêtes pour la publication."
-                        }
-                    },
-                    {
-                        img: "leagueskins_code.png",
-                        title: {
-                            de: "Reverse Engineering & Debugging",
-                            en: "Reverse Engineering & Debugging",
-                            fr: "Rétro-ingénierie & Débogage"
-                        },
-                        text: {
-                            de: "Um komplexe Rendering-Fehler zu beheben (wie im Code gezeigt), führe ich Reverse Engineering an binären Konfigurationsdateien (.bin) durch. Ich analysiere Parameter wie <code>InitialSubmeshToHide</code> und patche die Logik manuell, um fehlende Assets wiederherzustellen, die von automatisierten Tools übersehen wurden.",
-                            en: "To resolve complex rendering bugs (as shown in the code), I perform reverse engineering on binary configuration files (.bin). I analyze parameters like <code>InitialSubmeshToHide</code> and manually patch the logic to restore missing assets that automated tools fail to detect.",
-                            fr: "Pour résoudre des bugs de rendu complexes, j'effectue une rétro-ingénierie sur des fichiers de configuration binaires (.bin). J'analyse des paramètres comme <code>InitialSubmeshToHide</code> et corrige manuellement la logique pour restaurer les actifs manquants."
-                        }
-                    },
-                    {
-                        img: "leagueskins_files.png",
-                        title: {
-                            de: "Datenstruktur & QA-Workflow",
-                            en: "Data Structure & QA Workflow",
-                            fr: "Structure des Données & Workflow QA"
-                        },
-                        text: {
-                            de: "Ich leite ein Sub-Team von Testern, um Regressionstests für neue Patches durchzuführen. Mein Workflow umfasst die Nutzung von CLI-Tools (RitoBIN) zur Datenextraktion, Git zur Versionskontrolle und strikte JSON-Validierung, bevor Updates in die Live-Umgebung gepusht werden.",
-                            en: "I lead a sub-team of testers to perform regression testing for new patches. My workflow involves using CLI tools (RitoBIN) for data extraction, Git for version control, and strict JSON validation before updates are pushed to the live production environment.",
-                            fr: "Je dirige une sous-équipe de testeurs pour effectuer des tests de régression. Mon flux de travail implique l'utilisation d'outils CLI (RitoBIN) pour l'extraction de données, Git pour le contrôle de version et une validation JSON stricte avant la mise en production."
-                        }
-                    }
-                ]
-            }
         }
     };
     const supportedLangs = ["de", "en", "fr"];
@@ -323,11 +204,10 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Project Data for switching
-    const projectOrder = ["3", "4", "1"];
+    const projectOrder = ["3", "1"];
     const projectsData = {
         "1": {
             id: "1",
-            modalId: "project-modal-1",
             img: "images/widepre.webp",
             imagePosition: "center center",
             mobileAspectRatio: "16 / 5",
@@ -342,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fr: "Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise en utilisant VMware, Windows Server, pfSense et un IPS Suricata pour se défendre contre les menaces internes."
             },
             buttons: [
-                { type: "modal", modalId: "project-modal-1", text: { de: "Details", en: "Details", fr: "Détails" } }
+                { type: "link", url: "homelab.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
             ]
         },
         "3": {
@@ -361,25 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             buttons: [
                 { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
-            ]
-        },
-        "4": {
-            id: "4",
-            modalId: "project-modal-4",
-            img: "images/leagueskins.jpg",
-            imagePosition: "center center",
-            title: {
-                de: "LeagueSkins/ROSE",
-                en: "LeagueSkins/ROSE",
-                fr: "LeagueSkins/ROSE"
-            },
-            desc: {
-                de: "LeagueSkins/ROSE für ein Open-Source-Ökosystem mit 10K+ Nutzern und mehr als 100K Downloads weltweit gepflegt. Fokus auf Reverse Engineering von Binärdateien (.bin), Fehlerbehebung und QA-Leitung.",
-                en: "Maintained LeagueSkins/ROSE for an open-source ecosystem with 10K+ users and more than 100K downloads worldwide. Focused on reverse engineering binary files (.bin), troubleshooting, and QA leadership.",
-                fr: "Maintenance de LeagueSkins/ROSE pour un écosystème open source avec 10K+ utilisateurs et plus de 100K téléchargements dans le monde. Accent sur la rétro-ingénierie de fichiers binaires (.bin) et la direction QA."
-            },
-            buttons: [
-                { type: "link", url: "leagueskins.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
             ]
         }
     };
@@ -1713,6 +1574,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         renderPreloader(20);
         window.setTimeout(() => renderPreloader(72), 60);
+        // Hard cap: never hold the page behind the preloader for more than ~300ms
+        window.setTimeout(finishPreloader, 300);
         preloaderAssetsReady.finally(() => {
             const elapsed = performance.now() - preloaderStartedAt;
             const remaining = Math.max(0, minimumVisibleMs - elapsed);

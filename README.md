@@ -28,9 +28,9 @@ herzlich willkommen auf meinem Portfolio. Mein Name ist Walid Gourideche, und ic
 | ------------- | ------------------------------------------ |
 | **Struktur**  | `HTML5`, `Semantisches Markup`             |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
-| **Logik**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
-| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`, `Live GitHub Profile Card`      |
-| **Deployment**| `GitHub Pages`, `Custom Domain (grydsh.dev)` |
+| **Logik**     | `Vanilla JavaScript (ES6+)`, `Sprach-Persistenz (Cookie/LocalStorage)` |
+| **Features**  | `Mehrsprachig (DE/EN/FR)`, `PWA mit Offline-Modus`, `Live GitHub Profile Card` |
+| **Deployment**| `GitHub Pages`, `Cloudflare Worker (SEO)`, `Custom Domain (grydsh.dev)` |
 
 ---
 
@@ -45,14 +45,14 @@ Dieses Projekt demonstriert den vollständigen Prozess der Erstellung und Absich
 -   **Monitoring:** Echtzeit-Leistungsüberwachung der gesamten Infrastruktur mit **Netdata** via SNMP.
 -   **Cybersecurity (IPS):** Implementierung des Intrusion Prevention Systems **Suricata** zur Erkennung und Abwehr eines simulierten Insider-Angriffs (Nmap-Scan).
 
-### 2. PROJECT: Borealis – Full-Stack E-Commerce Plattform
+### 2. PortGuardian Enterprise – USB-Schutzagent für Windows
 
-Dieses Projekt zeigt den Aufbau einer kompletten Webanwendungs-Infrastruktur mit dem MERN-Stack. Der Fokus lag auf der Entwicklung einer sicheren, zustandslosen Backend-API und eines reaktionsschnellen Frontends.
+Ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erkennt USB-Einsteckvorgänge, prüft verdächtige Dateien lokal und leitet Alarme an ein SIEM weiter.
 
--   **Architektur:** **Node.js/Express** für die REST-API, **MongoDB** für die Datenbank und **Vanilla JS** für das Frontend.
--   **Authentifizierung:** Sicherung durch **JSON Web Tokens (JWT)** mit Passwort-Hashing (`bcrypt`).
--   **Systemverwaltung:** Ein Admin-Dashboard mit **rollenbasierter Zugriffskontrolle (RBAC)** zur Verwaltung von Produkten, Bestellungen und Benutzern (CRUD-Operationen).
--   **API-Integration:** Anbindung von Drittanbieter-Diensten wie **Stripe** (Zahlungsabwicklung) und **SendGrid** (transaktionale E-Mails).
+-   **Erkennung:** **WMI-Ereignisse** erfassen neue USB-Medien in Echtzeit; eine **sechsstufige Analyse** bewertet die Dateien lokal.
+-   **Reaktion:** Ab einem kritischen Score wirft der Agent das USB-Gerät automatisch aus und isoliert den Endpoint.
+-   **SIEM-Anbindung:** Nur WARN- und CRITICAL-Ereignisse gehen per **Syslog (UDP 514)** an **Splunk Enterprise** auf einem Windows Server 2019.
+-   **Stack:** **Python**, **Qt**, **Splunk**, **VMware**-Testlabor.
 
 ---
 
@@ -100,9 +100,9 @@ Welcome to my portfolio. My name is Walid Gourideche, and I am a motivated aspir
 |---------------|--------------------------------------------|
 | **Structure** | `HTML5`, `Semantic Markup`                 |
 | **Styling**   | `CSS3`, `Responsive Design`, `Flexbox`     |
-| **Logic**     | `Vanilla JavaScript (ES6+)`, `Theme Persistence (LocalStorage)` |
-| **Features**  | `Dark/Light Mode Toggle`, `Multi-Language (DE/EN/FR)`, `Live GitHub Profile Card`      |
-| **Deployment**| `GitHub Pages`, `Custom Domain (grydsh.dev)` |
+| **Logic**     | `Vanilla JavaScript (ES6+)`, `Language Persistence (Cookie/LocalStorage)` |
+| **Features**  | `Multi-Language (DE/EN/FR)`, `PWA with Offline Mode`, `Live GitHub Profile Card` |
+| **Deployment**| `GitHub Pages`, `Cloudflare Worker (SEO)`, `Custom Domain (grydsh.dev)` |
 
 ---
 
@@ -117,14 +117,14 @@ This project demonstrates the complete lifecycle of creating and securing a virt
 -   **Monitoring:** Implemented real-time performance monitoring of all infrastructure with **Netdata** via SNMP.
 -   **Cybersecurity (IPS):** Deployed the **Suricata** Intrusion Prevention System to detect and defend against a simulated insider threat (Nmap scan).
 
-### 2. PROJECT: Borealis – Full-Stack E-Commerce Platform
+### 2. PortGuardian Enterprise – Windows USB Defense Agent
 
-This project showcases the construction of a complete web application infrastructure using the MERN stack, focusing on a secure, stateless backend API and a responsive frontend.
+A Windows endpoint agent tested in a VMware-based small-enterprise lab. It detects USB insertions, scans suspicious files locally, and forwards alerts to a SIEM.
 
--   **Architecture:** **Node.js/Express** for the REST API, **MongoDB** for the database, and **Vanilla JS** for the frontend.
--   **Authentication:** Secured via **JSON Web Tokens (JWT)** with password hashing (`bcrypt`).
--   **System Administration:** An admin dashboard with **Role-Based Access Control (RBAC)** to manage products, orders, and users (CRUD operations).
--   **API Integration:** Connected third-party services like **Stripe** (payment processing) and **SendGrid** (transactional emails).
+-   **Detection:** **WMI events** capture new USB media in real time; a **six-layer engine** scores the files locally.
+-   **Response:** At a critical score, the agent automatically ejects the USB device and isolates the endpoint.
+-   **SIEM Integration:** Only WARN and CRITICAL events are sent via **Syslog (UDP 514)** to **Splunk Enterprise** on a Windows Server 2019.
+-   **Stack:** **Python**, **Qt**, **Splunk**, **VMware** lab.
 
 ---
 

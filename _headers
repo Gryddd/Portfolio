@@ -11,9 +11,6 @@
 /script.js
   Cache-Control: public, max-age=86400, must-revalidate
 
-/pixelsnow.js
-  Cache-Control: public, max-age=86400, must-revalidate
-
 /*.pdf
   Cache-Control: public, max-age=2592000
 

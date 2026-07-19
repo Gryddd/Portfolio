@@ -11,7 +11,7 @@ const localeMap = {
     fr: "fr_FR"
 };
 const languages = ["de", "fr"];
-const pageFiles = ["index.html", "portguardian.html", "leagueskins.html"];
+const pageFiles = ["index.html", "portguardian.html", "homelab.html"];
 
 function escapeRegExp(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

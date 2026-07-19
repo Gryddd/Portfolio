@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walid-portfolio-v18';
+const CACHE_NAME = 'walid-portfolio-v19';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,16 +7,16 @@ const urlsToCache = [
   '/portguardian.html',
   '/de/portguardian.html',
   '/fr/portguardian.html',
-  '/leagueskins.html',
-  '/de/leagueskins.html',
-  '/fr/leagueskins.html',
+  '/homelab.html',
+  '/de/homelab.html',
+  '/fr/homelab.html',
   '/offline.html',
   '/style.css',
   '/project-page.css',
   '/script.js',
   '/seo.js',
   '/portguardian-page.js',
-  '/leagueskins-page.js',
+  '/homelab-page.js',
   '/vendor/aos/aos.css',
   '/vendor/aos/aos.js',
   '/manifest.json',

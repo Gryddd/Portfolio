@@ -933,15 +933,7 @@ body.project-background-video-disabled .project-case-background-video {
     }
 }
 
-.leagueskins-case-page {
-    --leagueskins-loader-bg: #020202;
-    --leagueskins-loader-text: #f7f7f8;
-    --leagueskins-loader-muted: rgba(255, 255, 255, 0.68);
-    --leagueskins-shell-bg:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.004)),
-        rgba(6, 6, 8, 0.72);
-    background-image: none;
-}
+
 
 
 .portguardian-case-page {
@@ -959,55 +951,25 @@ body.project-background-video-disabled .project-case-background-video {
 }
 
 
-.leagueskins-case-page::before {
-    background: none;
-}
-
-.leagueskins-case-page .hero {
-    padding-top: clamp(6.5rem, 10vh, 7.5rem);
-    padding-bottom: clamp(3.6rem, 6vh, 4.25rem);
-}
-
-.leagueskins-case-page .hero-card {
-    max-width: 56rem;
-    overflow: hidden;
-    isolation: isolate;
-}
-
-.leagueskins-case-page .hero-card.hero-card-static {
-    border: 0;
-    padding: 2px;
-    background: conic-gradient(from var(--card-angle, 0deg), transparent 25%, var(--hero-glow-color) 50%, transparent 75%);
-    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 20px -4px var(--hero-glow-color);
-    transition: box-shadow 0.5s ease;
-}
-
-.leagueskins-case-page .hero-card.hero-card-static:hover {
-    transform: none;
-    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 20px -4px var(--hero-glow-color);
-}
-
-.leagueskins-case-page .hero-card-accent {
-    width: 50%;
-    opacity: 1;
-    background: linear-gradient(90deg, transparent, var(--hero-accent-color), transparent);
-}
 
 
 
-.leagueskins-case-page .hero-text {
-    max-width: 52rem;
-}
 
-.leagueskins-case-page .project-case-footer .footer-legal {
-    max-width: 48rem;
-    margin-inline: auto;
-    text-align: center;
-}
 
-body.rose-loader-active {
-    overflow: hidden;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 body.case-loader-active {
     overflow: hidden;
@@ -1026,19 +988,13 @@ body.case-loader-transitioning {
 
 .project-case-page.case-loader-active .main-nav,
 .project-case-page.case-loader-active .mobile-menu-icon,
-.project-case-page.case-loader-active .scroll-progress,
-.project-case-page.rose-loader-active .main-nav,
-.project-case-page.rose-loader-active .mobile-menu-icon,
-.project-case-page.rose-loader-active .scroll-progress {
+.project-case-page.case-loader-active .scroll-progress {
     opacity: 0;
     transform: translate3d(0, 0.75rem, 0);
     pointer-events: none;
 }
 
-.project-case-page.rose-loader-active main {
-    visibility: hidden;
-    pointer-events: none;
-}
+
 
 .project-case-page.case-loader-active main {
     pointer-events: none;
@@ -1103,95 +1059,31 @@ body.case-loader-transitioning {
     transform: translate3d(0, 0.85rem, 0) scale(0.992);
 }
 
-.rose-loader {
-    position: fixed;
-    inset: 0;
-    z-index: 12000;
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.032), transparent 32%),
-        radial-gradient(circle at 78% 68%, rgba(255, 255, 255, 0.02), transparent 28%),
-        var(--leagueskins-loader-bg);
-    transition: opacity 0.68s ease, visibility 0.68s ease;
-}
 
 
-.rose-loader.is-complete {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.rose-loader-panel {
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    gap: 0.85rem;
-    width: min(100%, 44rem);
-    text-align: center;
-    transition: opacity 0.44s ease, transform 0.58s cubic-bezier(0.19, 1, 0.22, 1);
-    will-change: opacity, transform;
-}
-
-.rose-loader-icon,
-.rose-loader-title,
-.rose-loader-tagline {
-    opacity: 0;
-    animation: none;
-}
-
-.rose-loader-icon {
-    width: clamp(104px, 11vw, 148px);
-    height: auto;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34));
-    transform: scale(0.88);
-}
 
 
-.rose-loader-copy {
-    display: grid;
-    justify-items: center;
-    gap: 0.16rem;
-    min-width: 0;
-}
 
-.rose-loader-title {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: clamp(3rem, 6.4vw, 5.8rem);
-    line-height: 0.88;
-    letter-spacing: 0.04em;
-    color: var(--leagueskins-loader-text);
-    transform: translateX(-2rem);
-    white-space: nowrap;
-}
 
-.rose-loader-tagline {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(0.96rem, 1.5vw, 1.3rem);
-    font-weight: 200;
-    letter-spacing: 0.06em;
-    color: var(--leagueskins-loader-muted);
-    transform: translateX(-1.2rem) translateY(0.35rem);
-}
 
-.leagueskins-case-page.rose-loader-animate .rose-loader-icon {
-    animation: roseLoaderIcon 1.16s cubic-bezier(0.19, 1, 0.22, 1) 0.18s forwards;
-}
 
-.leagueskins-case-page.rose-loader-animate .rose-loader-title {
-    animation: roseLoaderTitle 1.18s cubic-bezier(0.19, 1, 0.22, 1) 0.74s forwards;
-}
 
-.leagueskins-case-page.rose-loader-animate .rose-loader-tagline {
-    animation: roseLoaderTagline 0.96s ease 1.28s forwards;
-}
 
-.rose-loader.is-complete .rose-loader-panel {
-    opacity: 0;
-    transform: translateY(-0.45rem) scale(0.986);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @keyframes roseLoaderIcon {
     from {
@@ -1343,58 +1235,25 @@ body.case-loader-transitioning {
     }
 }
 
-.leagueskins-hero-media {
-    display: block;
-    background: none;
-    backface-visibility: hidden;
-}
-
-
-.leagueskins-case-page .project-case-background-video {
-    opacity: 0;
-    transform: scale(1.03);
-    filter: saturate(0.86) brightness(0.54) contrast(1.06);
-    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
-    backface-visibility: hidden;
-}
-
-.leagueskins-case-page .project-case-background-video.is-ready {
-    opacity: 0.72;
-}
-
-.leagueskins-case-page .project-case-hero-media .video-overlay {
-    background:
-        linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.62) 58%, rgba(0, 0, 0, 0.9) 100%);
-}
 
 
 
 
-.leagueskins-hero-brand {
-    align-items: center;
-}
 
-.leagueskins-hero-icon {
-    width: 124px;
-    height: 124px;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.2));
-}
 
-.rose-brand-title {
-    margin: 0;
-    font-family: "Bebas Neue", sans-serif;
-    font-size: clamp(3rem, 7vw, 5.9rem);
-    line-height: 0.92;
-    letter-spacing: 0.05em;
-}
 
-.rose-brand-tagline {
-    font-family: "Poppins", sans-serif;
-    font-size: clamp(1rem, 1.7vw, 1.3rem);
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    color: rgba(255, 255, 255, 0.82);
-}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .portguardian-case-page .project-case-hero-media {
     display: block;
@@ -1519,6 +1378,17 @@ body.case-loader-transitioning {
     transform: translate3d(0, 0, 0);
 }
 
+/* Homelab loader has no icon shell, so the copy cannot be width-animated from JS measurements */
+.homelab-case-page .case-loader-copy,
+.homelab-case-page.case-loader-animate .case-loader-copy {
+    width: auto;
+    max-width: 100%;
+    overflow: visible;
+    justify-items: center;
+    text-align: center;
+    transform: none;
+}
+
 .portguardian-case-page .topology-visual-shell,
 .portguardian-case-page .schema-visual-shell,
 .portguardian-case-page .validation-layout,
@@ -1629,291 +1499,90 @@ body.case-loader-transitioning {
     color: var(--case-text-main);
 }
 
-.leagueskins-shell {
-    padding: clamp(1.35rem, 2.7vw, 1.8rem);
-    border-radius: 28px;
-    border: 1px solid var(--case-shell-border);
-    background: var(--leagueskins-shell-bg);
-    box-shadow: var(--case-shadow);
-}
-
-.leagueskins-feature-grid,
-.leagueskins-community-grid {
-    display: grid;
-    gap: 1.25rem;
-    max-width: 64rem;
-    margin-inline: auto;
-}
-
-.leagueskins-feature-grid {
-    grid-template-columns: 1fr;
-}
-
-.leagueskins-community-grid {
-    grid-template-columns: 1fr;
-}
-
-.leagueskins-feature-card {
-    padding: 1.55rem 1.65rem;
-    border-radius: 24px;
-    border: 1px solid var(--case-shell-border);
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0.004)),
-        var(--case-shell-bg);
-    box-shadow: var(--case-shadow);
-}
-
-.leagueskins-feature-index {
-    display: none;
-}
-
-.leagueskins-feature-card h3,
-.leagueskins-note-card p {
-    margin: 0;
-}
-
-.leagueskins-feature-card h3 {
-    margin-bottom: 0.55rem;
-    color: var(--case-text-strong);
-}
-
-.leagueskins-feature-card p {
-    margin: 0;
-    line-height: 1.72;
-    color: var(--case-text-main);
-}
-
-.leagueskins-structure-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    align-items: stretch;
-    max-width: 64rem;
-    margin-inline: auto;
-}
-
-.leagueskins-repo-tree {
-    padding: clamp(1.35rem, 2.8vw, 1.8rem);
-    border-radius: 28px;
-    border: 1px solid var(--case-shell-border);
-    background: #06080d;
-    box-shadow: var(--case-shadow);
-    overflow: auto;
-}
-
-.leagueskins-repo-tree pre,
-.leagueskins-repo-tree code {
-    margin: 0;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    line-height: 1.75;
-    color: rgba(255, 255, 255, 0.9);
-    white-space: pre;
-}
-
-.leagueskins-note-card {
-    display: grid;
-    gap: 0.95rem;
-}
-
-.discord-metric-card {
-    position: relative;
-    max-width: 46rem;
-    margin-inline: auto;
-    padding: clamp(1.8rem, 4vw, 2.4rem);
-    text-align: center;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at top center, rgba(255, 255, 255, 0.04), transparent 42%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.006)),
-        var(--case-shell-bg);
-}
-
-.discord-metric-card::before {
-    content: "";
-    position: absolute;
-    inset: -20% 20% auto;
-    height: 180px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.14), transparent 68%);
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-.discord-metric-head {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.9rem;
-    position: relative;
-    z-index: 1;
-}
-
-.discord-metric-head h3,
-.discord-metric-head p {
-    margin: 0;
-}
-
-.discord-metric-head h3 {
-    font-size: 1.4rem;
-    color: var(--case-text-strong);
-}
-
-.discord-metric-head p {
-    margin-top: 0.2rem;
-    max-width: 28rem;
-    color: var(--case-text-main);
-    line-height: 1.6;
-}
-
-.discord-metric-icon {
-    width: 88px;
-    height: 88px;
-    flex: 0 0 88px;
-    border-radius: 28px;
-    object-fit: cover;
-    border: 1px solid var(--case-shell-border);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
-}
-
-.discord-metric-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.8rem;
-    max-width: 28rem;
-    width: 100%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-}
-
-.discord-metric-stat {
-    padding: 1.15rem 1rem 1.05rem;
-    border-radius: 20px;
-    border: 1px solid var(--case-shell-border);
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-        rgba(14, 14, 18, 0.9);
-}
-
-.discord-metric-value {
-    display: block;
-    margin-bottom: 0.18rem;
-    font-family: "Bebas Neue", sans-serif;
-    font-size: clamp(2.35rem, 5vw, 3rem);
-    line-height: 0.95;
-    letter-spacing: 0.05em;
-    color: var(--case-text-strong);
-}
-
-.discord-metric-label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--case-text-muted);
-}
-
-.discord-metric-card .submit-btn {
-    justify-self: center;
-    position: relative;
-    z-index: 1;
-}
-
-.leagueskins-telemetry-section h2 {
-    text-align: center;
-}
-
-.discord-metric-card .project-panel-label,
-.leagueskins-compliance-shell .project-panel-label {
-    display: block;
-    text-align: center;
-}
-
-.discord-metric-card .project-panel-label {
-    position: relative;
-    z-index: 1;
-}
-
-.leagueskins-compliance-shell {
-    max-width: 46rem;
-    margin-inline: auto;
-    text-align: center;
-}
-
-.leagueskins-step-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.8rem;
-}
-
-.leagueskins-step-card {
-    padding: 1rem;
-    border-radius: 20px;
-    border: 1px solid var(--case-shell-border);
-    background: rgba(255, 255, 255, 0.012);
-}
-
-.leagueskins-step-card strong {
-    display: block;
-    margin-bottom: 0.55rem;
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 1.15rem;
-    letter-spacing: 0.08em;
-    color: var(--case-text-strong);
-}
-
-.leagueskins-step-card p {
-    margin: 0;
-    line-height: 1.66;
-    color: var(--case-text-main);
-}
-
-.leagueskins-inline-actions {
-    margin-top: 0.25rem;
-}
 
 
 
 
 
-@media (max-width: 980px) {
-    .leagueskins-feature-grid {
-        grid-template-columns: 1fr;
-    }
 
-    .leagueskins-structure-layout,
-    .leagueskins-community-grid {
-        grid-template-columns: 1fr;
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 760px) {
-    .rose-loader-panel {
-        gap: 0.6rem;
-        width: auto;
-    }
+    
 
-    .rose-loader-copy {
-        justify-items: center;
-    }
+    
 
-    .rose-loader-icon {
-        width: clamp(82px, 28vw, 110px);
-    }
+    
 
-    .rose-loader-title {
-        font-size: clamp(1.9rem, 9.2vw, 2.75rem);
-        letter-spacing: 0.03em;
-        line-height: 0.9;
-    }
+    
 
-    .rose-loader-tagline {
-        font-size: clamp(0.8rem, 3.2vw, 0.96rem);
-        letter-spacing: 0.04em;
-    }
+    
 
     .case-loader-panel {
         grid-template-columns: 1fr;
@@ -1961,10 +1630,7 @@ body.case-loader-transitioning {
         justify-items: start;
     }
 
-    .leagueskins-hero-icon {
-        width: 104px;
-        height: 104px;
-    }
+    
 
     .portguardian-case-page .project-hero-brand {
         align-items: center;
@@ -2005,36 +1671,21 @@ body.case-loader-transitioning {
         padding-inline: 0.15rem;
     }
 
-    .leagueskins-feature-grid,
-    .leagueskins-step-grid {
-        grid-template-columns: 1fr;
-    }
+    
 
-    .discord-metric-head {
-        align-items: center;
-    }
+    
 }
 
 @media (max-height: 720px) {
-    .rose-loader {
-        padding: 1rem;
-    }
+    
 
-    .rose-loader-panel {
-        gap: 0.55rem;
-    }
+    
 
-    .rose-loader-icon {
-        width: clamp(82px, 10vw, 112px);
-    }
+    
 
-    .rose-loader-title {
-        font-size: clamp(2.3rem, 5.8vw, 4rem);
-    }
+    
 
-    .rose-loader-tagline {
-        font-size: clamp(0.88rem, 1.4vw, 1rem);
-    }
+    
 
     .case-loader {
         padding: 1rem;
@@ -2053,19 +1704,6 @@ body.case-loader-transitioning {
     }
 }
 
-@media (max-width: 520px) {
-    .discord-metric-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
-@media (prefers-reduced-motion: reduce) {
 
-    .rose-loader-icon,
-    .rose-loader-title,
-    .rose-loader-tagline {
-        animation: none;
-        opacity: 1;
-        transform: none;
-    }
-}
+
