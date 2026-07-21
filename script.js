@@ -242,6 +242,24 @@ document.addEventListener("DOMContentLoaded", function () {
             buttons: [
                 { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
             ]
+        },
+        "4": {
+            id: "4",
+            img: "images/leagueskins.jpg",
+            imagePosition: "center center",
+            title: {
+                de: "LeagueSkins/ROSE",
+                en: "LeagueSkins/ROSE",
+                fr: "LeagueSkins/ROSE"
+            },
+            desc: {
+                de: "Open-Source-Beitrag zu LeagueSkins/ROSE, einem Community-Modding-Projekt: 71 Commits als zweitaktivster Mitwirkender, mit Fokus auf Reverse Engineering von Binärdateien (.bin) sowie der Behebung von VFX- und Ability-Sound-Fehlern über mehrere Champion-Formen hinweg.",
+                en: "Open-source contributor to LeagueSkins/ROSE, a community modding project: 71 commits as second-highest contributor, focused on reverse engineering binary (.bin) assets and fixing VFX and ability-sound bugs across champion form states.",
+                fr: "Contributeur open source à LeagueSkins/ROSE, un projet de modding communautaire : 71 commits en tant que deuxième contributeur, axé sur la rétro-ingénierie de fichiers binaires (.bin) et la correction de bugs VFX et de sons de compétences sur plusieurs formes de champions."
+            },
+            buttons: [
+                { type: "link", url: "https://github.com/Alban1911/LeagueSkins", text: { de: "Auf GitHub ansehen", en: "View on GitHub", fr: "Voir sur GitHub" } }
+            ]
         }
     };
     let activeProjectId = "3";
@@ -902,7 +920,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchGitHubStats() {
         const CACHE_KEY = 'github_stats_cache_v6';
         const CACHE_DURATION = 3600000;
-        const statsUrl = new URL('./data/github-stats.json', window.location.href).toString();
+        const statsUrl = new URL('/data/github-stats.json', window.location.origin).toString();
 
         function isValidLanguageEntry(entry) {
             return !!entry
