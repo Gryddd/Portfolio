@@ -248,14 +248,14 @@ document.addEventListener("DOMContentLoaded", function () {
             img: "images/leagueskins.jpg",
             imagePosition: "center center",
             title: {
-                de: "LeagueSkins/ROSE",
-                en: "LeagueSkins/ROSE",
-                fr: "LeagueSkins/ROSE"
+                de: "LeagueSkins (Rose)",
+                en: "LeagueSkins (Rose)",
+                fr: "LeagueSkins (Rose)"
             },
             desc: {
-                de: "Open-Source-Beitrag zu LeagueSkins/ROSE, einem Community-Modding-Projekt: 71 Commits als zweitaktivster Mitwirkender, mit Fokus auf Reverse Engineering von Binärdateien (.bin) sowie der Behebung von VFX- und Ability-Sound-Fehlern über mehrere Champion-Formen hinweg.",
-                en: "Open-source contributor to LeagueSkins/ROSE, a community modding project: 71 commits as second-highest contributor, focused on reverse engineering binary (.bin) assets and fixing VFX and ability-sound bugs across champion form states.",
-                fr: "Contributeur open source à LeagueSkins/ROSE, un projet de modding communautaire : 71 commits en tant que deuxième contributeur, axé sur la rétro-ingénierie de fichiers binaires (.bin) et la correction de bugs VFX et de sons de compétences sur plusieurs formes de champions."
+                de: "Zweitaktivster Mitwirkender (71 Commits) an LeagueSkins, dem Community-Asset-Repository hinter Rose – einem Open-Source-Skin-Changer für League of Legends mit über 200.000 Downloads. Schwerpunkt: Reverse Engineering von Binärdateien (.bin) sowie Behebung von VFX- und Ability-Sound-Fehlern über mehrere Champion-Formen hinweg.",
+                en: "Second-highest contributor (71 commits) to LeagueSkins, the community asset repository behind Rose — an open-source League of Legends skin changer with 200,000+ downloads. Focused on reverse engineering binary (.bin) assets and fixing VFX and ability-sound bugs across champion form states.",
+                fr: "Deuxième contributeur (71 commits) à LeagueSkins, le dépôt d'assets communautaire derrière Rose — un skin changer open source pour League of Legends totalisant plus de 200 000 téléchargements. Axé sur la rétro-ingénierie de fichiers binaires (.bin) et la correction de bugs VFX et de sons de compétences sur plusieurs formes de champions."
             },
             buttons: [
                 { type: "link", url: "https://github.com/Alban1911/LeagueSkins", text: { de: "Auf GitHub ansehen", en: "View on GitHub", fr: "Voir sur GitHub" } }
