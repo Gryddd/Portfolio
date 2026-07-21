@@ -62,7 +62,7 @@ Ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erk
 - Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routing & Switching
 
 #### Systemadministration
-- Windows Server, Linux (Ubuntu/Debian), Active Directory, Hyper-V, VMware, Benutzerverwaltung
+- Windows Server, Linux (Ubuntu/Debian), Active Directory, Hyper-V, VMware, Oracle Cloud, Python, Benutzerverwaltung
 
 #### IT-Sicherheit
 - pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Schwachstellenanalyse
@@ -134,7 +134,7 @@ A Windows endpoint agent tested in a VMware-based small-enterprise lab. It detec
 - Cisco (IOS), GNS3, Wireshark, DNS, DHCP, TCP/IP, Subnetting, VLAN, Routing & Switching
 
 #### System Administration
-- Windows Server, Linux (Ubuntu/Debian), Active Directory, Hyper-V, VMware, User Management
+- Windows Server, Linux (Ubuntu/Debian), Active Directory, Hyper-V, VMware, Oracle Cloud, Python, User Management
 
 #### IT Security
 - pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Vulnerability Analysis
