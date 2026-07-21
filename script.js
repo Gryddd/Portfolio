@@ -242,24 +242,6 @@ document.addEventListener("DOMContentLoaded", function () {
             buttons: [
                 { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
             ]
-        },
-        "4": {
-            id: "4",
-            img: "images/leagueskins.jpg",
-            imagePosition: "center center",
-            title: {
-                de: "LeagueSkins (Rose)",
-                en: "LeagueSkins (Rose)",
-                fr: "LeagueSkins (Rose)"
-            },
-            desc: {
-                de: "Zweitaktivster Mitwirkender (71 Commits) an LeagueSkins, dem Community-Asset-Repository hinter Rose – einem Open-Source-Skin-Changer für League of Legends mit über 200.000 Downloads. Schwerpunkt: Reverse Engineering von Binärdateien (.bin) sowie Behebung von VFX- und Ability-Sound-Fehlern über mehrere Champion-Formen hinweg.",
-                en: "Second-highest contributor (71 commits) to LeagueSkins, the community asset repository behind Rose — an open-source League of Legends skin changer with 200,000+ downloads. Focused on reverse engineering binary (.bin) assets and fixing VFX and ability-sound bugs across champion form states.",
-                fr: "Deuxième contributeur (71 commits) à LeagueSkins, le dépôt d'assets communautaire derrière Rose — un skin changer open source pour League of Legends totalisant plus de 200 000 téléchargements. Axé sur la rétro-ingénierie de fichiers binaires (.bin) et la correction de bugs VFX et de sons de compétences sur plusieurs formes de champions."
-            },
-            buttons: [
-                { type: "link", url: "https://github.com/Alban1911/LeagueSkins", text: { de: "Auf GitHub ansehen", en: "View on GitHub", fr: "Voir sur GitHub" } }
-            ]
         }
     };
     let activeProjectId = "3";
