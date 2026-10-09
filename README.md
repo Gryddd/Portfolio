@@ -69,7 +69,7 @@ Ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erk
 
 #### Sprachen
 - **Deutsch:** ÖSD-Zertifikat B2 (Gesamtprüfung: schriftlich und mündlich bestanden, 2026)
-- **Englisch:** Nahezu muttersprachlich (C2)
+- **Englisch:** Nahezu muttersprachlich (C1/C2)
 - **Französisch:** Fließend
 - **Arabisch:** Muttersprache
 
@@ -141,7 +141,7 @@ A Windows endpoint agent tested in a VMware-based small-enterprise lab. It detec
 
 #### Languages
 - **German:** ÖSD-Certificate B2 (Full examination: written and oral passed, 2026)
-- **English:** C2 (Professional Working Proficiency)
+- **English:** Near-native fluency (C1/C2)
 - **French:** Fluent
 - **Arabic:** Native Speaker
 
