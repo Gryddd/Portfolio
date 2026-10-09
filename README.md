@@ -68,7 +68,7 @@ Ein Windows-Endpunkt-Agent, getestet in einem VMware-basierten KMU-Labor. Er erk
 - pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Schwachstellenanalyse
 
 #### Sprachen
-- **Deutsch:** Goethe-Zertifikat B2, ÖSD B2
+- **Deutsch:** ÖSD-Zertifikat B2 (Gesamtprüfung: schriftlich und mündlich bestanden, 2026)
 - **Englisch:** Nahezu muttersprachlich (C2)
 - **Französisch:** Fließend
 - **Arabisch:** Muttersprache
@@ -140,7 +140,7 @@ A Windows endpoint agent tested in a VMware-based small-enterprise lab. It detec
 - pfSense, Suricata (IPS/IDS), Nmap, pfBlockerNG, Vulnerability Analysis
 
 #### Languages
-- **German:** Goethe-Certificate B2, ÖSD B2
+- **German:** ÖSD-Certificate B2 (Full examination: written and oral passed, 2026)
 - **English:** C2 (Professional Working Proficiency)
 - **French:** Fluent
 - **Arabic:** Native Speaker
