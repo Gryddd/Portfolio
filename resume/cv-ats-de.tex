@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper,top=1.15cm,bottom=1.15cm,left=1.45cm,right=1.45cm]{geometry}
+\usepackage[a4paper,top=1.05cm,bottom=1.05cm,left=1.40cm,right=1.40cm]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage{fontspec}
 \usepackage{xcolor}
@@ -19,22 +19,22 @@
 }
 
 \pagestyle{empty}
-\linespread{1.04}
+\linespread{1.02}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.12em}
+\setlength{\parskip}{0.08em}
 
 \setlist[itemize]{
-  leftmargin=1.20em,
-  itemsep=0.12em,
-  topsep=0.12em,
+  leftmargin=1.15em,
+  itemsep=0.08em,
+  topsep=0.08em,
   parsep=0em,
   partopsep=0em,
   before=\raggedright,
-  after=\vspace{0.18em}
+  after=\vspace{0.12em}
 }
 
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.60em}{0.30em}
+\titlespacing*{\section}{0pt}{0.50em}{0.22em}
 
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
@@ -44,22 +44,22 @@
   BoldFont = arialbd.ttf,
   ItalicFont = ariali.ttf,
   BoldItalicFont = arialbi.ttf,
-  Scale = 1.00
+  Scale = 0.98
 ]{Arial}
 
 \newcommand{\cvheading}[4]{
-  \textbf{#1} \hfill #2 \\[0.08em]
+  \textbf{#1} \hfill #2 \\[0.06em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\cvheadinglink}[5]{
-  \textbf{\href{#5}{#1}} \hfill #2 \\[0.08em]
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.06em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
 \newcommand{\roundphoto}[1]{%
   \begin{tikzpicture}
-    \clip (0,0) circle (1.10cm);
-    \node at (0,0) {\includegraphics[width=2.2cm,height=2.2cm]{#1}};
+    \clip (0,0) circle (1.05cm);
+    \node at (0,0) {\includegraphics[width=2.1cm,height=2.1cm]{#1}};
   \end{tikzpicture}%
 }
 
@@ -67,11 +67,11 @@
 
 \noindent
 \begin{minipage}[c]{0.78\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.25em]
+{\LARGE \textbf{Walid Gourideche}}\\[0.22em]
 \normalsize
-Geboren am 20.07.2003 in Taza, Marokko \textbar{} Staatsangehörigkeit: marokkanisch\\[0.15em]
-Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.15em]
-+212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.15em]
+Geboren am 20.07.2003 in Taza, Marokko \textbar{} Staatsangehörigkeit: marokkanisch\\[0.14em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.14em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.14em]
 \contactlink{https://grydsh.dev}{Portfolio (grydsh.dev)} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn}
 \end{minipage}
 \hfill
@@ -79,7 +79,7 @@ Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.15em]
 \raggedleft
 \roundphoto{cv-photo.jpg}
 \end{minipage}
-\vspace{0.25em}
+\vspace{0.20em}
 
 \section*{Bildungsweg}
 \cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{09/2024 - 07/2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
@@ -105,6 +105,11 @@ Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.15em]
 \begin{itemize}
   \item Serveroptimierung und Monitoring der Kerninfrastruktur des regionalen Versorgungsunternehmens.
   \item Unterstützung bei Routineabläufen und Ressourcenverwaltung für einen ausfallsicheren Systembetrieb.
+\end{itemize}
+
+\cvheading{IQRA Société}{01/2026 - 02/2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
+\begin{itemize}
+  \item Fernüberwachung und Administration von Netzwerksystemen und Unternehmensdiensten über SSH und RDP.
 \end{itemize}
 
 \cvheading{Click Service}{06/2025 - 09/2025}{Praktikant IT-Support und Netzwerke}{Taza, Marokko}
