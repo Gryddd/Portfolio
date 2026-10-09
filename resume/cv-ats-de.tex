@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[top=0.24in,bottom=0.24in,left=0.42in,right=0.42in]{geometry}
+\usepackage[a4paper,top=1.15cm,bottom=1.15cm,left=1.45cm,right=1.45cm]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage{fontspec}
 \usepackage{xcolor}
@@ -19,18 +19,23 @@
 }
 
 \pagestyle{empty}
-\flushbottom
-\linespread{1.00}
-\pretolerance=10000
-\tolerance=4000
-\emergencystretch=3em
-\hyphenpenalty=10000
-\exhyphenpenalty=10000
+\linespread{1.04}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.05em plus 0.03em minus 0.02em}
-\setlist[itemize]{leftmargin=1.08em, itemsep=0.04em, topsep=0.07em plus 0.03em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.02em plus 0.02em minus 0.01em}}
+\setlength{\parskip}{0.12em}
+
+\setlist[itemize]{
+  leftmargin=1.20em,
+  itemsep=0.12em,
+  topsep=0.12em,
+  parsep=0em,
+  partopsep=0em,
+  before=\raggedright,
+  after=\vspace{0.18em}
+}
+
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.34em plus 0.08em minus 0.03em}{0.14em plus 0.04em minus 0.01em}
+\titlespacing*{\section}{0pt}{0.60em}{0.30em}
+
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont[
@@ -39,106 +44,92 @@
   BoldFont = arialbd.ttf,
   ItalicFont = ariali.ttf,
   BoldItalicFont = arialbi.ttf,
-  Scale = 0.92
+  Scale = 1.00
 ]{Arial}
 
 \newcommand{\cvheading}[4]{
-  \textbf{#1} \hfill #2 \\[0.05em]
+  \textbf{#1} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\cvheadinglink}[5]{
-  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
 \newcommand{\roundphoto}[1]{%
   \begin{tikzpicture}
-    \clip (0,0) circle (0.975cm);
-    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+    \clip (0,0) circle (1.10cm);
+    \node at (0,0) {\includegraphics[width=2.2cm,height=2.2cm]{#1}};
   \end{tikzpicture}%
 }
 
 \begin{document}
 
 \noindent
-\begin{minipage}[c]{0.80\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
-\small
-Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.12em]
-+212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
-\contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
+\begin{minipage}[c]{0.78\textwidth}
+{\LARGE \textbf{Walid Gourideche}}\\[0.25em]
+\normalsize
+Geboren am 20.07.2003 in Taza, Marokko \textbar{} Staatsangehörigkeit: marokkanisch\\[0.15em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Marokko\\[0.15em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.15em]
+\contactlink{https://grydsh.dev}{Portfolio (grydsh.dev)} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn}
 \end{minipage}
 \hfill
-\begin{minipage}[c]{0.16\textwidth}
+\begin{minipage}[c]{0.18\textwidth}
 \raggedleft
 \roundphoto{cv-photo.jpg}
 \end{minipage}
-\vspace{0.10em}
-
-\section*{Kurzprofil}
-Angehender Fachinformatiker f\"ur Systemintegration mit praktischer Erfahrung in Netzwerkadministration, Windows-Server- und Cloud-Infrastruktur sowie IT-Sicherheit. Auf der Suche nach einer Ausbildung in Deutschland.
+\vspace{0.25em}
 
 \section*{Bildungsweg}
-\cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{Sept. 2024 -- Juli 2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
+\cvheading{Fachinstitut für Angewandte Technologie (ISTA)}{09/2024 - 07/2026}{Fachtechniker für IT-Netzwerke und -Systeme}{Taza, Marokko}
 \begin{itemize}
-  \item Schwerpunkte in Windows Server, Linux-Administration, TCP/IP, Routing und Switching, DNS/DHCP, Active Directory, Virtualisierung und grundlegender IT-Sicherheit.
+  \item Schwerpunkte: Windows Server, Linux-Administration, TCP/IP, Routing und Switching, DNS/DHCP, Active Directory, Virtualisierung und IT-Sicherheit.
 \end{itemize}
 
-\cvheading{Klinikum Hann. Münden}{Okt. 2023 -- Jan. 2024}{Dreimonatige Orientierungsphase in der Pflegeausbildung}{Hann. Münden, Deutschland}
+\cvheading{Klinikum Hann. Münden}{10/2023 - 01/2024}{Orientierungsphase im Gesundheitswesen}{Hann. Münden, Deutschland}
 \begin{itemize}
-  \item Vertiefung der Deutschkenntnisse und Einblick in die deutsche Arbeitskultur.
+  \item Vertiefung der Deutschkenntnisse im Berufsalltag und unmittelbarer Einblick in die deutsche Arbeitskultur.
 \end{itemize}
 
-\cvheading{Interdisziplinäre Fakultät Taza}{Sept. 2021 -- Juni 2022}{Grundstudium Mathematik und Informatik}{Taza, Marokko}
-
-\cvheading{Weiterführende Schule Al Falah 2}{Sept. 2020 -- Juni 2021}{Sekundarschulabschluss (Baccalauréat International, BIOF), Schwerpunkt Naturwissenschaften (Physik/Chemie)}{Taza, Marokko}
+\cvheading{Weiterführende Schule Al Falah 2}{09/2020 - 06/2021}{Baccalauréat (Abitur-Äquivalent), Schwerpunkt Naturwissenschaften}{Taza, Marokko}
 
 \section*{Praktische Erfahrungen}
-\cvheading{Inaya Connect}{Mai 2026 -- heute}{IT-Infrastruktur-Administrator}{Taza, Marokko}
+\cvheading{Inaya Connect}{05/2026 - heute}{IT-Infrastruktur-Administrator}{Taza, Marokko}
 \begin{itemize}
-  \item Bereitstellung und Administration des Cloud-Produktionsservers des Unternehmens (Oracle Cloud), einschließlich DNS, Reverse Proxy und TLS-Zertifikaten.
-  \item Verwaltung von Deployments, Monitoring, Remote-Softwareupdates und Lizenzverwaltung für die Kassenplattform des Unternehmens.
+  \item Bereitstellung und Administration des Cloud-Produktionsservers (Oracle Cloud) inklusive DNS, Reverse Proxy und TLS-Zertifikaten.
+  \item Betreuung von Deployments, Systemmonitoring, Remote-Softwareupdates und Lizenzverwaltung für die Kassenplattform des Unternehmens.
 \end{itemize}
 
-\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{Apr. 2026 -- Mai 2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
+\cvheading{Regionale Multiservice-Gesellschaft Fès-Meknès (SRM)}{04/2026 - 05/2026}{Praktikant Netzwerktechnik}{Taza, Marokko}
 \begin{itemize}
-  \item Unterstützte Serveroptimierung und Monitoring der Kerninfrastruktur des Unternehmens.
-  \item Mitarbeit bei Routineabläufen und Ressourcenverwaltung für einen zuverlässigen Systembetrieb.
+  \item Serveroptimierung und Monitoring der Kerninfrastruktur des regionalen Versorgungsunternehmens.
+  \item Unterstützung bei Routineabläufen und Ressourcenverwaltung für einen ausfallsicheren Systembetrieb.
 \end{itemize}
 
-\cvheading{IQRA Société}{Jan. 2026 -- Feb. 2026}{Praktikant Netzwerktechnik}{Casablanca, Marokko}
+\cvheading{Click Service}{06/2025 - 09/2025}{Praktikant IT-Support und Netzwerke}{Taza, Marokko}
 \begin{itemize}
-  \item Fernüberwachung und Administration von Netzwerksystemen und -diensten über SSH und RDP in einer Unternehmensumgebung.
-\end{itemize}
-
-\cvheading{Click Service}{Juni 2025 -- Sept. 2025}{Praktikant IT-Support}{Taza, Marokko}
-\begin{itemize}
-  \item Installation und Konfiguration von Software und Betriebssystemen, Verwaltung des IT-Inventars sowie Einrichtung und Wartung lokaler Netzwerke in Kundenumgebungen.
-\end{itemize}
-
-\cvheading{Delegation der öffentlichen Gesundheit}{Okt. 2022 -- Dez. 2022}{Praktikant Systemadministration}{Taza, Marokko}
-\begin{itemize}
-  \item Mitwirkung an Hyper-V-Deployments für interne Testumgebungen sowie Unterstützung bei Active-Directory-Konten und DNS/DHCP-Anfragen.
+  \item Installation und Konfiguration von Betriebssystemen, Verwaltung des IT-Inventars sowie Einrichtung und Wartung lokaler Netzwerke beim Kunden.
 \end{itemize}
 
 \section*{IT-Projekte}
 \cvheadinglink{Unternehmens-IT-Infrastruktur}{2026}{Aufbau und Absicherung eines Unternehmensnetzwerks}{Laborprojekt}{https://grydsh.dev/de/homelab.html}
 \begin{itemize}
-  \item Aufbau und Absicherung eines Unternehmensnetzwerks mit pfSense, einem Windows Server 2022 als Active-Directory-/DNS-Domänencontroller, Netdata-Monitoring und einem Suricata IPS, das einen simulierten Nmap-Insider-Scan in Echtzeit erkannte.
+  \item Aufbau eines virtuellen Firmennetzwerks mit pfSense-Firewall, Windows Server 2022 (Active Directory und DNS), Netdata-Monitoring sowie Suricata IPS zur Echtzeit-Erkennung von Netzwerk-Scans.
 \end{itemize}
 
 \cvheadinglink{PortGuardian Enterprise}{2026}{USB-Bedrohungserkennung und Reaktionssystem}{Sicherheitsprojekt}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Technologien: Python, PyQt6, WMI und Splunk Syslog; Entwicklung lokaler USB-Erkennung, Dateiprüfung, automatischer Isolation und Alarmweiterleitung für Windows-Endpunkte, validiert mit durchschnittlich 350 ms USB-Erkennung, über 95\% Erkennungsrate, unter 5\% Fehlalarmen bei 200 Stichproben, 98\% Erfolgsquote beim Geräteauswurf und 99{,}8\% Zustellzuverlässigkeit zu Splunk.
+  \item Entwicklung eines Windows-Endpoint-Sicherheitsagenten mit Python, PyQt6, WMI und Splunk Syslog zur automatischen Erkennung verdächtiger USB-Medien, lokaler Dateiprüfung, Alarmierung und sofortiger Geräteisolation.
 \end{itemize}
 
 \section*{Technische Kenntnisse}
 \textbf{Netzwerk:} Cisco IOS, Routing \& Switching, TCP/IP, Subnetting, VLANs, DNS/DHCP, Wireshark, GNS3 \\
 \textbf{Systemadministration:} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, Oracle Cloud, Python \\
-\textbf{IT-Sicherheit:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Schwachstellenanalyse, Regel-Tuning
+\textbf{IT-Sicherheit:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Schwachstellenanalyse, Firewall-Konfiguration
 
 \section*{Sprachen}
-Deutsch (Goethe-Zertifikat B2, ÖSD B2), Englisch (C2), Französisch (fließend), Arabisch (Muttersprache)
-
+\textbf{Deutsch:} Fließend in Wort und Schrift (ÖSD-Zertifikat B2, 2026; Goethe-Zertifikat B2, 2022) \\
+\textbf{Englisch:} Verhandlungssicher (C2) \textbar{} \textbf{Französisch:} Fließend in Wort und Schrift \textbar{} \textbf{Arabisch:} Muttersprache
 
 \end{document}
