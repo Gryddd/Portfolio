@@ -11,8 +11,11 @@
 /script.js
   Cache-Control: public, max-age=86400, must-revalidate
 
+/resume/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /*.pdf
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=0, must-revalidate
 
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
