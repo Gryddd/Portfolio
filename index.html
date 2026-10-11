@@ -99,6 +99,9 @@
     }
     </script>
 <script src="/seo.js"></script>
+<!-- Cloudflare Web Analytics: replace REPLACE_WITH_CF_TOKEN with your token from
+     Cloudflare dashboard -> Analytics & Logs -> Web Analytics -> Add a site -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_WITH_CF_TOKEN"}'></script>
 </head>
 <body class="preloader-active" data-page-lang="en">
 
@@ -470,6 +473,18 @@
                 </p>
                 <div id="featured-buttons" class="project-card-buttons">
                     <a href="portguardian.html" class="submit-btn lang" data-de="Details ansehen" data-en="View Details" data-fr="Voir détails">View Details</a>
+                    <div class="project-report-dropdown hero-cta-dropdown">
+                        <button class="cta-dropdown-toggle submit-btn submit-btn-secondary" aria-haspopup="true" aria-expanded="false" type="button">
+                            <svg class="download-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            <span class="lang" data-de="Bericht herunterladen" data-en="Download Report" data-fr="Télécharger le rapport">Download Report</span>
+                            <svg class="arrow-icon dropdown-inline-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+                        </button>
+                        <ul class="cta-dropdown-menu">
+                            <li><a href="reports/PortGuardian_Project_Report_EN.pdf?v=20261011" download="PortGuardian_Project_Report_EN.pdf" target="_blank" rel="noopener noreferrer">English Report (PDF)</a></li>
+                            <li><a href="reports/PortGuardian_Projektbericht_DE.pdf?v=20261011" download="PortGuardian_Projektbericht_DE.pdf" target="_blank" rel="noopener noreferrer">Deutscher Bericht (PDF)</a></li>
+                            <li><a href="reports/PortGuardian_Rapport_Projet_FR.pdf?v=20261011" download="PortGuardian_Rapport_Projet_FR.pdf" target="_blank" rel="noopener noreferrer">Rapport français (PDF)</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

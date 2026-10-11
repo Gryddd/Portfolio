@@ -240,7 +240,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 fr: "Un agent de défense USB Windows avec détection WMI, analyse locale en six couches, isolation automatique et transfert vers Splunk."
             },
             buttons: [
-                { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
+                { type: "link", url: "portguardian.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } },
+                {
+                    type: "report-dropdown",
+                    text: { de: "Bericht herunterladen", en: "Download Report", fr: "Télécharger le rapport" },
+                    options: [
+                        { label: "English Report (PDF)", file: "PortGuardian_Project_Report_EN.pdf", download: "PortGuardian_Project_Report_EN.pdf" },
+                        { label: "Deutscher Bericht (PDF)", file: "PortGuardian_Projektbericht_DE.pdf", download: "PortGuardian_Projektbericht_DE.pdf" },
+                        { label: "Rapport français (PDF)", file: "PortGuardian_Rapport_Projet_FR.pdf", download: "PortGuardian_Rapport_Projet_FR.pdf" }
+                    ]
+                }
             ]
         }
     };
@@ -311,6 +320,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         return `<button type="button" class="submit-btn open-project-modal-btn lang"
                             data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}"
                             data-modal-id="${btn.modalId}">${btn.text[currentLang]}</button>`;
+                    }
+                    if (btn.type === 'report-dropdown') {
+                        const isSubdir = window.location.pathname.includes('/de/') || window.location.pathname.includes('/fr/');
+                        const baseReportsDir = isSubdir ? '../reports/' : 'reports/';
+                        const itemsHtml = btn.options.map(opt => `<li><a href="${baseReportsDir}${opt.file}?v=20261011" download="${opt.download}" target="_blank" rel="noopener noreferrer">${opt.label}</a></li>`).join('');
+                        return `<div class="project-report-dropdown hero-cta-dropdown">
+                            <button class="cta-dropdown-toggle submit-btn submit-btn-secondary" aria-haspopup="true" aria-expanded="false" type="button">
+                                <svg class="download-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                <span class="lang" data-de="${btn.text.de}" data-en="${btn.text.en}" data-fr="${btn.text.fr}">${btn.text[currentLang]}</span>
+                                <svg class="arrow-icon dropdown-inline-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path></svg>
+                            </button>
+                            <ul class="cta-dropdown-menu">${itemsHtml}</ul>
+                        </div>`;
                     }
                     const isExternalLink = /^(https?:|mailto:|tel:)/i.test(btn.url);
                     const buttonHref = isExternalLink
@@ -1259,15 +1281,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-    const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            if (this.tagName === 'A' && this.target === '_blank') {
+    document.addEventListener('click', function(e) {
+        const toggle = e.target.closest('.nav-dropdown-toggle, .mobile-toggle, .cta-dropdown-toggle');
+        if (toggle) {
+            if (toggle.tagName === 'A' && toggle.target === '_blank') {
                 return;
             }
             e.preventDefault();
             e.stopPropagation();
-            const parentDropdown = this.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container');
+            const parentDropdown = toggle.closest('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container');
             if (!parentDropdown) return;
             const isActive = parentDropdown.classList.contains('active');
             document.querySelectorAll('.nav-dropdown, .mobile-language-selector, .hero-cta-dropdown, .project-report-dropdown, .experience-dropdown-container').forEach(dd => {
@@ -1282,9 +1304,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     list.style.maxHeight = !isActive ? list.scrollHeight + 'px' : '0';
                 }
             }
-        });
-    });
-    document.addEventListener('click', function(e) {
+            return;
+        }
+
         const activeDropdown = document.querySelector(activeDropdownSelector);
         if (activeDropdown && !activeDropdown.contains(e.target)) {
             closeActiveDropdown();
