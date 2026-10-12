@@ -2411,16 +2411,27 @@ button:hover,
     }
 
     .main-nav {
-        background: transparent;
-        box-shadow: none;
-    }
-
-    .main-nav::before {
-        content: none;
-    }
-
-    .nav-content {
         display: none;
+    }
+
+    .video-overlay {
+        background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.12) 42%, var(--hero-video-overlay-end) 100%);
+    }
+
+    .hero-media {
+        background:
+            radial-gradient(circle at 20% 12%, var(--hero-video-glow), transparent 35%),
+            radial-gradient(circle at 80% 12%, var(--hero-video-soft-glow), transparent 30%),
+            linear-gradient(180deg, transparent 0%, var(--hero-video-shadow) 100%);
+    }
+
+    #background-video {
+        transform: scale(1.15) translateY(-3%);
+        transform-origin: center top;
+    }
+
+    body::before {
+        opacity: 0.35;
     }
 
     .mobile-menu-icon {
