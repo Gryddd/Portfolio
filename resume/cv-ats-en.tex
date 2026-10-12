@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[top=0.30in,bottom=0.30in,left=0.46in,right=0.46in]{geometry}
+\usepackage[a4paper,top=1.00cm,bottom=1.00cm,left=1.25cm,right=1.25cm]{geometry}
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -18,118 +18,122 @@
 }
 
 \pagestyle{empty}
-\flushbottom
-\linespread{1.00}
-\pretolerance=10000
-\tolerance=4000
-\emergencystretch=3em
-\hyphenpenalty=10000
-\exhyphenpenalty=10000
+\linespread{1.06}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.08em plus 0.03em minus 0.02em}
-\setlist[itemize]{leftmargin=1.08em, itemsep=0.06em, topsep=0.09em plus 0.03em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.03em plus 0.02em minus 0.01em}}
+\setlength{\parskip}{0.10em}
+
+\setlist[itemize]{
+  leftmargin=1.15em,
+  itemsep=0.14em,
+  topsep=0.10em,
+  parsep=0em,
+  partopsep=0em,
+  before=\raggedright,
+  after=\vspace{0.20em}
+}
+
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.42em plus 0.10em minus 0.03em}{0.16em plus 0.04em minus 0.01em}
+\titlespacing*{\section}{0pt}{0.65em}{0.28em}
+
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{TeX Gyre Heros}[Scale=0.95]
+\setmainfont[
+  Path = C:/Windows/Fonts/,
+  UprightFont = arial.ttf,
+  BoldFont = arialbd.ttf,
+  ItalicFont = ariali.ttf,
+  BoldItalicFont = arialbi.ttf,
+  Scale = 1.05
+]{Arial}
 
 \newcommand{\cvheading}[4]{
-  \textbf{#1} \hfill #2 \\[0.05em]
+  \textbf{#1} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\cvheadinglink}[5]{
-  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
 \newcommand{\roundphoto}[1]{%
   \begin{tikzpicture}
-    \clip (0,0) circle (0.975cm);
-    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+    \clip (0,0) circle (1.05cm);
+    \node at (0,0) {\includegraphics[width=2.1cm,height=2.1cm]{#1}};
   \end{tikzpicture}%
 }
 
 \begin{document}
 
 \noindent
-\begin{minipage}[c]{0.80\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
-\small
-Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.12em]
-+212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
-\contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
+\begin{minipage}[c]{0.78\textwidth}
+{\LARGE \textbf{Walid Gourideche}}\\[0.22em]
+\normalsize
+Born July 20, 2003 in Taza, Morocco \textbar{} Nationality: Moroccan\\[0.14em]
+Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.14em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.14em]
+\contactlink{https://grydsh.dev}{Portfolio (grydsh.dev)} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn}
 \end{minipage}
 \hfill
-\begin{minipage}[c]{0.16\textwidth}
+\begin{minipage}[c]{0.18\textwidth}
 \raggedleft
 \roundphoto{cv-photo.jpg}
 \end{minipage}
-\vspace{0.10em}
-
-\section*{Profile}
-Aspiring IT Specialist for System Integration with hands-on experience in network administration, Windows Server and cloud infrastructure, and IT security. Seeking an apprenticeship (Ausbildung) in Germany.
+\vspace{0.20em}
 
 \section*{Education}
-\cvheading{Institute for Applied Technology (ISTA)}{Sep 2024 -- Jul 2026}{IT Networks and Systems Specialist}{Taza, Morocco}
+\cvheading{Specialized Institute of Applied Technology (ISTA)}{09/2024 - 06/2026}{Specialized Technician in IT Networks and Systems}{Taza, Morocco}
 \begin{itemize}
-  \item Coursework focused on Windows Server, Linux administration, TCP/IP, routing and switching, DNS/DHCP, Active Directory, virtualization, and core IT security.
+  \item Core subjects: Windows Server, Linux administration, TCP/IP, routing and switching, DNS/DHCP, Active Directory, virtualization, and IT security.
 \end{itemize}
 
-\cvheading{Hann. Münden Hospital}{Oct 2023 -- Jan 2024}{Three-month orientation period in nursing training}{Hann. Münden, Germany}
+\cvheading{Hann. Münden Hospital}{10/2023 - 01/2024}{Orientation Phase in Healthcare}{Hann. Münden, Germany}
 \begin{itemize}
-  \item Deepened German language skills and gained insight into German work culture.
+  \item Deepened professional German skills in the workplace and gained direct insight into German work culture.
 \end{itemize}
 
-\cvheading{Polydisciplinary Faculty of Taza}{Sep 2021 -- Jun 2022}{Foundation studies in Mathematics and Computer Science}{Taza, Morocco}
+\cvheading{Al Falah 2 Secondary School}{09/2020 - 06/2021}{Baccalauréat (A-Level Equivalent), Physical Sciences}{Taza, Morocco}
 
-\cvheading{Al Falah 2 Secondary School}{Sep 2020 -- Jun 2021}{Secondary school diploma (Baccalauréat International, BIOF), Physical Sciences}{Taza, Morocco}
-
-\section*{Experience}
-\cvheading{Inaya Connect}{May 2026 -- Present}{IT Infrastructure Administrator}{Taza, Morocco}
+\section*{Practical Experience}
+\cvheading{Inaya Connect}{05/2026 - Present}{IT Infrastructure Administrator}{Taza, Morocco}
 \begin{itemize}
-  \item Provisioned and administered the company's cloud production server (Oracle Cloud), including DNS, reverse proxy, and TLS certificates.
-  \item Managed deployments, monitoring, remote software updates, and license provisioning for the company's point-of-sale platform.
+  \item Provisioned and administered cloud production server (Oracle Cloud), including DNS, reverse proxy, and TLS certificates.
+  \item Managed deployments, system monitoring, remote software updates, and license provisioning for the point-of-sale platform.
 \end{itemize}
 
-\cvheading{Regional Multiservices Company Fès-Meknès (SRM)}{Apr 2026 -- May 2026}{IT Network Intern}{Taza, Morocco}
+\cvheading{Regional Multiservices Company Fès-Meknès (SRM)}{04/2026 - 05/2026}{IT Network Intern}{Taza, Morocco}
 \begin{itemize}
-  \item Supported server optimization and monitoring for the company's core infrastructure.
-  \item Assisted with routine operations and resource management to keep systems running reliably.
+  \item Supported server optimization and monitoring of core infrastructure for the regional utility company.
+  \item Assisted with routine operations and resource management to ensure reliable system availability.
 \end{itemize}
 
-\cvheading{IQRA Company}{Jan 2026 -- Feb 2026}{IT Network Intern}{Casablanca, Morocco}
+\cvheading{IQRA Company}{01/2026 - 02/2026}{IT Network Intern}{Casablanca, Morocco}
 \begin{itemize}
-  \item Monitored and administered network systems and services through SSH and RDP in an enterprise environment.
+  \item Remotely monitored and administered network systems and enterprise services via SSH and RDP.
 \end{itemize}
 
-\cvheading{Click Service}{Jun 2025 -- Sep 2025}{IT Support Intern}{Taza, Morocco}
+\cvheading{Click Service}{06/2025 - 09/2025}{IT Support and Networks Intern}{Taza, Morocco}
 \begin{itemize}
-  \item Installed and configured software and operating systems, managed IT inventory, and set up and maintained local networks for client environments.
-\end{itemize}
-
-\cvheading{Public Health Delegation}{Oct 2022 -- Dec 2022}{System Administration Intern}{Taza, Morocco}
-\begin{itemize}
-  \item Assisted with Hyper-V virtual machine deployments for internal test environments and supported Active Directory account and DNS/DHCP requests.
+  \item Installed and configured operating systems, managed IT inventory, and set up and maintained local client networks.
 \end{itemize}
 
 \section*{IT Projects}
-\cvheadinglink{Enterprise IT Infrastructure}{2026}{Building and securing an enterprise network}{Lab project}{https://grydsh.dev/homelab.html}
+\cvheadinglink{Enterprise IT Infrastructure}{2026}{Building and Securing an Enterprise Network}{Lab Project}{https://grydsh.dev/homelab.html}
 \begin{itemize}
-  \item Built and secured an enterprise network with pfSense, a Windows Server 2022 Active Directory/DNS Domain Controller, Netdata monitoring, and a Suricata IPS that detected a simulated Nmap insider scan in real time.
+  \item Built a virtual enterprise network with pfSense firewall, Windows Server 2022 (Active Directory and DNS), Netdata monitoring, and Suricata IPS for real-time network scan detection.
 \end{itemize}
 
-\cvheadinglink{PortGuardian Enterprise}{2026}{USB threat detection and response system}{Security project}{https://github.com/Gryddd/PortGuardian}
+\cvheadinglink{PortGuardian Enterprise}{2026}{USB Threat Detection and Incident Response System}{Security Project}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Tech stack: Python, PyQt6, WMI, and Splunk Syslog; built local USB detection, file inspection, automated isolation, and alert forwarding for Windows endpoints, validated with 350 ms average USB detection, over 95\% detection, under 5\% false positives across 200 samples, 98\% device ejection success, and 99.8\% Splunk delivery reliability.
+  \item Developed a Windows endpoint security agent using Python, PyQt6, WMI, and Splunk Syslog for automated USB detection, local file inspection, alerting, and instant device isolation.
 \end{itemize}
 
 \section*{Technical Skills}
 \textbf{Networking:} Cisco IOS, Routing \& Switching, TCP/IP, Subnetting, VLANs, DNS/DHCP, Wireshark, GNS3 \\
-\textbf{Systems Administration:} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, Oracle Cloud, Python \\
-\textbf{Security:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, vulnerability analysis, rule tuning
+\textbf{System Administration:} Windows Server, Active Directory, Linux (Debian/Ubuntu), Hyper-V, VMware, Oracle Cloud, Python \\
+\textbf{IT Security:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Vulnerability Analysis, Firewall Configuration
 
 \section*{Languages}
-German (ÖSD B2), English (C2), French (fluent), Arabic (native)
+\textbf{German:} Fluent written and spoken (ÖSD Certificate B2, full examination: written \& oral passed, 2026) \\
+\textbf{English:} Near-native fluency (C1/C2) \textbar{} \textbf{French:} Fluent \textbar{} \textbf{Arabic:} Native Speaker
 
 \end{document}

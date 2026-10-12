@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[top=0.28in,bottom=0.28in,left=0.46in,right=0.46in]{geometry}
+\usepackage[a4paper,top=1.00cm,bottom=1.00cm,left=1.25cm,right=1.25cm]{geometry}
 \usepackage[french]{babel}
 \usepackage{fontspec}
 \usepackage{xcolor}
@@ -19,118 +19,122 @@
 }
 
 \pagestyle{empty}
-\flushbottom
-\linespread{1.00}
-\pretolerance=10000
-\tolerance=4000
-\emergencystretch=3em
-\hyphenpenalty=10000
-\exhyphenpenalty=10000
+\linespread{1.06}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.07em plus 0.03em minus 0.02em}
-\setlist[itemize]{label=\textbullet, leftmargin=1.08em, itemsep=0.05em, topsep=0.08em plus 0.03em minus 0.02em, parsep=0em, partopsep=0em, before=\raggedright, after=\vspace{0.03em plus 0.02em minus 0.01em}}
+\setlength{\parskip}{0.10em}
+
+\setlist[itemize]{
+  leftmargin=1.15em,
+  itemsep=0.14em,
+  topsep=0.10em,
+  parsep=0em,
+  partopsep=0em,
+  before=\raggedright,
+  after=\vspace{0.20em}
+}
+
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.40em plus 0.10em minus 0.03em}{0.15em plus 0.03em minus 0.01em}
+\titlespacing*{\section}{0pt}{0.65em}{0.28em}
+
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{TeX Gyre Heros}[Scale=0.95]
+\setmainfont[
+  Path = C:/Windows/Fonts/,
+  UprightFont = arial.ttf,
+  BoldFont = arialbd.ttf,
+  ItalicFont = ariali.ttf,
+  BoldItalicFont = arialbi.ttf,
+  Scale = 1.05
+]{Arial}
 
 \newcommand{\cvheading}[4]{
-  \textbf{#1} \hfill #2 \\[0.05em]
+  \textbf{#1} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\cvheadinglink}[5]{
-  \textbf{\href{#5}{#1}} \hfill #2 \\[0.05em]
+  \textbf{\href{#5}{#1}} \hfill #2 \\[0.08em]
   \textit{#3} \hfill \textit{#4}
 }
 \newcommand{\contactlink}[2]{\href{#1}{\textcolor{linkblue}{\textbf{#2}}}}
 \newcommand{\roundphoto}[1]{%
   \begin{tikzpicture}
-    \clip (0,0) circle (0.975cm);
-    \node at (0,0) {\includegraphics[width=1.95cm,height=1.95cm]{#1}};
+    \clip (0,0) circle (1.05cm);
+    \node at (0,0) {\includegraphics[width=2.1cm,height=2.1cm]{#1}};
   \end{tikzpicture}%
 }
 
 \begin{document}
 
 \noindent
-\begin{minipage}[c]{0.80\textwidth}
-{\LARGE \textbf{Walid Gourideche}}\\[0.30em]
-\small
-Cite Al Amane Imm A Apt 1, 35000 Taza, Maroc\\[0.12em]
-+212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.10em]
-\contactlink{https://grydsh.dev}{Portfolio} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub}
+\begin{minipage}[c]{0.78\textwidth}
+{\LARGE \textbf{Walid Gourideche}}\\[0.22em]
+\normalsize
+Né le 20.07.2003 à Taza, Maroc \textbar{} Nationalité : marocaine\\[0.14em]
+Cité Al Amane Imm A Appt 1, 35000 Taza, Maroc\\[0.14em]
++212 698 585 528 \textbar{} \contactlink{mailto:walidgourideche@gmail.com}{walidgourideche@gmail.com}\\[0.14em]
+\contactlink{https://grydsh.dev}{Portfolio (grydsh.dev)} \textbar{} \contactlink{https://github.com/Gryddd}{GitHub} \textbar{} \contactlink{https://www.linkedin.com/in/walidgourideche/}{LinkedIn}
 \end{minipage}
 \hfill
-\begin{minipage}[c]{0.16\textwidth}
+\begin{minipage}[c]{0.18\textwidth}
 \raggedleft
 \roundphoto{cv-photo.jpg}
 \end{minipage}
-\vspace{0.10em}
-
-\section*{Profil}
-Futur spécialiste en intégration de systèmes, avec une expérience pratique en administration réseau, infrastructure Windows Server et cloud, et sécurité informatique. À la recherche d'une formation en alternance (Ausbildung) en Allemagne.
+\vspace{0.20em}
 
 \section*{Formation}
-\cvheading{Institut Spécialisé de Technologie Appliquée (ISTA)}{sept. 2024 -- juil. 2026}{Technicien spécialisé en réseaux et systèmes informatiques}{Taza, Maroc}
+\cvheading{Institut Spécialisé de Technologie Appliquée (ISTA)}{09/2024 - 06/2026}{Technicien Spécialisé en Réseaux et Systèmes Informatiques}{Taza, Maroc}
 \begin{itemize}
-  \item Formation axée sur Windows Server, Linux, TCP/IP, routage, DNS/DHCP, Active Directory, virtualisation, sécurité informatique et bases de dépannage réseau.
+  \item Programme : Windows Server, administration Linux, TCP/IP, routage et commutation, DNS/DHCP, Active Directory, virtualisation et sécurité informatique.
 \end{itemize}
 
-\cvheading{Clinique de Hann. Münden}{oct. 2023 -- janv. 2024}{Période d'orientation de trois mois en formation infirmière}{Hann. Münden, Allemagne}
+\cvheading{Clinique de Hann. Münden}{10/2023 - 01/2024}{Période d'orientation dans le secteur de la santé}{Hann. Münden, Allemagne}
 \begin{itemize}
-  \item Renforcement de l'allemand professionnel et découverte du cadre de travail allemand à travers une immersion quotidienne.
+  \item Immersion professionnelle renforçant l'allemand au quotidien et découverte directe de la culture d'entreprise allemande.
 \end{itemize}
 
-\cvheading{Faculté Polydisciplinaire de Taza}{sept. 2021 -- juin 2022}{Première année d'études fondamentales}{Taza, Maroc}
+\cvheading{Lycée Al Falah 2}{09/2020 - 06/2021}{Baccalauréat (équivalent Abitur), filière sciences physiques}{Taza, Maroc}
 
-\cvheading{Lycée Al Falah 2}{sept. 2020 -- juin 2021}{Baccalauréat international, filière sciences physiques, option français}{Taza, Maroc}
-
-\section*{Expérience professionnelle}
-\cvheading{Inaya Connect}{mai 2026 -- aujourd'hui}{Administrateur d'infrastructure IT}{Taza, Maroc}
+\section*{Expériences pratiques}
+\cvheading{Inaya Connect}{05/2026 - aujourd'hui}{Administrateur d'infrastructure IT}{Taza, Maroc}
 \begin{itemize}
-  \item Provisionnement et administration du serveur de production cloud de l'entreprise (Oracle Cloud), y compris DNS, reverse proxy et certificats TLS.
-  \item Gestion des déploiements, du monitoring, des mises à jour à distance et des licences pour la plateforme de caisse de l'entreprise.
+  \item Déploiement et administration du serveur cloud de production (Oracle Cloud), avec DNS, reverse proxy et certificats TLS.
+  \item Gestion des déploiements, supervision système, mises à jour logicielles à distance et gestion des licences du logiciel de caisse.
 \end{itemize}
 
-\cvheading{Société Régionale Multiservices Fès-Meknès (SRM)}{avr. 2026 -- mai 2026}{Stagiaire en réseau informatique}{Taza, Maroc}
+\cvheading{Société Régionale Multiservices Fès-Meknès (SRM)}{04/2026 - 05/2026}{Stagiaire en réseau informatique}{Taza, Maroc}
 \begin{itemize}
-  \item Participation à l'optimisation des serveurs et au monitoring de l'infrastructure centrale de l'entreprise.
-  \item Aide à la gestion des opérations courantes et des ressources pour un fonctionnement fiable des systèmes.
+  \item Optimisation des serveurs et supervision de l'infrastructure centrale du service public régional.
+  \item Participation aux opérations courantes et à la gestion des ressources pour garantir un fonctionnement fiable.
 \end{itemize}
 
-\cvheading{IQRA Société}{jan. 2026 -- févr. 2026}{Stagiaire en réseau informatique}{Casablanca, Maroc}
+\cvheading{IQRA Société}{01/2026 - 02/2026}{Stagiaire en réseau informatique}{Casablanca, Maroc}
 \begin{itemize}
-  \item Supervision et administration de systèmes et services réseau via SSH et RDP dans un environnement d'entreprise, avec suivi opérationnel quotidien et support à distance.
+  \item Télé-surveillance et administration des systèmes réseaux et services d'entreprise via SSH et RDP.
 \end{itemize}
 
-\cvheading{Click Service}{juin 2025 -- sept. 2025}{Stagiaire en support informatique}{Taza, Maroc}
+\cvheading{Click Service}{06/2025 - 09/2025}{Stagiaire support IT et réseaux}{Taza, Maroc}
 \begin{itemize}
-  \item Installation et configuration de logiciels et de systèmes d'exploitation, gestion de l'inventaire IT, mise en place et maintenance de réseaux locaux pour des environnements clients.
-\end{itemize}
-
-\cvheading{Délégation de la santé publique}{oct. 2022 -- déc. 2022}{Stagiaire en administration système}{Taza, Maroc}
-\begin{itemize}
-  \item Participation aux déploiements de machines virtuelles Hyper-V pour les environnements de test internes et prise en charge des comptes Active Directory et des demandes DNS/DHCP.
+  \item Installation et configuration de systèmes d'exploitation, gestion du parc informatique et maintenance des réseaux locaux clients.
 \end{itemize}
 
 \section*{Projets informatiques}
-\cvheadinglink{Infrastructure IT d'entreprise}{2026}{Construction et sécurisation d'un réseau d'entreprise}{Projet de laboratoire}{https://grydsh.dev/fr/homelab.html}
+\cvheadinglink{Infrastructure IT d'entreprise}{2026}{Construction et sécurisation d'un réseau d'entreprise}{Projet laboratoire}{https://grydsh.dev/fr/homelab.html}
 \begin{itemize}
-  \item Construction et sécurisation d'un réseau d'entreprise avec pfSense, un contrôleur de domaine Windows Server 2022 (Active Directory/DNS), la supervision Netdata et un IPS Suricata ayant détecté en temps réel un scan Nmap interne simulé.
+  \item Déploiement d'un réseau virtuel avec pare-feu pfSense, Windows Server 2022 (Active Directory et DNS), supervision Netdata et IPS Suricata pour détection d'intrusions en temps réel.
 \end{itemize}
 
-\cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et de réponse aux menaces USB}{Projet cybersécurité}{https://github.com/Gryddd/PortGuardian}
+\cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et réponse aux menaces USB}{Projet cybersécurité}{https://github.com/Gryddd/PortGuardian}
 \begin{itemize}
-  \item Stack : Python, PyQt6, WMI et Splunk Syslog ; détection USB locale, inspection de fichiers, isolation automatique et transfert d'alertes, validés à 350 ms de détection moyenne, 95\%+ de détection, moins de 5\% de faux positifs, 98\% d'éjection et 99,8\% de fiabilité Splunk.
+  \item Agent de sécurité endpoint sous Windows développé en Python, PyQt6, WMI et Splunk Syslog pour détection de clés USB, analyse locale, alertes et isolation immédiate du périphérique.
 \end{itemize}
 
 \section*{Compétences techniques}
-\textbf{Réseaux :} Cisco IOS, routage et commutation, TCP/IP, sous-réseaux, VLAN, DNS/DHCP, Wireshark, GNS3 \\
-\textbf{Administration système :} Windows Server, Active Directory, Linux (Ubuntu/Debian), Hyper-V, VMware, Oracle Cloud, Python \\
-\textbf{Sécurité :} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, analyse des vulnérabilités, ajustement des règles
+\textbf{Réseaux :} Cisco IOS, routage \& commutation, TCP/IP, sous-réseaux, VLANs, DNS/DHCP, Wireshark, GNS3 \\
+\textbf{Administration système :} Windows Server, Active Directory, Linux (Debian/Ubuntu), Hyper-V, VMware, Oracle Cloud, Python \\
+\textbf{Sécurité IT :} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, analyse de vulnérabilités, configuration pare-feu
 
 \section*{Langues}
-Allemand (ÖSD B2), anglais (C2), français (courant), arabe (langue maternelle)
+\textbf{Allemand :} Courant à l'écrit et à l'oral (certificat ÖSD B2, examen complet : écrit et oral réussi, 2026) \\
+\textbf{Anglais :} Bilingue / quasi-langue maternelle (C1/C2) \textbar{} \textbf{Français :} Courant \textbar{} \textbf{Arabe :} Langue maternelle
 
 \end{document}
