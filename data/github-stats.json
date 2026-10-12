@@ -1,9 +1,9 @@
 {
   "username": "Gryddd",
-  "lastYearContributions": 111,
-  "repos": 4,
+  "lastYearContributions": 113,
+  "repos": 5,
   "stars": 4,
-  "pinnedRepoStars": 279,
+  "pinnedRepoStars": 280,
   "pinnedRepos": [
     "LeagueSkins",
     "Portfolio",
@@ -12,22 +12,22 @@
   "languages": [
     {
       "name": "HTML",
-      "percentage": 64
+      "percentage": 83
     },
     {
       "name": "JavaScript",
-      "percentage": 20
+      "percentage": 9
     },
     {
       "name": "CSS",
-      "percentage": 14
+      "percentage": 7
     },
     {
       "name": "TeX",
-      "percentage": 2
+      "percentage": 1
     }
   ],
-  "updatedAt": "2026-10-11T10:51:38.013Z",
+  "updatedAt": "2026-10-12T12:05:16.831Z",
   "sources": {
     "profile": "https://github.com/Gryddd",
     "contributions": "https://github.com/users/Gryddd/contributions",
