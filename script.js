@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const config = {
         defaultLang: "en",
-        youtubeVideoId: "R_rKRfh7ceU",
+        youtubeVideoId: "5l45e1qP42o",
         altTexts: {
             de: "Ein professionelles Portraitfoto von Walid Gourideche",
             en: "A professional portrait of Walid Gourideche",
