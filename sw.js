@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walid-portfolio-v25';
+const CACHE_NAME = 'walid-portfolio-v26';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -33,8 +33,17 @@ const STATIC_DESTINATIONS = new Set(['style', 'script', 'image', 'font', 'video'
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
+      .then(async (cache) => {
+        await Promise.allSettled(
+          urlsToCache.map(async (url) => {
+            try {
+              const response = await fetch(url);
+              if (response.ok) {
+                await cache.put(url, response);
+              }
+            } catch (_) {}
+          })
+        );
       })
       .then(() => self.skipWaiting())
   );
@@ -81,7 +90,7 @@ self.addEventListener('fetch', (event) => {
 
         return response;
       } catch (error) {
-        const cachedResponse = await caches.match(event.request);
+        const cachedResponse = await caches.match(event.request, { ignoreSearch: true });
         if (cachedResponse) {
           return cachedResponse;
         }

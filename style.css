@@ -118,6 +118,7 @@ html {
     scroll-behavior: auto;
     font-size: 93.75%;
     scroll-padding-top: 5rem;
+    overflow-x: clip;
 }
 
 html.smooth-scroll {
@@ -745,6 +746,7 @@ main {
     background: rgba(0, 0, 0, 0);
     pointer-events: none;
     transition: background 0.38s ease;
+    overflow: hidden;
 }
 
 .mobile-nav-overlay[aria-hidden="true"] {

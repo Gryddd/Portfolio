@@ -260,4 +260,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     waitForWindowLoad(finishLoader);
+    // Hard safety timeout: never hold page behind loader for more than 1.8s
+    window.setTimeout(finishLoader, 1800);
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            document.body.classList.remove('case-loader-active', 'case-loader-animate', 'case-loader-transitioning');
+            const loaderEl = document.getElementById('case-loader');
+            loaderEl?.remove();
+            if (mainContent) {
+                mainContent.inert = false;
+                mainContent.removeAttribute('aria-hidden');
+            }
+            signalAnimationsReady();
+        }
+    });
 });

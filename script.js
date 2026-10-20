@@ -1225,6 +1225,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (requestedQueryLanguage && requestedQueryLanguage !== currentLang) {
         localStorage.setItem("preferredLang", requestedQueryLanguage);
         persistPreferredLanguage(requestedQueryLanguage);
+        const preloaderEl = document.getElementById('preloader');
+        if (preloaderEl) {
+            document.body.classList.remove('preloader-active');
+            preloaderEl.remove();
+        }
         syncLanguageUrl(requestedQueryLanguage, { replace: true });
         return;
     }
@@ -1606,5 +1611,14 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (!hasProjectLoader) {
         waitForWindowLoad(releaseDeferredAnimations);
     }
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            document.body.classList.remove('preloader-active');
+            const preloaderEl = document.getElementById('preloader');
+            preloaderEl?.remove();
+            releaseDeferredAnimations();
+        }
+    });
 
 });
