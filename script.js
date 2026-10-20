@@ -529,6 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.setTimeout(focusMobileNavFirstElement, 60);
             });
         } else {
+            closeActiveDropdown();
             setBackgroundContentInert(false);
             unlockMobileMenuScroll(options);
             if (restoreFocus) {
@@ -1306,7 +1307,14 @@ document.addEventListener("DOMContentLoaded", function () {
             if (parentDropdown.matches('.mobile-language-selector')) {
                 const list = parentDropdown.querySelector('.mobile-list');
                 if (list) {
-                    list.style.maxHeight = !isActive ? list.scrollHeight + 'px' : '0';
+                    if (!isActive) {
+                        list.style.maxHeight = `${list.scrollHeight + 20}px`;
+                        window.setTimeout(() => {
+                            list.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 120);
+                    } else {
+                        list.style.maxHeight = '0';
+                    }
                 }
             }
             return;
