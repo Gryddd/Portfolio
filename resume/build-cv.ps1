@@ -1,7 +1,10 @@
 $Targets = @(
     @{ Source = "cv-ats-en.tex"; PublicPdf = "cv-en.pdf" },
     @{ Source = "cv-ats-de.tex"; PublicPdf = "cv-de.pdf" },
-    @{ Source = "cv-ats-fr.tex"; PublicPdf = "cv-fr.pdf" }
+    @{ Source = "cv-ats-fr.tex"; PublicPdf = "cv-fr.pdf" },
+    @{ Source = "cv-ibrahim-fr.tex"; PublicPdf = "cv-ibrahim-fr.pdf" },
+    @{ Source = "lettre-motivation-emploi-ibrahim.tex"; PublicPdf = "lettre-motivation-emploi-ibrahim.pdf" },
+    @{ Source = "lettre-motivation-pfe-ibrahim.tex"; PublicPdf = "lettre-motivation-pfe-ibrahim.pdf" }
 )
 $ErrorActionPreference = "Stop"
 
@@ -49,7 +52,6 @@ try {
             $publicPdfPath = Join-Path $resumeDir $publicPdf
             if ($builtPdfPath -ne $publicPdfPath) {
                 Copy-Item -LiteralPath $builtPdf -Destination $publicPdf -Force
-                Remove-Item -LiteralPath $builtPdf -Force
             }
         }
 

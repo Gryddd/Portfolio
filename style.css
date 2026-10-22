@@ -115,10 +115,10 @@
 }
 
 html {
+    overflow-x: hidden;
     scroll-behavior: auto;
     font-size: 93.75%;
     scroll-padding-top: 5rem;
-    overflow-x: clip;
 }
 
 html.smooth-scroll {
@@ -176,7 +176,6 @@ body {
     padding: 0;
     font-weight: 400;
     line-height: 1.7;
-    overflow-x: hidden;
     position: relative;
     isolation: isolate;
 }
