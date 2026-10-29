@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walid-portfolio-v28';
+const CACHE_NAME = 'walid-portfolio-v29';
 const urlsToCache = [
   '/',
   '/index.html',
