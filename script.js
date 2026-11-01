@@ -1385,8 +1385,15 @@ document.addEventListener("DOMContentLoaded", function () {
             trackPortfolioEvent("pdf_download", { file: fileName, label: fileLabel });
         });
     });
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener("click", () => {
+            trackPortfolioEvent("contact_click", { label: "Email: walidgourideche@gmail.com" });
+        });
+    });
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
         if (currentLang !== 'de') return;
+        trackPortfolioEvent("video_open", { label: "Vorstellungsvideo (German Intro Video)" });
         openModal(videoModal, this);
         createOrPlayPlayer();
     });
