@@ -1,21 +1,47 @@
-# Cache control headers for compatible static hosts
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate
+# Global security headers for all paths
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
 
+# Heavy video media - 30 days immutable (stops the 525MB video re-download loop)
+/videos/*
+  Cache-Control: public, max-age=2592000, immutable
+
+# Static images, vendor assets, and icons - 30 days immutable
 /images/*
   Cache-Control: public, max-age=2592000, immutable
 
-/style.css
-  Cache-Control: public, max-age=86400, must-revalidate
+/vendor/*
+  Cache-Control: public, max-age=2592000, immutable
 
-/script.js
-  Cache-Control: public, max-age=86400, must-revalidate
+/favicon.ico
+  Cache-Control: public, max-age=2592000, immutable
 
-/resume/*
+# Project reports (PDFs) - 1 day browser cache, 7 days stale-while-revalidate
+/reports/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Core CSS and JS bundles - 1 day cache with stale-while-revalidate
+/*.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# HTML pages - revalidate so updates are instant, but fast to check
+/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-/*.pdf
+/de/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
+/fr/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Service worker must always check for updates
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
