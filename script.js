@@ -1348,6 +1348,22 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
+    function trackPortfolioEvent(eventName, eventData) {
+        try {
+            const payload = JSON.stringify({
+                event: eventName,
+                ...eventData,
+                url: window.location.pathname,
+                lang: currentLang || document.documentElement.lang || "de"
+            });
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon("/api/track", payload);
+            } else {
+                fetch("/api/track", { method: "POST", body: payload, keepalive: true, headers: { "Content-Type": "application/json" } });
+            }
+        } catch (_) {}
+    }
+
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
@@ -1355,6 +1371,18 @@ document.addEventListener("DOMContentLoaded", function () {
             button.setAttribute("aria-expanded", isActive);
             panel.setAttribute('aria-hidden', String(!isActive));
             panel.style.maxHeight = isActive ? panel.scrollHeight + "px" : null;
+            if (isActive) {
+                const questionText = button.querySelector(".lang")?.textContent?.trim() || button.textContent?.trim() || button.id;
+                trackPortfolioEvent("faq_open", { id: button.id, question: questionText });
+            }
+        });
+    });
+
+    document.querySelectorAll('a[download], a[href*=".pdf"]').forEach(link => {
+        link.addEventListener("click", () => {
+            const fileName = link.getAttribute("href") || "";
+            const fileLabel = link.textContent?.trim() || fileName;
+            trackPortfolioEvent("pdf_download", { file: fileName, label: fileLabel });
         });
     });
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
