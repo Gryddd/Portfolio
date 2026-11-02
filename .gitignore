@@ -1,8 +1,14 @@
 .env
+.env.*
+*.env
+*.key
+*.pem
+credentials*.json
+token*.json
+*secret*
 node_modules/
 .DS_Store
 *.aux
 *.log
 *.out
 resume/cv-ats-*.pdf
-
