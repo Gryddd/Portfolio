@@ -1348,28 +1348,87 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
-    function trackPortfolioEvent(eventName, eventData) {
+    // --- High-Precision Recruiter Telemetry ---
+    let sessionId = sessionStorage.getItem("_gryd_sid");
+    if (!sessionId) {
+        sessionId = "s_" + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+        try { sessionStorage.setItem("_gryd_sid", sessionId); } catch (_) {}
+    }
+
+    const pageStartTime = performance.now();
+    let maxScrollDepth = 0;
+    window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) {
+            const pct = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+            if (pct > maxScrollDepth) maxScrollDepth = pct;
+        }
+    }, { passive: true });
+
+    function getDeviceProfile() {
+        return {
+            sid: sessionId,
+            screen: `${window.screen.width}x${window.screen.height}`,
+            vp: `${window.innerWidth}x${window.innerHeight}`,
+            dpr: window.devicePixelRatio || 1,
+            tz: (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : "",
+            cores: navigator.hardwareConcurrency || null,
+            mem: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : null,
+            ref: document.referrer || "",
+            url: window.location.pathname + window.location.search,
+            lang: currentLang || document.documentElement.lang || "de"
+        };
+    }
+
+    function trackPortfolioEvent(eventName, eventData = {}) {
         try {
             const payload = JSON.stringify({
                 event: eventName,
-                ...eventData,
-                url: window.location.pathname,
-                lang: currentLang || document.documentElement.lang || "de"
+                ...getDeviceProfile(),
+                scroll: `${maxScrollDepth}%`,
+                ...eventData
             });
             if (navigator.sendBeacon) {
-                navigator.sendBeacon("/api/track", payload);
+                const blob = new Blob([payload], { type: "application/json" });
+                navigator.sendBeacon("/api/track", blob);
             } else {
-                fetch("/api/track", { method: "POST", body: payload, keepalive: true, headers: { "Content-Type": "application/json" } });
+                fetch("/api/track", {
+                    method: "POST",
+                    body: payload,
+                    keepalive: true,
+                    headers: { "Content-Type": "application/json" }
+                });
             }
         } catch (_) {}
     }
 
+    // 1. Initial Pageview
+    trackPortfolioEvent("pageview", { title: document.title });
+
+    // 2. Dwell Time & Exit Beacon
+    let exitLogged = false;
+    function logPageExit() {
+        if (exitLogged) return;
+        exitLogged = true;
+        const dwellSec = Math.max(1, Math.round((performance.now() - pageStartTime) / 1000));
+        trackPortfolioEvent("dwell_time", {
+            dwellSec: dwellSec,
+            scroll: `${maxScrollDepth}%`
+        });
+    }
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") logPageExit();
+    });
+    window.addEventListener("pagehide", logPageExit);
+
+    // 3. FAQ Interactions
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
             const isActive = button.classList.toggle("active");
             button.setAttribute("aria-expanded", isActive);
-            panel.setAttribute('aria-hidden', String(!isActive));
+            panel.setAttribute("aria-hidden", String(!isActive));
             panel.style.maxHeight = isActive ? panel.scrollHeight + "px" : null;
             if (isActive) {
                 const questionText = button.querySelector(".lang")?.textContent?.trim() || button.textContent?.trim() || button.id;
@@ -1378,6 +1437,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // 4. PDF Downloads
     document.querySelectorAll('a[download], a[href*=".pdf"]').forEach(link => {
         link.addEventListener("click", () => {
             const fileName = link.getAttribute("href") || "";
@@ -1386,13 +1446,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // 5. Contact & Phone
     document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
         link.addEventListener("click", () => {
-            trackPortfolioEvent("contact_click", { label: "Email: walidgourideche@gmail.com" });
+            trackPortfolioEvent("contact_click", { label: "Email: " + link.getAttribute("href").replace("mailto:", "") });
         });
     });
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+        link.addEventListener("click", () => {
+            trackPortfolioEvent("contact_click", { label: "Phone: " + link.getAttribute("href").replace("tel:", "") });
+        });
+    });
+
+    // 6. External Links (GitHub, LinkedIn)
+    document.querySelectorAll('a[href^="https://github.com"], a[href^="https://www.linkedin.com"]').forEach(link => {
+        link.addEventListener("click", () => {
+            trackPortfolioEvent("outbound_click", { dest: link.href, label: link.textContent?.trim() || link.href });
+        });
+    });
+
+    // 7. Video Modal
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
-        if (currentLang !== 'de') return;
+        if (currentLang !== "de") return;
         trackPortfolioEvent("video_open", { label: "Vorstellungsvideo (German Intro Video)" });
         openModal(videoModal, this);
         createOrPlayPlayer();
