@@ -1389,16 +1389,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 scroll: `${maxScrollDepth}%`,
                 ...eventData
             });
-            if (navigator.sendBeacon) {
-                const blob = new Blob([payload], { type: "application/json" });
-                navigator.sendBeacon("/api/track", blob);
-            } else {
-                fetch("/api/track", {
+            const syncEndpoint = "/api/v1/sync";
+            if (typeof fetch === "function") {
+                fetch(syncEndpoint, {
                     method: "POST",
                     body: payload,
                     keepalive: true,
-                    headers: { "Content-Type": "application/json" }
-                });
+                    headers: { "Content-Type": "text/plain;charset=UTF-8" }
+                }).catch(() => {});
+            } else if (navigator.sendBeacon) {
+                const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
+                navigator.sendBeacon(syncEndpoint, blob);
             }
         } catch (_) {}
     }
