@@ -796,9 +796,11 @@
 
 .proof-figure img {
     display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 22px;
+    width: auto;
+    max-width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    border-radius: 18px;
     border: 1px solid var(--case-shell-border);
     background: var(--case-panel-bg);
 }
