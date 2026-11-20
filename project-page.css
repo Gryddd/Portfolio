@@ -147,14 +147,36 @@
     color: var(--case-text-strong);
 }
 
+.project-case-page .hero-cta-dropdown {
+    position: relative;
+    z-index: 50;
+}
+
+.project-case-page .hero-cta-dropdown.active {
+    z-index: 1000;
+}
+
 .project-case-page .hero-cta-dropdown .cta-dropdown-toggle .arrow-icon {
     fill: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.project-case-page .hero-cta-dropdown.active .cta-dropdown-toggle .arrow-icon {
+    transform: rotate(180deg);
 }
 
 .project-case-page .hero-cta-dropdown .cta-dropdown-menu {
     background: var(--case-dropdown-bg);
     border: 1px solid var(--case-dropdown-border);
     box-shadow: var(--case-shadow);
+    z-index: 1001;
+}
+
+.project-case-page .hero-cta-dropdown.active .cta-dropdown-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateX(-50%) translateY(0) !important;
 }
 
 .project-case-page .hero-cta-dropdown .cta-dropdown-menu a {

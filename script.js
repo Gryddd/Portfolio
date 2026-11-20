@@ -251,7 +251,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     type: "report-dropdown",
                     text: { de: "Bericht herunterladen", en: "Download Report", fr: "Télécharger le rapport" },
                     options: [
-                        { label: "Deutscher Projektbericht (PDF)", file: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf", download: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf" }
+                        { label: "English Report (PDF)", file: "Medical_Practice_Dr_Luis_Project_Report_EN.pdf", download: "Medical_Practice_Dr_Luis_Project_Report_EN.pdf" },
+                        { label: "Deutscher Bericht (PDF)", file: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf", download: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf" },
+                        { label: "Rapport français (PDF)", file: "Cabinet_Medical_Dr_Luis_Rapport_Projet_FR.pdf", download: "Cabinet_Medical_Dr_Luis_Rapport_Projet_FR.pdf" }
                     ]
                 }
             ]
