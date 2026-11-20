@@ -204,13 +204,32 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Project Data for switching
-    const projectOrder = ["3", "1"];
+    const projectOrder = ["3", "1", "2"];
     const projectsData = {
         "1": {
             id: "1",
             img: "images/widepre.webp",
             imagePosition: "center center",
             mobileAspectRatio: "16 / 5",
+            title: {
+                de: "Unternehmens-IT-Infrastruktur",
+                en: "Enterprise IT Infrastructure",
+                fr: "Infrastructure IT d'Entreprise"
+            },
+            desc: {
+                de: "Ein End-to-End-Projekt zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit VMware, Windows Server, pfSense und einem Suricata IPS zur Abwehr von Insider-Bedrohungen.",
+                en: "An end-to-end project building and securing an enterprise network using VMware, Windows Server, pfSense, and a Suricata IPS to defend against insider threats.",
+                fr: "Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise en utilisant VMware, Windows Server, pfSense et un IPS Suricata pour se défendre contre les menaces internes."
+            },
+            buttons: [
+                { type: "link", url: "homelab.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
+            ]
+        },
+        "2": {
+            id: "2",
+            img: "",
+            imagePosition: "center center",
+            mobileAspectRatio: "16 / 9",
             title: {
                 de: "Klinik-IT-Infrastruktur & Remote-Support",
                 en: "Clinical IT Infrastructure & Remote Support",
@@ -222,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fr: "Infrastructure de cabinet segmentée en 4 zones avec OPNsense 26.7, Windows Server 2019 AD DS, stratégies GPO et support helpdesk Zammad Cloud & RustDesk."
             },
             buttons: [
-                { type: "link", url: "homelab.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } },
+                { type: "link", url: "dental-clinic.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } },
                 {
                     type: "report-dropdown",
                     text: { de: "Bericht herunterladen", en: "Download Report", fr: "Télécharger le rapport" },
@@ -297,10 +316,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const applyProjectContent = () => {
             if (featuredImg) {
-                featuredImg.src = toRootAssetPath(project.img);
-                featuredImg.alt = project.title[currentLang];
-                featuredImg.style.objectFit = project.imageFit || 'cover';
-                featuredImg.style.objectPosition = project.imagePosition || 'top center';
+                if (project.img) {
+                    featuredImg.src = toRootAssetPath(project.img);
+                    featuredImg.alt = project.title[currentLang];
+                    featuredImg.style.visibility = 'visible';
+                    featuredImg.style.objectFit = project.imageFit || 'cover';
+                    featuredImg.style.objectPosition = project.imagePosition || 'top center';
+                } else {
+                    featuredImg.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="9"%3E%3C/svg%3E';
+                    featuredImg.alt = project.title[currentLang];
+                    featuredImg.style.visibility = 'hidden';
+                }
             }
 
             if (featuredProject) {
