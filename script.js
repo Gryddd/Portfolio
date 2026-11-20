@@ -212,17 +212,24 @@ document.addEventListener("DOMContentLoaded", function () {
             imagePosition: "center center",
             mobileAspectRatio: "16 / 5",
             title: {
-                de: "Unternehmens-IT-Infrastruktur",
-                en: "Enterprise IT Infrastructure",
-                fr: "Infrastructure IT d'Entreprise"
+                de: "Klinik-IT-Infrastruktur & Remote-Support",
+                en: "Clinical IT Infrastructure & Remote Support",
+                fr: "Infrastructure IT Clinique & Support Distant"
             },
             desc: {
-                de: "Ein End-to-End-Projekt zum Aufbau und zur Absicherung eines Unternehmensnetzwerks mit VMware, Windows Server, pfSense und einem Suricata IPS zur Abwehr von Insider-Bedrohungen.",
-                en: "An end-to-end project building and securing an enterprise network using VMware, Windows Server, pfSense, and a Suricata IPS to defend against insider threats.",
-                fr: "Un projet de bout en bout pour construire et sécuriser un réseau d'entreprise en utilisant VMware, Windows Server, pfSense et un IPS Suricata pour se défendre contre les menaces internes."
+                de: "Segmentierte 4-Zonen-Praxisinfrastruktur mit OPNsense 26.7, Windows Server 2019 AD DS, Gruppenrichtlinien sowie Zammad-Cloud- und RustDesk-Helpdesk-Betrieb.",
+                en: "Segmented 4-zone clinic infrastructure with OPNsense 26.7, Windows Server 2019 AD DS, Group Policies, and Zammad Cloud & RustDesk helpdesk operations.",
+                fr: "Infrastructure de cabinet segmentée en 4 zones avec OPNsense 26.7, Windows Server 2019 AD DS, stratégies GPO et support helpdesk Zammad Cloud & RustDesk."
             },
             buttons: [
-                { type: "link", url: "homelab.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } }
+                { type: "link", url: "homelab.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } },
+                {
+                    type: "report-dropdown",
+                    text: { de: "Bericht herunterladen", en: "Download Report", fr: "Télécharger le rapport" },
+                    options: [
+                        { label: "Deutscher Projektbericht (PDF)", file: "Zahnarztpraxis_Dr_Luis_Projektbericht_DE.pdf", download: "Zahnarztpraxis_Dr_Luis_Projektbericht_DE.pdf" }
+                    ]
+                }
             ]
         },
         "3": {
