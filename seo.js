@@ -24,10 +24,18 @@
 
     const stripLanguagePrefix = pathname => {
         const segments = getPathSegments(pathname);
+        if (segments.length === 0) return "/";
         const leadingLang = normalizeLanguage(segments[0]);
-        const remainingSegments = leadingLang ? segments.slice(1) : segments;
-        if (remainingSegments.length === 0) return "/";
-        return `/${remainingSegments.join("/")}`;
+        if (leadingLang) {
+            const remaining = segments.slice(1);
+            return remaining.length === 0 ? "/" : `/${remaining.join("/")}`;
+        }
+        // Handle subfolder deployment e.g. /Portfolio/de/...
+        if (segments.length > 1 && normalizeLanguage(segments[1])) {
+            const remaining = [segments[0], ...segments.slice(2)];
+            return `/${remaining.join("/")}`;
+        }
+        return `/${segments.join("/")}`;
     };
 
     const normalizePagePath = value => {
@@ -74,21 +82,21 @@
 
     const resolveInitialLanguage = () => {
         try {
-            const url = new URL(window.location.href);
-            const pathLang = normalizeLanguage(getPathSegments(url.pathname)[0]);
+            const segments = getPathSegments(window.location.pathname);
+            const pathLang = segments.map(normalizeLanguage).find(Boolean);
             const browserLang = (navigator.languages || [navigator.language])
                 .map(normalizeLanguage)
                 .find(Boolean);
 
             return pathLang
                 || documentLanguage()
-                || normalizeLanguage(url.searchParams.get("lang"))
+                || (window.location.search ? normalizeLanguage(new URLSearchParams(window.location.search).get("lang")) : null)
                 || readPreferredLanguageCookie()
                 || readPreferredLanguageStorage()
                 || browserLang
                 || "en";
         } catch (_) {
-            return "en";
+            return documentLanguage() || "en";
         }
     };
 
@@ -121,10 +129,18 @@
     }
 
     const buildLocalizedUrl = (pagePath, lang, hash = "") => {
-        const localizedUrl = new URL(buildLocalizedPath(pagePath, lang), window.location.origin);
-        localizedUrl.search = "";
-        localizedUrl.hash = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
-        return localizedUrl.toString();
+        const path = buildLocalizedPath(pagePath, lang);
+        const fragment = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
+        try {
+            if (window.location.origin && window.location.origin !== "null" && window.location.protocol.startsWith("http")) {
+                const localizedUrl = new URL(path, window.location.origin);
+                localizedUrl.search = "";
+                localizedUrl.hash = fragment;
+                return localizedUrl.toString();
+            }
+        } catch (_) {}
+        const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+        return cleanPath + fragment;
     };
 
     const updateMetaContent = (id, value) => {

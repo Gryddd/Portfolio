@@ -170,16 +170,21 @@ document.addEventListener("DOMContentLoaded", function () {
         document.cookie = `preferredLang=${encodeURIComponent(lang)}; Max-Age=31536000; Path=/; SameSite=Lax${secureFlag}`;
     };
     const resolveInitialLanguage = () => {
-        const url = new URL(window.location.href);
-        const pathLang = normalizeLanguage(url.pathname.split("/").filter(Boolean)[0]);
-        const browserLang = (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
-        return pathLang
-            || pageLanguage
-            || normalizeLanguage(url.searchParams.get("lang"))
-            || readPreferredLanguageCookie()
-            || normalizeLanguage(localStorage.getItem("preferredLang"))
-            || browserLang
-            || config.defaultLang;
+        try {
+            const url = new URL(window.location.href);
+            const segments = url.pathname.split("/").filter(Boolean);
+            const pathLang = segments.map(normalizeLanguage).find(Boolean);
+            const browserLang = (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
+            return pathLang
+                || pageLanguage
+                || normalizeLanguage(url.searchParams.get("lang"))
+                || readPreferredLanguageCookie()
+                || normalizeLanguage(localStorage.getItem("preferredLang"))
+                || browserLang
+                || config.defaultLang;
+        } catch (_) {
+            return pageLanguage || config.defaultLang;
+        }
     };
     const parseVisibleLanguages = value => String(value || "")
         .split(/[,\s]+/)
@@ -231,14 +236,14 @@ document.addEventListener("DOMContentLoaded", function () {
             imagePosition: "center center",
             mobileAspectRatio: "16 / 9",
             title: {
-                de: "Klinik-IT-Infrastruktur & Remote-Support",
-                en: "Clinical IT Infrastructure & Remote Support",
-                fr: "Infrastructure IT Clinique & Support Distant"
+                de: "Praxis-IT-Infrastruktur & Remote-Support",
+                en: "Medical IT Infrastructure & Remote Support",
+                fr: "Infrastructure IT Médicale & Support Distant"
             },
             desc: {
                 de: "Segmentierte 4-Zonen-Praxisinfrastruktur mit OPNsense 26.7, Windows Server 2019 AD DS, Gruppenrichtlinien sowie Zammad-Cloud- und RustDesk-Helpdesk-Betrieb.",
-                en: "Segmented 4-zone clinic infrastructure with OPNsense 26.7, Windows Server 2019 AD DS, Group Policies, and Zammad Cloud & RustDesk helpdesk operations.",
-                fr: "Infrastructure de cabinet segmentée en 4 zones avec OPNsense 26.7, Windows Server 2019 AD DS, stratégies GPO et support helpdesk Zammad Cloud & RustDesk."
+                en: "Segmented 4-zone medical practice infrastructure with OPNsense 26.7, Windows Server 2019 AD DS, Group Policies, and Zammad Cloud & RustDesk helpdesk operations.",
+                fr: "Infrastructure de cabinet médical segmentée en 4 zones avec OPNsense 26.7, Windows Server 2019 AD DS, stratégies GPO et support helpdesk Zammad Cloud & RustDesk."
             },
             buttons: [
                 { type: "link", url: "dental-clinic.html", text: { de: "Details ansehen", en: "View Details", fr: "Voir détails" } },
@@ -246,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     type: "report-dropdown",
                     text: { de: "Bericht herunterladen", en: "Download Report", fr: "Télécharger le rapport" },
                     options: [
-                        { label: "Deutscher Projektbericht (PDF)", file: "Zahnarztpraxis_Dr_Luis_Projektbericht_DE.pdf", download: "Zahnarztpraxis_Dr_Luis_Projektbericht_DE.pdf" }
+                        { label: "Deutscher Projektbericht (PDF)", file: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf", download: "Arztpraxis_Dr_Luis_Projektbericht_DE.pdf" }
                     ]
                 }
             ]
@@ -432,11 +437,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return normalizedPagePath;
         }
         if (window.PortfolioSeo?.buildLocalizedUrl) {
-            return window.PortfolioSeo.buildLocalizedUrl(normalizedPagePath, lang, hash);
+            try {
+                return window.PortfolioSeo.buildLocalizedUrl(normalizedPagePath, lang, hash);
+            } catch (_) {}
         }
-        const fallbackUrl = new URL(normalizedPagePath, window.location.origin);
-        fallbackUrl.hash = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
-        return fallbackUrl.toString();
+        try {
+            if (window.location.origin && window.location.origin !== "null" && window.location.protocol.startsWith("http")) {
+                const fallbackUrl = new URL(normalizedPagePath, window.location.origin);
+                fallbackUrl.hash = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
+                return fallbackUrl.toString();
+            }
+        } catch (_) {}
+        const cleanPath = normalizedPagePath.startsWith("/") ? normalizedPagePath.slice(1) : normalizedPagePath;
+        const fragment = hash ? (hash.startsWith("#") ? hash : `#${hash}`) : "";
+        return cleanPath + fragment;
     };
 
     function getActiveModal() {
@@ -605,18 +619,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function syncLanguageUrl(lang, options = {}) {
         const { hash = window.location.hash, replace = false } = options;
-        const localizedUrl = getLocalizedPageUrl(window.PortfolioSeo?.getCurrentPagePath?.() || "/", lang, hash);
-        const currentUrl = new URL(window.location.href);
-        const nextUrl = new URL(localizedUrl, window.location.origin);
-        if (currentUrl.pathname === nextUrl.pathname && currentUrl.hash === nextUrl.hash) {
+        try {
+            const localizedUrl = getLocalizedPageUrl(window.PortfolioSeo?.getCurrentPagePath?.() || "/", lang, hash);
+            if (!localizedUrl) return false;
+            if (window.location.protocol.startsWith("http") && window.location.origin && window.location.origin !== "null") {
+                const currentUrl = new URL(window.location.href);
+                const nextUrl = new URL(localizedUrl, window.location.origin);
+                if (currentUrl.pathname === nextUrl.pathname && currentUrl.hash === nextUrl.hash) {
+                    return false;
+                }
+                if (replace) {
+                    window.location.replace(nextUrl.toString());
+                } else {
+                    window.location.assign(nextUrl.toString());
+                }
+                return true;
+            } else {
+                if (window.location.pathname.endsWith(localizedUrl)) return false;
+                if (replace) {
+                    window.location.replace(localizedUrl);
+                } else {
+                    window.location.assign(localizedUrl);
+                }
+                return true;
+            }
+        } catch (_) {
             return false;
         }
-        if (replace) {
-            window.location.replace(nextUrl.toString());
-        } else {
-            window.location.assign(nextUrl.toString());
-        }
-        return true;
     }
 
     function refreshLanguageSwitcherLinks() {
@@ -767,9 +796,8 @@ document.addEventListener("DOMContentLoaded", function () {
         currentLang = normalizedLang;
         localStorage.setItem("preferredLang", currentLang);
         persistPreferredLanguage(currentLang);
-        if (syncUrl && navigate && syncLanguageUrl(currentLang, { replace: replaceHistory })) {
-            return;
-        }
+
+        // Always update DOM in-place immediately
         document.documentElement.lang = currentLang;
         if (window.PortfolioSeo?.applyLocalizedSeo) {
             window.PortfolioSeo.applyLocalizedSeo(currentLang);
@@ -801,6 +829,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const changedElements = updateLanguageConditionalContent();
         if (refreshLayout) {
             refreshAfterLanguageSwitch(changedElements);
+        }
+
+        // Safe URL synchronization
+        if (syncUrl) {
+            try {
+                const isCaseStudyPage = document.body.classList.contains("project-case-page");
+                if (isCaseStudyPage && navigate) {
+                    syncLanguageUrl(currentLang, { replace: replaceHistory });
+                } else if (window.history && window.history.pushState) {
+                    const localizedPath = window.PortfolioSeo?.buildLocalizedPath
+                        ? window.PortfolioSeo.buildLocalizedPath(window.PortfolioSeo.getCurrentPagePath(), currentLang)
+                        : (currentLang === "en" ? "/" : `/${currentLang}/`);
+                    const newUrl = localizedPath + (window.location.hash || "");
+                    if (replaceHistory) {
+                        window.history.replaceState({ lang: currentLang }, "", newUrl);
+                    } else {
+                        window.history.pushState({ lang: currentLang }, "", newUrl);
+                    }
+                }
+            } catch (_) {}
         }
     }
     function updateAllProjectModalsText() {
@@ -1517,17 +1565,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const project = projectsData[activeProjectId];
         const linkBtn = project?.buttons?.find(b => b.type === 'link');
         if (!linkBtn) return;
-        const targetUrl = getLocalizedPageUrl(linkBtn.url, currentLang);
-        if (event && (event.metaKey || event.ctrlKey)) {
-            window.open(targetUrl, '_blank', 'noopener,noreferrer');
-        } else {
-            window.location.href = targetUrl;
+        try {
+            const targetUrl = getLocalizedPageUrl(linkBtn.url, currentLang);
+            if (event && (event.metaKey || event.ctrlKey)) {
+                window.open(targetUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                window.location.href = targetUrl;
+            }
+        } catch (_) {
+            window.location.href = linkBtn.url;
         }
     }
 
     function initializeProjectShowcase() {
         const featuredProject = document.getElementById('featured-project');
         if (featuredProject) {
+            featuredProject.style.cursor = 'pointer';
             featuredProject.addEventListener('click', function(e) {
                 if (e.target.closest('#featured-buttons, .featured-project-arrow, a, button')) return;
                 navigateToActiveProject(e);
