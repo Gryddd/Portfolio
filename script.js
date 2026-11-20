@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Project Data for switching
-    const projectOrder = ["3", "1", "2"];
+    const projectOrder = ["2", "3", "1"];
     const projectsData = {
         "1": {
             id: "1",
@@ -232,9 +232,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         "2": {
             id: "2",
-            img: "",
+            img: "images/medical_card.webp",
             imagePosition: "center center",
-            mobileAspectRatio: "16 / 9",
+            mobileAspectRatio: "16 / 5",
             title: {
                 de: "Praxis-IT-Infrastruktur & Remote-Support",
                 en: "Medical IT Infrastructure & Remote Support",
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         }
     };
-    let activeProjectId = "3";
+    let activeProjectId = "2";
     let featuredProjectTimer;
 
     function attachFeaturedProjectButtonListeners(container) {
