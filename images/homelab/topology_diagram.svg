@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Arrowhead markers -->
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#334155"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ea580c"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#7c3aed"/>
+    </marker>
+
+    <!-- Drop shadows -->
+    <filter id="shadow-sm" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- ==================== 1. REMOTE SUPPORT DESK ==================== -->
+  <g transform="translate(480, 25)">
+    <!-- Laptop Icon -->
+    <g transform="translate(0, 5)">
+      <!-- Laptop Screen -->
+      <rect x="0" y="0" width="68" height="44" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+      <rect x="5" y="5" width="58" height="34" rx="2" fill="#f8fafc"/>
+      <!-- Screen display lines -->
+      <line x1="12" y1="14" x2="35" y2="14" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+      <line x1="12" y1="21" x2="48" y2="21" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+      <line x1="12" y1="28" x2="40" y2="28" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+      <!-- Camera dot -->
+      <circle cx="34" cy="2.5" r="1" fill="#94a3b8"/>
+      <!-- Laptop Base -->
+      <path d="M -8 44 L 76 44 L 70 51 L -2 51 Z" fill="#64748b" stroke="#475569" stroke-width="1"/>
+      <line x1="26" y1="46" x2="42" y2="46" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <!-- Label -->
+    <text x="88" y="24" font-size="16" font-weight="600" fill="#0f172a">Remote Support Desk</text>
+    <text x="88" y="44" font-size="14" font-weight="400" fill="#475569">(Laptop)</text>
+  </g>
+
+  <!-- Connection: Laptop to ISP -->
+  <line x1="514" y1="85" x2="514" y2="128" stroke="#334155" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- ==================== 2. ISP CLOUD ==================== -->
+  <g transform="translate(470, 136)">
+    <!-- Cloud Icon -->
+    <path d="M 22 36 
+             A 14 14 0 0 1 14 20 
+             A 16 16 0 0 1 34 10 
+             A 22 22 0 0 1 68 12 
+             A 16 16 0 0 1 82 24 
+             A 14 14 0 0 1 74 36 Z" 
+          fill="#f8fafc" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Label -->
+    <text x="98" y="23" font-size="16" font-weight="600" fill="#0f172a">ISP (VMware VMnet8)</text>
+    <text x="98" y="42" font-size="14" font-weight="400" fill="#475569">• 192.168.74.0/24</text>
+  </g>
+
+  <!-- Connection: ISP to Firewall -->
+  <line x1="514" y1="184" x2="514" y2="225" stroke="#334155" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- ==================== 3. FIREWALL (OPNsense) ==================== -->
+  <g transform="translate(480, 235)">
+    <!-- Brick Wall Icon -->
+    <rect x="0" y="0" width="68" height="50" rx="3" fill="#dc2626" stroke="#991b1b" stroke-width="1.5" filter="url(#shadow-sm)"/>
+    <!-- Brick lines (mortar) -->
+    <!-- Row 1 -->
+    <line x1="0" y1="12" x2="68" y2="12" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="22" y1="0" x2="22" y2="12" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="46" y1="0" x2="46" y2="12" stroke="#ffffff" stroke-width="1.8"/>
+    <!-- Row 2 -->
+    <line x1="0" y1="25" x2="68" y2="25" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="11" y1="12" x2="11" y2="25" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="34" y1="12" x2="34" y2="25" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="57" y1="12" x2="57" y2="25" stroke="#ffffff" stroke-width="1.8"/>
+    <!-- Row 3 -->
+    <line x1="0" y1="38" x2="68" y2="38" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="22" y1="25" x2="22" y2="38" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="46" y1="25" x2="46" y2="38" stroke="#ffffff" stroke-width="1.8"/>
+    <!-- Row 4 -->
+    <line x1="11" y1="38" x2="11" y2="50" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="34" y1="38" x2="34" y2="50" stroke="#ffffff" stroke-width="1.8"/>
+    <line x1="57" y1="38" x2="57" y2="50" stroke="#ffffff" stroke-width="1.8"/>
+
+    <!-- Left Label: WAN (em0) -->
+    <text x="-16" y="32" font-size="15" font-weight="600" fill="#0f172a" text-anchor="end">WAN (em0)</text>
+
+    <!-- Right Label: FW01 - OPNsense -->
+    <text x="86" y="22" font-size="16" font-weight="600" fill="#0f172a">FW01 - OPNsense</text>
+    <text x="86" y="42" font-size="14" font-weight="400" fill="#475569">Gateway: 192.168.10.1</text>
+  </g>
+
+  <!-- ==================== 4. BUS CONNECTIONS FROM FIREWALL ==================== -->
+  <!-- em1 (Green) to Praxis-LAN -->
+  <path d="M 496 287 L 496 324 L 205 324 L 205 365" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+  <text x="195" y="306" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">em1</text>
+
+  <!-- em2 (Orange) to Roentgen-LAN -->
+  <line x1="514" y1="287" x2="514" y2="365" stroke="#ea580c" stroke-width="2.2" marker-end="url(#arrow-orange)"/>
+  <text x="532" y="332" font-size="14" font-weight="600" fill="#0f172a">em2</text>
+
+  <!-- em3 (Purple) to TI-Netz -->
+  <path d="M 532 287 L 532 324 L 845 324 L 845 365" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#arrow-purple)"/>
+  <text x="862" y="306" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">em3</text>
+
+
+  <!-- ==================== 5. PRAXIS-LAN ZONE (GREEN) ==================== -->
+  <g transform="translate(160, 375)">
+    <!-- Switch Box -->
+    <rect x="0" y="0" width="90" height="34" rx="4" fill="#16a34a" filter="url(#shadow-sm)"/>
+    <!-- Port LED lights -->
+    <circle cx="14" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="23" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="32" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="41" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="50" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="59" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="68" cy="11" r="2.2" fill="#86efac"/>
+    <circle cx="77" cy="11" r="2.2" fill="#86efac"/>
+    <!-- Port sockets bottom -->
+    <rect x="11" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="20" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="29" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="38" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="47" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="56" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="65" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+    <rect x="74" y="18" width="6" height="7" rx="1" fill="#14532d"/>
+
+    <!-- Switch Subtitle -->
+    <text x="45" y="55" font-size="14.5" font-weight="600" fill="#16a34a" text-anchor="middle">Praxis-LAN • 192.168.10.0/24</text>
+  </g>
+
+  <!-- Connectors from Switch to Server and Workstation -->
+  <!-- Left to Server -->
+  <path d="M 205 410 L 205 442 L 122 442 L 122 478" fill="none" stroke="#16a34a" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+  <!-- Right to PC -->
+  <path d="M 205 410 L 205 442 L 288 442 L 288 478" fill="none" stroke="#16a34a" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+
+  <!-- SRV-PRAXIS01 -->
+  <g transform="translate(101, 488)">
+    <!-- Tower Server Icon -->
+    <rect x="0" y="0" width="42" height="64" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-sm)"/>
+    <!-- Drive bays -->
+    <rect x="6" y="8" width="30" height="6" rx="1" fill="#64748b"/>
+    <rect x="6" y="17" width="30" height="6" rx="1" fill="#64748b"/>
+    <rect x="6" y="26" width="30" height="6" rx="1" fill="#64748b"/>
+    <!-- Ventilation slots -->
+    <line x1="8" y1="40" x2="34" y2="40" stroke="#475569" stroke-width="1.5"/>
+    <line x1="8" y1="44" x2="34" y2="44" stroke="#475569" stroke-width="1.5"/>
+    <line x1="8" y1="48" x2="34" y2="48" stroke="#475569" stroke-width="1.5"/>
+    <!-- Power button LED -->
+    <circle cx="21" cy="56" r="2.5" fill="#22c55e"/>
+
+    <!-- Labels -->
+    <text x="21" y="82" font-size="14.5" font-weight="600" fill="#0f172a" text-anchor="middle">SRV-PRAXIS01</text>
+    <text x="21" y="100" font-size="13" font-weight="400" fill="#475569" text-anchor="middle">192.168.10.10</text>
+  </g>
+
+  <!-- PC-REZEPTION01 -->
+  <g transform="translate(254, 492)">
+    <!-- Workstation Icon (Monitor + Tower) -->
+    <!-- Monitor -->
+    <rect x="0" y="0" width="50" height="34" rx="3" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="4" y="4" width="42" height="26" rx="1.5" fill="#f8fafc"/>
+    <rect x="18" y="34" width="14" height="10" fill="#64748b"/>
+    <rect x="12" y="44" width="26" height="3" rx="1.5" fill="#475569"/>
+    <!-- PC Tower beside -->
+    <rect x="56" y="6" width="16" height="42" rx="2" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+    <circle cx="64" cy="12" r="1.5" fill="#38bdf8"/>
+    <line x1="60" y1="18" x2="68" y2="18" stroke="#64748b" stroke-width="1"/>
+    <line x1="60" y1="22" x2="68" y2="22" stroke="#64748b" stroke-width="1"/>
+
+    <!-- Labels -->
+    <text x="34" y="78" font-size="14.5" font-weight="600" fill="#0f172a" text-anchor="middle">PC-REZEPTION01</text>
+    <text x="34" y="96" font-size="13" font-weight="400" fill="#475569" text-anchor="middle">192.168.10.55</text>
+  </g>
+
+
+  <!-- ==================== 6. ROENTGEN-LAN ZONE (ORANGE) ==================== -->
+  <g transform="translate(469, 375)">
+    <!-- Switch Box -->
+    <rect x="0" y="0" width="90" height="34" rx="4" fill="#ea580c" filter="url(#shadow-sm)"/>
+    <!-- Port LED lights -->
+    <circle cx="14" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="23" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="32" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="41" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="50" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="59" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="68" cy="11" r="2.2" fill="#fed7aa"/>
+    <circle cx="77" cy="11" r="2.2" fill="#fed7aa"/>
+    <!-- Port sockets bottom -->
+    <rect x="11" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="20" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="29" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="38" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="47" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="56" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="65" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+    <rect x="74" y="18" width="6" height="7" rx="1" fill="#7c2d12"/>
+
+    <!-- Switch Subtitle -->
+    <text x="45" y="55" font-size="14.5" font-weight="600" fill="#ea580c" text-anchor="middle">Roentgen-LAN • 192.168.20.0/24</text>
+  </g>
+
+  <!-- Connection to X-Ray Device -->
+  <line x1="514" y1="410" x2="514" y2="478" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- X-Ray Device -->
+  <g transform="translate(488, 488)">
+    <!-- Device Icon -->
+    <rect x="0" y="0" width="52" height="60" rx="8" fill="#334155" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-sm)"/>
+    <!-- Medical Cross -->
+    <rect x="22" y="10" width="8" height="18" fill="#ffffff" rx="1.5"/>
+    <rect x="17" y="15" width="18" height="8" fill="#ffffff" rx="1.5"/>
+    <!-- Diagnostic Ray symbols -->
+    <line x1="15" y1="34" x2="37" y2="34" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="18" y1="39" x2="34" y2="39" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <line x1="21" y1="44" x2="31" y2="44" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <!-- Plug cord -->
+    <path d="M 52 42 C 60 42, 60 54, 68 54" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+    <rect x="68" y="50" width="8" height="8" rx="2" fill="#1e293b"/>
+    <line x1="76" y1="52" x2="80" y2="52" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="76" y1="56" x2="80" y2="56" stroke="#64748b" stroke-width="1.5"/>
+
+    <!-- Labels -->
+    <text x="26" y="82" font-size="14.5" font-weight="600" fill="#0f172a" text-anchor="middle">X-Ray Device</text>
+    <text x="26" y="100" font-size="13" font-weight="400" fill="#475569" text-anchor="middle">Virtuelle IP: 192.168.20.50</text>
+  </g>
+
+
+  <!-- ==================== 7. TI-NETZ ZONE (PURPLE) ==================== -->
+  <g transform="translate(800, 375)">
+    <!-- Switch Box -->
+    <rect x="0" y="0" width="90" height="34" rx="4" fill="#7c3aed" filter="url(#shadow-sm)"/>
+    <!-- Port LED lights -->
+    <circle cx="14" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="23" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="32" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="41" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="50" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="59" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="68" cy="11" r="2.2" fill="#ddd6fe"/>
+    <circle cx="77" cy="11" r="2.2" fill="#ddd6fe"/>
+    <!-- Port sockets bottom -->
+    <rect x="11" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="20" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="29" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="38" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="47" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="56" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="65" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+    <rect x="74" y="18" width="6" height="7" rx="1" fill="#4c1d95"/>
+
+    <!-- Switch Subtitle (CLEAN, SHARP, NO SMUDGES!) -->
+    <text x="45" y="55" font-size="14.5" font-weight="600" fill="#7c3aed" text-anchor="middle">TI-Netz • 192.168.40.0/24</text>
+  </g>
+
+  <!-- Connection to Card Terminal -->
+  <line x1="845" y1="410" x2="845" y2="478" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+  <!-- Card Terminal Device -->
+  <g transform="translate(824, 488)">
+    <!-- Terminal Body -->
+    <rect x="0" y="0" width="42" height="64" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.5" filter="url(#shadow-sm)"/>
+    <!-- Screen -->
+    <rect x="6" y="6" width="30" height="18" rx="2" fill="#0ea5e9"/>
+    <!-- Keypad buttons (3x3 + bottom) -->
+    <circle cx="12" cy="32" r="2" fill="#94a3b8"/>
+    <circle cx="21" cy="32" r="2" fill="#94a3b8"/>
+    <circle cx="30" cy="32" r="2" fill="#94a3b8"/>
+
+    <circle cx="12" cy="40" r="2" fill="#94a3b8"/>
+    <circle cx="21" cy="40" r="2" fill="#94a3b8"/>
+    <circle cx="30" cy="40" r="2" fill="#94a3b8"/>
+
+    <circle cx="12" cy="48" r="2" fill="#94a3b8"/>
+    <circle cx="21" cy="48" r="2" fill="#94a3b8"/>
+    <circle cx="30" cy="48" r="2" fill="#94a3b8"/>
+
+    <rect x="14" y="55" width="14" height="2" rx="1" fill="#22c55e"/>
+
+    <!-- Labels -->
+    <text x="21" y="82" font-size="14.5" font-weight="600" fill="#0f172a" text-anchor="middle">Card Terminal</text>
+    <text x="21" y="100" font-size="13" font-weight="400" fill="#475569" text-anchor="middle">Virtuelle IP: 192.168.40.50</text>
+  </g>
+
+</svg>
