@@ -1268,12 +1268,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
     switchLanguage(currentLang, { syncUrl: false, refreshLayout: false });
+    initializeProjectShowcase();
     window.requestAnimationFrame(() => {
         scheduleIdleTask(initializeBackgroundVideo, 1100);
     });
     scheduleIdleTask(() => {
         initializeProjectModals();
-        initializeProjectShowcase();
     }, 1200);
     scheduleIdleTask(initializeGitHubSection, 1500);
     allModals.forEach(modal => modal.setAttribute('aria-hidden', 'true'));
@@ -1513,14 +1513,38 @@ document.addEventListener("DOMContentLoaded", function () {
         updateFeaturedProject(projectOrder[nextIndex], step > 0 ? 'next' : 'prev');
     }
 
+    function navigateToActiveProject(event) {
+        const project = projectsData[activeProjectId];
+        const linkBtn = project?.buttons?.find(b => b.type === 'link');
+        if (!linkBtn) return;
+        const targetUrl = getLocalizedPageUrl(linkBtn.url, currentLang);
+        if (event && (event.metaKey || event.ctrlKey)) {
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        } else {
+            window.location.href = targetUrl;
+        }
+    }
+
     function initializeProjectShowcase() {
+        const featuredProject = document.getElementById('featured-project');
+        if (featuredProject) {
+            featuredProject.addEventListener('click', function(e) {
+                if (e.target.closest('#featured-buttons, .featured-project-arrow, a, button')) return;
+                navigateToActiveProject(e);
+            });
+        }
+
         document.querySelectorAll('.project-thumbnail').forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                if (this.dataset.projectId === activeProjectId) return;
+            thumb.addEventListener('click', function(e) {
+                const projectId = this.dataset.projectId;
+                if (projectId === activeProjectId) {
+                    navigateToActiveProject(e);
+                    return;
+                }
                 const currentIndex = projectOrder.indexOf(activeProjectId);
-                const nextIndex = projectOrder.indexOf(this.dataset.projectId);
+                const nextIndex = projectOrder.indexOf(projectId);
                 const direction = nextIndex > currentIndex ? 'next' : 'prev';
-                updateFeaturedProject(this.dataset.projectId, direction);
+                updateFeaturedProject(projectId, direction);
             });
         });
 

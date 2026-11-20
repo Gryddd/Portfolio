@@ -2824,10 +2824,12 @@ button:hover,
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    cursor: pointer;
 }
 
 .featured-project:hover {
     box-shadow: 0 16px 44px rgba(0, 0, 0, 0.36);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .featured-project-image {
@@ -2836,6 +2838,7 @@ button:hover,
     overflow: hidden;
     aspect-ratio: var(--featured-project-aspect-ratio, 16/5);
     background: var(--card-bg-performant);
+    cursor: pointer;
 }
 
 .featured-project-image::after {
