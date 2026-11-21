@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper,top=1.00cm,bottom=1.00cm,left=1.25cm,right=1.25cm]{geometry}
+\usepackage[a4paper,top=0.85cm,bottom=0.85cm,left=1.20cm,right=1.20cm]{geometry}
 \usepackage[french]{babel}
 \usepackage{fontspec}
 \usepackage{xcolor}
@@ -19,22 +19,22 @@
 }
 
 \pagestyle{empty}
-\linespread{1.06}
+\linespread{1.02}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.10em}
 
 \setlist[itemize]{
   leftmargin=1.15em,
-  itemsep=0.14em,
-  topsep=0.10em,
+  itemsep=0.08em,
+  topsep=0.06em,
   parsep=0em,
   partopsep=0em,
   before=\raggedright,
-  after=\vspace{0.20em}
+  after=\vspace{0.10em}
 }
 
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.65em}{0.28em}
+\titlespacing*{\section}{0pt}{0.42em}{0.18em}
 
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
@@ -92,6 +92,8 @@ Cité Al Amane Imm A Appt 1, 35000 Taza, Maroc\\[0.14em]
   \item Immersion professionnelle renforçant l'allemand au quotidien et découverte directe de la culture d'entreprise allemande.
 \end{itemize}
 
+\cvheading{Faculté Polydisciplinaire de Taza}{10/2021 - 06/2022}{Premier cycle universitaire en sciences exactes}{Taza, Maroc}
+
 \cvheading{Lycée Al Falah 2}{09/2020 - 06/2021}{Baccalauréat (équivalent Abitur), filière sciences physiques}{Taza, Maroc}
 
 \section*{Expériences pratiques}
@@ -118,9 +120,9 @@ Cité Al Amane Imm A Appt 1, 35000 Taza, Maroc\\[0.14em]
 \end{itemize}
 
 \section*{Projets informatiques}
-\cvheadinglink{Infrastructure IT d'entreprise}{2026}{Construction et sécurisation d'un réseau d'entreprise}{Projet laboratoire}{https://grydsh.dev/fr/homelab.html}
+\cvheadinglink{Infrastructure IT de Cabinet Médical (Dr. Luis)}{2026}{Réseau clinique segmenté en 4 zones \& support MSP}{Projet laboratoire}{https://grydsh.dev/fr/dental-clinic.html}
 \begin{itemize}
-  \item Déploiement d'un réseau virtuel avec pare-feu pfSense, Windows Server 2022 (Active Directory et DNS), supervision Netdata et IPS Suricata pour détection d'intrusions en temps réel.
+  \item Déploiement d'une infrastructure de cabinet médical virtualisée avec pare-feu périmétrique OPNsense (4 zones), Windows Server 2019 (Active Directory, DHCP, DNS, partages SMB masqués, GPO), poste Windows 10 et télé-assistance MSP via Zammad Cloud et RustDesk.
 \end{itemize}
 
 \cvheadinglink{PortGuardian Enterprise}{2026}{Système de détection et réponse aux menaces USB}{Projet cybersécurité}{https://github.com/Gryddd/PortGuardian}
@@ -131,7 +133,7 @@ Cité Al Amane Imm A Appt 1, 35000 Taza, Maroc\\[0.14em]
 \section*{Compétences techniques}
 \textbf{Réseaux :} Cisco IOS, routage \& commutation, TCP/IP, sous-réseaux, VLANs, DNS/DHCP, Wireshark, GNS3 \\
 \textbf{Administration système :} Windows Server, Active Directory, Linux (Debian/Ubuntu), Hyper-V, VMware, Oracle Cloud, Python \\
-\textbf{Sécurité IT :} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, analyse de vulnérabilités, configuration pare-feu
+\textbf{Sécurité IT :} OPNsense, pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, analyse de vulnérabilités, configuration pare-feu
 
 \section*{Langues}
 \textbf{Allemand :} Courant à l'écrit et à l'oral (certificat ÖSD B2, examen complet : écrit et oral réussi, 2026) \\

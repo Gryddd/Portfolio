@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper,top=1.00cm,bottom=1.00cm,left=1.25cm,right=1.25cm]{geometry}
+\usepackage[a4paper,top=0.85cm,bottom=0.85cm,left=1.20cm,right=1.20cm]{geometry}
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -18,22 +18,22 @@
 }
 
 \pagestyle{empty}
-\linespread{1.06}
+\linespread{1.02}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.10em}
 
 \setlist[itemize]{
   leftmargin=1.15em,
-  itemsep=0.14em,
-  topsep=0.10em,
+  itemsep=0.08em,
+  topsep=0.06em,
   parsep=0em,
   partopsep=0em,
   before=\raggedright,
-  after=\vspace{0.20em}
+  after=\vspace{0.10em}
 }
 
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{0.65em}{0.28em}
+\titlespacing*{\section}{0pt}{0.42em}{0.18em}
 
 \graphicspath{{./}{../images/}}
 \defaultfontfeatures{Ligatures=TeX}
@@ -91,6 +91,8 @@ Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.14em]
   \item Deepened professional German skills in the workplace and gained direct insight into German work culture.
 \end{itemize}
 
+\cvheading{Polydisciplinary Faculty of Taza}{10/2021 - 06/2022}{Undergraduate Studies in Natural Sciences}{Taza, Morocco}
+
 \cvheading{Al Falah 2 Secondary School}{09/2020 - 06/2021}{Baccalauréat (A-Level Equivalent), Physical Sciences}{Taza, Morocco}
 
 \section*{Practical Experience}
@@ -117,9 +119,9 @@ Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.14em]
 \end{itemize}
 
 \section*{IT Projects}
-\cvheadinglink{Enterprise IT Infrastructure}{2026}{Building and Securing an Enterprise Network}{Lab Project}{https://grydsh.dev/homelab.html}
+\cvheadinglink{Medical Practice IT Infrastructure (Dr. Luis)}{2026}{Segmented 4-Zone Practice Network \& MSP Operations}{Lab Project}{https://grydsh.dev/dental-clinic.html}
 \begin{itemize}
-  \item Built a virtual enterprise network with pfSense firewall, Windows Server 2022 (Active Directory and DNS), Netdata monitoring, and Suricata IPS for real-time network scan detection.
+  \item Designed and deployed a virtualized medical practice infrastructure featuring a 4-zone OPNsense perimeter firewall, Windows Server 2019 (Active Directory, DHCP, DNS, hidden SMB shares, GPOs), Windows 10 client, and remote helpdesk operations via Zammad Cloud and RustDesk.
 \end{itemize}
 
 \cvheadinglink{PortGuardian Enterprise}{2026}{USB Threat Detection and Incident Response System}{Security Project}{https://github.com/Gryddd/PortGuardian}
@@ -130,7 +132,7 @@ Cite Al Amane Imm A Apt 1, 35000 Taza, Morocco\\[0.14em]
 \section*{Technical Skills}
 \textbf{Networking:} Cisco IOS, Routing \& Switching, TCP/IP, Subnetting, VLANs, DNS/DHCP, Wireshark, GNS3 \\
 \textbf{System Administration:} Windows Server, Active Directory, Linux (Debian/Ubuntu), Hyper-V, VMware, Oracle Cloud, Python \\
-\textbf{IT Security:} pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Vulnerability Analysis, Firewall Configuration
+\textbf{IT Security:} OPNsense, pfSense, Suricata (IPS/IDS), pfBlockerNG, Nmap, Vulnerability Analysis, Firewall Configuration
 
 \section*{Languages}
 \textbf{German:} Fluent written and spoken (ÖSD Certificate B2, full examination: written \& oral passed, 2026) \\
