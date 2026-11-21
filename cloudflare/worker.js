@@ -1,7 +1,7 @@
 const SUPPORTED_LANGS = new Set(["de", "en", "fr"]);
 const HOMEPAGE_PATHS = new Set(["/", "/index.html"]);
 const BASE_URL = "https://grydsh.dev";
-const IMAGE_VERSION = "20260401";
+const IMAGE_VERSION = "20261121";
 const COUNTRY_LANGUAGE_FALLBACKS = new Map([
     ["DE", "de"],
     ["AT", "de"],
@@ -12,6 +12,22 @@ const LOCALE_MAP = {
     en: "en_US",
     fr: "fr_FR"
 };
+
+const DATACENTER_ASNS = new Set([
+    "AS24940", // Hetzner
+    "AS16509", // Amazon
+    "AS14618", // Amazon
+    "AS14061", // DigitalOcean
+    "AS16276", // OVH
+    "AS63949", // Linode / Akamai
+    "AS15169", // Google Cloud
+    "AS8075",  // Microsoft Azure
+    "AS31898", // Oracle
+    "AS20473", // Choopa / Vultr
+    "AS51167", // Contabo
+    "AS60068"  // Datacamp
+]);
+
 const PAGE_METADATA = {
     "/": {
         pagePath: "/",
@@ -33,24 +49,24 @@ const PAGE_METADATA = {
             fr: "Image d'aperçu du portfolio de Walid Gourideche"
         }
     },
-    "/portguardian.html": {
-        pagePath: "/portguardian.html",
+    "/dental-clinic.html": {
+        pagePath: "/dental-clinic.html",
         title: {
-            de: "PortGuardian Enterprise Fallstudie | Walid Gourideche",
-            en: "PortGuardian Enterprise Case Study | Walid Gourideche",
-            fr: "Étude de cas PortGuardian Enterprise | Walid Gourideche"
+            de: "Praxis Dr. Luis Fallstudie | Walid Gourideche",
+            en: "Practice Dr. Luis Case Study | Walid Gourideche",
+            fr: "Étude de cas Cabinet Dr. Luis | Walid Gourideche"
         },
         description: {
-            de: "Technische Fallstudie zu PortGuardian mit Labortopologie, Endpoint-Erkennungsablauf, Splunk-Telemetriepfad und Validierungsergebnissen.",
-            en: "Technical case study for PortGuardian covering the lab topology, endpoint detection flow, Splunk telemetry path, and validation results.",
-            fr: "Étude de cas technique de PortGuardian présentant la topologie du labo, le flux de détection endpoint, le chemin de télémétrie Splunk et les résultats de validation."
+            de: "Technische Fallstudie zur segmentierten Praxis-IT-Infrastruktur mit OPNsense, Windows Server AD DS, GPO und Zammad-Helpdesk-Betrieb.",
+            en: "Technical case study on segmented medical IT infrastructure with OPNsense, Windows Server AD DS, GPOs, and Zammad helpdesk operations.",
+            fr: "Étude de cas technique sur l'infrastructure IT médicale avec OPNsense, Windows Server AD DS, GPO et support helpdesk Zammad."
         },
-        image: `${BASE_URL}/images/portguardian_infra.png?v=${IMAGE_VERSION}`,
-        imageType: "image/png",
+        image: `${BASE_URL}/images/medical_card.webp?v=${IMAGE_VERSION}`,
+        imageType: "image/webp",
         imageAlt: {
-            de: "Vorschaubild der PortGuardian-Infrastruktur",
-            en: "PortGuardian infrastructure preview image",
-            fr: "Image d'aperçu de l'infrastructure PortGuardian"
+            de: "Netzwerktopologie Praxis Dr. Luis",
+            en: "Practice Dr. Luis Network Topology",
+            fr: "Topologie réseau Cabinet Dr. Luis"
         }
     },
     "/homelab.html": {
@@ -72,6 +88,26 @@ const PAGE_METADATA = {
             en: "Network topology of the homelab infrastructure",
             fr: "Topologie réseau de l'infrastructure homelab"
         }
+    },
+    "/portguardian.html": {
+        pagePath: "/portguardian.html",
+        title: {
+            de: "PortGuardian Enterprise Fallstudie | Walid Gourideche",
+            en: "PortGuardian Enterprise Case Study | Walid Gourideche",
+            fr: "Étude de cas PortGuardian Enterprise | Walid Gourideche"
+        },
+        description: {
+            de: "Technische Fallstudie zu PortGuardian mit Labortopologie, Endpoint-Erkennungsablauf, Splunk-Telemetriepfad und Validierungsergebnissen.",
+            en: "Technical case study for PortGuardian covering the lab topology, endpoint detection flow, Splunk telemetry path, and validation results.",
+            fr: "Étude de cas technique de PortGuardian présentant la topologie du labo, le flux de détection endpoint, le chemin de télémétrie Splunk et les résultats de validation."
+        },
+        image: `${BASE_URL}/images/portguardian_infra.png?v=${IMAGE_VERSION}`,
+        imageType: "image/png",
+        imageAlt: {
+            de: "Vorschaubild der PortGuardian-Infrastruktur",
+            en: "PortGuardian infrastructure preview image",
+            fr: "Image d'aperçu de l'infrastructure PortGuardian"
+        }
     }
 };
 
@@ -88,26 +124,22 @@ function normalizeLanguage(value) {
     return SUPPORTED_LANGS.has(shortCode) ? shortCode : null;
 }
 
-function readCookieLanguage(cookieHeader) {
+function readCookie(cookieHeader, name) {
     if (!cookieHeader) return null;
-
     for (const entry of cookieHeader.split(";")) {
         const [rawName, ...rawValueParts] = entry.trim().split("=");
-        if (rawName !== "preferredLang") continue;
-        return normalizeLanguage(decodeURIComponent(rawValueParts.join("=")));
+        if (rawName !== name) continue;
+        return decodeURIComponent(rawValueParts.join("=")).trim();
     }
-
     return null;
 }
 
 function readAcceptLanguage(headerValue) {
     if (!headerValue) return null;
-
     for (const languageToken of headerValue.split(",")) {
         const candidate = normalizeLanguage(languageToken.split(";")[0].trim());
         if (candidate) return candidate;
     }
-
     return null;
 }
 
@@ -129,60 +161,43 @@ function buildLocalizedPageUrl(pagePath, lang) {
     return localizedUrl.toString();
 }
 
-function buildPreferredLanguageCookie(lang) {
-    return `preferredLang=${encodeURIComponent(lang)}; Max-Age=31536000; Path=/; SameSite=Lax; Secure`;
-}
-
 function appendVary(headers, token) {
     const existing = headers.get("Vary");
     if (!existing) {
         headers.set("Vary", token);
         return;
     }
-
-    const values = existing
-        .split(",")
-        .map(value => value.trim())
-        .filter(Boolean);
-
+    const values = existing.split(",").map(v => v.trim()).filter(Boolean);
     if (!values.includes(token)) {
         values.push(token);
         headers.set("Vary", values.join(", "));
     }
 }
 
-function buildLanguageRedirect(targetUrl, lang) {
+function attachCookies(response, cookies = []) {
+    const headers = new Headers(response.headers);
+    for (const c of cookies) {
+        headers.append("Set-Cookie", c);
+    }
+    appendVary(headers, "Accept-Language");
+    appendVary(headers, "Cookie");
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers
+    });
+}
+
+function buildLanguageRedirect(targetUrl, lang, extraCookies = []) {
     const headers = new Headers();
     headers.set("Location", targetUrl.toString());
-    headers.set("Set-Cookie", buildPreferredLanguageCookie(lang));
+    headers.append("Set-Cookie", `preferredLang=${encodeURIComponent(lang)}; Max-Age=31536000; Path=/; SameSite=Lax; Secure`);
+    for (const c of extraCookies) {
+        headers.append("Set-Cookie", c);
+    }
     headers.set("Cache-Control", "private, no-store");
     headers.set("Vary", "Accept-Language, Cookie");
     return new Response(null, { status: 302, headers });
-}
-
-function attachPreferredLanguageCookie(response, lang) {
-    const headers = new Headers(response.headers);
-    headers.set("Set-Cookie", buildPreferredLanguageCookie(lang));
-    appendVary(headers, "Accept-Language");
-    appendVary(headers, "Cookie");
-
-    return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers
-    });
-}
-
-function withVaryHeaders(response) {
-    const headers = new Headers(response.headers);
-    appendVary(headers, "Accept-Language");
-    appendVary(headers, "Cookie");
-
-    return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers
-    });
 }
 
 class AttributeHandler {
@@ -190,11 +205,8 @@ class AttributeHandler {
         this.attributeName = attributeName;
         this.value = value;
     }
-
     element(element) {
-        if (this.value) {
-            element.setAttribute(this.attributeName, this.value);
-        }
+        if (this.value) element.setAttribute(this.attributeName, this.value);
     }
 }
 
@@ -202,11 +214,8 @@ class TextHandler {
     constructor(value) {
         this.value = value;
     }
-
     element(element) {
-        if (this.value) {
-            element.setInnerContent(this.value);
-        }
+        if (this.value) element.setInnerContent(this.value);
     }
 }
 
@@ -216,7 +225,7 @@ function rewriteSeoResponse(response, metadata, lang) {
     const description = getLocalizedValue(metadata.description, activeLang, "");
     const image = getLocalizedValue(metadata.image, activeLang, "");
     const imageAlt = getLocalizedValue(metadata.imageAlt, activeLang, "");
-    const imageType = metadata.imageType || "";
+    const imageType = metadata.imageType || "image/jpeg";
     const pageUrl = buildLocalizedPageUrl(metadata.pagePath, activeLang);
     const locale = LOCALE_MAP[activeLang] || LOCALE_MAP.en;
 
@@ -243,40 +252,366 @@ function rewriteSeoResponse(response, metadata, lang) {
 }
 
 export default {
-    async fetch(request) {
+    async fetch(request, env, ctx) {
         const url = new URL(request.url);
+        const cookieHeader = request.headers.get("Cookie") || "";
+        const clientIp = request.headers.get("cf-connecting-ip") ||
+                         request.headers.get("x-real-ip") ||
+                         request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+                         "unknown";
+        const cf = request.cf || {};
+        const asnStr = cf.asn ? `AS${cf.asn}` : "";
+        const isDatacenter = DATACENTER_ASNS.has(asnStr);
+
+        // Unified Session Cookie resolution (_gryd_sid)
+        let cookieSid = readCookie(cookieHeader, "_gryd_sid");
+        const needsSidCookie = !cookieSid;
+        const currentSid = cookieSid || `s_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 7)}`;
+        const sidCookieHeader = `_gryd_sid=${encodeURIComponent(currentSid)}; Max-Age=86400; Path=/; SameSite=Lax; Secure`;
+
+        // --- High-Precision Telemetry Receiver (/api/v1/sync, /api/track, /sync) ---
+        if ((url.pathname === "/api/v1/sync" || url.pathname === "/api/track" || url.pathname === "/sync") && request.method === "POST") {
+            try {
+                let body = {};
+                try {
+                    const rawText = await request.text();
+                    body = JSON.parse(rawText);
+                } catch (_) {}
+                const now = new Date();
+                const userAgent = request.headers.get("user-agent") || "";
+                const headerRef = request.headers.get("referer") || "";
+
+                const eventData = {
+                    sid: body.sid || currentSid,
+                    event: body.event || "unknown",
+                    page: body.url || url.pathname,
+                    title: body.title || "",
+                    lang: body.lang || "de",
+                    ref: body.ref || headerRef || "",
+                    ip: clientIp,
+                    country: cf.country || "unknown",
+                    city: cf.city || "unknown",
+                    region: cf.region || "unknown",
+                    postal: cf.postalCode || "",
+                    isp: cf.asOrganization || "unknown",
+                    asn: asnStr,
+                    colo: cf.colo || "",
+                    screen: body.screen || "",
+                    vp: body.vp || "",
+                    dpr: body.dpr || "",
+                    tz: body.tz || "",
+                    cores: body.cores || "",
+                    mem: body.mem || "",
+                    scroll: body.scroll || "",
+                    dwellSec: (typeof body.dwellSec === "number") ? body.dwellSec : null,
+                    // Interaction details
+                    id: body.id || "",
+                    question: body.question || "",
+                    file: body.file || "",
+                    dest: body.dest || "",
+                    label: body.label || "",
+                    section: body.section || "",
+                    readSec: (typeof body.readSec === "number") ? body.readSec : null,
+                    projectId: body.projectId || "",
+                    direction: body.direction || "",
+                    method: body.method || "",
+                    fromLang: body.fromLang || "",
+                    toLang: body.toLang || "",
+                    target: body.target || "",
+                    image: body.image || "",
+                    status: body.status || "",
+                    ua: userAgent,
+                    source: "client_stealth",
+                    is_dc: isDatacenter,
+                    timestamp: now.toISOString()
+                };
+
+                if (env && env.ANALYTICS) {
+                    const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
+                    await env.ANALYTICS.put(key, JSON.stringify(eventData), { expirationTtl: 2592000 });
+                }
+
+                const respHeaders = {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type"
+                };
+                if (needsSidCookie) {
+                    respHeaders["Set-Cookie"] = sidCookieHeader;
+                }
+
+                return new Response(JSON.stringify({ ok: true, ip: clientIp, sid: eventData.sid }), {
+                    headers: respHeaders
+                });
+            } catch (err) {
+                return new Response(JSON.stringify({ ok: false, error: err.message }), {
+                    status: 400,
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+        }
+
+        if ((url.pathname === "/api/v1/sync" || url.pathname === "/api/track" || url.pathname === "/sync") && request.method === "OPTIONS") {
+            return new Response(null, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type"
+                }
+            });
+        }
+
+        // --- Live Telemetry API (/api/stats) ---
+        if (url.pathname === "/api/stats") {
+            if (url.searchParams.get("key") !== "walid2027") {
+                return new Response(JSON.stringify({ error: "Unauthorized" }), {
+                    status: 401,
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+            if (!env || !env.ANALYTICS) {
+                return new Response(JSON.stringify({ error: "KV not bound" }), {
+                    status: 500,
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
+            let allKeys = [];
+            let cursor = undefined;
+            while (allKeys.length < 2000) {
+                const page = await env.ANALYTICS.list({ prefix: "evt:", limit: 1000, cursor });
+                allKeys.push(...page.keys);
+                if (page.list_complete || !page.cursor) break;
+                cursor = page.cursor;
+            }
+
+            allKeys.sort((a, b) => a.name.localeCompare(b.name));
+            const targetKeys = allKeys.slice(-120).reverse();
+            const rawValues = await Promise.all(targetKeys.map(k => env.ANALYTICS.get(k.name)));
+
+            const events = [];
+            const ipMap = {};
+            const sessionMap = {};
+            const pageSummary = {};
+            const citySummary = {};
+            const ispSummary = {};
+            const eventTypeSummary = {};
+
+            for (const val of rawValues) {
+                if (!val) continue;
+                try {
+                    const ev = JSON.parse(val);
+                    events.push(ev);
+
+                    const ip = ev.ip || "unknown";
+                    const sid = ev.sid || `session_${ip}`;
+                    const page = ev.page || "/";
+                    const city = ev.city || "unknown";
+                    const isp = ev.isp || "unknown";
+                    const evt = ev.event || "unknown";
+
+                    ipMap[ip] = (ipMap[ip] || 0) + 1;
+                    if (!sessionMap[sid]) sessionMap[sid] = [];
+                    sessionMap[sid].push(ev);
+
+                    pageSummary[page] = (pageSummary[page] || 0) + 1;
+                    citySummary[city] = (citySummary[city] || 0) + 1;
+                    ispSummary[isp] = (ispSummary[isp] || 0) + 1;
+                    eventTypeSummary[evt] = (eventTypeSummary[evt] || 0) + 1;
+                } catch (_) {}
+            }
+
+            const dwellEvents = events.filter(e => typeof e.dwellSec === "number");
+            const avgDwell = dwellEvents.length > 0 
+                ? Math.round(dwellEvents.reduce((acc, e) => acc + (e.dwellSec || 0), 0) / dwellEvents.length) 
+                : 0;
+
+            const journeys = Object.entries(sessionMap).map(([sid, evs]) => {
+                const first = evs[0];
+                const last = evs[evs.length - 1];
+                return {
+                    session_id: sid,
+                    ip: first.ip,
+                    location: `${first.city}, ${first.region}, ${first.country}`,
+                    organization: `${first.asn} ${first.isp}`,
+                    first_seen: first.timestamp,
+                    last_seen: last.timestamp,
+                    is_datacenter: Boolean(first.is_dc),
+                    event_count: evs.length,
+                    timeline: evs.map(e => ({
+                        timestamp: e.timestamp,
+                        event: e.event,
+                        page: e.page || "/",
+                        detail: e.section ? `#${e.section} (${e.readSec}s)` : (e.title || e.question || e.file || e.dest || e.label || ""),
+                        dwell_sec: e.dwellSec,
+                        scroll_depth: e.scroll
+                    }))
+                };
+            }).sort((a, b) => new Date(b.last_seen).getTime() - new Date(a.last_seen).getTime());
+
+            const responsePayload = {
+                status: "success",
+                timestamp_utc: new Date().toISOString(),
+                kpis: {
+                    total_events: events.length,
+                    unique_ips: Object.keys(ipMap).length,
+                    unique_sessions: Object.keys(sessionMap).length,
+                    human_pageviews: events.filter(e => (e.event === "pageview" || e.event === "edge_pageview") && !e.is_dc).length,
+                    total_pageviews: events.filter(e => e.event === "pageview" || e.event === "edge_pageview").length,
+                    heartbeats: events.filter(e => e.event === "heartbeat").length,
+                    section_reads: events.filter(e => e.event === "section_read").length,
+                    avg_dwell_seconds: avgDwell,
+                    project_interactions: events.filter(e => e.event === "project_switch" || e.event === "project_click").length,
+                    pdf_downloads: events.filter(e => e.event === "pdf_download" || e.event === "edge_pdf_download").length,
+                    faq_expands: events.filter(e => e.event === "faq_open").length,
+                    form_submits: events.filter(e => e.event === "contact_form_submit").length,
+                    contact_clicks: events.filter(e => e.event === "contact_click").length,
+                    outbound_clicks: events.filter(e => e.event === "outbound_click").length,
+                    video_plays: events.filter(e => e.event === "video_open").length
+                },
+                event_type_breakdown: eventTypeSummary,
+                top_pages: pageSummary,
+                top_organizations: ispSummary,
+                top_locations: citySummary,
+                recruiter_journeys: journeys.slice(0, 40),
+                recent_raw_events: events.slice(0, 100)
+            };
+
+            return new Response(JSON.stringify(responsePayload, null, 2), {
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+                    "Pragma": "no-cache",
+                    "Access-Control-Allow-Origin": "*"
+                }
+            });
+        }
+
+        // --- Server-Side Edge Telemetry Fallback (Filtered & Resilient) ---
+        const pathnameLower = url.pathname.toLowerCase();
+        const isStaticAsset = (
+            pathnameLower.endsWith('.js') || pathnameLower.endsWith('.css') ||
+            pathnameLower.endsWith('.png') || pathnameLower.endsWith('.jpg') ||
+            pathnameLower.endsWith('.jpeg') || pathnameLower.endsWith('.svg') ||
+            pathnameLower.endsWith('.webp') || pathnameLower.endsWith('.ico') ||
+            pathnameLower.endsWith('.woff') || pathnameLower.endsWith('.woff2') ||
+            pathnameLower.endsWith('.mp4') || pathnameLower.endsWith('.webm') ||
+            pathnameLower.endsWith('.map') || pathnameLower.endsWith('.json') ||
+            pathnameLower.endsWith('.txt') || pathnameLower.startsWith('/api/')
+        );
+
+        if (!isStaticAsset && env && env.ANALYTICS && ctx && ctx.waitUntil) {
+            const isPdf = pathnameLower.endsWith('.pdf');
+            const isHtml = pathnameLower === '/' || pathnameLower.endsWith('.html') || !pathnameLower.includes('.');
+            
+            if (isPdf || isHtml) {
+                const userAgent = (request.headers.get("user-agent") || "").toLowerCase();
+                const rawUa = request.headers.get("user-agent") || "";
+                const headerRef = request.headers.get("referer") || "";
+                const purpose = (request.headers.get("purpose") || request.headers.get("sec-purpose") || "").toLowerCase();
+
+                // 1. Filter out background Service Worker prefetching noise
+                const isSwPrefetch = headerRef.includes("sw.js") || purpose.includes("prefetch");
+
+                // 2. Identify known crawler bots
+                const isBot = (
+                    userAgent.includes("bot") || userAgent.includes("spider") ||
+                    userAgent.includes("crawl") || userAgent.includes("headless") ||
+                    userAgent.includes("uptime") || userAgent.includes("slurp") ||
+                    userAgent.includes("ahrefs") || userAgent.includes("semrush") ||
+                    userAgent.includes("yandex") || userAgent.includes("bingpreview")
+                );
+
+                if (!isSwPrefetch && !isBot) {
+                    ctx.waitUntil((async () => {
+                        try {
+                            const now = new Date();
+                            const eventType = isPdf ? "edge_pdf_download" : "edge_pageview";
+
+                            const edgeEvent = {
+                                sid: currentSid,
+                                event: eventType,
+                                page: url.pathname + url.search,
+                                title: isPdf ? (url.pathname.split("/").pop() || "PDF Report") : "Direct Edge Visit",
+                                lang: url.searchParams.get("lang") || "de",
+                                ref: headerRef,
+                                ip: clientIp,
+                                country: cf.country || "unknown",
+                                city: cf.city || "unknown",
+                                region: cf.region || "unknown",
+                                postal: cf.postalCode || "",
+                                isp: cf.asOrganization || "unknown",
+                                asn: asnStr,
+                                colo: cf.colo || "",
+                                file: isPdf ? url.pathname : "",
+                                ua: rawUa,
+                                source: "edge_server",
+                                is_dc: isDatacenter,
+                                timestamp: now.toISOString()
+                            };
+
+                            const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
+                            await env.ANALYTICS.put(key, JSON.stringify(edgeEvent), { expirationTtl: 2592000 });
+                        } catch (_) {}
+                    })());
+                }
+            }
+        }
+
         const metadata = getPageMetadata(url.pathname);
-        if (!metadata) return fetch(request);
+        if (!metadata) {
+            const response = await fetch(request);
+            if (response.status === 404) {
+                const accept = request.headers.get("Accept") || "";
+                if (accept.includes("text/html")) {
+                    const fallbackLang = resolveCountryFallback(request.cf?.country) || "en";
+                    const redirectCookies = needsSidCookie ? [sidCookieHeader] : [];
+                    return buildLanguageRedirect(new URL(`${BASE_URL}/?lang=${fallbackLang}`), fallbackLang, redirectCookies);
+                }
+            }
+            if (needsSidCookie) {
+                return attachCookies(response, [sidCookieHeader]);
+            }
+            return response;
+        }
 
         const queryLang = normalizeLanguage(url.searchParams.get("lang"));
-        const cookieLang = readCookieLanguage(request.headers.get("Cookie"));
+        const cookieLang = readCookie(cookieHeader, "preferredLang");
         const headerLang = readAcceptLanguage(request.headers.get("Accept-Language"));
         const fallbackLang = HOMEPAGE_PATHS.has(url.pathname)
             ? resolveCountryFallback(request.cf?.country)
             : "en";
         const activeLang = queryLang || cookieLang || headerLang || fallbackLang || "en";
 
+        const extraCookiesToSet = needsSidCookie ? [sidCookieHeader] : [];
+
         if (queryLang) {
             if (url.pathname === "/index.html") {
                 const canonicalUrl = new URL(request.url);
                 canonicalUrl.pathname = "/";
                 canonicalUrl.searchParams.set("lang", queryLang);
-                return buildLanguageRedirect(canonicalUrl, queryLang);
+                return buildLanguageRedirect(canonicalUrl, queryLang, extraCookiesToSet);
             }
 
             const response = await fetch(request);
-            const withCookie = attachPreferredLanguageCookie(response, queryLang);
-            return rewriteSeoResponse(withVaryHeaders(withCookie), metadata, queryLang);
+            const cookiesToAttach = [
+                `preferredLang=${encodeURIComponent(queryLang)}; Max-Age=31536000; Path=/; SameSite=Lax; Secure`,
+                ...extraCookiesToSet
+            ];
+            const withCookies = attachCookies(response, cookiesToAttach);
+            return rewriteSeoResponse(withCookies, metadata, queryLang);
         }
 
         if (HOMEPAGE_PATHS.has(url.pathname)) {
             const redirectUrl = new URL(request.url);
             redirectUrl.pathname = "/";
             redirectUrl.searchParams.set("lang", activeLang);
-            return buildLanguageRedirect(redirectUrl, activeLang);
+            return buildLanguageRedirect(redirectUrl, activeLang, extraCookiesToSet);
         }
 
         const response = await fetch(request);
-        return rewriteSeoResponse(withVaryHeaders(response), metadata, activeLang);
+        const finalResponse = extraCookiesToSet.length > 0 ? attachCookies(response, extraCookiesToSet) : response;
+        return rewriteSeoResponse(finalResponse, metadata, activeLang);
     }
 };

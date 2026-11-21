@@ -100,51 +100,44 @@
     </div>
 </div>
 <div class="scroll-progress" id="scroll-progress"></div>
-<svg class="case-icon-sprite" aria-hidden="true" focusable="false" width="0" height="0">
-    <defs>
-        <symbol id="case-icon-python" viewBox="0 0 16 16">
-            <path d="M5.79 1.574h3.866c.14 0 .252.11.252.246v5.186a.25.25 0 01-.252.246H6.344c-.975 0-1.766.77-1.766 1.72v1.162a.25.25 0 01-.253.243H1.867a.25.25 0 01-.253-.246V6.177a.25.25 0 01.252-.246H7.98c.418 0 .757-.33.757-.737a.747.747 0 00-.757-.738H5.537V1.82a.25.25 0 01.253-.246zm5.632 2.592V1.82c0-.95-.79-1.72-1.766-1.72H5.79c-.976 0-1.767.77-1.767 1.72v2.636H1.867C.89 4.456.1 5.226.1 6.176v3.955c0 .95.79 1.72 1.766 1.72h2.46c.085 0 .17-.006.252-.017v2.346c0 .95.79 1.72 1.766 1.72h3.866c.976 0 1.767-.77 1.767-1.72v-2.636h2.156c.976 0 1.767-.77 1.767-1.72V5.868c0-.95-.79-1.72-1.767-1.72h-2.458c-.086 0-.17.005-.253.017zm-5.33 5.974V8.994a.25.25 0 01.252-.246h3.312c.976 0 1.766-.77 1.766-1.72V5.866a.25.25 0 01.253-.243h2.458c.14 0 .253.11.253.246v3.954a.25.25 0 01-.252.246H8.02a.747.747 0 00-.757.737c0 .408.339.738.757.738h2.442v2.636a.25.25 0 01-.253.246H6.344a.25.25 0 01-.252-.246v-4.04z" fill="currentColor"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" class="case-icon-sprite" aria-hidden="true">
+        <symbol id="case-icon-python" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.825H3.904S0 5.79 0 11.904c0 6.115 3.407 5.91 3.407 5.91h2.035v-2.868s-.11-3.408 3.351-3.408h5.758s3.24.052 3.24-3.13V3.13S18.257 0 11.914 0zm-3.3 1.69a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1zM12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752H11.98v-.825h8.116s3.904.443 3.904-5.67c0-6.115-3.407-5.91-3.407-5.91h-2.035v2.868s.11 3.408-3.351 3.408H9.45s-3.24-.052-3.24 3.13v5.274S5.743 24 12.086 24zm3.3-1.69a1.05 1.05 0 1 1 0-2.1 1.05 1.05 0 0 1 0 2.1z"/>
         </symbol>
         <symbol id="case-icon-qt" viewBox="0 0 24 24">
-            <path d="M21.693 3.162H3.33L0 6.49v14.348h20.671L24 17.51V3.162zM12.785 18.4l-1.562.728-1.35-2.217c-.196.057-.499.09-.924.09-1.579 0-2.683-.425-3.305-1.276-.622-.85-.932-2.2-.932-4.033 0-1.84.319-3.206.949-4.098.63-.892 1.726-1.341 3.288-1.341 1.562 0 2.658.441 3.28 1.333.63.883.94 2.25.94 4.098 0 1.219-.13 2.2-.384 2.945-.261.752-.679 1.325-1.268 1.718zm4.736-1.587c-.858 0-1.447-.196-1.766-.59-.32-.392-.483-1.136-.483-2.232v-3.534H14.11V9.051h1.162V6.843h1.644V9.05h2.094v1.415h-2.094v3.346c0 .622.05 1.03.14 1.227.09.204.326.303.695.303l1.243-.05.073 1.326c-.67.13-1.186.196-1.546.196zm-8.58-9.08c-.95 0-1.604.311-1.963.94-.352.63-.532 1.629-.532 3.011 0 1.374.172 2.364.515 2.953.344.589 1.006.892 1.98.892.973 0 1.628-.295 1.971-.876.335-.58.507-1.57.507-2.953 0-1.39-.172-2.396-.523-3.026-.352-.63-1.006-.94-1.955-.94Z" fill="currentColor"></path>
+            <path fill="currentColor" d="M22.094 2.457H1.906A1.906 1.906 0 0 0 0 4.363v15.274a1.906 1.906 0 0 0 1.906 1.906h20.188A1.906 1.906 0 0 0 24 19.637V4.363a1.906 1.906 0 0 0-1.906-1.906zM13.29 17.653l-1.424.664-1.23-2.021a4.91 4.91 0 0 1-.843.082c-1.44 0-2.447-.388-3.013-1.164-.567-.775-.85-2.006-.85-3.677 0-1.678.291-2.923.865-3.737.575-.813 1.574-1.223 2.998-1.223 1.424 0 2.423.402 2.99 1.215.575.805.857 2.052.857 3.737 0 1.111-.118 2.006-.35 2.686-.238.686-.619 1.208-1.156 1.567zm4.318-1.447c-.782 0-1.32-.179-1.61-.538-.292-.358-.44-1.036-.44-2.035v-3.222h-1.051V9.324h1.06V7.311h1.499v2.013h1.91v1.29h-1.91v3.051c0 .567.045.94.128 1.119.082.186.297.276.633.276l1.134-.045.066 1.209c-.61.119-1.08.179-1.409.179zm-7.822-8.279c-.866 0-1.462.284-1.79.858-.32.574-.485 1.485-.485 2.745 0 1.253.157 2.156.47 2.693.313.537.917.813 1.805.813.887 0 1.484-.269 1.797-.798.305-.529.462-1.432.462-2.693 0-1.268-.157-2.185-.477-2.759-.32-.575-.917-.858-1.782-.858z"/>
         </symbol>
-        <symbol id="case-icon-windows" viewBox="0 0 20 20">
-            <g fill="currentColor" fill-rule="evenodd">
-                <g transform="translate(-60 -7439)">
-                    <g transform="translate(56 160)">
-                        <path d="M13.1458647,7289.43426 C13.1508772,7291.43316 13.1568922,7294.82929 13.1619048,7297.46884 C16.7759398,7297.95757 20.3899749,7298.4613 23.997995,7299 C23.997995,7295.84873 24.002005,7292.71146 23.997995,7289.71311 C20.3809524,7289.71311 16.7649123,7289.43426 13.1458647,7289.43426 M4,7289.43526 L4,7296.22153 C6.72581454,7296.58933 9.45162907,7296.94113 12.1724311,7297.34291 C12.1774436,7294.71736 12.1704261,7292.0908 12.1704261,7289.46524 C9.44661654,7289.47024 6.72380952,7289.42627 4,7289.43526 M4,7281.84344 L4,7288.61071 C6.72581454,7288.61771 9.45162907,7288.57673 12.1774436,7288.57973 C12.1754386,7285.96017 12.1754386,7283.34361 12.1724311,7280.72405 C9.44461153,7281.06486 6.71679198,7281.42567 4,7281.84344 M24,7288.47179 C20.3879699,7288.48578 16.7759398,7288.54075 13.1619048,7288.55175 C13.1598997,7285.88921 13.1598997,7283.22967 13.1619048,7280.56914 C16.7689223,7280.01844 20.3839599,7279.50072 23.997995,7279 C24,7282.15826 23.997995,7285.31353 24,7288.47179"></path>
-                    </g>
-                </g>
-            </g>
+        <symbol id="case-icon-windows" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.901-1.799"/>
         </symbol>
-        <symbol id="case-icon-splunk" viewBox="0 0 16 16">
-            <g fill="currentColor">
-                <path d="M4.334 8.198c.018-.09.026-.175.026-.254 0-.222-.047-.398-.14-.528a.448.448 0 00-.383-.193.472.472 0 00-.404.205c-.1.138-.149.323-.149.556 0 .228.05.407.147.537.098.13.232.196.402.196a.407.407 0 00.253-.075.566.566 0 00.161-.191.868.868 0 00.087-.253zM13.465 6.55a.15.15 0 00-.025.002v.069h.025c.027 0 .051-.01.051-.035 0-.018-.014-.036-.051-.036z"></path>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.628 6.628a.153.153 0 00-.152-.155.154.154 0 00-.152.154c0 .087.068.156.152.156a.151.151 0 00.152-.155zm-.164.018h-.024v.087h-.034V6.53a.359.359 0 01.06-.004c.032 0 .053.006.065.015.013.009.02.023.02.042 0 .027-.018.043-.041.05v.001c.019.003.031.02.035.05a.17.17 0 00.014.05h-.035a.137.137 0 01-.015-.052c-.005-.025-.018-.035-.045-.035z"></path>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M16 0H0v16h16V0zM2.435 8.67a.584.584 0 00.035-.42.453.453 0 00-.085-.151 1.155 1.155 0 00-.167-.161 5.278 5.278 0 00-.267-.2 2.11 2.11 0 01-.225-.183.2.2 0 01-.066-.146c0-.057.025-.105.074-.143a.297.297 0 01.188-.057c.124 0 .242.038.354.114l.165-.255a1.087 1.087 0 00-.285-.124 1.19 1.19 0 00-.318-.042c-.104 0-.2.014-.288.041a.695.695 0 00-.228.114.536.536 0 00-.149.176.487.487 0 00-.054.23c0 .073.013.139.04.196a.6.6 0 00.105.154c.044.047.092.09.146.13.053.041.108.08.164.118l.18.13a.766.766 0 01.109.098c.026.03.045.06.054.088a.28.28 0 01.015.092.221.221 0 01-.082.18.333.333 0 01-.217.068.508.508 0 01-.215-.049 1.157 1.157 0 01-.236-.154L1 8.798c.11.084.22.144.329.18.11.037.233.055.371.055.115 0 .222-.015.319-.045a.803.803 0 00.25-.124.563.563 0 00.166-.193zM4.882 7.51c.045.124.068.262.068.414 0 .16-.025.307-.077.442-.05.134-.121.251-.212.351a.957.957 0 01-.724.317.97.97 0 01-.182-.016.612.612 0 01-.16-.055.805.805 0 01-.151-.1c-.05-.04-.1-.09-.155-.15V10h-.542V6.952h.543l.003.296a.963.963 0 01.32-.262.922.922 0 01.403-.083.89.89 0 01.867.606zm.866 1.474H5.19V6h.557v2.983zM8.125 6.95v2.035l-.556.001-.002-.272a1.043 1.043 0 01-.33.246.966.966 0 01-.393.075.851.851 0 01-.42-.095.552.552 0 01-.248-.283.435.435 0 01-.031-.094 1.407 1.407 0 01-.03-.257 7.818 7.818 0 01-.003-.2V6.95h.557v1.165c0 .103.005.182.015.236.01.054.028.103.053.146.065.115.18.172.344.172.21 0 .353-.085.432-.253a.568.568 0 00.043-.145c.008-.053.012-.128.012-.226V6.95h.557zm2.4.88v1.154H9.97V7.82a1.41 1.41 0 00-.015-.235.446.446 0 00-.052-.146c-.065-.114-.18-.17-.344-.17a.545.545 0 00-.27.062.386.386 0 00-.167.185.555.555 0 00-.04.148c-.007.053-.01.127-.01.221v1.097h-.562v-2.03h.56l.002.272a1.05 1.05 0 01.33-.246.958.958 0 01.393-.076c.166 0 .306.033.42.1a.573.573 0 01.277.374 1.199 1.199 0 01.032.252c.002.055.003.122.003.2zm1.457.004l.849 1.016-.52.175-.84-1.121v1.08h-.56V6h.56v1.752h.06l.746-.833.422.175-.717.74zM15 7.788v.332l-1.688.809v-.357l1.308-.622-1.308-.613v-.365L15 7.788zm-1.712-1.16c0-.102.084-.183.187-.183.104 0 .188.08.188.182a.183.183 0 01-.188.184.184.184 0 01-.187-.184z"></path>
-            </g>
+        <symbol id="case-icon-splunk" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M3.242 16.516a2.096 2.096 0 0 1-.397-.899c-.067-.34-.02-.684.14-.988.16-.304.423-.538.749-.665l5.228-2.03-5.228-2.03a1.865 1.865 0 0 1-.749-.665 1.84 1.84 0 0 1-.14-.988c.068-.34.208-.654.407-.909.2-.255.466-.445.772-.551.306-.106.638-.12.951-.04.313.08.595.244.819.475l7.008 5.708-7.008 5.708a1.848 1.848 0 0 1-.819.475 1.815 1.815 0 0 1-.951-.04 1.844 1.844 0 0 1-.782-.571zm10.74 3.734a1.843 1.843 0 0 1-.75-2.529l3.52-5.721-3.52-5.721a1.843 1.843 0 1 1 3.14-1.932l4.114 6.687a1.843 1.843 0 0 1 0 1.934l-4.114 6.687a1.838 1.838 0 0 1-1.39.595z"/>
         </symbol>
-        <symbol id="case-icon-vmware" viewBox="0 0 32 32">
-            <path d="M21.565 15.988c0.471 0 0.925 0.070 1.354 0.2l-0.033-0.009v0.434c-0.068 0.69-0.646 1.225-1.348 1.225-0.053 0-0.106-0.003-0.158-0.009l0.006 0.001c-0.606 0-1.13-0.326-1.13-0.891 0-0.584 0.469-0.95 1.308-0.95zM28.919 14.261c0.791 0.022 1.424 0.669 1.424 1.464 0 0.019-0 0.038-0.001 0.056l0-0.003h-2.847c0.003-0.805 0.628-1.463 1.419-1.518l0.005-0zM21.772 13.723c-0.007-0-0.016-0-0.024-0-0.061 0-0.121 0.003-0.181 0.008l0.008-0.001c-0.039-0.002-0.085-0.003-0.132-0.003-0.44 0-0.858 0.095-1.234 0.267l0.019-0.008c-0.106 0.040-0.179 0.14-0.179 0.258 0 0.007 0 0.014 0.001 0.021l-0-0.001c0.007 0.158 0.135 0.283 0.293 0.286h0c0.044-0.003 0.084-0.014 0.121-0.031l-0.002 0.001c0.277-0.129 0.601-0.205 0.943-0.205 0.035 0 0.069 0.001 0.104 0.002l-0.005-0c0.863 0 1.337 0.417 1.337 1.223v0.156c-0.396-0.119-0.851-0.188-1.321-0.188-0.020 0-0.040 0-0.060 0l0.003-0c-1.115 0-1.899 0.5-1.899 1.45l-0.004-0.005c0.055 0.788 0.708 1.405 1.505 1.405 0.060 0 0.119-0.003 0.177-0.010l-0.007 0.001c0.017 0 0.037 0.001 0.056 0.001 0.637 0 1.202-0.302 1.562-0.771l0.003-0.005v0.429c0 0.001-0 0.003-0 0.004 0 0.17 0.138 0.309 0.309 0.309 0.003 0 0.006-0 0.009-0h-0c0.002 0 0.003 0 0.005 0 0.175 0 0.317-0.142 0.317-0.317 0-0.004-0-0.007-0-0.011v0-2.478c0.002-0.030 0.003-0.064 0.003-0.099 0-0.467-0.181-0.893-0.477-1.209l0.001 0.001c-0.333-0.291-0.769-0.471-1.248-0.481l-0.002-0zM28.95 13.721c-1.177 0.039-2.117 1.003-2.117 2.186 0 0.045 0.001 0.089 0.004 0.133l-0-0.006c-0.002 0.035-0.003 0.075-0.003 0.116 0 1.217 0.986 2.204 2.202 2.206h0l-0.010 0.016c0.019 0.001 0.042 0.001 0.064 0.001 0.626 0 1.192-0.258 1.597-0.674l0-0c0.060-0.052 0.098-0.128 0.098-0.213 0-0.155-0.126-0.281-0.281-0.281-0.072 0-0.138 0.027-0.188 0.072l0-0c-0.324 0.321-0.769 0.519-1.261 0.519-0.004 0-0.008 0-0.011-0h0.001c-0.001 0-0.003 0-0.004 0-0.841 0-1.524-0.671-1.545-1.506l-0-0.002h3.193c0.17-0.001 0.307-0.139 0.307-0.309 0 0 0-0 0-0v0c0.004-0.051 0.007-0.11 0.007-0.17 0-1.141-0.915-2.068-2.051-2.087l-0.002-0zM16.244 13.711c-0.155 0.010-0.281 0.122-0.312 0.269l-0 0.002-1.14 3.283-1.127-3.274c-0.036-0.158-0.175-0.275-0.342-0.275-0 0-0 0-0.001 0h0c-0.002-0-0.003-0-0.005-0-0.18 0-0.327 0.143-0.332 0.322v0.001c0.005 0.066 0.021 0.127 0.044 0.184l-0.002-0.004 1.362 3.795 0.025-0.009c0.043 0.17 0.192 0.296 0.372 0.302l0.001 0c0.181-0.001 0.331-0.129 0.366-0.3l0-0.002 1.129-3.228 1.12 3.228c0.035 0.173 0.185 0.302 0.366 0.302h0.023c0.177-0.010 0.323-0.134 0.366-0.3l0.001-0.003 1.371-3.796c0.021-0.053 0.036-0.114 0.041-0.178l0-0.002c-0.006-0.174-0.148-0.313-0.322-0.313-0.003 0-0.006 0-0.009 0h0c-0.001 0-0.001 0-0.002 0-0.157 0-0.289 0.111-0.32 0.259l-0 0.002-1.147 3.287-1.13-3.282c-0.040-0.157-0.179-0.271-0.346-0.271-0.001 0-0.001 0-0.002 0h-0.046zM24.66 13.701c-0.184 0.003-0.332 0.153-0.332 0.337 0 0.002 0 0.004 0 0.005v-0h0.003v3.926c-0.002 0.014-0.003 0.030-0.003 0.046 0 0.186 0.151 0.337 0.337 0.337s0.337-0.151 0.337-0.337c0-0.016-0.001-0.032-0.003-0.048l0 0.002v-1.527c-0.010-0.071-0.015-0.153-0.015-0.236 0-0.931 0.694-1.699 1.593-1.816l0.009-0.001c0.168-0.018 0.298-0.159 0.298-0.331 0-0.004-0-0.008-0-0.012l0 0.001c0-0.004 0-0.009 0-0.014 0-0.178-0.144-0.322-0.322-0.322-0.004 0-0.007 0-0.011 0h0.001c-0.696 0.050-1.281 0.483-1.547 1.088l-0.005 0.012v-0.767c0-0.003 0-0.007 0-0.010 0-0.184-0.149-0.332-0.332-0.332-0.002 0-0.005 0-0.007 0h0zM1.629 13.626c-0.090 0.003-0.174 0.025-0.25 0.062l0.004-0.002c-0.224 0.097-0.378 0.316-0.378 0.572 0 0.101 0.024 0.197 0.067 0.282l-0.002-0.004 1.422 3.093c0.224 0.475 0.475 0.74 0.901 0.74 0.427 0 0.677-0.275 0.9-0.74l1.253-2.732c0.027-0.068 0.092-0.115 0.168-0.115 0.004 0 0.008 0 0.013 0l-0.001-0c0.109 0.002 0.196 0.091 0.196 0.2 0 0 0 0 0 0v0 2.647c-0.002 0.017-0.003 0.037-0.003 0.058 0 0.369 0.299 0.669 0.669 0.669s0.669-0.299 0.669-0.669c0-0.020-0.001-0.040-0.003-0.060l0 0.003v-2.162c-0-0.008-0.001-0.018-0.001-0.028 0-0.366 0.297-0.664 0.664-0.664 0.016 0 0.031 0.001 0.046 0.002l-0.002-0c0.008-0 0.018-0.001 0.027-0.001 0.359 0 0.65 0.291 0.65 0.65 0 0.014-0 0.028-0.001 0.041l0-0.002v2.162c-0.003 0.023-0.005 0.050-0.005 0.077 0 0.366 0.297 0.664 0.664 0.664 0.001 0 0.002 0 0.003 0h-0c0.371-0.001 0.672-0.302 0.672-0.674 0-0.023-0.001-0.046-0.004-0.069l0 0.003v-2.162c-0-0.008-0.001-0.018-0.001-0.028 0-0.366 0.297-0.664 0.664-0.664 0.015 0 0.029 0 0.044 0.001l-0.002-0c0.009-0 0.019-0.001 0.030-0.001 0.359 0 0.65 0.291 0.65 0.65 0 0.014-0 0.028-0.001 0.041l0-0.002v2.162c-0.002 0.022-0.004 0.047-0.004 0.072 0 0.369 0.299 0.668 0.668 0.668s0.668-0.299 0.668-0.668c0-0.025-0.001-0.049-0.004-0.074l0 0.003v-2.461c-0.002-0.85-0.692-1.538-1.542-1.538-0.022 0-0.043 0-0.064 0.001l0.003-0c-0.558 0.010-1.060 0.24-1.424 0.607l-0 0c-0.291-0.372-0.739-0.609-1.243-0.609-0.044 0-0.088 0.002-0.131 0.005l0.006-0c-0.523 0.049-0.988 0.27-1.343 0.605l0.001-0.001c-0.286-0.356-0.715-0.586-1.198-0.604l-0.003-0c-0.018-0.001-0.038-0.001-0.059-0.001-0.638 0-1.181 0.406-1.384 0.973l-0.003 0.010-0.911 2.144-1.166-2.753 0.014-0.005c-0.1-0.224-0.321-0.378-0.578-0.378-0.009 0-0.017 0-0.026 0.001l0.001-0z" fill="currentColor"></path>
+        <symbol id="case-icon-vmware" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M19.742 4.122h-4.398l-3.344 3.791-3.344-3.791H4.258L0 8.949v10.929h4.398V13.36l3.344 3.791 3.344-3.791v6.518h4.398l4.258-4.827V4.122zm-8.828 7.373L7.742 7.897l-3.172 3.598v6.491H2.43V9.897l2.844-3.224h1.74l3.896 4.418-.01.003l.014.001zm8.828 2.091l-2.844 3.225h-1.74l-3.896-4.418.01-.003-.014-.001 3.172 3.598 3.172-3.598V6.402h2.14v7.185z"/>
         </symbol>
         <symbol id="case-icon-usb" viewBox="0 0 24 24">
-            <path d="M17 10V4.6C17 4.03995 17 3.75992 16.891 3.54601C16.7951 3.35785 16.6422 3.20487 16.454 3.10899C16.2401 3 15.9601 3 15.4 3H8.6C8.03995 3 7.75992 3 7.54601 3.10899C7.35785 3.20487 7.20487 3.35785 7.10899 3.54601C7 3.75992 7 4.03995 7 4.6V10M10.5 7V6M13.5 7V6M11.4 21H12.6C14.8402 21 15.9603 21 16.816 20.564C17.5686 20.1805 18.1805 19.5686 18.564 18.816C19 17.9603 19 16.8402 19 14.6V11.6C19 11.0399 19 10.7599 18.891 10.546C18.7951 10.3578 18.6422 10.2049 18.454 10.109C18.2401 10 17.9601 10 17.4 10H6.6C6.03995 10 5.75992 10 5.54601 10.109C5.35785 10.2049 5.20487 10.3578 5.10899 10.546C5 10.7599 5 11.0399 5 11.6V14.6C5 16.8402 5 17.9603 5.43597 18.816C5.81947 19.5686 6.43139 20.1805 7.18404 20.564C8.03968 21 9.15979 21 11.4 21Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 7v6h4V7m-4 0V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3m-6 6a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-3H8v3zm4 3v5m-2 0h4"/>
         </symbol>
-        <symbol id="case-icon-log" viewBox="0 0 548.291 548.291">
-            <path d="M486.201,196.124h-13.166V132.59c0-0.396-0.062-0.795-0.115-1.196c-0.021-2.523-0.825-5-2.552-6.963L364.657,3.677c-0.033-0.031-0.064-0.042-0.085-0.073c-0.63-0.707-1.364-1.292-2.143-1.795c-0.229-0.157-0.461-0.286-0.702-0.421c-0.672-0.366-1.387-0.671-2.121-0.892c-0.2-0.055-0.379-0.136-0.577-0.188C358.23,0.118,357.401,0,356.562,0H96.757C84.894,0,75.256,9.651,75.256,21.502v174.613H62.092c-16.971,0-30.732,13.756-30.732,30.733v159.812c0,16.968,13.761,30.731,30.732,30.731h13.164V526.79c0,11.854,9.638,21.501,21.501,21.501h354.776c11.853,0,21.501-9.647,21.501-21.501V417.392h13.166c16.966,0,30.729-13.764,30.729-30.731V226.854C516.93,209.872,503.167,196.124,486.201,196.124z M96.757,21.502h249.054v110.009c0,5.939,4.817,10.75,10.751,10.75h94.972v53.861H96.757V21.502z M317.816,303.427c0,47.77-28.973,76.746-71.558,76.746c-43.234,0-68.531-32.641-68.531-74.152c0-43.679,27.887-76.319,70.906-76.319C293.389,229.702,317.816,263.213,317.816,303.427z M82.153,377.79V232.085h33.073v118.039h57.944v27.66H82.153V377.79z M451.534,520.962H96.757v-103.57h354.776V520.962z M461.176,371.092c-10.162,3.454-29.402,8.209-48.641,8.209c-26.589,0-45.833-6.698-59.24-19.664c-13.396-12.535-20.75-31.568-20.529-52.967c0.214-48.436,35.448-76.108,83.229-76.108c18.814,0,33.292,3.688,40.431,7.139l-6.92,26.37c-7.999-3.457-17.942-6.268-33.942-6.268c-27.449,0-48.209,15.567-48.209,47.134c0,30.049,18.807,47.771,45.831,47.771c7.564,0,13.623-0.852,16.21-2.152v-30.488h-22.478v-25.723h54.258V371.092L461.176,371.092z" fill="currentColor"></path>
-            <path d="M212.533,305.37c0,28.535,13.407,48.64,35.452,48.64c22.268,0,35.021-21.186,35.021-49.5c0-26.153-12.539-48.655-35.237-48.655C225.504,255.854,212.533,277.047,212.533,305.37z" fill="currentColor"></path>
+        <symbol id="case-icon-log" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="14 2 14 8 20 8"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="16" y1="13" x2="8" y2="13"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="16" y1="17" x2="8" y2="17"/>
+            <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="10 9 9 9 8 9"/>
         </symbol>
         <symbol id="case-icon-hash" viewBox="0 0 24 24">
-            <path d="M13 21L17 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M7 21L11 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M20 9L4 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M4 15L20 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="4" y1="9" x2="20" y2="9"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="4" y1="15" x2="20" y2="15"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="10" y1="3" x2="8" y2="21"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="16" y1="3" x2="14" y2="21"/>
         </symbol>
         <symbol id="case-icon-firewall" viewBox="0 0 24 24">
-            <path d="M9.5 20H6.2C5.0799 20 4.51984 20 4.09202 19.782C3.71569 19.5903 3.40973 19.2843 3.21799 18.908C3 18.4802 3 17.9201 3 16.8V7.2C3 6.0799 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H15.8C16.9201 4 17.4802 4 17.908 4.21799C18.2843 4.40973 18.5903 4.71569 18.782 5.09202C19 5.51984 19 6.0799 19 7.2V8H3M3 12H11V8M3 16H9M7 4V8M7 12V16M15 4V8M19.8284 19.8284C18.2663 21.3905 15.7337 21.3905 14.1716 19.8284C13.3905 19.0474 13 18.0237 13 17C13 15.9763 13.3905 14.9526 14.1716 14.1716C14.1716 14.1716 14.5 15 15.5 15.5C15.5 14.5 15.75 13 16.9929 12C18 13 19.0456 13.3887 19.8284 14.1716C20.6095 14.9526 21 15.9763 21 17C21 18.0237 20.6095 19.0474 19.8284 19.8284Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="12" y1="8" x2="12" y2="12"/>
+            <line fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="12" y1="16" x2="12.01" y2="16"/>
         </symbol>
-    </defs>
-</svg>
+    </svg>
 
 <nav class="main-nav">
 <div class="nav-content">
@@ -680,7 +673,44 @@
 
 <div class="section-divider"></div>
 
-<section class="container" id="proof">
+
+        <div class="section-divider"></div>
+
+        <section class="container" id="endpoint">
+            <h2 class="lang" data-de="Endpoint-Sicherheitsagent &amp; Reaktion" data-en="Endpoint Security Agent &amp; Containment" data-fr="Agent de sécurité endpoint &amp; confinement">Endpoint-Sicherheitsagent &amp; Reaktion</h2>
+            <p class="lang" style="margin-bottom: 2rem; color: var(--case-text-muted); font-size: 1.05rem; line-height: 1.7;"
+               data-de="PortGuardian Enterprise läuft als autonomer Sicherheitsdienst auf Windows 10 Endpoints. Die Anwendung überwacht USB-Hardware-Ereignisse über WMI in Echtzeit und führt bei Erkennung bösartiger Payloads automatisierte Gegenmaßnahmen durch."
+               data-en="PortGuardian Enterprise operates as an autonomous security service on Windows 10 endpoints. It continuously monitors USB hardware events via native WMI and initiates automated containment playbooks upon detecting malicious payloads."
+               data-fr="PortGuardian Enterprise fonctionne comme un service de sécurité autonome sur les postes Windows 10. Il surveille en continu les événements USB via WMI et déclenche des playbooks de confinement automatisés dès la détection de menaces.">PortGuardian Enterprise läuft als autonomer Sicherheitsdienst auf Windows 10 Endpoints. Die Anwendung überwacht USB-Hardware-Ereignisse über WMI in Echtzeit und führt bei Erkennung bösartiger Payloads automatisierte Gegenmaßnahmen durch.</p>
+
+            <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+                <img src="/images/portguardian_main_v2.png" alt="PortGuardian Enterprise active monitoring dashboard" loading="lazy">
+                <figcaption class="lang"
+                    data-de="Abbildung 1: PortGuardian Enterprise im aktiven Überwachungsmodus unter Windows 10 mit 1.034.693 geladenen Threat-Intelligence-Signaturen (SHA-256) und initialisiertem WMI-Hardware-Watcher."
+                    data-en="Figure 1: PortGuardian Enterprise in active monitoring mode on Windows 10, running with 1,034,693 threat intelligence SHA-256 signatures loaded and real-time WMI event listeners active."
+                    data-fr="Figure 1 : PortGuardian Enterprise en mode de surveillance active sous Windows 10 avec 1 034 693 signatures SHA-256 chargées et écoute WMI temps réel initialisée.">Abbildung 1: PortGuardian Enterprise im aktiven Überwachungsmodus unter Windows 10 mit 1.034.693 geladenen Threat-Intelligence-Signaturen (SHA-256) und initialisiertem WMI-Hardware-Watcher.</figcaption>
+            </figure>
+
+            <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+                <img src="/images/portguardian_alert.png" alt="PortGuardian automated containment and incident response" loading="lazy">
+                <figcaption class="lang"
+                    data-de="Abbildung 2: Automatisierte Vorfallsreaktion bei Erkennung kritischer Malware (trojan_gen.exe, Bedrohungsscore 100). Der Agent wirft den USB-Datenträger sofort aus, aktiviert die Host-Netzwerkquarantäne, alarmiert Splunk SIEM und sichert das System unter Vorfalls-ID 73F58F12."
+                    data-en="Figure 2: Automated incident response sequence upon detecting critical malware (trojan_gen.exe, threat score 100). The agent immediately dismounts and ejects the USB volume, enforces host-level network quarantine, alerts Splunk SIEM, and locks down the interface under incident ID 73F58F12."
+                    data-fr="Figure 2 : Réponse automatisée à incident lors de la détection d'un malware critique (trojan_gen.exe, score 100). L'agent éjecte immédiatement le support USB, active l'isolation réseau de l'hôte, alerte le SIEM Splunk et trace l'incident sous l'ID 73F58F12.">Abbildung 2: Automatisierte Vorfallsreaktion bei Erkennung kritischer Malware (trojan_gen.exe, Bedrohungsscore 100). Der Agent wirft den USB-Datenträger sofort aus, aktiviert die Host-Netzwerkquarantäne, alarmiert Splunk SIEM und sichert das System unter Vorfalls-ID 73F58F12.</figcaption>
+            </figure>
+
+            <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+                <img src="/images/portguardian_auth.png" alt="SOC Admin authentication for quarantine release" loading="lazy">
+                <figcaption class="lang"
+                    data-de="Abbildung 3: Passwortgeschützter SOC-Admin-Authentifizierungsdialog zur kontrollierten Aufhebung der Netzwerkisolation, um unbefugtes Entsperren der Quarantäne zu verhindern."
+                    data-en="Figure 3: Secure SOC Admin authentication modal required to lift network isolation and verify remediation, preventing unauthorized local users from bypassing containment controls."
+                    data-fr="Figure 3 : Boîte de dialogue d'authentification SOC Admin sécurisée requise pour lever l'isolation réseau, empêchant tout contournement non autorisé par l'utilisateur local.">Abbildung 3: Passwortgeschützter SOC-Admin-Authentifizierungsdialog zur kontrollierten Aufhebung der Netzwerkisolation, um unbefugtes Entsperren der Quarantäne zu verhindern.</figcaption>
+            </figure>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <section class="container" id="proof">
     <h2 class="lang" data-de="Nachweis und Messwerte" data-en="Proof and Validation" data-fr="Preuves et validation">Proof and Validation</h2>
     <div class="validation-layout" data-aos="fade-up" data-aos-duration="600">
         <div class="validation-list">
@@ -701,9 +731,28 @@
                 <p class="validation-copy lang" data-de="Ab diesem Score beginnt die automatische Isolation." data-en="At this score, automatic isolation begins." data-fr="À ce score, l'isolation automatique commence.">At this score, automatic isolation begins.</p>
             </div>
         </div>
-        <figure class="proof-figure">
-                    <img src="/images/portguardian_splunk.png" alt="PortGuardian Splunk dashboard" loading="lazy">
-            <figcaption class="lang" data-de="Server-seitiger Nachweis: Die Splunk Ansicht zeigt die eingehenden WARN- und CRITICAL-Ereignisse der Clients auf 192.168.1.50." data-en="Server-side proof: the Splunk view shows incoming WARN and CRITICAL events from the clients on 192.168.1.50." data-fr="Preuve côté serveur : la vue Splunk montre les événements WARN et CRITICAL entrants des clients sur 192.168.1.50.">Server-side proof: the Splunk view shows incoming WARN and CRITICAL events from the clients on 192.168.1.50.</figcaption>
+                <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+            <img src="/images/portguardian_netsh.png" alt="Windows Firewall isolation proof" loading="lazy">
+            <figcaption class="lang"
+                data-de="Abbildung 4: Befehlszeilennachweis via netsh advfirewall zur Bestätigung der aktiven PG_Isolation-Blockregel über alle Windows-Netzwerkprofile (Domäne, Privat, Öffentlich)."
+                data-en="Figure 4: Low-level verification via netsh advfirewall confirming the active PG_Isolation outbound block rule enforced across Domain, Private, and Public network profiles."
+                data-fr="Figure 4 : Preuve en ligne de commande via netsh advfirewall confirmant la présence de la règle de blocage sortant PG_Isolation sur tous les profils réseau.">Abbildung 4: Befehlszeilennachweis via netsh advfirewall zur Bestätigung der aktiven PG_Isolation-Blockregel über alle Windows-Netzwerkprofile (Domäne, Privat, Öffentlich).</figcaption>
+        </figure>
+
+        <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+            <img src="/images/portguardian_splunk.png" alt="PortGuardian Splunk dashboard" loading="lazy">
+            <figcaption class="lang"
+                data-de="Abbildung 5: Zentrales Splunk-Enterprise-Dashboard auf Windows Server 2019 (192.168.1.50) mit Indexierung aller vier korrelierten JSON-Syslog-Ereignisse für Vorfall 73F58F12."
+                data-en="Figure 5: Centralized Splunk Enterprise dashboard on Windows Server 2019 (192.168.1.50) indexing all four correlated JSON Syslog events for incident 73F58F12."
+                data-fr="Figure 5 : Tableau de bord Splunk Enterprise sur Windows Server 2019 (192.168.1.50) indexant les quatre événements JSON Syslog corrélés pour l'incident 73F58F12.">Abbildung 5: Zentrales Splunk-Enterprise-Dashboard auf Windows Server 2019 (192.168.1.50) mit Indexierung aller vier korrelierten JSON-Syslog-Ereignisse für Vorfall 73F58F12.</figcaption>
+        </figure>
+
+        <figure class="proof-figure" data-aos="fade-up" data-aos-duration="600">
+            <img src="/images/portguardian_infra.png" alt="Enterprise lab dual-machine infrastructure" loading="lazy">
+            <figcaption class="lang"
+                data-de="Abbildung 6: Vollständige Laborinfrastruktur mit dem Windows 10 x64 Client-Endpoint mit PortGuardian (links) und dem Windows Server 2019 SIEM-Kollektor (rechts)."
+                data-en="Figure 6: Complete lab infrastructure featuring the Windows 10 x64 client endpoint running PortGuardian (left) interconnected with the Windows Server 2019 SIEM collector (right)."
+                data-fr="Figure 6 : Infrastructure de test complète montrant le poste client Windows 10 x64 exécutant PortGuardian (gauche) et le serveur Windows Server 2019 hébergeant Splunk (droite).">Abbildung 6: Vollständige Laborinfrastruktur mit dem Windows 10 x64 Client-Endpoint mit PortGuardian (links) und dem Windows Server 2019 SIEM-Kollektor (rechts).</figcaption>
         </figure>
         <div class="project-case-actions" style="margin-top: 3.5rem; justify-content: center;">
             <div class="hero-cta-dropdown" style="margin-top: 0;">
@@ -819,7 +868,7 @@
 
 <script src="/vendor/aos/aos.js"></script>
 <script defer src="/portguardian-page.js?v=20261021"></script>
-<script defer src="/script.js?v=20261118"></script>
+<script defer src="/script.js?v=20261121"></script>
 <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
 </button>

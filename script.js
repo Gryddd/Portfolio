@@ -795,7 +795,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function switchLanguage(newLang, options = {}) {
         const { syncUrl = true, refreshLayout = true, navigate = false, replaceHistory = false } = options;
         const normalizedLang = normalizeLanguage(newLang) || config.defaultLang;
+        const oldLang = currentLang;
         currentLang = normalizedLang;
+        if (oldLang && oldLang !== normalizedLang && typeof trackPortfolioEvent === "function") {
+            trackPortfolioEvent("language_switch", { fromLang: oldLang, toLang: normalizedLang });
+        }
         localStorage.setItem("preferredLang", currentLang);
         persistPreferredLanguage(currentLang);
 
@@ -1431,14 +1435,30 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
-    // --- High-Precision Recruiter Telemetry ---
-    let sessionId = sessionStorage.getItem("_gryd_sid");
-    if (!sessionId) {
-        sessionId = "s_" + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
-        try { sessionStorage.setItem("_gryd_sid", sessionId); } catch (_) {}
+    // --- High-Precision Recruiter Telemetry Engine ---
+    function resolveTelemetrySession() {
+        try {
+            const cookieMatch = document.cookie.match(/(?:^|;\s*)_gryd_sid=([^;]+)/);
+            if (cookieMatch && cookieMatch[1]) {
+                const sid = decodeURIComponent(cookieMatch[1]);
+                try { sessionStorage.setItem("_gryd_sid", sid); } catch (_) {}
+                return sid;
+            }
+            let sid = sessionStorage.getItem("_gryd_sid");
+            if (sid) {
+                document.cookie = `_gryd_sid=${encodeURIComponent(sid)}; Path=/; Max-Age=86400; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
+                return sid;
+            }
+            sid = "s_" + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+            try { sessionStorage.setItem("_gryd_sid", sid); } catch (_) {}
+            document.cookie = `_gryd_sid=${encodeURIComponent(sid)}; Path=/; Max-Age=86400; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
+            return sid;
+        } catch (_) {
+            return "s_" + Date.now().toString(36);
+        }
     }
+    const sessionId = resolveTelemetrySession();
 
-    const pageStartTime = performance.now();
     let maxScrollDepth = 0;
     window.addEventListener("scroll", () => {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -1464,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    function trackPortfolioEvent(eventName, eventData = {}) {
+    function trackPortfolioEvent(eventName, eventData = {}, isUnload = false) {
         try {
             const payload = JSON.stringify({
                 event: eventName,
@@ -1473,6 +1493,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 ...eventData
             });
             const syncEndpoint = "/api/v1/sync";
+
+            // If page is unloading or being backgrounded, prioritize navigator.sendBeacon
+            if (isUnload && typeof navigator.sendBeacon === "function") {
+                const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
+                if (navigator.sendBeacon(syncEndpoint, blob)) return;
+            }
+
             if (typeof fetch === "function") {
                 fetch(syncEndpoint, {
                     method: "POST",
@@ -1480,7 +1507,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     keepalive: true,
                     headers: { "Content-Type": "text/plain;charset=UTF-8" }
                 }).catch(() => {});
-            } else if (navigator.sendBeacon) {
+            } else if (typeof navigator.sendBeacon === "function") {
                 const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
                 navigator.sendBeacon(syncEndpoint, blob);
             }
@@ -1490,23 +1517,141 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Initial Pageview
     trackPortfolioEvent("pageview", { title: document.title });
 
-    // 2. Dwell Time & Exit Beacon
-    let exitLogged = false;
-    function logPageExit() {
-        if (exitLogged) return;
-        exitLogged = true;
-        const dwellSec = Math.max(1, Math.round((performance.now() - pageStartTime) / 1000));
-        trackPortfolioEvent("dwell_time", {
-            dwellSec: dwellSec,
-            scroll: `${maxScrollDepth}%`
-        });
-    }
-    document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "hidden") logPageExit();
-    });
-    window.addEventListener("pagehide", logPageExit);
+    // 2. Active Dwell-Time & Resilient Heartbeat Engine
+    let activeDwellMs = 0;
+    let lastVisibilityCheck = performance.now();
+    let isTabVisible = document.visibilityState === "visible";
+    let lastLoggedDwellSec = 0;
 
-    // 3. FAQ Interactions
+    function recordActiveTime() {
+        if (isTabVisible) {
+            const now = performance.now();
+            activeDwellMs += Math.max(0, now - lastVisibilityCheck);
+            lastVisibilityCheck = now;
+        }
+    }
+
+    function getActiveDwellSec() {
+        recordActiveTime();
+        return Math.max(1, Math.round(activeDwellMs / 1000));
+    }
+
+    function sendExitBeacon() {
+        const currentDwell = getActiveDwellSec();
+        if (currentDwell > lastLoggedDwellSec) {
+            lastLoggedDwellSec = currentDwell;
+            trackPortfolioEvent("dwell_time", {
+                dwellSec: currentDwell,
+                scroll: `${maxScrollDepth}%`
+            }, true);
+        }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            isTabVisible = true;
+            lastVisibilityCheck = performance.now();
+        } else {
+            recordActiveTime();
+            isTabVisible = false;
+            sendExitBeacon();
+        }
+    });
+
+    window.addEventListener("pagehide", () => {
+        recordActiveTime();
+        sendExitBeacon();
+    });
+
+    // Tiered Heartbeats: 10s, 30s, 60s, 120s, 300s, 600s
+    const heartbeatTiers = [10, 30, 60, 120, 300, 600];
+    let nextTierIdx = 0;
+    function runHeartbeatLoop() {
+        if (nextTierIdx >= heartbeatTiers.length) return;
+        const targetSec = heartbeatTiers[nextTierIdx];
+        const delayMs = Math.max(1000, (targetSec * 1000) - activeDwellMs);
+        setTimeout(() => {
+            if (isTabVisible) {
+                recordActiveTime();
+                const currentSec = Math.round(activeDwellMs / 1000);
+                if (currentSec >= targetSec) {
+                    lastLoggedDwellSec = currentSec;
+                    trackPortfolioEvent("heartbeat", {
+                        dwellSec: currentSec,
+                        scroll: `${maxScrollDepth}%`
+                    });
+                    nextTierIdx++;
+                }
+            }
+            runHeartbeatLoop();
+        }, Math.min(delayMs, 10000));
+    }
+    runHeartbeatLoop();
+
+    // 3. Section Reading Focus (IntersectionObserver)
+    if ('IntersectionObserver' in window) {
+        const trackedSectionIds = [
+            'summary', 'topology', 'firewall', 'domain', 'workstation', 'support',
+            'projekte', 'projects', 'experience', 'about', 'skills', 'contact', 'faq'
+        ];
+        const sectionEls = document.querySelectorAll(trackedSectionIds.map(id => `#${id}`).join(', '));
+        const activeSections = new Map();
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            const now = performance.now();
+            entries.forEach(entry => {
+                const id = entry.target.id;
+                if (!id) return;
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+                    if (!activeSections.has(id)) {
+                        activeSections.set(id, { start: now, sent: false });
+                    }
+                } else if (activeSections.has(id)) {
+                    const data = activeSections.get(id);
+                    const readSec = Math.round((now - data.start) / 1000);
+                    if (readSec >= 4 && !data.sent) {
+                        data.sent = true;
+                        trackPortfolioEvent("section_read", { section: id, readSec: readSec });
+                    }
+                    activeSections.delete(id);
+                }
+            });
+        }, { threshold: [0.3] });
+
+        sectionEls.forEach(el => sectionObserver.observe(el));
+    }
+
+    // 4. Report & Download Dropdowns
+    document.querySelectorAll('.cta-dropdown-toggle, .project-report-dropdown button').forEach(button => {
+        button.addEventListener("click", () => {
+            const isExpanding = !button.classList.contains("active") && button.getAttribute("aria-expanded") !== "true";
+            if (isExpanding) {
+                trackPortfolioEvent("report_menu_open", { page: window.location.pathname });
+            }
+        });
+    });
+
+    // 5. Case Study Direct Navigation Links
+    document.querySelectorAll('a[href*="dental-clinic"], a[href*="homelab"], a[href*="portguardian"]').forEach(link => {
+        link.addEventListener("click", () => {
+            const href = link.getAttribute("href") || "";
+            trackPortfolioEvent("case_study_click", {
+                target: href,
+                label: link.textContent?.trim() || href
+            });
+        });
+    });
+
+    // 6. Diagram & Architecture Zoom Clicks
+    document.querySelectorAll('[data-enlargeable], .image-modal-trigger, .case-diagram, #homelab-topology-img, img[src*="diagram"], img[src*="portguardian_infra"], img[src*="medical_topology"]').forEach(img => {
+        img.addEventListener("click", () => {
+            trackPortfolioEvent("diagram_zoom", {
+                image: img.getAttribute("src") || img.getAttribute("data-src") || "diagram"
+            });
+        });
+    });
+
+    // 7. FAQ Interactions
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
@@ -1521,7 +1666,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 4. PDF Downloads
+    // 8. PDF Downloads
     document.querySelectorAll('a[download], a[href*=".pdf"]').forEach(link => {
         link.addEventListener("click", () => {
             const fileName = link.getAttribute("href") || "";
@@ -1530,7 +1675,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 5. Contact & Phone
+    // 9. Contact & Phone
     document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
         link.addEventListener("click", () => {
             trackPortfolioEvent("contact_click", { label: "Email: " + link.getAttribute("href").replace("mailto:", "") });
@@ -1542,31 +1687,46 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 6. External Links (GitHub, LinkedIn)
+    // 10. External Links (GitHub, LinkedIn)
     document.querySelectorAll('a[href^="https://github.com"], a[href^="https://www.linkedin.com"]').forEach(link => {
         link.addEventListener("click", () => {
             trackPortfolioEvent("outbound_click", { dest: link.href, label: link.textContent?.trim() || link.href });
         });
     });
 
-    // 7. Video Modal
+    // 11. Video Modal
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
         if (currentLang !== "de") return;
         trackPortfolioEvent("video_open", { label: "Vorstellungsvideo (German Intro Video)" });
         openModal(videoModal, this);
         createOrPlayPlayer();
     });
+
     function navigateFeaturedProject(step) {
         const currentIndex = projectOrder.indexOf(activeProjectId);
         if (currentIndex === -1) return;
         const nextIndex = (currentIndex + step + projectOrder.length) % projectOrder.length;
-        updateFeaturedProject(projectOrder[nextIndex], step > 0 ? 'next' : 'prev');
+        const nextId = projectOrder[nextIndex];
+        const proj = projectsData[nextId];
+        const projTitle = proj?.title?.[currentLang] || proj?.title?.en || `Project ${nextId}`;
+        trackPortfolioEvent("project_switch", {
+            projectId: nextId,
+            title: projTitle,
+            direction: step > 0 ? 'next' : 'prev'
+        });
+        updateFeaturedProject(nextId, step > 0 ? 'next' : 'prev');
     }
 
     function navigateToActiveProject(event) {
         const project = projectsData[activeProjectId];
         const linkBtn = project?.buttons?.find(b => b.type === 'link');
         if (!linkBtn) return;
+        const projTitle = project?.title?.[currentLang] || project?.title?.en || `Project ${activeProjectId}`;
+        trackPortfolioEvent("project_click", {
+            projectId: activeProjectId,
+            title: projTitle,
+            targetUrl: linkBtn.url
+        });
         try {
             const targetUrl = getLocalizedPageUrl(linkBtn.url, currentLang);
             if (event && (event.metaKey || event.ctrlKey)) {
@@ -1599,6 +1759,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 const currentIndex = projectOrder.indexOf(activeProjectId);
                 const nextIndex = projectOrder.indexOf(projectId);
                 const direction = nextIndex > currentIndex ? 'next' : 'prev';
+                const proj = projectsData[projectId];
+                const projTitle = proj?.title?.[currentLang] || proj?.title?.en || `Project ${projectId}`;
+                trackPortfolioEvent("project_switch", {
+                    projectId: projectId,
+                    title: projTitle,
+                    method: "thumbnail"
+                });
                 updateFeaturedProject(projectId, direction);
             });
         });
@@ -1785,6 +1952,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { Accept: "application/json" }
             }).then(response => {
                 if (response.ok) {
+                    if (typeof trackPortfolioEvent === "function") {
+                        trackPortfolioEvent("contact_form_submit", { status: "success" });
+                    }
                     showToast(formMessages.success[currentLang] || formMessages.success.en, 'success');
                     newForm.reset();
                     if (formStatus) formStatus.textContent = formMessages.success[currentLang] || formMessages.success.en;
@@ -1792,6 +1962,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     throw new Error('Form submission failed');
                 }
             }).catch(() => {
+                if (typeof trackPortfolioEvent === "function") {
+                    trackPortfolioEvent("contact_form_submit", { status: "error" });
+                }
                 showToast(formMessages.error[currentLang] || formMessages.error.en, 'error');
                 if (formStatus) formStatus.textContent = formMessages.error[currentLang] || formMessages.error.en;
             }).finally(() => {
