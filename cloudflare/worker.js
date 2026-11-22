@@ -32,12 +32,12 @@ const PAGE_METADATA = {
     "/": {
         pagePath: "/",
         title: {
-            de: "Walid Gourideche | IT-Fachkraft fuer Systeme und Netzwerke",
+            de: "Walid Gourideche | IT-Fachkraft für Systeme und Netzwerke",
             en: "Walid Gourideche | IT Specialist for Systems and Networks",
             fr: "Walid Gourideche | Spécialiste IT en systèmes et réseaux"
         },
         description: {
-            de: "Portfolio von Walid Gourideche, einer mehrsprachigen IT-Fachkraft fuer Systeme und Netzwerke mit Fokus auf Netzwerke, Systemadministration und Cybersicherheit.",
+            de: "Portfolio von Walid Gourideche, einer mehrsprachigen IT-Fachkraft für Systeme und Netzwerke mit Fokus auf Netzwerke, Systemadministration und Cybersicherheit.",
             en: "Portfolio of Walid Gourideche, a multilingual IT Specialist for Systems and Networks focused on networking, system administration, and cybersecurity.",
             fr: "Portfolio de Walid Gourideche, spécialiste IT multilingue en systèmes et réseaux, axé sur les réseaux, l'administration système et la cybersécurité."
         },
@@ -113,7 +113,11 @@ const PAGE_METADATA = {
 
 function getPageMetadata(pathname) {
     if (pathname === "/index.html") return PAGE_METADATA["/"];
-    return PAGE_METADATA[pathname] || null;
+    if (PAGE_METADATA[pathname]) return PAGE_METADATA[pathname];
+    if (pathname && !pathname.endsWith(".html") && PAGE_METADATA[`${pathname}.html`]) {
+        return PAGE_METADATA[`${pathname}.html`];
+    }
+    return null;
 }
 
 function normalizeLanguage(value) {
@@ -272,6 +276,13 @@ export default {
         // --- High-Precision Telemetry Receiver (/api/v1/sync, /api/track, /sync) ---
         if ((url.pathname === "/api/v1/sync" || url.pathname === "/api/track" || url.pathname === "/sync") && request.method === "POST") {
             try {
+                // Drop datacenter automated scrapers completely to protect KV write quota
+                if (isDatacenter) {
+                    return new Response(JSON.stringify({ ok: true, skipped: "datacenter" }), {
+                        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+                    });
+                }
+
                 let body = {};
                 try {
                     const rawText = await request.text();
@@ -304,31 +315,30 @@ export default {
                     mem: body.mem || "",
                     scroll: body.scroll || "",
                     dwellSec: (typeof body.dwellSec === "number") ? body.dwellSec : null,
-                    // Interaction details
+                    // Batched Interaction details
+                    sections: body.sections || null,
+                    projects: body.projects || null,
+                    faqs: body.faqs || null,
+                    diagrams: body.diagrams || null,
+                    outbound: body.outbound || null,
                     id: body.id || "",
-                    question: body.question || "",
                     file: body.file || "",
                     dest: body.dest || "",
                     label: body.label || "",
-                    section: body.section || "",
-                    readSec: (typeof body.readSec === "number") ? body.readSec : null,
-                    projectId: body.projectId || "",
-                    direction: body.direction || "",
-                    method: body.method || "",
                     fromLang: body.fromLang || "",
                     toLang: body.toLang || "",
                     target: body.target || "",
-                    image: body.image || "",
                     status: body.status || "",
                     ua: userAgent,
                     source: "client_stealth",
-                    is_dc: isDatacenter,
                     timestamp: now.toISOString()
                 };
 
                 if (env && env.ANALYTICS) {
-                    const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
-                    await env.ANALYTICS.put(key, JSON.stringify(eventData), { expirationTtl: 2592000 });
+                    try {
+                        const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
+                        await env.ANALYTICS.put(key, JSON.stringify(eventData), { expirationTtl: 2592000 });
+                    } catch (_) {}
                 }
 
                 const respHeaders = {
@@ -377,17 +387,20 @@ export default {
                 });
             }
 
-            let allKeys = [];
-            let cursor = undefined;
-            while (allKeys.length < 2000) {
-                const page = await env.ANALYTICS.list({ prefix: "evt:", limit: 1000, cursor });
-                allKeys.push(...page.keys);
-                if (page.list_complete || !page.cursor) break;
-                cursor = page.cursor;
+            // Target current & recent epoch prefixes directly (preserves daily LIST quota: 1000/day)
+            const prefixToday = `evt:${Date.now().toString().slice(0, 5)}`;
+            const prefixYesterday = `evt:${(Date.now() - 86400000).toString().slice(0, 5)}`;
+            
+            const pageToday = await env.ANALYTICS.list({ prefix: prefixToday, limit: 100 });
+            let allKeys = pageToday.keys || [];
+            
+            if (allKeys.length < 30 && prefixToday !== prefixYesterday) {
+                const pageYesterday = await env.ANALYTICS.list({ prefix: prefixYesterday, limit: 100 });
+                allKeys = allKeys.concat(pageYesterday.keys || []);
             }
 
             allKeys.sort((a, b) => a.name.localeCompare(b.name));
-            const targetKeys = allKeys.slice(-120).reverse();
+            const targetKeys = allKeys.slice(-100).reverse();
             const rawValues = await Promise.all(targetKeys.map(k => env.ANALYTICS.get(k.name)));
 
             const events = [];
@@ -406,7 +419,7 @@ export default {
 
                     const ip = ev.ip || "unknown";
                     const sid = ev.sid || `session_${ip}`;
-                    const page = ev.page || "/";
+                    const pageName = ev.page || "/";
                     const city = ev.city || "unknown";
                     const isp = ev.isp || "unknown";
                     const evt = ev.event || "unknown";
@@ -415,7 +428,7 @@ export default {
                     if (!sessionMap[sid]) sessionMap[sid] = [];
                     sessionMap[sid].push(ev);
 
-                    pageSummary[page] = (pageSummary[page] || 0) + 1;
+                    pageSummary[pageName] = (pageSummary[pageName] || 0) + 1;
                     citySummary[city] = (citySummary[city] || 0) + 1;
                     ispSummary[isp] = (ispSummary[isp] || 0) + 1;
                     eventTypeSummary[evt] = (eventTypeSummary[evt] || 0) + 1;
@@ -437,15 +450,15 @@ export default {
                     organization: `${first.asn} ${first.isp}`,
                     first_seen: first.timestamp,
                     last_seen: last.timestamp,
-                    is_datacenter: Boolean(first.is_dc),
                     event_count: evs.length,
                     timeline: evs.map(e => ({
                         timestamp: e.timestamp,
                         event: e.event,
                         page: e.page || "/",
-                        detail: e.section ? `#${e.section} (${e.readSec}s)` : (e.title || e.question || e.file || e.dest || e.label || ""),
                         dwell_sec: e.dwellSec,
-                        scroll_depth: e.scroll
+                        scroll_depth: e.scroll,
+                        sections_read: e.sections || undefined,
+                        projects_viewed: e.projects || undefined
                     }))
                 };
             }).sort((a, b) => new Date(b.last_seen).getTime() - new Date(a.last_seen).getTime());
@@ -457,15 +470,10 @@ export default {
                     total_events: events.length,
                     unique_ips: Object.keys(ipMap).length,
                     unique_sessions: Object.keys(sessionMap).length,
-                    human_pageviews: events.filter(e => (e.event === "pageview" || e.event === "edge_pageview") && !e.is_dc).length,
-                    total_pageviews: events.filter(e => e.event === "pageview" || e.event === "edge_pageview").length,
-                    heartbeats: events.filter(e => e.event === "heartbeat").length,
-                    section_reads: events.filter(e => e.event === "section_read").length,
+                    pageviews: events.filter(e => e.event === "pageview").length,
+                    dwell_sessions: events.filter(e => e.event === "dwell_time").length,
                     avg_dwell_seconds: avgDwell,
-                    project_interactions: events.filter(e => e.event === "project_switch" || e.event === "project_click").length,
                     pdf_downloads: events.filter(e => e.event === "pdf_download" || e.event === "edge_pdf_download").length,
-                    faq_expands: events.filter(e => e.event === "faq_open").length,
-                    form_submits: events.filter(e => e.event === "contact_form_submit").length,
                     contact_clicks: events.filter(e => e.event === "contact_click").length,
                     outbound_clicks: events.filter(e => e.event === "outbound_click").length,
                     video_plays: events.filter(e => e.event === "video_open").length
@@ -488,74 +496,46 @@ export default {
             });
         }
 
-        // --- Server-Side Edge Telemetry Fallback (Filtered & Resilient) ---
+        // --- Server-Side Edge Telemetry (PDFs only — HTML writes disabled to protect KV quota) ---
         const pathnameLower = url.pathname.toLowerCase();
-        const isStaticAsset = (
-            pathnameLower.endsWith('.js') || pathnameLower.endsWith('.css') ||
-            pathnameLower.endsWith('.png') || pathnameLower.endsWith('.jpg') ||
-            pathnameLower.endsWith('.jpeg') || pathnameLower.endsWith('.svg') ||
-            pathnameLower.endsWith('.webp') || pathnameLower.endsWith('.ico') ||
-            pathnameLower.endsWith('.woff') || pathnameLower.endsWith('.woff2') ||
-            pathnameLower.endsWith('.mp4') || pathnameLower.endsWith('.webm') ||
-            pathnameLower.endsWith('.map') || pathnameLower.endsWith('.json') ||
-            pathnameLower.endsWith('.txt') || pathnameLower.startsWith('/api/')
-        );
+        const isPdf = pathnameLower.endsWith('.pdf');
 
-        if (!isStaticAsset && env && env.ANALYTICS && ctx && ctx.waitUntil) {
-            const isPdf = pathnameLower.endsWith('.pdf');
-            const isHtml = pathnameLower === '/' || pathnameLower.endsWith('.html') || !pathnameLower.includes('.');
-            
-            if (isPdf || isHtml) {
-                const userAgent = (request.headers.get("user-agent") || "").toLowerCase();
-                const rawUa = request.headers.get("user-agent") || "";
-                const headerRef = request.headers.get("referer") || "";
-                const purpose = (request.headers.get("purpose") || request.headers.get("sec-purpose") || "").toLowerCase();
+        if (isPdf && env && env.ANALYTICS && ctx && ctx.waitUntil) {
+            const userAgent = (request.headers.get("user-agent") || "").toLowerCase();
+            const rawUa = request.headers.get("user-agent") || "";
+            const headerRef = request.headers.get("referer") || "";
 
-                // 1. Filter out background Service Worker prefetching noise
-                const isSwPrefetch = headerRef.includes("sw.js") || purpose.includes("prefetch");
+            const isBot = (
+                userAgent.includes("bot") || userAgent.includes("spider") ||
+                userAgent.includes("crawl") || userAgent.includes("headless")
+            );
 
-                // 2. Identify known crawler bots
-                const isBot = (
-                    userAgent.includes("bot") || userAgent.includes("spider") ||
-                    userAgent.includes("crawl") || userAgent.includes("headless") ||
-                    userAgent.includes("uptime") || userAgent.includes("slurp") ||
-                    userAgent.includes("ahrefs") || userAgent.includes("semrush") ||
-                    userAgent.includes("yandex") || userAgent.includes("bingpreview")
-                );
-
-                if (!isSwPrefetch && !isBot) {
-                    ctx.waitUntil((async () => {
-                        try {
-                            const now = new Date();
-                            const eventType = isPdf ? "edge_pdf_download" : "edge_pageview";
-
-                            const edgeEvent = {
-                                sid: currentSid,
-                                event: eventType,
-                                page: url.pathname + url.search,
-                                title: isPdf ? (url.pathname.split("/").pop() || "PDF Report") : "Direct Edge Visit",
-                                lang: url.searchParams.get("lang") || "de",
-                                ref: headerRef,
-                                ip: clientIp,
-                                country: cf.country || "unknown",
-                                city: cf.city || "unknown",
-                                region: cf.region || "unknown",
-                                postal: cf.postalCode || "",
-                                isp: cf.asOrganization || "unknown",
-                                asn: asnStr,
-                                colo: cf.colo || "",
-                                file: isPdf ? url.pathname : "",
-                                ua: rawUa,
-                                source: "edge_server",
-                                is_dc: isDatacenter,
-                                timestamp: now.toISOString()
-                            };
-
-                            const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
-                            await env.ANALYTICS.put(key, JSON.stringify(edgeEvent), { expirationTtl: 2592000 });
-                        } catch (_) {}
-                    })());
-                }
+            if (!isBot && !isDatacenter) {
+                ctx.waitUntil((async () => {
+                    try {
+                        const now = new Date();
+                        const edgeEvent = {
+                            sid: currentSid,
+                            event: "edge_pdf_download",
+                            page: url.pathname,
+                            file: url.pathname,
+                            title: url.pathname.split("/").pop() || "PDF Report",
+                            ip: clientIp,
+                            country: cf.country || "unknown",
+                            city: cf.city || "unknown",
+                            region: cf.region || "unknown",
+                            postal: cf.postalCode || "",
+                            isp: cf.asOrganization || "unknown",
+                            asn: asnStr,
+                            colo: cf.colo || "",
+                            ua: rawUa,
+                            source: "edge_server",
+                            timestamp: now.toISOString()
+                        };
+                        const key = `evt:${now.getTime()}:${Math.random().toString(36).substring(2, 7)}`;
+                        await env.ANALYTICS.put(key, JSON.stringify(edgeEvent), { expirationTtl: 2592000 });
+                    } catch (_) {}
+                })());
             }
         }
 

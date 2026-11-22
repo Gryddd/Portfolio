@@ -1435,7 +1435,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
-    // --- High-Precision Recruiter Telemetry Engine ---
+    // --- Ultra-KV-Efficient Recruiter Telemetry Engine (Zero-Waste Session Bundling) ---
     function resolveTelemetrySession() {
         try {
             const cookieMatch = document.cookie.match(/(?:^|;\s*)_gryd_sid=([^;]+)/);
@@ -1468,6 +1468,15 @@ document.addEventListener("DOMContentLoaded", function () {
             if (pct > maxScrollDepth) maxScrollDepth = pct;
         }
     }, { passive: true });
+
+    // In-memory session accumulator (0 KV writes while browsing!)
+    const sessionIntel = {
+        sectionsRead: [],
+        projectsViewed: [],
+        caseStudiesClicked: [],
+        diagramsZoomed: [],
+        dropdownCount: 0
+    };
 
     function getDeviceProfile() {
         return {
@@ -1514,10 +1523,10 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (_) {}
     }
 
-    // 1. Initial Pageview
+    // 1. Initial Pageview (Exactly 1 KV write)
     trackPortfolioEvent("pageview", { title: document.title });
 
-    // 2. Active Dwell-Time & Resilient Heartbeat Engine
+    // 2. Active Dwell-Time Engine
     let activeDwellMs = 0;
     let lastVisibilityCheck = performance.now();
     let isTabVisible = document.visibilityState === "visible";
@@ -1536,13 +1545,19 @@ document.addEventListener("DOMContentLoaded", function () {
         return Math.max(1, Math.round(activeDwellMs / 1000));
     }
 
+    // Exit beacon bundles the entire session's intel into 1 SINGLE KV WRITE!
     function sendExitBeacon() {
         const currentDwell = getActiveDwellSec();
         if (currentDwell > lastLoggedDwellSec) {
             lastLoggedDwellSec = currentDwell;
             trackPortfolioEvent("dwell_time", {
                 dwellSec: currentDwell,
-                scroll: `${maxScrollDepth}%`
+                scroll: `${maxScrollDepth}%`,
+                sections_read: sessionIntel.sectionsRead.slice(-8),
+                projects_viewed: Array.from(new Set(sessionIntel.projectsViewed)),
+                case_studies: sessionIntel.caseStudiesClicked,
+                diagrams: sessionIntel.diagramsZoomed,
+                dropdown_count: sessionIntel.dropdownCount
             }, true);
         }
     }
@@ -1563,32 +1578,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sendExitBeacon();
     });
 
-    // Tiered Heartbeats: 10s, 30s, 60s, 120s, 300s, 600s
-    const heartbeatTiers = [10, 30, 60, 120, 300, 600];
-    let nextTierIdx = 0;
-    function runHeartbeatLoop() {
-        if (nextTierIdx >= heartbeatTiers.length) return;
-        const targetSec = heartbeatTiers[nextTierIdx];
-        const delayMs = Math.max(1000, (targetSec * 1000) - activeDwellMs);
-        setTimeout(() => {
-            if (isTabVisible) {
-                recordActiveTime();
-                const currentSec = Math.round(activeDwellMs / 1000);
-                if (currentSec >= targetSec) {
-                    lastLoggedDwellSec = currentSec;
-                    trackPortfolioEvent("heartbeat", {
-                        dwellSec: currentSec,
-                        scroll: `${maxScrollDepth}%`
-                    });
-                    nextTierIdx++;
-                }
-            }
-            runHeartbeatLoop();
-        }, Math.min(delayMs, 10000));
-    }
-    runHeartbeatLoop();
-
-    // 3. Section Reading Focus (IntersectionObserver)
+    // 3. Section Reading Focus (In-Memory Accumulator - 0 KV writes)
     if ('IntersectionObserver' in window) {
         const trackedSectionIds = [
             'summary', 'topology', 'firewall', 'domain', 'workstation', 'support',
@@ -1604,14 +1594,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!id) return;
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
                     if (!activeSections.has(id)) {
-                        activeSections.set(id, { start: now, sent: false });
+                        activeSections.set(id, { start: now, logged: false });
                     }
                 } else if (activeSections.has(id)) {
                     const data = activeSections.get(id);
                     const readSec = Math.round((now - data.start) / 1000);
-                    if (readSec >= 4 && !data.sent) {
-                        data.sent = true;
-                        trackPortfolioEvent("section_read", { section: id, readSec: readSec });
+                    if (readSec >= 4 && !data.logged) {
+                        data.logged = true;
+                        sessionIntel.sectionsRead.push(`${id} (${readSec}s)`);
                     }
                     activeSections.delete(id);
                 }
@@ -1621,37 +1611,30 @@ document.addEventListener("DOMContentLoaded", function () {
         sectionEls.forEach(el => sectionObserver.observe(el));
     }
 
-    // 4. Report & Download Dropdowns
+    // 4. Report Dropdowns (In-Memory - 0 KV writes)
     document.querySelectorAll('.cta-dropdown-toggle, .project-report-dropdown button').forEach(button => {
         button.addEventListener("click", () => {
-            const isExpanding = !button.classList.contains("active") && button.getAttribute("aria-expanded") !== "true";
-            if (isExpanding) {
-                trackPortfolioEvent("report_menu_open", { page: window.location.pathname });
-            }
+            sessionIntel.dropdownCount++;
         });
     });
 
-    // 5. Case Study Direct Navigation Links
+    // 5. Case Study Direct Navigation Links (In-Memory - 0 KV writes)
     document.querySelectorAll('a[href*="dental-clinic"], a[href*="homelab"], a[href*="portguardian"]').forEach(link => {
         link.addEventListener("click", () => {
             const href = link.getAttribute("href") || "";
-            trackPortfolioEvent("case_study_click", {
-                target: href,
-                label: link.textContent?.trim() || href
-            });
+            sessionIntel.caseStudiesClicked.push(href);
         });
     });
 
-    // 6. Diagram & Architecture Zoom Clicks
+    // 6. Diagram & Architecture Zoom Clicks (In-Memory - 0 KV writes)
     document.querySelectorAll('[data-enlargeable], .image-modal-trigger, .case-diagram, #homelab-topology-img, img[src*="diagram"], img[src*="portguardian_infra"], img[src*="medical_topology"]').forEach(img => {
         img.addEventListener("click", () => {
-            trackPortfolioEvent("diagram_zoom", {
-                image: img.getAttribute("src") || img.getAttribute("data-src") || "diagram"
-            });
+            const name = (img.getAttribute("src") || img.getAttribute("data-src") || "diagram").split("/").pop();
+            sessionIntel.diagramsZoomed.push(name);
         });
     });
 
-    // 7. FAQ Interactions
+    // 7. FAQ Interactions (Explicit User Clicks - Instant Write)
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
@@ -1666,7 +1649,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 8. PDF Downloads
+    // 8. PDF Downloads (Explicit User Clicks - Instant Write)
     document.querySelectorAll('a[download], a[href*=".pdf"]').forEach(link => {
         link.addEventListener("click", () => {
             const fileName = link.getAttribute("href") || "";
@@ -1675,7 +1658,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 9. Contact & Phone
+    // 9. Contact & Phone (Explicit User Clicks - Instant Write)
     document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
         link.addEventListener("click", () => {
             trackPortfolioEvent("contact_click", { label: "Email: " + link.getAttribute("href").replace("mailto:", "") });
@@ -1687,14 +1670,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 10. External Links (GitHub, LinkedIn)
+    // 10. External Links (Explicit User Clicks - Instant Write)
     document.querySelectorAll('a[href^="https://github.com"], a[href^="https://www.linkedin.com"]').forEach(link => {
         link.addEventListener("click", () => {
             trackPortfolioEvent("outbound_click", { dest: link.href, label: link.textContent?.trim() || link.href });
         });
     });
 
-    // 11. Video Modal
+    // 11. Video Modal (Explicit User Clicks - Instant Write)
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
         if (currentLang !== "de") return;
         trackPortfolioEvent("video_open", { label: "Vorstellungsvideo (German Intro Video)" });
@@ -1709,11 +1692,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextId = projectOrder[nextIndex];
         const proj = projectsData[nextId];
         const projTitle = proj?.title?.[currentLang] || proj?.title?.en || `Project ${nextId}`;
-        trackPortfolioEvent("project_switch", {
-            projectId: nextId,
-            title: projTitle,
-            direction: step > 0 ? 'next' : 'prev'
-        });
+        sessionIntel.projectsViewed.push(projTitle);
         updateFeaturedProject(nextId, step > 0 ? 'next' : 'prev');
     }
 
@@ -1722,11 +1701,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const linkBtn = project?.buttons?.find(b => b.type === 'link');
         if (!linkBtn) return;
         const projTitle = project?.title?.[currentLang] || project?.title?.en || `Project ${activeProjectId}`;
-        trackPortfolioEvent("project_click", {
-            projectId: activeProjectId,
-            title: projTitle,
-            targetUrl: linkBtn.url
-        });
+        sessionIntel.caseStudiesClicked.push(linkBtn.url);
         try {
             const targetUrl = getLocalizedPageUrl(linkBtn.url, currentLang);
             if (event && (event.metaKey || event.ctrlKey)) {
@@ -1761,11 +1736,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const direction = nextIndex > currentIndex ? 'next' : 'prev';
                 const proj = projectsData[projectId];
                 const projTitle = proj?.title?.[currentLang] || proj?.title?.en || `Project ${projectId}`;
-                trackPortfolioEvent("project_switch", {
-                    projectId: projectId,
-                    title: projTitle,
-                    method: "thumbnail"
-                });
+                sessionIntel.projectsViewed.push(projTitle);
                 updateFeaturedProject(projectId, direction);
             });
         });
