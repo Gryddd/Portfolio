@@ -1,22 +1,12 @@
-const CACHE_NAME = 'walid-portfolio-v29';
+const CACHE_NAME = 'walid-portfolio-v30';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/de/',
-  '/fr/',
-  '/portguardian.html',
-  '/de/portguardian.html',
-  '/fr/portguardian.html',
-  '/homelab.html',
-  '/de/homelab.html',
-  '/fr/homelab.html',
   '/offline.html',
   '/style.css',
   '/project-page.css',
-  '/script.js',
+  '/script.js?v=20261124',
   '/seo.js',
-  '/portguardian-page.js',
-  '/homelab-page.js',
+  '/portguardian-page.js?v=20261021',
+  '/homelab-page.js?v=20261021',
   '/vendor/aos/aos.css',
   '/vendor/aos/aos.js',
   '/manifest.json',
@@ -69,6 +59,10 @@ self.addEventListener('fetch', (event) => {
   }
 
   const url = new URL(event.request.url);
+  if (url.pathname.startsWith('/api/') || url.pathname === '/sync') {
+    return;
+  }
+
   const isSameOrigin = url.origin === self.location.origin;
   const isNavigation = event.request.mode === 'navigate';
   const isStaticAsset = isSameOrigin && STATIC_DESTINATIONS.has(event.request.destination);

@@ -793,15 +793,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return changedElements;
     }
     function switchLanguage(newLang, options = {}) {
-        const { syncUrl = true, refreshLayout = true, navigate = false, replaceHistory = false } = options;
+        const { syncUrl = true, refreshLayout = true, navigate = false, replaceHistory = false, userInitiated = false } = options;
         const normalizedLang = normalizeLanguage(newLang) || config.defaultLang;
         const oldLang = currentLang;
         currentLang = normalizedLang;
         if (oldLang && oldLang !== normalizedLang && typeof trackPortfolioEvent === "function") {
             trackPortfolioEvent("language_switch", { fromLang: oldLang, toLang: normalizedLang });
         }
-        localStorage.setItem("preferredLang", currentLang);
-        persistPreferredLanguage(currentLang);
+        if (userInitiated) {
+            try { localStorage.setItem("preferredLang", currentLang); } catch (_) {}
+            persistPreferredLanguage(currentLang);
+        }
 
         // Always update DOM in-place immediately
         document.documentElement.lang = currentLang;
@@ -1350,7 +1352,10 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const newLang = item.getAttribute("data-lang");
             if (newLang !== currentLang) {
-                switchLanguage(newLang, { navigate: true });
+                switchLanguage(newLang, { navigate: true, userInitiated: true });
+            } else {
+                try { localStorage.setItem("preferredLang", currentLang); } catch (_) {}
+                persistPreferredLanguage(currentLang);
             }
 
             const navDropdown = item.closest(".nav-dropdown");
@@ -1370,7 +1375,10 @@ document.addEventListener("DOMContentLoaded", function () {
             e.stopPropagation();
             const newLang = this.getAttribute('data-lang');
             if (newLang && newLang !== currentLang) {
-                switchLanguage(newLang, { navigate: true });
+                switchLanguage(newLang, { navigate: true, userInitiated: true });
+            } else if (newLang) {
+                try { localStorage.setItem("preferredLang", currentLang); } catch (_) {}
+                persistPreferredLanguage(currentLang);
             }
         });
     });
@@ -1435,7 +1443,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => setMobileNavState(false, { restoreFocus: false }), 150);
         });
     });
-    // --- Ultra-KV-Efficient Recruiter Telemetry Engine (Zero-Waste Session Bundling) ---
+    // --- Recruiter Telemetry Engine (Session Bundling & Human Verification) ---
     function resolveTelemetrySession() {
         try {
             const cookieMatch = document.cookie.match(/(?:^|;\s*)_gryd_sid=([^;]+)/);
@@ -1449,7 +1457,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.cookie = `_gryd_sid=${encodeURIComponent(sid)}; Path=/; Max-Age=86400; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
                 return sid;
             }
-            sid = "s_" + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+            sid = "s_" + Date.now().toString(36) + "_" + Math.random().toString(36).substring(2, 7);
             try { sessionStorage.setItem("_gryd_sid", sid); } catch (_) {}
             document.cookie = `_gryd_sid=${encodeURIComponent(sid)}; Path=/; Max-Age=86400; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
             return sid;
@@ -1460,6 +1468,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const sessionId = resolveTelemetrySession();
 
     let maxScrollDepth = 0;
+    let hasHumanInteraction = false;
+    let interactionCount = 0;
+    let lastMoveStamp = 0;
+
+    const markHumanInteraction = (isMove = false) => {
+        if (isMove) {
+            const now = performance.now();
+            if (now - lastMoveStamp < 400) return;
+            lastMoveStamp = now;
+        }
+        hasHumanInteraction = true;
+        interactionCount++;
+    };
+
+    window.addEventListener("pointerdown", () => markHumanInteraction(false), { passive: true });
+    window.addEventListener("touchstart", () => markHumanInteraction(false), { passive: true });
+    window.addEventListener("keydown", () => markHumanInteraction(false), { passive: true });
+    window.addEventListener("wheel", () => markHumanInteraction(false), { passive: true });
+    window.addEventListener("pointermove", () => markHumanInteraction(true), { passive: true });
+
     window.addEventListener("scroll", () => {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -1469,7 +1497,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, { passive: true });
 
-    // In-memory session accumulator (0 KV writes while browsing!)
+    // In-memory session accumulator (0 KV writes while browsing)
     const sessionIntel = {
         sectionsRead: [],
         projectsViewed: [],
@@ -1477,14 +1505,34 @@ document.addEventListener("DOMContentLoaded", function () {
         diagramsZoomed: [],
         dropdownCount: 0
     };
+    const activeSections = new Map();
+
+    function flushActiveSections() {
+        const now = performance.now();
+        activeSections.forEach((data, id) => {
+            const readSec = Math.round((now - data.start) / 1000);
+            if (readSec >= 4 && !data.logged) {
+                data.logged = true;
+                sessionIntel.sectionsRead.push(`${id} (${readSec}s)`);
+            }
+        });
+    }
 
     function getDeviceProfile() {
+        const browserLangs = (navigator.languages && navigator.languages.length)
+            ? navigator.languages.slice(0, 4).join(",")
+            : (navigator.language || "");
         return {
             sid: sessionId,
             screen: `${window.screen.width}x${window.screen.height}`,
             vp: `${window.innerWidth}x${window.innerHeight}`,
             dpr: window.devicePixelRatio || 1,
             tz: (Intl && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : "",
+            langs: browserLangs,
+            webdriver: Boolean(navigator.webdriver),
+            interacted: hasHumanInteraction || maxScrollDepth > 0,
+            interactions: interactionCount,
+            vis: document.visibilityState || "",
             cores: navigator.hardwareConcurrency || null,
             mem: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : null,
             ref: document.referrer || "",
@@ -1503,7 +1551,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const syncEndpoint = "/api/v1/sync";
 
-            // If page is unloading or being backgrounded, prioritize navigator.sendBeacon
             if (isUnload && typeof navigator.sendBeacon === "function") {
                 const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
                 if (navigator.sendBeacon(syncEndpoint, blob)) return;
@@ -1523,7 +1570,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (_) {}
     }
 
-    // 1. Initial Pageview (Exactly 1 KV write)
+    // 1. Initial Pageview (1 KV write)
     trackPortfolioEvent("pageview", { title: document.title });
 
     // 2. Active Dwell-Time Engine
@@ -1545,21 +1592,24 @@ document.addEventListener("DOMContentLoaded", function () {
         return Math.max(1, Math.round(activeDwellMs / 1000));
     }
 
-    // Exit beacon bundles the entire session's intel into 1 SINGLE KV WRITE!
-    function sendExitBeacon() {
+    // Exit beacon bundles the session's reading and interaction intel into a single write
+    function sendExitBeacon(forceFlush = false) {
+        flushActiveSections();
         const currentDwell = getActiveDwellSec();
-        if (currentDwell > lastLoggedDwellSec) {
-            lastLoggedDwellSec = currentDwell;
-            trackPortfolioEvent("dwell_time", {
-                dwellSec: currentDwell,
-                scroll: `${maxScrollDepth}%`,
-                sections_read: sessionIntel.sectionsRead.slice(-8),
-                projects_viewed: Array.from(new Set(sessionIntel.projectsViewed)),
-                case_studies: sessionIntel.caseStudiesClicked,
-                diagrams: sessionIntel.diagramsZoomed,
-                dropdown_count: sessionIntel.dropdownCount
-            }, true);
-        }
+        const delta = currentDwell - lastLoggedDwellSec;
+        if (delta <= 0) return;
+        if (!forceFlush && lastLoggedDwellSec > 0 && delta < 3) return;
+
+        lastLoggedDwellSec = currentDwell;
+        trackPortfolioEvent("dwell_time", {
+            dwellSec: currentDwell,
+            scroll: `${maxScrollDepth}%`,
+            sections_read: sessionIntel.sectionsRead.slice(-10),
+            projects_viewed: Array.from(new Set(sessionIntel.projectsViewed)),
+            case_studies: Array.from(new Set(sessionIntel.caseStudiesClicked)),
+            diagrams: Array.from(new Set(sessionIntel.diagramsZoomed)),
+            dropdown_count: sessionIntel.dropdownCount
+        }, true);
     }
 
     document.addEventListener("visibilitychange", () => {
@@ -1569,23 +1619,22 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             recordActiveTime();
             isTabVisible = false;
-            sendExitBeacon();
+            sendExitBeacon(false);
         }
     });
 
     window.addEventListener("pagehide", () => {
         recordActiveTime();
-        sendExitBeacon();
+        sendExitBeacon(true);
     });
 
-    // 3. Section Reading Focus (In-Memory Accumulator - 0 KV writes)
-    if ('IntersectionObserver' in window) {
+    // 3. Section Reading Focus (In-Memory Accumulator)
+    if ("IntersectionObserver" in window) {
         const trackedSectionIds = [
-            'summary', 'topology', 'firewall', 'domain', 'workstation', 'support',
-            'projekte', 'projects', 'experience', 'about', 'skills', 'contact', 'faq'
+            "summary", "topology", "firewall", "domain", "workstation", "support",
+            "projekte", "projects", "experience", "about", "skills", "contact", "faq"
         ];
-        const sectionEls = document.querySelectorAll(trackedSectionIds.map(id => `#${id}`).join(', '));
-        const activeSections = new Map();
+        const sectionEls = document.querySelectorAll(trackedSectionIds.map(id => `#${id}`).join(", "));
 
         const sectionObserver = new IntersectionObserver((entries) => {
             const now = performance.now();
@@ -1611,30 +1660,53 @@ document.addEventListener("DOMContentLoaded", function () {
         sectionEls.forEach(el => sectionObserver.observe(el));
     }
 
-    // 4. Report Dropdowns (In-Memory - 0 KV writes)
-    document.querySelectorAll('.cta-dropdown-toggle, .project-report-dropdown button').forEach(button => {
-        button.addEventListener("click", () => {
+    // 4. Delegated Click Telemetry (survives Featured Project innerHTML re-renders and stopPropagation)
+    document.addEventListener("click", (e) => {
+        const target = e.target instanceof Element ? e.target : null;
+        if (!target) return;
+
+        markHumanInteraction(false);
+
+        if (target.closest(".cta-dropdown-toggle, .project-report-dropdown button")) {
             sessionIntel.dropdownCount++;
-        });
-    });
+        }
 
-    // 5. Case Study Direct Navigation Links (In-Memory - 0 KV writes)
-    document.querySelectorAll('a[href*="dental-clinic"], a[href*="homelab"], a[href*="portguardian"]').forEach(link => {
-        link.addEventListener("click", () => {
-            const href = link.getAttribute("href") || "";
-            sessionIntel.caseStudiesClicked.push(href);
-        });
-    });
+        const caseLink = target.closest('a[href*="dental-clinic"], a[href*="homelab"], a[href*="portguardian"]');
+        if (caseLink) {
+            const href = caseLink.getAttribute("href") || "";
+            if (href) sessionIntel.caseStudiesClicked.push(href);
+        }
 
-    // 6. Diagram & Architecture Zoom Clicks (In-Memory - 0 KV writes)
-    document.querySelectorAll('[data-enlargeable], .image-modal-trigger, .case-diagram, #homelab-topology-img, img[src*="diagram"], img[src*="portguardian_infra"], img[src*="medical_topology"]').forEach(img => {
-        img.addEventListener("click", () => {
-            const name = (img.getAttribute("src") || img.getAttribute("data-src") || "diagram").split("/").pop();
-            sessionIntel.diagramsZoomed.push(name);
-        });
-    });
+        const diagramImg = target.closest('[data-enlargeable], .image-modal-trigger, .case-diagram, #homelab-topology-img, img[src*="diagram"], img[src*="portguardian_infra"], img[src*="medical_topology"]');
+        if (diagramImg) {
+            const srcAttr = diagramImg.getAttribute("src") || diagramImg.getAttribute("data-src") || diagramImg.querySelector?.("img")?.getAttribute("src") || "diagram";
+            sessionIntel.diagramsZoomed.push(srcAttr.split("/").pop().split("?")[0]);
+        }
 
-    // 7. FAQ Interactions (Explicit User Clicks - Instant Write)
+        const pdfLink = target.closest('a[download], a[href*=".pdf"]');
+        if (pdfLink) {
+            const fileName = pdfLink.getAttribute("href") || "";
+            const fileLabel = pdfLink.textContent?.trim() || fileName;
+            trackPortfolioEvent("pdf_download", { file: fileName, label: fileLabel });
+        }
+
+        const mailLink = target.closest('a[href^="mailto:"]');
+        if (mailLink) {
+            trackPortfolioEvent("contact_click", { label: "Email: " + (mailLink.getAttribute("href") || "").replace("mailto:", "") });
+        }
+
+        const telLink = target.closest('a[href^="tel:"]');
+        if (telLink) {
+            trackPortfolioEvent("contact_click", { label: "Phone: " + (telLink.getAttribute("href") || "").replace("tel:", "") });
+        }
+
+        const externalLink = target.closest('a[href^="https://github.com"], a[href^="https://www.linkedin.com"]');
+        if (externalLink) {
+            trackPortfolioEvent("outbound_click", { dest: externalLink.href, label: externalLink.textContent?.trim() || externalLink.href });
+        }
+    }, { capture: true });
+
+    // 5. FAQ Interactions (UI Toggle + Instant Telemetry Write)
     document.querySelectorAll(".faq-question").forEach(button => {
         button.addEventListener("click", () => {
             const panel = button.nextElementSibling;
@@ -1649,35 +1721,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 8. PDF Downloads (Explicit User Clicks - Instant Write)
-    document.querySelectorAll('a[download], a[href*=".pdf"]').forEach(link => {
-        link.addEventListener("click", () => {
-            const fileName = link.getAttribute("href") || "";
-            const fileLabel = link.textContent?.trim() || fileName;
-            trackPortfolioEvent("pdf_download", { file: fileName, label: fileLabel });
-        });
-    });
-
-    // 9. Contact & Phone (Explicit User Clicks - Instant Write)
-    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-        link.addEventListener("click", () => {
-            trackPortfolioEvent("contact_click", { label: "Email: " + link.getAttribute("href").replace("mailto:", "") });
-        });
-    });
-    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-        link.addEventListener("click", () => {
-            trackPortfolioEvent("contact_click", { label: "Phone: " + link.getAttribute("href").replace("tel:", "") });
-        });
-    });
-
-    // 10. External Links (Explicit User Clicks - Instant Write)
-    document.querySelectorAll('a[href^="https://github.com"], a[href^="https://www.linkedin.com"]').forEach(link => {
-        link.addEventListener("click", () => {
-            trackPortfolioEvent("outbound_click", { dest: link.href, label: link.textContent?.trim() || link.href });
-        });
-    });
-
-    // 11. Video Modal (Explicit User Clicks - Instant Write)
+    // 6. Video Modal (UI Modal + Instant Telemetry Write)
     document.getElementById("open-video-modal")?.addEventListener("click", function () {
         if (currentLang !== "de") return;
         trackPortfolioEvent("video_open", { label: "Vorstellungsvideo (German Intro Video)" });

@@ -1,8 +1,22 @@
-name = "grydsh-language-router"
+name = "grydworker"
 main = "worker.js"
-compatibility_date = "2026-03-31"
+compatibility_date = "2026-11-24"
 workers_dev = false
 
 routes = [
-  { pattern = "grydsh.dev/*", zone_name = "grydsh.dev" }
+  { pattern = "grydsh.dev/*", zone_name = "grydsh.dev" },
+  { pattern = "www.grydsh.dev/*", zone_name = "grydsh.dev" }
 ]
+
+[[kv_namespaces]]
+binding = "ANALYTICS"
+id = "20d13e93666f410b9a56639110b03e89"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
